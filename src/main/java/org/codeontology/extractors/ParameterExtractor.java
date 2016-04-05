@@ -3,6 +3,7 @@ package org.codeontology.extractors;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
+import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.declaration.CtParameter;
 import spoon.reflect.reference.CtTypeReference;
 
@@ -17,6 +18,9 @@ public class ParameterExtractor extends TypedElementExtractor<CtParameter<?>> {
 
     public ParameterExtractor(CtTypeReference<?> reference) {
         super(reference);
+        if (reference.getQualifiedName().equals(CtTypeReference.NULL_TYPE_NAME)) {
+            throw new NullTypeException();
+        }
     }
 
     @Override

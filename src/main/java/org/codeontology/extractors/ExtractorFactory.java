@@ -45,7 +45,11 @@ public class ExtractorFactory {
     }
 
     public ParameterExtractor getExtractor(CtParameter<?> parameter) {
-        return new ParameterExtractor(parameter);
+        try {
+            return new ParameterExtractor(parameter);
+        } catch (NullTypeException e) {
+            return null;
+        }
     }
 
     public ParameterExtractor getExtractorByTypeReference(CtTypeReference<?> reference) {

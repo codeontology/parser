@@ -2,6 +2,7 @@ package org.codeontology.extractors;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.TypeEntity;
+import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtInterface;
 import spoon.reflect.declaration.CtType;
@@ -11,10 +12,18 @@ public class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
 
     public TypeExtractor(T type) {
         super(type);
+        checkNullType();
     }
 
     public TypeExtractor(CtTypeReference<?> reference) {
         super(reference);
+        checkNullType();
+    }
+
+    private void checkNullType() {
+        if (getReference().getQualifiedName().equals(CtTypeReference.NULL_TYPE_NAME)) {
+            throw new NullTypeException();
+        }
     }
 
     @Override
@@ -29,10 +38,6 @@ public class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
 
     @Override
     public void extract() {
-        if (getReference().getQualifiedName().equals(CtTypeReference.NULL_TYPE_NAME)) {
-            return;
-        }
-
         if (getElement() instanceof CtClass<?>) {
             new ClassExtractor<>((CtClass<?>) getElement()).extract();
         } else if (getElement() instanceof CtInterface<?>) {

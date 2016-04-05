@@ -8,9 +8,7 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtNamedElement;
 import spoon.reflect.reference.CtReference;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 // todo: remove references
 public abstract class Extractor<E extends CtNamedElement> {
@@ -108,10 +106,9 @@ public abstract class Extractor<E extends CtNamedElement> {
     }
 
     public void writeRDF() {
-        File file = new File("./result.nt");
-        try (FileWriter writer = new FileWriter(file)) {
+        try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("./result.nt", true)))) {
             getModel().write(writer, "N-TRIPLE");
-            writer.close();
+            model = Ontology.baseModel();
         } catch (IOException e) {
             System.out.println("Unable to write triples");
         }

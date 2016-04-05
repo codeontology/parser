@@ -61,10 +61,12 @@ public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMemb
 
             for (int i = 0; i < parametersNumber; i++) {
                 ParameterExtractor parameterWrapper = getFactory().getExtractorByTypeReference(parameters.get(i));
-                parameterWrapper.setParent(this);
-                parameterWrapper.setPosition(i);
-                addStatement(Ontology.getParameterProperty(), parameterWrapper.getResource());
-                parameterWrapper.extract();
+                if (parameterWrapper != null) {
+                    parameterWrapper.setParent(this);
+                    parameterWrapper.setPosition(i);
+                    addStatement(Ontology.getParameterProperty(), parameterWrapper.getResource());
+                    parameterWrapper.extract();
+                }
             }
         }
     }
