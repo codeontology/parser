@@ -1,0 +1,47 @@
+maven_build="pom.xml"
+gradle_build="gradle.build"
+
+gradle_test_jars="testJar";
+tast_body="(type: Jar) { classifier = 'tests' from sourceSets.test.output }";
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "dir: $DIR"
+i=0
+
+for repository in `ls $DIR/../../repos/`; do
+        echo "Downloading for $repository"
+        echo `pwd`
+        cd "$DIR/../../repos/$repository"
+
+        if [ `ls -1 | grep $maven_build | wc -l` -ne 0 ]; then
+                mvn package;
+		if [ $? -eq 0 ]; then
+                	cd "$DIR/../../"
+	                python3 jpp.py "$DIR/../../repos/$repository" "$repository.nt" nd
+		fi
+
+                if [ $i -eq 5 ]; then
+                        i=0
+                        rm -rf ~/.m2
+                        mvn package -DskipTests
+                fi
+        else
+		if [ `ls -1 | grep $gradle_build | wc -l` -ne 0 ]; then
+                	gradle dependencies;
+			if [ $? -eq 0  ]; then
+		                if [ `grep $gradle_test_jar build.gradle | wc -l` -eq 0 ]; then
+	        	                echo "apply plugin: \'java\' \n $gradle_test_jars task testJar $task_body" >> build.gradle;
+	                	fi
+	        	        python3 jpp.py "$DIR/../../$repository" "$repository.nt" nd
+	
+	                	if [$i -eq 5]; then
+	                        	i=0
+		                        rm -rf ~/.gradle
+	        	        fi
+		        fi
+		fi
+        fi
+        echo "Done."
+        (( i=i+1 ))
+
+        cd "$DIR/../../"
+done;

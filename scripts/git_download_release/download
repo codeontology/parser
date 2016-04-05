@@ -1,0 +1,21 @@
+mkdir repos;
+
+for repository in `cat repositories`; do
+	echo "Downloading $repository..."
+
+	cd repos
+	git clone "$repository" >& /dev/null
+	name=`echo "$repository" | awk -F "/" '{print $5}'`
+	cd $name
+	pwd
+	git fetch --tags >& /dev/null
+	git describe --tags >& /dev/null
+
+	if [ $? -eq 0 ]; then
+		latestTag=$(git describe --tags `git rev-list --tags --max-count=1`);
+		git checkout $latestTag;
+	fi
+
+	echo "Done."
+	cd ../../
+done;
