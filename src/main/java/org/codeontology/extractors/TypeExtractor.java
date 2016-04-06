@@ -10,7 +10,7 @@ import spoon.reflect.reference.CtTypeReference;
 import java.util.List;
 import java.util.Set;
 
-public class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
+public abstract class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
 
     public TypeExtractor(T type) {
         super(type);
@@ -38,7 +38,7 @@ public class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
         return null;
     }
 
-    @Override
+    /*@Override
     public void extract() {
         if (getElement() instanceof CtEnum<?>) {
             new EnumExtractor<>((CtEnum<?>) getElement()).extract();
@@ -56,7 +56,7 @@ public class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
                 case ANNOTATION: new AnnotationExtractor(getReference()).extract(); break;
             }
         }
-    }
+    }*/
 
     public CtTypeReference<?> getReference() {
         // todo: remove this method as it only makes sense to handle null references

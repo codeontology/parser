@@ -2,7 +2,6 @@ package org.codeontology.extractors;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
-import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtPackage;
 import spoon.reflect.declaration.CtType;
 

@@ -25,5 +25,8 @@ public abstract class TypedElementExtractor<E extends CtTypedElement & CtNamedEl
         }
 
         addStatement(Ontology.getAbstractTypeProperty(), extractor.getResource());
+        if (extractor.getElement() == null) {
+            extractor.extract();
+        }
     }
 }

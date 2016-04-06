@@ -1,10 +1,8 @@
 package org.codeontology;
 
-import spoon.reflect.declaration.CtAnnotation;
-import spoon.reflect.declaration.CtEnum;
-import spoon.reflect.declaration.CtInterface;
-import spoon.reflect.declaration.CtType;
+import spoon.reflect.declaration.*;
 import spoon.reflect.reference.CtTypeReference;
+import spoon.support.reflect.reference.SpoonClassNotFoundException;
 
 public enum TypeEntity {
     CLASS,
@@ -24,22 +22,27 @@ public enum TypeEntity {
             return PRIMITIVE;
         }
 
-        Class actualClass = reference.getActualClass();
-        if (actualClass.isAnnotation()) {
-            return ANNOTATION;
-        } else if (actualClass.isEnum()) {
-            return ENUM;
-        } else if (actualClass.isInterface()) {
-            return INTERFACE;
-        }
+        try {
+            Class actualClass = reference.getActualClass();
+            if (actualClass.isAnnotation()) {
+                return ANNOTATION;
+            } else if (actualClass.isEnum()) {
+                return ENUM;
+            } else if (actualClass.isInterface()) {
+                return INTERFACE;
+            }
 
-        return CLASS;
+            return CLASS;
+        } catch (SpoonClassNotFoundException e) {
+            System.out.println(e.getMessage());
+            return  CLASS;
+        }
     }
 
     public static TypeEntity getEntity(CtType<?> type) {
         if (type.isPrimitive()) {
             return PRIMITIVE;
-        }  else if (type instanceof CtAnnotation<?>) {
+        }  else if (type instanceof CtAnnotationType<?>) {
             return ANNOTATION;
         } else if (type instanceof CtEnum<?>) {
             return  ENUM;

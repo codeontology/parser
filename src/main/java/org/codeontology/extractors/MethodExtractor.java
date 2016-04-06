@@ -4,6 +4,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.reference.CtExecutableReference;
+import spoon.reflect.reference.CtTypeReference;
 
 public class MethodExtractor extends ExecutableExtractor<CtMethod<?>> {
     public MethodExtractor(CtMethod<?> method) {
@@ -33,7 +34,11 @@ public class MethodExtractor extends ExecutableExtractor<CtMethod<?>> {
     }
 
     protected void tagReturns() {
-        Extractor extractor = getFactory().getExtractor(((CtExecutableReference<?>) getReference()).getType());
+        CtTypeReference<?> reference = ((CtExecutableReference<?>) getReference()).getType();
+        Extractor extractor = getFactory().getExtractor(reference);
         addStatement(Ontology.getReturnProperty(), extractor.getResource());
+        if (reference.getDeclaration() == null) {
+            extractor.extract();
+        }
     }
 }

@@ -114,6 +114,9 @@ public class Ontology {
     public static Resource getUnknownType() {
         return model.getResource(baseURI + "Unknown");
     }*/
+    public static Resource getPrimitiveIndividual() {
+        return model.getResource(baseURI + "Primitive");
+    }
 
     public static Resource getClassIndividual() {
         return model.getResource(baseURI + "Class");
