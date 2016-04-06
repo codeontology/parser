@@ -2,13 +2,8 @@ package org.codeontology.extractors;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
-import spoon.reflect.declaration.CtClass;
-import spoon.reflect.declaration.CtConstructor;
-import spoon.reflect.declaration.CtField;
-import spoon.reflect.declaration.CtMethod;
+import spoon.reflect.declaration.*;
 import spoon.reflect.reference.CtTypeReference;
-
-import java.util.List;
 import java.util.Set;
 
 
@@ -44,6 +39,7 @@ public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
             tagConstructors();
             tagMethods();
             tagSourceCode();
+            tagNestedTypes();
         }
     }
 
@@ -52,6 +48,15 @@ public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
 
         for (CtConstructor<T> constructor : constructors) {
             getFactory().getExtractor(constructor).extract();
+        }
+    }
+
+    protected void tagNestedTypes() {
+        Set<CtType<?>> nestedTypes = getElement().getNestedTypes();
+        for (CtType<?> type : nestedTypes) {
+            Extractor extractor = getFactory().getExtractor(type);
+            addStatement(Ontology.getContainsProperty(), extractor.getResource());
+            extractor.extract();
         }
     }
 

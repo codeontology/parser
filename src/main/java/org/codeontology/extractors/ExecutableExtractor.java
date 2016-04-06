@@ -127,7 +127,6 @@ public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMemb
     }
 
     private void tagLambdaRequested(CtLambda<?> lambda) {
-        System.out.println("found lambda");
         LambdaExtractor extractor = getFactory().getExtractor(lambda);
         extractor.setParent(this);
         tagRequests(extractor.getResource());

@@ -1,15 +1,13 @@
 package org.codeontology.extractors;
 
-import org.apache.commons.lang3.ObjectUtils;
+
 import org.codeontology.TypeEntity;
 import org.codeontology.exceptions.NullTypeException;
-import spoon.reflect.code.CtAnnotationFieldAccess;
 import spoon.reflect.code.CtLambda;
 import spoon.reflect.code.CtLocalVariable;
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtTypeReference;
-import spoon.support.reflect.reference.SpoonClassNotFoundException;
 
 public class ExtractorFactory {
 
@@ -38,29 +36,35 @@ public class ExtractorFactory {
     }
 
     public TypeExtractor getExtractor(CtTypeReference<?> reference) {
-       try {
-            TypeExtractor<?> extractor = null;
-            switch (TypeEntity.getEntity(reference)) {
-                case CLASS:
-                    extractor = new ClassExtractor<>(reference);
-                    break;
-                case INTERFACE:
-                    extractor = new InterfaceExtractor(reference);
-                    break;
-                case ENUM:
-                    extractor = new EnumExtractor<>(reference);
-                    break;
-                case ANNOTATION:
-                    extractor = new AnnotationExtractor(reference);
-                    break;
-                case PRIMITIVE:
-                    extractor = new PrimitiveTypeExtractor(reference);
-                    break;
-            }
-            return extractor;
-        } catch (NullTypeException e) {
+        TypeExtractor<?> extractor = null;
+
+        if (reference.getQualifiedName().equals(CtTypeReference.NULL_TYPE_NAME)) {
             return null;
         }
+
+        TypeEntity entity = TypeEntity.getEntity(reference);
+        if (entity == null) {
+            return null;
+        }
+
+        switch (entity) {
+            case CLASS:
+                extractor = new ClassExtractor<>(reference);
+                break;
+            case INTERFACE:
+                extractor = new InterfaceExtractor(reference);
+                break;
+            case ENUM:
+                extractor = new EnumExtractor<>(reference);
+                break;
+            case ANNOTATION:
+                extractor = new AnnotationExtractor(reference);
+                break;
+            case PRIMITIVE:
+                extractor = new PrimitiveTypeExtractor(reference);
+                break;
+        }
+        return extractor;
     }
 
     public LocalVariableExtractor getExtractor(CtLocalVariable<?> variable) {

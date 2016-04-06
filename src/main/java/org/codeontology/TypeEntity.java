@@ -1,6 +1,7 @@
 package org.codeontology;
 
 import spoon.reflect.declaration.*;
+import spoon.reflect.reference.CtArrayTypeReference;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.support.reflect.reference.SpoonClassNotFoundException;
 
@@ -18,6 +19,10 @@ public enum TypeEntity {
             return getEntity(type);
         }
 
+        if (reference instanceof CtArrayTypeReference<?>) {
+            return CLASS;
+        }
+
         if (reference.isPrimitive()) {
             return PRIMITIVE;
         }
@@ -30,12 +35,13 @@ public enum TypeEntity {
                 return ENUM;
             } else if (actualClass.isInterface()) {
                 return INTERFACE;
+            } else {
+                return CLASS;
             }
-
-            return CLASS;
         } catch (SpoonClassNotFoundException e) {
-            return  CLASS;
+            return null;
         }
+
     }
 
     public static TypeEntity getEntity(CtType<?> type) {

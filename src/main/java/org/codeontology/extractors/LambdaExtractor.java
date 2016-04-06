@@ -3,7 +3,6 @@ package org.codeontology.extractors;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.code.CtLambda;
-import spoon.reflect.reference.CtExecutableReference;
 
 public class LambdaExtractor extends Extractor<CtLambda<?>> {
     private ExecutableExtractor<?> parent;

@@ -19,9 +19,9 @@ import java.io.FileReader;
  */
 public class Ontology {
 
-    private static final String rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-    private static final String rdfs = "http://www.w3.org/2000/01/rdf-schema#";
-    private final static String baseURI = "http://rdf.webofcode.org/woc/";
+    private static final String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+    private static final String RDFS = "http://www.w3.org/2000/01/rdf-schema#";
+    private final static String BASE_URI = "http://rdf.webofcode.org/woc/";
 
     public final static Model model = ontology();
 
@@ -54,196 +54,200 @@ public class Ontology {
     }
 
     public static Property getTypeProperty() {
-        return model.getProperty(rdf + "type");
+        return model.getProperty(RDF + "type");
     }
 
     public static Property getAbstractTypeProperty() {
-        return model.getProperty(baseURI + "type");
+        return model.getProperty(BASE_URI + "type");
     }
 
     public static Property getCommentProperty() {
-        return model.getProperty(rdfs + "comment");
+        return model.getProperty(RDFS + "comment");
     }
 
     public static Property getNameProperty() {
-        return model.getProperty(baseURI + "name");
+        return model.getProperty(BASE_URI + "name");
     }
 
     public static Property getDeclaredByProperty() {
-        return model.getProperty(baseURI + "declared_by");
+        return model.getProperty(BASE_URI + "declaredBy");
     }
 
     public static Property getReturnProperty() {
-        return model.getProperty(baseURI + "returns");
+        return model.getProperty(BASE_URI + "returns");
     }
 
     public static Property getReturnLocalFieldProperty() {
-        return model.getProperty(baseURI + "returns_var");
+        return model.getProperty(BASE_URI + "returnsVar");
     }
 
     public static Property getReturnClassFieldProperty() {
-        return model.getProperty(baseURI + "returns_field");
+        return model.getProperty(BASE_URI + "returnsField");
     }
 
     public static Property getConstructsProperty() {
-        return model.getProperty(baseURI + "constructs");
+        return model.getProperty(BASE_URI + "constructs");
     }
 
     public static Property getParameterProperty() {
-        return model.getProperty(baseURI + "parameter");
+        return model.getProperty(BASE_URI + "parameter");
     }
 
     public static Property getParameterPositionProperty() {
-        return model.getProperty(baseURI + "parameter_position");
+        return model.getProperty(BASE_URI + "position");
     }
 
     public static Resource getParameterIndividual() {
-        return model.getResource(baseURI + "Parameter");
+        return model.getResource(BASE_URI + "Parameter");
     }
 
     // default value
     /*public static Resource getExpressionIndividual() {
-        return  model.getResource(baseURI + "Expression");
+        return  model.getResource(BASE_URI + "Expression");
     }*/
 
     public static Property getSourceCodeProperty () {
-        return model.getProperty(baseURI + "source_code");
+        return model.getProperty(BASE_URI + "sourceCode");
     }
 
     /*
     public static Resource getUnknownType() {
-        return model.getResource(baseURI + "Unknown");
+        return model.getResource(BASE_URI + "Unknown");
     }*/
     public static Resource getPrimitiveIndividual() {
-        return model.getResource(baseURI + "Primitive");
+        return model.getResource(BASE_URI + "Primitive");
     }
 
     public static Resource getClassIndividual() {
-        return model.getResource(baseURI + "Class");
+        return model.getResource(BASE_URI + "Class");
     }
 
     public static Resource getInterfaceIndividual() {
-        return model.getResource(baseURI + "Interface");
+        return model.getResource(BASE_URI + "Interface");
     }
 
     public static Resource getEnumIndividual () {
-        return model.getProperty(baseURI + "Enum");
+        return model.getProperty(BASE_URI + "Enum");
     }
 
     public static Resource getMethodIndividual() {
-        return model.getResource(baseURI + "Method");
+        return model.getResource(BASE_URI + "Method");
     }
 
     public static Resource getConstructorIndividual() {
-        return model.getResource(baseURI + "Constructor");
+        return model.getResource(BASE_URI + "Constructor");
     }
 
     public static Property getPackageIndividual() {
-        return model.getProperty(baseURI + "Package");
+        return model.getProperty(BASE_URI + "Package");
     }
 
     public static Property getAnnotationIndividual() {
-        return model.getProperty(baseURI + "Annotation");
+        return model.getProperty(BASE_URI + "Annotation");
     }
 
     public static Property getExtendsProperty() {
-        return model.getProperty(baseURI + "extends");
+        return model.getProperty(BASE_URI + "extends");
     }
 
     public static Property getImplementsProperty() {
-        return model.getProperty(baseURI + "implements");
+        return model.getProperty(BASE_URI + "implements");
     }
-
+/*
     public static Property getGenericProperty() {
-        return model.getProperty(baseURI + "generic");
+        return model.getProperty(BASE_URI + "generic");
     }
 
     public static Property getGenericPositionProperty() {
-        return model.getProperty(baseURI + "generic_position");
+        return model.getProperty(BASE_URI + "generic_position");
     }
-/*
+
     public static Property getInvokesProperty() {
-        return model.getProperty(baseURI + "Invokes");
+        return model.getProperty(BASE_URI + "Invokes");
     }*/
 
     public static Property getPackageProperty() {
-        return model.getProperty(baseURI + "package");
+        return model.getProperty(BASE_URI + "packageOf");
     }
 
     public static Property getPublicProperty() {
-        return model.getProperty(baseURI + "Public");
+        return model.getProperty(BASE_URI + "Public");
     }
 
     public static Property getPrivateProperty() {
-        return model.getProperty(baseURI + "Private");
+        return model.getProperty(BASE_URI + "Private");
     }
 
     public static Property getProtectedProperty() {
-        return model.getProperty(baseURI + "Protected");
+        return model.getProperty(BASE_URI + "Protected");
     }
 
     public static Property getDefaultProperty() {
-        return model.getProperty(baseURI + "Default");
+        return model.getProperty(BASE_URI + "Default");
     }
 
     public static Property getAbstractProperty() {
-        return model.getProperty(baseURI + "Abstract");
+        return model.getProperty(BASE_URI + "Abstract");
     }
 
     public static Property getFinalProperty() {
-        return model.getProperty(baseURI + "Final");
+        return model.getProperty(BASE_URI + "Final");
     }
 
     public static Property getStaticProperty() {
-        return model.getProperty(baseURI + "Static");
+        return model.getProperty(BASE_URI + "Static");
     }
 
     public static Property getSynchronizedProperty() {
-        return model.getProperty(baseURI + "Synchronized");
+        return model.getProperty(BASE_URI + "Synchronized");
     }
 
     public static Property getVolatileProperty() {
-        return model.getProperty(baseURI + "Volatile");
+        return model.getProperty(BASE_URI + "Volatile");
     }
 
     public static Property getModifierProperty() {
-        return model.getProperty(baseURI + "has_modifier");
+        return model.getProperty(BASE_URI + "modifier");
     }
 
     public static Property getEncapsulationProperty() {
-        return model.getProperty(baseURI + "encapsulation");
+        return model.getProperty(BASE_URI + "encapsulation");
     }
 
     public static Property getRequestsProperty() {
-        return model.getProperty(baseURI + "requests");
+        return model.getProperty(BASE_URI + "requests");
     }
 
     public static Resource getFieldClass() {
-        return  model.getProperty(baseURI + "Field");
+        return  model.getProperty(BASE_URI + "Field");
     }
 
     public static Resource getLocalVariableClass() {
-        return model.getProperty(baseURI + "Variable");
+        return model.getProperty(BASE_URI + "Variable");
     }
 
     public static Property getThrowsProperty() {
-        return model.getProperty(baseURI + "throws");
+        return model.getProperty(BASE_URI + "throws");
+    }
+
+    public static Property getContainsProperty() {
+        return model.getProperty(BASE_URI + "contains");
     }
 
     /*public static Resource getAnnotationTypeIndividual () {
-        return model.getProperty(baseURI + "AnnotationType");
+        return model.getProperty(BASE_URI + "AnnotationType");
     }*/
 
     public static Resource getLambdaIndividual () {
-        return model.getResource(baseURI + "Lambda");
+        return model.getResource(BASE_URI + "Lambda");
     }
 
     public static Property getLambdaImplementsProperty () {
-        return model.getProperty(baseURI + "lambda_implements");
+        return model.getProperty(BASE_URI + "implements");
     }
 
     public static String getBaseURI() {
-        return baseURI;
+        return BASE_URI;
     }
 }
 
