@@ -34,36 +34,12 @@ public class InterfaceExtractor extends TypeExtractor<CtInterface<?>> {
     protected void tagInterface() {
         tagType();
         tagName();
-        tagSuperInterfaces();
         if (isDeclarationAvailable()) {
+            tagSuperInterfaces();
+            tagFields();
+            tagMethods();
             tagSourceCode();
             tagComment();
-            extractMembers();
-        }
-    }
-
-    protected void extractMembers() {
-        Set<CtMethod<?>> methods = getElement().getMethods();
-        List<CtField<?>> fields = getElement().getFields();
-
-        for (CtMethod<?> method : methods) {
-            getFactory().getExtractor(method).extract();
-        }
-
-        for (CtField<?> field : fields) {
-            getFactory().getExtractor(field).extract();
-        }
-    }
-
-    protected void tagSuperInterfaces() {
-        Set<CtTypeReference<?>> references = getReference().getSuperInterfaces();
-
-        for (CtTypeReference<?> reference : references) {
-            TypeExtractor<?> extractor = getFactory().getExtractor(reference);
-            addStatement(Ontology.getImplementsProperty(), extractor.getResource());
-            if (reference.getDeclaration() == null) {
-                extractor.extract();
-            }
         }
     }
 }

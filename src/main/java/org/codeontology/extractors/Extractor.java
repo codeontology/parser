@@ -17,7 +17,6 @@ public abstract class Extractor<E extends CtNamedElement> {
     private E element;
     private CtReference reference;
     public static final String SEPARATOR = "-";
-    private boolean isDeclarationAvailable;
 
     public Extractor(E element) {
         setElement(element);
@@ -34,12 +33,7 @@ public abstract class Extractor<E extends CtNamedElement> {
         }
 
         this.reference = reference;
-
-        try {
-            setElement((E) reference.getDeclaration());
-        } catch (IllegalArgumentException e) {
-            isDeclarationAvailable = false;
-        }
+        this.element = (E) reference.getDeclaration();
     }
 
     public Model getModel() {
@@ -56,7 +50,6 @@ public abstract class Extractor<E extends CtNamedElement> {
         }
         this.element = element;
         this.reference = element.getReference();
-        isDeclarationAvailable = true;
     }
 
     public abstract void extract();
@@ -119,7 +112,7 @@ public abstract class Extractor<E extends CtNamedElement> {
     }
 
     public boolean isDeclarationAvailable() {
-        return isDeclarationAvailable;
+        return getElement() != null;
     }
 }
 
