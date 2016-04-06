@@ -15,6 +15,7 @@ public class LambdaExtractor extends Extractor<CtLambda<?>> {
     @Override
     public void extract() {
         tagType();
+        tagSourceCode();
         tagFunctionalImplements();
     }
 
