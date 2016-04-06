@@ -26,20 +26,23 @@ public class PackageExtractor extends Extractor<CtPackage> {
 
     @Override
     public void extract() {
-        if (getElement().getTypes().isEmpty()) {
+        Set<CtType<?>> types = getElement().getTypes();
+
+        if (types.isEmpty()) {
             return;
         }
 
+        System.out.println("Extracting triples for package " + getElement().getQualifiedName());
         tagType();
         tagName();
         tagComment();
 
-        Set<CtType<?>> types = getElement().getTypes();
         for (CtType<?> current : types) {
             TypeExtractor<?> extractor = getFactory().getExtractor(current);
             tagPackage(extractor);
             extractor.extract();
         }
+        System.out.println("Done with package " + getElement().getQualifiedName());
     }
 
     private void tagPackage(TypeExtractor<?> extractor) {

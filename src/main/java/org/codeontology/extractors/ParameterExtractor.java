@@ -30,7 +30,6 @@ public class ParameterExtractor extends TypedElementExtractor<CtParameter<?>> {
         tagPosition();
         if (isDeclarationAvailable()) {
             tagName();
-            tagComment();
         }
     }
 

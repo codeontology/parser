@@ -1,6 +1,7 @@
 package org.codeontology.extractors;
 
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.codeontology.TypeEntity;
 import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.code.CtLambda;
@@ -63,6 +64,8 @@ public class ExtractorFactory {
             case PRIMITIVE:
                 extractor = new PrimitiveTypeExtractor(reference);
                 break;
+            case GENERIC:
+                extractor = new GenericExtractor(reference);
         }
         return extractor;
     }

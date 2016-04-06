@@ -7,7 +7,6 @@ import spoon.reflect.declaration.CtPackage;
 public class SourceProcessor extends AbstractProcessor<CtPackage> {
     @Override
     public void process(CtPackage pack) {
-        System.out.println("Extracting triples...");
         ExtractorFactory.getInstance().getExtractor(pack).extract();
     }
 }

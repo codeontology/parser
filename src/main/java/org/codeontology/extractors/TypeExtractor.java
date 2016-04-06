@@ -1,8 +1,6 @@
 package org.codeontology.extractors;
 
-import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
-import org.codeontology.TypeEntity;
 import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.CtTypeReference;

@@ -114,6 +114,7 @@ public class Ontology {
     public static Resource getUnknownType() {
         return model.getResource(BASE_URI + "Unknown");
     }*/
+
     public static Resource getPrimitiveIndividual() {
         return model.getResource(BASE_URI + "Primitive");
     }
@@ -124,6 +125,10 @@ public class Ontology {
 
     public static Resource getInterfaceIndividual() {
         return model.getResource(BASE_URI + "Interface");
+    }
+
+    public static Resource getGenericIndividual() {
+        return model.getResource(BASE_URI + "Generic");
     }
 
     public static Resource getEnumIndividual () {

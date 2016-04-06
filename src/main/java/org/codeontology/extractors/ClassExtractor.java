@@ -6,7 +6,6 @@ import spoon.reflect.declaration.*;
 import spoon.reflect.reference.CtTypeReference;
 import java.util.Set;
 
-
 public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
 
     public ClassExtractor(CtClass<T> clazz) {
