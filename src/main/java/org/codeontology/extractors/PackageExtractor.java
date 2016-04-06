@@ -37,11 +37,9 @@ public class PackageExtractor extends Extractor<CtPackage> {
 
         Set<CtType<?>> types = getElement().getTypes();
         for (CtType<?> current : types) {
-            if (current instanceof CtClass<?>) {
-                TypeExtractor<?> extractor = getFactory().getExtractor(current);
-                tagPackage(extractor);
-                extractor.extract();
-            }
+            TypeExtractor<?> extractor = getFactory().getExtractor(current);
+            tagPackage(extractor);
+            extractor.extract();
         }
     }
 

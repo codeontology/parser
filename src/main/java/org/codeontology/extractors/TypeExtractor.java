@@ -40,14 +40,20 @@ public class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
 
     @Override
     public void extract() {
-        if (getElement() instanceof CtClass<?>) {
+        if (getElement() instanceof CtEnum<?>) {
+            new EnumExtractor<>((CtEnum<?>) getElement()).extract();
+        } else if (getElement() instanceof CtClass<?>) {
             new ClassExtractor<>((CtClass<?>) getElement()).extract();
         } else if (getElement() instanceof CtInterface<?>) {
             new InterfaceExtractor((CtInterface<?>) getElement()).extract();
+        } else if (getElement() instanceof CtAnnotationType<?>) {
+            new AnnotationExtractor((CtAnnotationType<?>) getElement()).extract();
         } else if (getElement() == null) {
             switch (TypeEntity.getEntity(getReference())) {
                 case CLASS: new ClassExtractor<>(getReference()).extract(); break;
                 case INTERFACE: new InterfaceExtractor(getReference()).extract(); break;
+                case ENUM: new EnumExtractor<>(getReference()).extract(); break;
+                case ANNOTATION: new AnnotationExtractor(getReference()).extract(); break;
             }
         }
     }
