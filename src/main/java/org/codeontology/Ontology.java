@@ -237,10 +237,10 @@ public class Ontology {
     public static Resource getLambdaIndividual () {
         return model.getResource(baseURI + "Lambda");
     }
-/*
-    public static Property getLambdaImplementingProperty () {
-        return model.getProperty(baseURI + "lambda_implementing");
-    }*/
+
+    public static Property getLambdaImplementsProperty () {
+        return model.getProperty(baseURI + "lambda_implements");
+    }
 
     public static String getBaseURI() {
         return baseURI;

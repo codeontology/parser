@@ -34,7 +34,6 @@ public enum TypeEntity {
 
             return CLASS;
         } catch (SpoonClassNotFoundException e) {
-            System.out.println(e.getMessage());
             return  CLASS;
         }
     }

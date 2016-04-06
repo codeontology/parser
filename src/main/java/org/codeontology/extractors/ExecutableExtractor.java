@@ -6,6 +6,7 @@ import org.codeontology.Ontology;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.*;
+import spoon.reflect.visitor.Filter;
 import spoon.reflect.visitor.filter.ReferenceTypeFilter;
 import spoon.support.reflect.reference.CtExecutableReferenceImpl;
 import spoon.support.reflect.reference.CtFieldReferenceImpl;
@@ -98,6 +99,7 @@ public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMemb
             tagInvocations(statement);
             tagRequestedFields(statement);
             tagLocalVariables(statement);
+            tagLambdas(statement);
 
             if (statement instanceof CtReturn<?>) {
                 tagReturnsVariable((CtReturn<?>) statement);
@@ -115,12 +117,30 @@ public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMemb
             if (executable instanceof CtMethod<?>) {
                 tagMethodRequested((CtMethod<?>) executable);
             } else if (executable instanceof CtConstructor<?>) {
-                tagConstructs(((CtConstructor<?>) executable));
+                tagConstructs((CtConstructor<?>) executable);
+            } else if (executable instanceof CtLambda<?>) {
+                tagLambdaRequested((CtLambda<?>) executable);
             } else if (executable == null) {
                 tagExternalExecutableRequested(reference);
             }
         }
     }
+
+    private void tagLambdaRequested(CtLambda<?> lambda) {
+        System.out.println("found lambda");
+        LambdaExtractor extractor = getFactory().getExtractor(lambda);
+        extractor.setParent(this);
+        tagRequests(extractor.getResource());
+        extractor.extract();
+    }
+
+    private void tagLambdas(CtStatement statement) {
+        List<CtLambda<?>> lambdas = statement.getElements(element -> element != null);
+        for (CtLambda<?> lambda : lambdas) {
+            tagLambdaRequested(lambda);
+        }
+    }
+
 
     private void tagExternalExecutableRequested(CtExecutableReference<?> reference) {
         Extractor extractor = getFactory().getExtractor(reference);

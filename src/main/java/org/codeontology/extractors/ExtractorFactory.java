@@ -4,6 +4,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.codeontology.TypeEntity;
 import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.code.CtAnnotationFieldAccess;
+import spoon.reflect.code.CtLambda;
 import spoon.reflect.code.CtLocalVariable;
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.CtExecutableReference;
@@ -88,5 +89,9 @@ public class ExtractorFactory {
         } else {
             return new MethodExtractor(reference);
         }
+    }
+
+    public LambdaExtractor getExtractor(CtLambda<?> lambda) {
+        return new LambdaExtractor(lambda);
     }
 }

@@ -10,7 +10,6 @@ import spoon.reflect.reference.CtReference;
 
 import java.io.*;
 
-// todo: remove references
 public abstract class Extractor<E extends CtNamedElement> {
 
     private static Model model = Ontology.baseModel();
@@ -27,7 +26,6 @@ public abstract class Extractor<E extends CtNamedElement> {
     }
 
     public void setReference(CtReference reference) {
-        // todo: remove this method as it only makes sense to handle null references
         if (reference == null) {
             throw new IllegalArgumentException();
         }
@@ -49,7 +47,11 @@ public abstract class Extractor<E extends CtNamedElement> {
             throw new IllegalArgumentException();
         }
         this.element = element;
-        this.reference = element.getReference();
+        try {
+            this.reference = element.getReference();
+        } catch (ClassCastException e) {
+            this.reference = null;
+        }
     }
 
     public abstract void extract();
