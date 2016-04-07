@@ -6,7 +6,6 @@ import org.codeontology.Ontology;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.*;
-import spoon.reflect.visitor.Filter;
 import spoon.reflect.visitor.filter.ReferenceTypeFilter;
 import spoon.support.reflect.reference.CtExecutableReferenceImpl;
 import spoon.support.reflect.reference.CtFieldReferenceImpl;

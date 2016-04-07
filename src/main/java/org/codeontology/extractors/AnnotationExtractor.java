@@ -7,10 +7,6 @@ import spoon.reflect.reference.CtTypeReference;
 
 public class AnnotationExtractor extends TypeExtractor<CtAnnotationType<?>> {
 
-    public AnnotationExtractor(CtAnnotationType<?> type) {
-        super(type);
-    }
-
     public AnnotationExtractor(CtTypeReference<?> reference) {
         super(reference);
     }

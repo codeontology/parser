@@ -6,9 +6,6 @@ import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtTypeReference;
 
 public class PrimitiveTypeExtractor extends TypeExtractor<CtType<?>> {
-    public PrimitiveTypeExtractor(CtType<?> type) {
-        super(type);
-    }
 
     public PrimitiveTypeExtractor(CtTypeReference<?> reference) {
         super(reference);
