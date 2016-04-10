@@ -2,15 +2,14 @@ package org.codeontology.extractors;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
-import spoon.reflect.declaration.*;
+import spoon.reflect.declaration.CtClass;
+import spoon.reflect.declaration.CtConstructor;
+import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtTypeReference;
+
 import java.util.Set;
 
 public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
-
-    public ClassExtractor(CtClass<T> clazz) {
-        super(clazz);
-    }
 
     public ClassExtractor(CtTypeReference<?> reference) {
         super(reference);
@@ -42,6 +41,10 @@ public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
         }
     }
 
+    protected void tagSuperInterfaces() {
+        tagSuperInterfaces(Ontology.getImplementsProperty());
+    }
+
     protected void tagConstructors() {
         Set<CtConstructor<T>> constructors = getElement().getConstructors();
 
@@ -58,5 +61,4 @@ public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
             extractor.extract();
         }
     }
-
 }

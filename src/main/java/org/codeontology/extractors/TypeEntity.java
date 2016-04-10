@@ -1,11 +1,8 @@
-package org.codeontology;
+package org.codeontology.extractors;
 
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.CtArrayTypeReference;
-import spoon.reflect.reference.CtGenericElementReference;
-import spoon.reflect.reference.CtIntersectionTypeReference;
 import spoon.reflect.reference.CtTypeReference;
-import spoon.support.reflect.reference.CtIntersectionTypeReferenceImpl;
 import spoon.support.reflect.reference.SpoonClassNotFoundException;
 
 public enum TypeEntity {

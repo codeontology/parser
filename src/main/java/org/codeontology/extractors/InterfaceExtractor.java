@@ -19,11 +19,6 @@ public class InterfaceExtractor extends TypeExtractor<CtInterface<?>> {
 
     @Override
     public void extract() {
-        tagInterface();
-        writeRDF();
-    }
-
-    protected void tagInterface() {
         tagType();
         tagName();
         if (isDeclarationAvailable()) {
@@ -33,5 +28,9 @@ public class InterfaceExtractor extends TypeExtractor<CtInterface<?>> {
             tagSourceCode();
             tagComment();
         }
+    }
+
+    protected void tagSuperInterfaces() {
+        tagSuperInterfaces(Ontology.getExtendsProperty());
     }
 }

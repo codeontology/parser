@@ -32,20 +32,17 @@ public class PackageExtractor extends Extractor<CtPackage> {
             return;
         }
 
-        System.out.println("Extracting triples for package " + getElement().getQualifiedName());
         tagType();
         tagName();
         tagComment();
-
-        for (CtType<?> current : types) {
-            TypeExtractor<?> extractor = getFactory().getExtractor(current);
-            tagPackage(extractor);
-            extractor.extract();
-        }
-        System.out.println("Done with package " + getElement().getQualifiedName());
+        tagPackageOf(types);
     }
 
-    private void tagPackage(TypeExtractor<?> extractor) {
-        addStatement(Ontology.getPackageProperty(), extractor.getResource());
+    protected void tagPackageOf(Set<CtType<?>> types) {
+        for (CtType<?> current : types) {
+            TypeExtractor<?> extractor = getFactory().getExtractor(current);
+            addStatement(Ontology.getPackageProperty(), extractor.getResource());
+            extractor.extract();
+        }
     }
 }

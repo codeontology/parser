@@ -1,8 +1,11 @@
 package org.codeontology.extractors;
 
+import com.hp.hpl.jena.rdf.model.Property;
 import org.codeontology.Ontology;
 import org.codeontology.exceptions.NullTypeException;
-import spoon.reflect.declaration.*;
+import spoon.reflect.declaration.CtField;
+import spoon.reflect.declaration.CtMethod;
+import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtTypeReference;
 
 import java.util.List;
@@ -46,12 +49,14 @@ public abstract class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
         }
     }
 
-    protected void tagSuperInterfaces() {
+    protected void tagSuperInterfaces(Property property) {
         Set<CtTypeReference<?>> references = getReference().getSuperInterfaces();
 
         for (CtTypeReference<?> reference : references) {
             TypeExtractor<?> extractor = getFactory().getExtractor(reference);
-            addStatement(Ontology.getImplementsProperty(), extractor.getResource());
+
+            addStatement(property, extractor.getResource());
+
             if (reference.getDeclaration() == null) {
                 extractor.extract();
             }

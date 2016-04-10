@@ -8,7 +8,10 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtNamedElement;
 import spoon.reflect.reference.CtReference;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public abstract class Extractor<E extends CtNamedElement> {
 
@@ -16,6 +19,7 @@ public abstract class Extractor<E extends CtNamedElement> {
     private E element;
     private CtReference reference;
     public static final String SEPARATOR = "-";
+    private static String outputFile = "output.nt";
 
     public Extractor(E element) {
         setElement(element);
@@ -101,11 +105,12 @@ public abstract class Extractor<E extends CtNamedElement> {
     }
 
     public void writeRDF() {
-        try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("./result.nt", true)))) {
+        try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)))) {
             getModel().write(writer, "N-TRIPLE");
             model = Ontology.baseModel();
         } catch (IOException e) {
             System.out.println("Unable to write triples");
+            System.exit(-1);
         }
     }
 
@@ -115,6 +120,10 @@ public abstract class Extractor<E extends CtNamedElement> {
 
     public boolean isDeclarationAvailable() {
         return getElement() != null;
+    }
+
+    public static void setOutputFile(String path) {
+        outputFile = path;
     }
 }
 

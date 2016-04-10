@@ -1,6 +1,5 @@
 package org.codeontology.extractors;
 
-import org.codeontology.TypeEntity;
 import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.code.CtLambda;
 import spoon.reflect.code.CtLocalVariable;
