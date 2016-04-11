@@ -1,4 +1,4 @@
-package org.codeontology.extractors;
+package org.codeontology.extraction;
 
 import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.code.CtLambda;

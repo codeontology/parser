@@ -3,7 +3,7 @@ package org.codeontology;
 import com.martiansoftware.jsap.JSAPException;
 import org.codeontology.buildsystems.DependenciesLoader;
 import org.codeontology.buildsystems.LoaderFactory;
-import org.codeontology.extractors.Extractor;
+import org.codeontology.extraction.Extractor;
 import spoon.Launcher;
 
 import java.io.File;

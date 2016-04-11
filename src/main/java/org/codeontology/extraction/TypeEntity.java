@@ -1,4 +1,4 @@
-package org.codeontology.extractors;
+package org.codeontology.extraction;
 
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.CtArrayTypeReference;

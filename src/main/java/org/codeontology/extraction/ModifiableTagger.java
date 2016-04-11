@@ -1,4 +1,4 @@
-package org.codeontology.extractors;
+package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.codeontology.Ontology;

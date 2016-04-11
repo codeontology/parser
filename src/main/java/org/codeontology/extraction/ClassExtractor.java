@@ -1,4 +1,4 @@
-package org.codeontology.extractors;
+package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
@@ -57,7 +57,7 @@ public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
         Set<CtType<?>> nestedTypes = getElement().getNestedTypes();
         for (CtType<?> type : nestedTypes) {
             Extractor extractor = getFactory().getExtractor(type);
-            // todo
+            addTriple(extractor, Ontology.IS_NESTED_IN_PROPERTY, this.getResource());
             extractor.extract();
         }
     }

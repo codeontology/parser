@@ -60,7 +60,7 @@ public class CodeOntologyArguments {
         option.setLongFlag(CLASSPATH_LONG_FLAG);
         option.setStringParser(JSAP.STRING_PARSER);
         option.setRequired(false);
-        option.setHelp("Specifies a list of directories, JAR files and ZIP archives separated by colons (:) to search for class files.");
+        option.setHelp("Specifies a list of directories, JAR files and classes separated by colons (:) to search for class files.");
         jsap.registerParameter(option);
 
         flag = new Switch(ND);
@@ -80,7 +80,7 @@ public class CodeOntologyArguments {
         flag.setLongFlag(STACKTRACE_LONG_FLAG);
         flag.setShortFlag(STACKTRACE_SHORT_FLAG);
         flag.setDefault("false");
-        flag.setHelp("Prints stack trace for exceptions");
+        flag.setHelp("Prints stack trace for exceptions.");
         jsap.registerParameter(flag);
 
         flag = new Switch(HELP_LONG_FLAG);
@@ -97,6 +97,11 @@ public class CodeOntologyArguments {
 
         JSAPResult arguments = jsap.parse(args);
 
+        if (arguments.getBoolean(HELP_LONG_FLAG)) {
+            printHelp();
+            System.exit(0);
+        }
+
         if (!arguments.success()) {
             // print out specific error messages describing the problems
             java.util.Iterator<?> errs = arguments.getErrorMessageIterator();
@@ -104,21 +109,24 @@ public class CodeOntologyArguments {
                 System.err.println("Error: " + errs.next());
             }
 
-        }
-        if (!arguments.success() || arguments.getBoolean(HELP_LONG_FLAG)) {
-            printUsage();
-            System.err.println("Options:");
-            System.err.println();
-            System.err.println(jsap.getHelp());
-            System.exit(-1);
+            printHelp();
         }
 
+
         return arguments;
+    }
+
+    private void printHelp() {
+        printUsage();
+        System.err.println("Options:");
+        System.err.println();
+        System.err.println(jsap.getHelp());
     }
 
     private void printUsage() {
         System.out.println("Usage:");
         System.out.println("codeontology -i <input_folder> -o <output_file>");
+        System.out.println();
     }
 
     public String getInput() {
