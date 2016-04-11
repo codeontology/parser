@@ -27,11 +27,11 @@ public class LocalVariableExtractor extends TypedElementExtractor<CtLocalVariabl
 
     @Override
     protected RDFNode getType() {
-        return Ontology.getLocalVariableClass();
+        return Ontology.VARIABLE_CLASS;
     }
 
     public void tagDeclaredBy() {
-        addStatement(Ontology.getDeclaredByProperty(), getParent().getResource());
+        addStatement(Ontology.DECLARED_BY_PROPERTY, getParent().getResource());
     }
 
     public ExecutableExtractor<?> getParent() {

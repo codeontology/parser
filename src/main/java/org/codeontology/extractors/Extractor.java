@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 
 public abstract class Extractor<E extends CtNamedElement> {
 
-    private static Model model = Ontology.baseModel();
+    private static Model model = Ontology.getModel();
     private E element;
     private CtReference reference;
     public static final String SEPARATOR = "-";
@@ -69,7 +69,7 @@ public abstract class Extractor<E extends CtNamedElement> {
     }
 
     protected Resource getResource() {
-        return model.createResource(Ontology.getBaseURI() + getRelativeURI());
+        return model.createResource(Ontology.BASE_URI + getRelativeURI());
     }
 
     protected abstract String getRelativeURI();
@@ -79,11 +79,11 @@ public abstract class Extractor<E extends CtNamedElement> {
     }
 
     protected void tagType() {
-        addStatement(Ontology.getTypeProperty(), getType());
+        addStatement(Ontology.RDF_TYPE_PROPERTY, getType());
     }
 
     protected void tagName() {
-        addStatement(Ontology.getNameProperty(), getName());
+        addStatement(Ontology.NAME_PROPERTY, getName());
     }
 
     protected void tagComment() {
@@ -91,13 +91,13 @@ public abstract class Extractor<E extends CtNamedElement> {
         if (comment == null) {
             comment = "";
         }
-        addStatement(Ontology.getCommentProperty(), model.createLiteral(comment));
+        addStatement(Ontology.COMMENT_PROPERTY, model.createLiteral(comment));
     }
 
     protected abstract RDFNode getType();
 
     protected void tagSourceCode() {
-        addStatement(Ontology.getSourceCodeProperty(), getModel().createLiteral(getElement().toString()));
+        addStatement(Ontology.SOURCE_CODE_PROPERTY, getModel().createLiteral(getElement().toString()));
     }
 
     public ExtractorFactory getFactory() {
@@ -107,7 +107,7 @@ public abstract class Extractor<E extends CtNamedElement> {
     public void writeRDF() {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)))) {
             getModel().write(writer, "N-TRIPLE");
-            model = Ontology.baseModel();
+            model = Ontology.getModel();
         } catch (IOException e) {
             System.out.println("Unable to write triples");
             System.exit(-1);

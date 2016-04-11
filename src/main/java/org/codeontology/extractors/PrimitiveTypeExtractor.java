@@ -13,7 +13,7 @@ public class PrimitiveTypeExtractor extends TypeExtractor<CtType<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.getPrimitiveIndividual();
+        return Ontology.PRIMITIVE_CLASS;
     }
 
     @Override

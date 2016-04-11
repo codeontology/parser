@@ -17,7 +17,7 @@ public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.getClassIndividual();
+        return Ontology.CLASS_CLASS;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
     }
 
     protected void tagSuperInterfaces() {
-        tagSuperInterfaces(Ontology.getImplementsProperty());
+        tagSuperInterfaces(Ontology.IMPLEMENTS_PROPERTY);
     }
 
     protected void tagConstructors() {
@@ -57,7 +57,7 @@ public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
         Set<CtType<?>> nestedTypes = getElement().getNestedTypes();
         for (CtType<?> type : nestedTypes) {
             Extractor extractor = getFactory().getExtractor(type);
-            addStatement(Ontology.getContainsProperty(), extractor.getResource());
+            addStatement(Ontology.CONTAINS_PROPERTY, extractor.getResource());
             extractor.extract();
         }
     }

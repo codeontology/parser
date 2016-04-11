@@ -24,7 +24,7 @@ public class MethodExtractor extends ExecutableExtractor<CtMethod<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.getMethodIndividual();
+        return Ontology.METHOD_CLASS;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class MethodExtractor extends ExecutableExtractor<CtMethod<?>> {
     protected void tagReturns() {
         CtTypeReference<?> reference = ((CtExecutableReference<?>) getReference()).getType();
         Extractor extractor = getFactory().getExtractor(reference);
-        addStatement(Ontology.getReturnProperty(), extractor.getResource());
+        addStatement(Ontology.RETURNS_PROPERTY, extractor.getResource());
         if (reference.getDeclaration() == null) {
             extractor.extract();
         }

@@ -14,7 +14,7 @@ public class InterfaceExtractor extends TypeExtractor<CtInterface<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.getInterfaceIndividual();
+        return Ontology.INTERFACE_CLASS;
     }
 
     @Override
@@ -31,6 +31,6 @@ public class InterfaceExtractor extends TypeExtractor<CtInterface<?>> {
     }
 
     protected void tagSuperInterfaces() {
-        tagSuperInterfaces(Ontology.getExtendsProperty());
+        tagSuperInterfaces(Ontology.EXTENDS_PROPERTY);
     }
 }

@@ -1,6 +1,6 @@
 package org.codeontology.extractors;
 
-import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtNamedElement;
 import spoon.reflect.declaration.CtTypeMember;
@@ -26,58 +26,58 @@ public abstract class TypeMemberExtractor<E extends CtTypedElement & CtTypeMembe
         }
 
         Extractor declaringType = getFactory().getExtractor(getElement().getDeclaringType());
-        addStatement(Ontology.getDeclaredByProperty(), declaringType.getResource());
+        addStatement(Ontology.DECLARED_BY_PROPERTY, declaringType.getResource());
     }
 
     protected void tagEncapsulation() {
         ModifierKind modifier = getElement().getVisibility();
-        Property encapsulation;
+        Resource encapsulation;
 
         if (modifier == null) {
-            encapsulation = Ontology.getDefaultProperty();
+            encapsulation = Ontology.DEFAULT_RESOURCE;
         } else {
             switch (modifier) {
                 case PUBLIC:
-                    encapsulation = Ontology.getPublicProperty();
+                    encapsulation = Ontology.PUBLIC_RESOURCE;
                     break;
                 case PRIVATE:
-                    encapsulation = Ontology.getPrivateProperty();
+                    encapsulation = Ontology.PRIVATE_RESOURCE;
                     break;
                 case PROTECTED:
-                    encapsulation = Ontology.getProtectedProperty();
+                    encapsulation = Ontology.PROTECTED_RESOURCE;
                     break;
                 default:
-                    encapsulation = Ontology.getDefaultProperty();
+                    encapsulation = Ontology.DEFAULT_RESOURCE;
                     break;
             }
         }
 
-        addStatement(Ontology.getEncapsulationProperty(), encapsulation);
+        addStatement(Ontology.VISIBILITY_PROPERTY, encapsulation);
     }
 
     protected void tagModifier() {
         Set<ModifierKind> modifiers = getElement().getModifiers();
-        Property modifier;
+        Resource modifier;
 
         for (ModifierKind current : modifiers) {
             modifier = null;
             switch (current) {
                 case ABSTRACT:
-                    modifier = Ontology.getAbstractProperty();
+                    modifier = Ontology.ABSTRACT_RESOURCE;
                     break;
                 case FINAL:
-                    modifier = Ontology.getFinalProperty();
+                    modifier = Ontology.FINAL_RESOURCE;
                     break;
                 case STATIC:
-                    modifier = Ontology.getStaticProperty();
+                    modifier = Ontology.STATIC_RESOURCE;
                     break;
                 case SYNCHRONIZED:
-                    modifier = Ontology.getSynchronizedProperty();
+                    modifier = Ontology.SYNCHRONIZED_RESOURCE;
                     break;
                 case TRANSIENT:
                     break;
                 case VOLATILE:
-                    modifier = Ontology.getVolatileProperty();
+                    modifier = Ontology.VOLATILE_RESOURCE;
                     break;
                 case NATIVE:
                     break;
@@ -87,7 +87,7 @@ public abstract class TypeMemberExtractor<E extends CtTypedElement & CtTypeMembe
                     break;
             }
             if (modifier != null) {
-                addStatement(Ontology.getModifierProperty(), modifier);
+                addStatement(Ontology.MODIFIER_PROPERTY, modifier);
             }
         }
     }

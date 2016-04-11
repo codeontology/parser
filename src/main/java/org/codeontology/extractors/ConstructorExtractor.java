@@ -24,6 +24,6 @@ public class ConstructorExtractor extends ExecutableExtractor<CtConstructor<?>> 
 
     @Override
     protected RDFNode getType() {
-        return Ontology.getConstructorIndividual();
+        return Ontology.CONSTRUCTOR_CLASS;
     }
 }

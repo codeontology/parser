@@ -17,7 +17,7 @@ public class FieldExtractor extends TypeMemberExtractor<CtField<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.getFieldClass();
+        return Ontology.FIELD_CLASS;
     }
 
     @Override

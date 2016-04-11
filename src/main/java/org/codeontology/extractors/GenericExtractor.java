@@ -18,6 +18,6 @@ public class GenericExtractor extends TypeExtractor<CtType<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.getGenericIndividual();
+        return Ontology.GENERIC_CLASS;
     }
 }

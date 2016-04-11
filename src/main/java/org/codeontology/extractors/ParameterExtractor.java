@@ -39,7 +39,7 @@ public class ParameterExtractor extends TypedElementExtractor<CtParameter<?>> {
     }
 
     public void tagPosition() {
-        addStatement(Ontology.getParameterPositionProperty(), getModel().createTypedLiteral(position));
+        addStatement(Ontology.POSITION_PROPERTY, getModel().createTypedLiteral(position));
     }
 
     public void setPosition(int position) {
@@ -56,7 +56,7 @@ public class ParameterExtractor extends TypedElementExtractor<CtParameter<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.getParameterIndividual();
+        return Ontology.PARAMETER_CLASS;
     }
 
     @Override

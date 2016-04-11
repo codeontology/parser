@@ -21,7 +21,7 @@ public class PackageExtractor extends Extractor<CtPackage> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.getPackageIndividual();
+        return Ontology.PACKAGE_CLASS;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class PackageExtractor extends Extractor<CtPackage> {
     protected void tagPackageOf(Set<CtType<?>> types) {
         for (CtType<?> current : types) {
             TypeExtractor<?> extractor = getFactory().getExtractor(current);
-            addStatement(Ontology.getPackageProperty(), extractor.getResource());
+            addStatement(Ontology.PACKAGE_OF_PROPERTY, extractor.getResource());
             extractor.extract();
         }
     }

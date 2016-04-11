@@ -21,7 +21,7 @@ public class LambdaExtractor extends Extractor<CtLambda<?>> {
 
     private void tagFunctionalImplements() {
         Extractor<?> extractor = getFactory().getExtractor(getElement().getType());
-        addStatement(Ontology.getLambdaImplementsProperty(), extractor.getResource());
+        addStatement(Ontology.IMPLEMENTS_PROPERTY, extractor.getResource());
         if (extractor.getReference() == null) {
             extractor.extract();
         }
@@ -35,7 +35,7 @@ public class LambdaExtractor extends Extractor<CtLambda<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.getLambdaIndividual();
+        return Ontology.LAMBDA_CLASS;
     }
 
     public void setParent(ExecutableExtractor<?> executable) {

@@ -13,7 +13,7 @@ public class AnnotationExtractor extends TypeExtractor<CtAnnotationType<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.getAnnotationIndividual();
+        return Ontology.ANNOTATION_CLASS;
     }
 
     @Override
