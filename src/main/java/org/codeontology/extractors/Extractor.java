@@ -60,9 +60,13 @@ public abstract class Extractor<E extends CtNamedElement> {
 
     public abstract void extract();
 
-    protected void addStatement(Property property, RDFNode object) {
+    protected void addTriple(Extractor subject, Property property, Extractor object) {
+        addTriple(subject, property, object.getResource());
+    }
+
+    protected void addTriple(Extractor subject, Property property, RDFNode object) {
         if (property != null && object != null) {
-            model.add(model.createStatement(getResource(), property, object));
+            model.add(model.createStatement(subject.getResource(), property, object));
         } else {
             throw new IllegalArgumentException();
         }
@@ -79,11 +83,11 @@ public abstract class Extractor<E extends CtNamedElement> {
     }
 
     protected void tagType() {
-        addStatement(Ontology.RDF_TYPE_PROPERTY, getType());
+        addTriple(this, Ontology.RDF_TYPE_PROPERTY, getType());
     }
 
     protected void tagName() {
-        addStatement(Ontology.NAME_PROPERTY, getName());
+        addTriple(this, Ontology.NAME_PROPERTY, getName());
     }
 
     protected void tagComment() {
@@ -91,13 +95,13 @@ public abstract class Extractor<E extends CtNamedElement> {
         if (comment == null) {
             comment = "";
         }
-        addStatement(Ontology.COMMENT_PROPERTY, model.createLiteral(comment));
+        addTriple(this, Ontology.COMMENT_PROPERTY, model.createLiteral(comment));
     }
 
     protected abstract RDFNode getType();
 
     protected void tagSourceCode() {
-        addStatement(Ontology.SOURCE_CODE_PROPERTY, getModel().createLiteral(getElement().toString()));
+        addTriple(this, Ontology.SOURCE_CODE_PROPERTY, getModel().createLiteral(getElement().toString()));
     }
 
     public ExtractorFactory getFactory() {

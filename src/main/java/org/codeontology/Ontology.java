@@ -27,7 +27,7 @@ public class Ontology {
      * Create a default model with programming languages getModel.
      * @return	A default model with programming languages getModel.
      */
-    public static Model getModel() {
+    private static Model ontology() {
         try {
             File ontology = new File(System.getProperty("user.dir") + "/ontology/woc.xml");
             FileReader reader = new FileReader(ontology);
@@ -37,7 +37,11 @@ public class Ontology {
         }
     }
 
-    public final static Model model = getModel();
+    public static Model getModel() {
+        return ModelFactory.createDefaultModel();
+    }
+
+    public static Model model = ontology();
 
     public static final Resource PACKAGE_CLASS = model.getResource(BASE_URI + "Package");
 
@@ -92,13 +96,14 @@ public class Ontology {
 
     public static final Property THROWS_PROPERTY = model.getProperty(BASE_URI + "throws");
 
-    public static final Property CONTAINS_PROPERTY = model.getProperty(BASE_URI + "contains");
+    public static final Property IS_NESTED_IN_PROPERTY = model.getProperty(BASE_URI + "isNestedIn");
 
     public static final Property MODIFIER_PROPERTY = model.getProperty(BASE_URI + "modifier");
 
     public static final Property VISIBILITY_PROPERTY = model.getProperty(BASE_URI + "visibility");
 
     public static final Property REQUESTS_PROPERTY = model.getProperty(BASE_URI + "requests");
+
 
     public static final Property EXTENDS_PROPERTY = model.getProperty(BASE_URI + "extends");
 

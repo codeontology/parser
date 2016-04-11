@@ -31,7 +31,7 @@ public class LocalVariableExtractor extends TypedElementExtractor<CtLocalVariabl
     }
 
     public void tagDeclaredBy() {
-        addStatement(Ontology.DECLARED_BY_PROPERTY, getParent().getResource());
+        addTriple(this, Ontology.DECLARED_BY_PROPERTY, getParent().getResource());
     }
 
     public ExecutableExtractor<?> getParent() {

@@ -1,6 +1,7 @@
 package org.codeontology.extractors;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtPackage;
 import spoon.reflect.declaration.CtType;
@@ -41,8 +42,12 @@ public class PackageExtractor extends Extractor<CtPackage> {
     protected void tagPackageOf(Set<CtType<?>> types) {
         for (CtType<?> current : types) {
             TypeExtractor<?> extractor = getFactory().getExtractor(current);
-            addStatement(Ontology.PACKAGE_OF_PROPERTY, extractor.getResource());
+            addTriple(this, Ontology.PACKAGE_OF_PROPERTY, extractor.getResource());
+            if (CodeOntology.verboseMode()) {
+                System.out.println("Extracting triples for " + current.getQualifiedName());
+            }
             extractor.extract();
+            writeRDF();
         }
     }
 }

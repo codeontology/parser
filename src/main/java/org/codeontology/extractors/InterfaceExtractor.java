@@ -8,8 +8,11 @@ import spoon.reflect.reference.CtTypeReference;
 
 public class InterfaceExtractor extends TypeExtractor<CtInterface<?>> {
 
+    private ModifiableTagger modifiableTagger;
+
     public InterfaceExtractor(CtTypeReference<?> reference) {
         super(reference);
+        modifiableTagger = new ModifiableTagger(this);
     }
 
     @Override
@@ -27,10 +30,20 @@ public class InterfaceExtractor extends TypeExtractor<CtInterface<?>> {
             tagMethods();
             tagSourceCode();
             tagComment();
+            tagVisibility();
+            tagModifiers();
         }
     }
 
     protected void tagSuperInterfaces() {
         tagSuperInterfaces(Ontology.EXTENDS_PROPERTY);
+    }
+
+    protected void tagVisibility() {
+        modifiableTagger.tagVisibility();
+    }
+
+    protected void tagModifiers() {
+        modifiableTagger.tagModifier();
     }
 }

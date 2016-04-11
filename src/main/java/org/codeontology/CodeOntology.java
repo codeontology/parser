@@ -29,7 +29,7 @@ public class CodeOntology {
             if (e.getMessage() != null) {
                 System.out.println(e.getMessage());
             }
-            if (launcher.getArguments().getStackTraceMode()) {
+            if (launcher.getArguments().stackTraceMode()) {
                 e.printStackTrace();
             }
             System.exit(-1);
@@ -86,5 +86,9 @@ public class CodeOntology {
 
     public static boolean getDownloadDependenciesFlag() {
         return getLauncher().getArguments().getDownloadDependenciesFlag();
+    }
+
+    public static boolean verboseMode() {
+        return getLauncher().getArguments().getVerboseMode();
     }
 }

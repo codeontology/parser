@@ -22,6 +22,9 @@ public class CodeOntologyArguments {
     public static final String STACKTRACE_LONG_FLAG = "stacktrace";
     public static final char STACKTRACE_SHORT_FLAG = 't';
 
+    public static final String HELP_LONG_FLAG = "help";
+    public static final char HELP_SHORT_FLAG = 'h';
+
     private JSAP jsap;
     private JSAPResult result;
 
@@ -41,7 +44,7 @@ public class CodeOntologyArguments {
         option.setLongFlag(INPUT_LONG_FLAG);
         option.setStringParser(JSAP.STRING_PARSER);
         option.setRequired(true);
-        option.setHelp("Path to sources files.");
+        option.setHelp("Path to source files.");
         jsap.registerParameter(option);
 
         option = new FlaggedOption(OUTPUT_LONG_FLAG);
@@ -79,6 +82,14 @@ public class CodeOntologyArguments {
         flag.setDefault("false");
         flag.setHelp("Prints stack trace for exceptions");
         jsap.registerParameter(flag);
+
+        flag = new Switch(HELP_LONG_FLAG);
+        flag.setLongFlag(HELP_LONG_FLAG);
+        flag.setShortFlag(HELP_SHORT_FLAG);
+        flag.setDefault("false");
+        flag.setHelp("Prints this help message.");
+        jsap.registerParameter(flag);
+
     }
 
     public JSAPResult parseArgs(String[] args) throws JSAPException {
@@ -94,7 +105,7 @@ public class CodeOntologyArguments {
             }
 
         }
-        if (!arguments.success()) {
+        if (!arguments.success() || arguments.getBoolean(HELP_LONG_FLAG)) {
             printUsage();
             System.err.println("Options:");
             System.err.println();
@@ -107,7 +118,7 @@ public class CodeOntologyArguments {
 
     private void printUsage() {
         System.out.println("Usage:");
-        System.out.println("codeontology -i <input_folder>");
+        System.out.println("codeontology -i <input_folder> -o <output_file>");
     }
 
     public String getInput() {
@@ -126,7 +137,7 @@ public class CodeOntologyArguments {
         return result.getBoolean(VERBOSE_LONG_FLAG);
     }
 
-    public boolean getStackTraceMode() {
+    public boolean stackTraceMode() {
         return result.getBoolean(STACKTRACE_LONG_FLAG);
     }
 

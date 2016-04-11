@@ -11,8 +11,11 @@ import java.util.Set;
 
 public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
 
+    private ModifiableTagger modifiableTagger;
+
     public ClassExtractor(CtTypeReference<?> reference) {
         super(reference);
+        modifiableTagger = new ModifiableTagger(this);
     }
 
     @Override
@@ -22,11 +25,6 @@ public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
 
     @Override
     public void extract() {
-        tagClass();
-        writeRDF();
-    }
-
-    protected void tagClass() {
         tagType();
         tagName();
         if (isDeclarationAvailable()) {
@@ -38,6 +36,8 @@ public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
             tagMethods();
             tagSourceCode();
             tagNestedTypes();
+            tagVisibility();
+            tagModifier();
         }
     }
 
@@ -57,8 +57,16 @@ public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
         Set<CtType<?>> nestedTypes = getElement().getNestedTypes();
         for (CtType<?> type : nestedTypes) {
             Extractor extractor = getFactory().getExtractor(type);
-            addStatement(Ontology.CONTAINS_PROPERTY, extractor.getResource());
+            // todo
             extractor.extract();
         }
+    }
+
+    protected void tagVisibility() {
+        modifiableTagger.tagVisibility();
+    }
+
+    protected void tagModifier() {
+        modifiableTagger.tagModifier();
     }
 }

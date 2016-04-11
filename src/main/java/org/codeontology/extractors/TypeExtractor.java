@@ -42,7 +42,7 @@ public abstract class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
         CtTypeReference<?> superclass = getReference().getSuperclass();
         if (superclass != null) {
             TypeExtractor<?> extractor = getFactory().getExtractor(superclass);
-            addStatement(Ontology.EXTENDS_PROPERTY, extractor.getResource());
+            addTriple(this, Ontology.EXTENDS_PROPERTY, extractor.getResource());
             if (superclass.getDeclaration() == null) {
                 extractor.extract();
             }
@@ -55,7 +55,7 @@ public abstract class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
         for (CtTypeReference<?> reference : references) {
             TypeExtractor<?> extractor = getFactory().getExtractor(reference);
 
-            addStatement(property, extractor.getResource());
+            addTriple(this, property, extractor.getResource());
 
             if (reference.getDeclaration() == null) {
                 extractor.extract();

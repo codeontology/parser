@@ -26,7 +26,7 @@ public class FieldExtractor extends TypeMemberExtractor<CtField<?>> {
         tagType();
         tagComment();
         tagJavaType();
-        tagEncapsulation();
+        tagVisibility();
         tagModifier();
         tagDeclaringType();
         // todo: tagDefaultValue();

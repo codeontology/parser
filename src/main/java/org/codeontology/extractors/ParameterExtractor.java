@@ -39,7 +39,7 @@ public class ParameterExtractor extends TypedElementExtractor<CtParameter<?>> {
     }
 
     public void tagPosition() {
-        addStatement(Ontology.POSITION_PROPERTY, getModel().createTypedLiteral(position));
+        addTriple(this, Ontology.POSITION_PROPERTY, getModel().createTypedLiteral(position));
     }
 
     public void setPosition(int position) {

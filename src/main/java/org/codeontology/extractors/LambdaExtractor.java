@@ -21,7 +21,7 @@ public class LambdaExtractor extends Extractor<CtLambda<?>> {
 
     private void tagFunctionalImplements() {
         Extractor<?> extractor = getFactory().getExtractor(getElement().getType());
-        addStatement(Ontology.IMPLEMENTS_PROPERTY, extractor.getResource());
+        addTriple(this, Ontology.IMPLEMENTS_PROPERTY, extractor.getResource());
         if (extractor.getReference() == null) {
             extractor.extract();
         }

@@ -31,6 +31,6 @@ public class LoaderFactory {
             case GRADLE:return new GradleLoader(project);
         }
 
-        return new DefaultLoader();
+        return new DefaultLoader(project);
     }
 }

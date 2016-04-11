@@ -11,6 +11,10 @@ public enum BuildSystem {
     UNKNOWN;
 
     public static BuildSystem getBuildSystem(File project) {
+        if (!project.isDirectory()) {
+            return UNKNOWN;
+        }
+
         int gradleBuild = FileUtils.listFiles(project,
                 FileFilterUtils.nameFileFilter(Files.GRADLE_FILE.getName()),
                 null).size();
