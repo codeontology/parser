@@ -110,6 +110,7 @@ public class CodeOntologyArguments {
             }
 
             printHelp();
+            System.exit(-1);
         }
 
 

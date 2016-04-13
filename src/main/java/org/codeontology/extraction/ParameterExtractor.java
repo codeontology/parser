@@ -35,7 +35,7 @@ public class ParameterExtractor extends TypedElementExtractor<CtParameter<?>> {
 
     @Override
     protected String getRelativeURI() {
-        return getParent().getRelativeURI() + SEPARATOR + position;
+        return getParent().getRelativeURI() + position;
     }
 
     public void tagPosition() {

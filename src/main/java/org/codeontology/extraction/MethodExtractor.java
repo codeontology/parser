@@ -19,13 +19,6 @@ public class MethodExtractor extends ExecutableExtractor<CtMethod<?>> {
     }
 
     @Override
-    protected String getRelativeURI() {
-        String uri = getReference().toString();
-        uri = uri.replaceAll(", |\\(|\\)|#", SEPARATOR);
-        return uri;
-    }
-
-    @Override
     protected RDFNode getType() {
         return Ontology.METHOD_CLASS;
     }
@@ -64,10 +57,10 @@ public class MethodExtractor extends ExecutableExtractor<CtMethod<?>> {
             }
             addTriple(this, Ontology.RETURNS_PROPERTY, getModel().getResource(Ontology.BASE_URI + name));
             Extractor extractor = getFactory().getExtractor(reference.getType());
-            if (!extractor.isDeclarationAvailable()) {
+            if (extractor != null && !extractor.isDeclarationAvailable()) {
                 extractor.extract();
             }
-        } catch (SpoonClassNotFoundException e) {
+        } catch (SpoonClassNotFoundException | NullPointerException e) {
             tagReturnsByReference();
         }
     }

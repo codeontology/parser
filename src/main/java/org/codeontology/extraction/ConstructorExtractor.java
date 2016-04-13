@@ -16,13 +16,6 @@ public class ConstructorExtractor extends ExecutableExtractor<CtConstructor<?>> 
     }
 
     @Override
-    protected String getRelativeURI() {
-        String uri = getReference().toString();
-        uri = uri.replaceAll(", |\\(|\\)", SEPARATOR);
-        return uri;
-    }
-
-    @Override
     protected RDFNode getType() {
         return Ontology.CONSTRUCTOR_CLASS;
     }

@@ -27,6 +27,13 @@ public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMemb
     }
 
     @Override
+    protected String getRelativeURI() {
+        String uri = getReference().toString();
+        uri = uri.replaceAll(", |\\(|\\)|#", SEPARATOR);
+        return uri;
+    }
+
+    @Override
     public void extract() {
         tagType();
         tagName();
