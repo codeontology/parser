@@ -61,8 +61,12 @@ public class ExtractorFactory {
             case PRIMITIVE:
                 extractor = new PrimitiveTypeExtractor(reference);
                 break;
+            case ARRAY:
+                extractor = new ArrayExtractor(reference);
+                break;
             case GENERIC:
-                extractor = new GenericExtractor(reference);
+                extractor = new TypeVariableExtractor(reference);
+                break;
         }
         return extractor;
     }

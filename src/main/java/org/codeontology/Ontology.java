@@ -21,7 +21,7 @@ public class Ontology {
 
     public static final String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
     public static final String RDFS = "http://www.w3.org/2000/01/rdf-schema#";
-    public static final String BASE_URI = "http://rdf.webofcode.org/woc/";
+    public static final String WOC = "http://rdf.webofcode.org/woc/";
 
     /**
      * Create a default model with programming languages getModel.
@@ -43,92 +43,97 @@ public class Ontology {
 
     public static Model model = ontology();
 
-    public static final Resource PACKAGE_CLASS = model.getResource(BASE_URI + "Package");
+    public static final Resource PACKAGE_CLASS = model.getResource(WOC + "Package");
 
-    public static final Resource CLASS_CLASS = model.getResource(BASE_URI + "Class");
+    public static final Resource CLASS_CLASS = model.getResource(WOC + "Class");
 
-    public static final Resource INTERFACE_CLASS = model.getResource(BASE_URI + "Interface");
+    public static final Resource INTERFACE_CLASS = model.getResource(WOC + "Interface");
 
-    public static final Resource ENUM_CLASS = model.getResource(BASE_URI + "Enum");
+    public static final Resource ENUM_CLASS = model.getResource(WOC + "Enum");
 
-    public static final Resource ANNOTATION_CLASS = model.getResource(BASE_URI + "Annotation");
+    public static final Resource ANNOTATION_CLASS = model.getResource(WOC + "Annotation");
 
-    public static final Resource PRIMITIVE_CLASS = model.getResource(BASE_URI + "Primitive");
+    public static final Resource PRIMITIVE_CLASS = model.getResource(WOC + "Primitive");
 
-    public static final Resource GENERIC_CLASS =  model.getResource(BASE_URI + "Generic");
+    public static final Resource ARRAY_CLASS = model.getResource(WOC + "Array");
 
-    public static final Resource FIELD_CLASS =  model.getResource(BASE_URI + "Field");
+    public static final Resource GENERIC_CLASS =  model.getResource(WOC + "Generic");
 
-    public static final Resource CONSTRUCTOR_CLASS = model.getResource(BASE_URI + "Constructor");
+    public static final Resource FIELD_CLASS =  model.getResource(WOC + "Field");
 
-    public static final Resource METHOD_CLASS = model.getResource(BASE_URI + "Method");
+    public static final Resource CONSTRUCTOR_CLASS = model.getResource(WOC + "Constructor");
 
-    public static final Resource PARAMETER_CLASS = model.getResource(BASE_URI + "Parameter");
+    public static final Resource METHOD_CLASS = model.getResource(WOC + "Method");
 
-    public static final Resource VARIABLE_CLASS = model.getResource(BASE_URI + "Variable");
+    public static final Resource PARAMETER_CLASS = model.getResource(WOC + "Parameter");
 
-    public static final Resource LAMBDA_CLASS = model.getResource(BASE_URI + "Lambda");
+    public static final Resource VARIABLE_CLASS = model.getResource(WOC + "Variable");
+
+    public static final Resource LAMBDA_CLASS = model.getResource(WOC + "Lambda");
 
 
     public static final Property RDF_TYPE_PROPERTY = model.getProperty(RDF + "type");
 
-    public static final Property JAVA_TYPE_PROPERTY = model.getProperty(BASE_URI + "type");
+    public static final Property JAVA_TYPE_PROPERTY = model.getProperty(WOC + "type");
 
     public static final Property COMMENT_PROPERTY = model.getProperty(RDFS + "comment");
 
-    public static final Property NAME_PROPERTY = model.getProperty(BASE_URI + "name");
+    public static final Property NAME_PROPERTY = model.getProperty(WOC + "name");
 
-    public static final Property DECLARED_BY_PROPERTY = model.getProperty(BASE_URI + "declaredBy");
+    public static final Property DECLARED_BY_PROPERTY = model.getProperty(WOC + "declaredBy");
 
-    public static final Property RETURNS_PROPERTY = model.getProperty(BASE_URI + "returns");
+    public static final Property RETURNS_PROPERTY = model.getProperty(WOC + "returns");
 
-    public static final Property RETURNS_VAR_PROPERTY = model.getProperty(BASE_URI + "returnsVar");
+    public static final Property RETURNS_VAR_PROPERTY = model.getProperty(WOC + "returnsVar");
 
-    public static final Property RETURNS_FIELD_PROPERTY = model.getProperty(BASE_URI + "returnsField");
+    public static final Property RETURNS_FIELD_PROPERTY = model.getProperty(WOC + "returnsField");
 
-    public static final Property CONSTRUCTS_PROPERTY = model.getProperty(BASE_URI + "constructs");
+    public static final Property CONSTRUCTS_PROPERTY = model.getProperty(WOC + "constructs");
 
-    public static final Property PARAMETER_PROPERTY = model.getProperty(BASE_URI + "parameter");
+    public static final Property PARAMETER_PROPERTY = model.getProperty(WOC + "parameter");
 
-    public static final Property POSITION_PROPERTY = model.getProperty(BASE_URI + "position");
+    public static final Property POSITION_PROPERTY = model.getProperty(WOC + "position");
 
-    public static final Property SOURCE_CODE_PROPERTY = model.getProperty(BASE_URI + "sourceCode");
+    public static final Property SOURCE_CODE_PROPERTY = model.getProperty(WOC + "sourceCode");
 
-    public static final Property THROWS_PROPERTY = model.getProperty(BASE_URI + "throws");
+    public static final Property THROWS_PROPERTY = model.getProperty(WOC + "throws");
 
-    public static final Property IS_NESTED_IN_PROPERTY = model.getProperty(BASE_URI + "isNestedIn");
+    public static final Property IS_NESTED_IN_PROPERTY = model.getProperty(WOC + "isNestedIn");
 
-    public static final Property MODIFIER_PROPERTY = model.getProperty(BASE_URI + "modifier");
+    public static final Property MODIFIER_PROPERTY = model.getProperty(WOC + "modifier");
 
-    public static final Property VISIBILITY_PROPERTY = model.getProperty(BASE_URI + "visibility");
+    public static final Property VISIBILITY_PROPERTY = model.getProperty(WOC + "visibility");
 
-    public static final Property REQUESTS_PROPERTY = model.getProperty(BASE_URI + "requests");
+    public static final Property REQUESTS_PROPERTY = model.getProperty(WOC + "requests");
+
+    public static final Property EXTENDS_PROPERTY = model.getProperty(WOC + "extends");
+
+    public static final Property IMPLEMENTS_PROPERTY = model.getProperty(WOC + "implements");
+
+    public static final Property PACKAGE_OF_PROPERTY = model.getProperty(WOC + "packageOf");
+
+    public static final Property ARRAY_OF_PROPERTY = model.getProperty(WOC + "arrayOf");
+
+    public static final Property DIMENSIONS_PROPERTY = model.getProperty(WOC + "dimensions");
 
 
-    public static final Property EXTENDS_PROPERTY = model.getProperty(BASE_URI + "extends");
+    public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");
 
-    public static final Property IMPLEMENTS_PROPERTY = model.getProperty(BASE_URI + "implements");
+    public static final Resource PRIVATE_INDIVIDUAL = model.getResource(WOC + "Private");
 
-    public static final Property PACKAGE_OF_PROPERTY = model.getProperty(BASE_URI + "packageOf");
+    public static final Resource PROTECTED_INDIVIDUAL = model.getResource(WOC + "Protected");
 
+    public static final Resource DEFAULT_INDIVIDUAL = model.getResource(WOC + "Default");
 
-    public static final Resource PUBLIC_RESOURCE = model.getResource(BASE_URI + "Public");
+    public static final Resource ABSTRACT_INDIVIDUAL = model.getResource(WOC + "Abstract");
 
-    public static final Resource PRIVATE_RESOURCE = model.getResource(BASE_URI + "Private");
+    public static final Resource FINAL_INDIVIDUAL = model.getResource(WOC + "Final");
 
-    public static final Resource PROTECTED_RESOURCE = model.getResource(BASE_URI + "Protected");
+    public static final Resource STATIC_INDIVIDUAL = model.getResource(WOC + "Static");
 
-    public static final Resource DEFAULT_RESOURCE = model.getResource(BASE_URI + "Default");
+    public static final Resource SYNCHRONIZED_INDIVIDUAL = model.getResource(WOC + "Synchronized");
 
-    public static final Resource ABSTRACT_RESOURCE = model.getResource(BASE_URI + "Abstract");
-
-    public static final Resource FINAL_RESOURCE = model.getResource(BASE_URI + "Final");
-
-    public static final Resource STATIC_RESOURCE = model.getResource(BASE_URI + "Static");
-
-    public static final Resource SYNCHRONIZED_RESOURCE = model.getResource(BASE_URI + "Synchronized");
-
-    public static final Resource VOLATILE_RESOURCE = model.getResource(BASE_URI + "Volatile");
+    public static final Resource VOLATILE_INDIVIDUAL = model.getResource(WOC + "Volatile");
 
 }
 

@@ -8,6 +8,7 @@ import spoon.reflect.reference.CtTypeReference;
 import spoon.support.reflect.reference.SpoonClassNotFoundException;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 public class MethodExtractor extends ExecutableExtractor<CtMethod<?>> {
     public MethodExtractor(CtMethod<?> method) {
@@ -50,12 +51,10 @@ public class MethodExtractor extends ExecutableExtractor<CtMethod<?>> {
         CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference());
         try {
             Method method = reference.getActualMethod();
-            Class<?> returnType = method.getReturnType();
-            String name = returnType.getCanonicalName();
-            if (name == null) {
-                name = returnType.getSimpleName();
-            }
-            addTriple(this, Ontology.RETURNS_PROPERTY, getModel().getResource(Ontology.BASE_URI + name));
+            Type returnType = method.getGenericReturnType();
+            String name = returnType.getTypeName();
+            name = name.replaceAll("<|>", SEPARATOR);
+            addTriple(this, Ontology.RETURNS_PROPERTY, getModel().getResource(Ontology.WOC + name));
             Extractor extractor = getFactory().getExtractor(reference.getType());
             if (extractor != null && !extractor.isDeclarationAvailable()) {
                 extractor.extract();

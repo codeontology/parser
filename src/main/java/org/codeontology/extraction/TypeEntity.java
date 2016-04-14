@@ -11,9 +11,14 @@ public enum TypeEntity {
     ANNOTATION,
     ENUM,
     PRIMITIVE,
+    ARRAY,
     GENERIC;
 
     public static TypeEntity getEntity(CtTypeReference<?> reference) {
+
+        if (reference instanceof CtArrayTypeReference<?>) {
+            return ARRAY;
+        }
 
         CtType<?> type = reference.getDeclaration();
         if (type != null) {
@@ -22,10 +27,6 @@ public enum TypeEntity {
 
         if (reference.isPrimitive()) {
             return PRIMITIVE;
-        }
-
-        if (reference instanceof CtArrayTypeReference<?>) {
-            return CLASS;
         }
 
         try {

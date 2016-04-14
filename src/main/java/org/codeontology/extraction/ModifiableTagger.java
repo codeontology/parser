@@ -20,20 +20,20 @@ public class ModifiableTagger {
         Resource encapsulation;
 
         if (modifier == null) {
-            encapsulation = Ontology.DEFAULT_RESOURCE;
+            encapsulation = Ontology.DEFAULT_INDIVIDUAL;
         } else {
             switch (modifier) {
                 case PUBLIC:
-                    encapsulation = Ontology.PUBLIC_RESOURCE;
+                    encapsulation = Ontology.PUBLIC_INDIVIDUAL;
                     break;
                 case PRIVATE:
-                    encapsulation = Ontology.PRIVATE_RESOURCE;
+                    encapsulation = Ontology.PRIVATE_INDIVIDUAL;
                     break;
                 case PROTECTED:
-                    encapsulation = Ontology.PROTECTED_RESOURCE;
+                    encapsulation = Ontology.PROTECTED_INDIVIDUAL;
                     break;
                 default:
-                    encapsulation = Ontology.DEFAULT_RESOURCE;
+                    encapsulation = Ontology.DEFAULT_INDIVIDUAL;
                     break;
             }
         }
@@ -49,21 +49,21 @@ public class ModifiableTagger {
             modifier = null;
             switch (current) {
                 case ABSTRACT:
-                    modifier = Ontology.ABSTRACT_RESOURCE;
+                    modifier = Ontology.ABSTRACT_INDIVIDUAL;
                     break;
                 case FINAL:
-                    modifier = Ontology.FINAL_RESOURCE;
+                    modifier = Ontology.FINAL_INDIVIDUAL;
                     break;
                 case STATIC:
-                    modifier = Ontology.STATIC_RESOURCE;
+                    modifier = Ontology.STATIC_INDIVIDUAL;
                     break;
                 case SYNCHRONIZED:
-                    modifier = Ontology.SYNCHRONIZED_RESOURCE;
+                    modifier = Ontology.SYNCHRONIZED_INDIVIDUAL;
                     break;
                 case TRANSIENT:
                     break;
                 case VOLATILE:
-                    modifier = Ontology.VOLATILE_RESOURCE;
+                    modifier = Ontology.VOLATILE_INDIVIDUAL;
                     break;
                 case NATIVE:
                     break;

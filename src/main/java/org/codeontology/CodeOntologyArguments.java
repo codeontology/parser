@@ -153,7 +153,7 @@ public class CodeOntologyArguments {
     private String getDefaultOutput() {
         String extension = ".nt";
         String base = "triples";
-        final int LIMIT = 1024;
+        final int LIMIT = 100;
 
         String defaultName = base + extension;
         File file = new File(defaultName);

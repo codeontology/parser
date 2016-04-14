@@ -17,7 +17,8 @@ public class PackageExtractor extends Extractor<CtPackage> {
 
     @Override
     protected String getRelativeURI() {
-        return getElement().getQualifiedName();
+        String relativeURI = getElement().getQualifiedName();
+        return relativeURI.replace(" ", SEPARATOR);
     }
 
     @Override

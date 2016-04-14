@@ -73,7 +73,7 @@ public abstract class Extractor<E extends CtNamedElement> {
     }
 
     protected Resource getResource() {
-        return model.createResource(Ontology.BASE_URI + getRelativeURI());
+        return model.createResource(Ontology.WOC + getRelativeURI());
     }
 
     protected abstract String getRelativeURI();
