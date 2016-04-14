@@ -1,6 +1,9 @@
 package org.codeontology.extraction;
 
-import spoon.reflect.declaration.*;
+import spoon.reflect.declaration.CtAnnotationType;
+import spoon.reflect.declaration.CtEnum;
+import spoon.reflect.declaration.CtInterface;
+import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtArrayTypeReference;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.support.reflect.reference.SpoonClassNotFoundException;
@@ -51,18 +54,18 @@ public enum TypeEntity {
     }
 
     public static TypeEntity getEntity(CtType<?> type) {
-        if (type.isPrimitive()) {
+        if (type.getReference() instanceof CtArrayTypeReference) {
+            return ARRAY;
+        } else if (type.isPrimitive()) {
             return PRIMITIVE;
         }  else if (type instanceof CtAnnotationType<?>) {
             return ANNOTATION;
         } else if (type instanceof CtEnum<?>) {
-            return  ENUM;
+            return ENUM;
         } else if (type instanceof CtInterface<?>) {
             return INTERFACE;
-        } else if (type instanceof CtClass<?>){
-            return CLASS;
         } else {
-            return null;
+            return CLASS;
         }
     }
 }

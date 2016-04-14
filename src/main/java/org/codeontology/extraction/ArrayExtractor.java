@@ -26,7 +26,7 @@ public class ArrayExtractor extends TypeExtractor<CtType<?>> {
 
     @Override
     public String getRelativeURI() {
-        return getReference().getQualifiedName();
+        return getReference().toString();
     }
 
 
@@ -41,6 +41,6 @@ public class ArrayExtractor extends TypeExtractor<CtType<?>> {
 
     protected void tagDimensions() {
         int dimensions = ((CtArrayTypeReference<?>) getReference()).getDimensionCount();
-        addTriple(this, Ontology.ARRAY_OF_PROPERTY, getModel().createTypedLiteral(dimensions));
+        addTriple(this, Ontology.DIMENSIONS_PROPERTY, getModel().createTypedLiteral(dimensions));
     }
 }
