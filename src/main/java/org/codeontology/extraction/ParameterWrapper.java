@@ -7,20 +7,26 @@ import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.declaration.CtParameter;
 import spoon.reflect.reference.CtTypeReference;
 
-public class ParameterExtractor extends TypedElementExtractor<CtParameter<?>> {
+public class ParameterWrapper extends Wrapper<CtParameter<?>> {
 
     private int position;
-    private ExecutableExtractor<?> parent;
+    private ExecutableWrapper<?> parent;
+    private boolean parameterAvailable = true;
+    private JavaTypeTagger tagger;
 
-    public ParameterExtractor(CtParameter<?> parameter) {
+    public ParameterWrapper(CtParameter<?> parameter) {
         super(parameter);
+        parameterAvailable = true;
+        tagger = new JavaTypeTagger(this);
     }
 
-    public ParameterExtractor(CtTypeReference<?> reference) {
+    public ParameterWrapper(CtTypeReference<?> reference) {
         super(reference);
+        parameterAvailable = false;
         if (reference.getQualifiedName().equals(CtTypeReference.NULL_TYPE_NAME)) {
             throw new NullTypeException();
         }
+        tagger = new JavaTypeTagger(this);
     }
 
     @Override
@@ -39,18 +45,18 @@ public class ParameterExtractor extends TypedElementExtractor<CtParameter<?>> {
     }
 
     public void tagPosition() {
-        addTriple(this, Ontology.POSITION_PROPERTY, getModel().createTypedLiteral(position));
+        RDFWriter.addTriple(this, Ontology.POSITION_PROPERTY, getModel().createTypedLiteral(position));
     }
 
     public void setPosition(int position) {
         this.position = position;
     }
 
-    public void setParent(ExecutableExtractor<?> parent) {
+    public void setParent(ExecutableWrapper<?> parent) {
         this.parent = parent;
     }
 
-    public ExecutableExtractor<?> getParent() {
+    public ExecutableWrapper<?> getParent() {
         return this.parent;
     }
 
@@ -59,10 +65,12 @@ public class ParameterExtractor extends TypedElementExtractor<CtParameter<?>> {
         return Ontology.PARAMETER_CLASS;
     }
 
+    protected void tagJavaType() {
+        tagger.tagJavaType(parent);
+    }
+
     @Override
-    public void tagName() {
-        if (!isDeclarationAvailable()) {
-            super.tagName();
-        }
+    public boolean isDeclarationAvailable() {
+        return parameterAvailable;
     }
 }

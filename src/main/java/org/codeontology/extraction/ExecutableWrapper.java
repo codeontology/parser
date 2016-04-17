@@ -16,13 +16,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMember & CtGenericElement> extends TypeMemberExtractor<E> {
+public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember & CtGenericElement> extends TypeMemberWrapper<E> {
     
-    public ExecutableExtractor(E executable) {
+    public ExecutableWrapper(E executable) {
         super(executable);
     }
 
-    public ExecutableExtractor(CtExecutableReference<?> reference) {
+    public ExecutableWrapper(CtExecutableReference<?> reference) {
         super(reference);
     }
 
@@ -55,10 +55,10 @@ public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMemb
             int parametersNumber = parameters.size();
 
             for (int i = 0; i < parametersNumber; i++) {
-                ParameterExtractor parameterWrapper = getFactory().getExtractor(parameters.get(i));
+                ParameterWrapper parameterWrapper = getFactory().wrap(parameters.get(i));
                 parameterWrapper.setParent(this);
                 parameterWrapper.setPosition(i);
-                addTriple(this, Ontology.PARAMETER_PROPERTY, parameterWrapper.getResource());
+                RDFWriter.addTriple(this, Ontology.PARAMETER_PROPERTY, parameterWrapper.getResource());
                 parameterWrapper.extract();
             }
 
@@ -67,11 +67,11 @@ public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMemb
             int parametersNumber = parameters.size();
 
             for (int i = 0; i < parametersNumber; i++) {
-                ParameterExtractor parameterWrapper = getFactory().getExtractorByTypeReference(parameters.get(i));
+                ParameterWrapper parameterWrapper = getFactory().wrapByTypeReference(parameters.get(i));
                 if (parameterWrapper != null) {
                     parameterWrapper.setParent(this);
                     parameterWrapper.setPosition(i);
-                    addTriple(this, Ontology.PARAMETER_PROPERTY, parameterWrapper.getResource());
+                    RDFWriter.addTriple(this, Ontology.PARAMETER_PROPERTY, parameterWrapper.getResource());
                     parameterWrapper.extract();
                 }
             }
@@ -81,8 +81,8 @@ public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMemb
     protected void tagThrows() {
         Set<CtTypeReference<? extends Throwable>> thrownTypes = getElement().getThrownTypes();
         for (CtTypeReference<? extends Throwable> current : thrownTypes) {
-            Resource thrownTypeResource = getFactory().getExtractor(current).getResource();
-            addTriple(this, Ontology.THROWS_PROPERTY, thrownTypeResource);
+            Resource thrownTypeResource = getFactory().wrap(current).getResource();
+            RDFWriter.addTriple(this, Ontology.THROWS_PROPERTY, thrownTypeResource);
         }
     }
 
@@ -133,10 +133,10 @@ public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMemb
     }
 
     private void tagLambdaRequested(CtLambda<?> lambda) {
-        LambdaExtractor extractor = getFactory().getExtractor(lambda);
-        extractor.setParent(this);
-        tagRequests(extractor.getResource());
-        extractor.extract();
+        LambdaWrapper wrapper = getFactory().wrap(lambda);
+        wrapper.setParent(this);
+        tagRequests(wrapper.getResource());
+        wrapper.extract();
     }
 
     private void tagLambdas(CtStatement statement) {
@@ -148,14 +148,14 @@ public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMemb
 
 
     private void tagExternalExecutableRequested(CtExecutableReference<?> reference) {
-        Extractor extractor = getFactory().getExtractor(reference);
+        Wrapper wrapper = getFactory().wrap(reference);
         if (reference.isConstructor()) {
             tagConstructs(reference);
         } else {
-            tagRequests(extractor.getResource());
+            tagRequests(wrapper.getResource());
         }
         if (reference.getDeclaration() == null) {
-            extractor.extract();
+            wrapper.extract();
         }
     }
 
@@ -165,18 +165,18 @@ public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMemb
         for (CtFieldReference<?> currentReference : references) {
             CtField<?> field = currentReference.getDeclaration();
             if (field != null) {
-                tagRequests(getFactory().getExtractor(field).getResource());
+                tagRequests(getFactory().wrap(field).getResource());
             }
         }
     }
 
     protected void tagRequestedTypes(Collection<CtTypeReference<?>> types) {
         for (CtTypeReference<?> reference : types) {
-            TypeExtractor extractor = getFactory().getExtractor(reference);
-            if (extractor != null) {
-                tagRequests(extractor.getResource());
+            TypeWrapper wrapper = getFactory().wrap(reference);
+            if (wrapper != null) {
+                tagRequests(wrapper.getResource());
                 if (reference.getDeclaration() == null) {
-                    extractor.extract();
+                    wrapper.extract();
                 }
             }
         }
@@ -188,7 +188,7 @@ public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMemb
         for (CtLocalVariableReference<?> reference : references) {
             CtLocalVariable variable = reference.getDeclaration();
             if (variable != null) {
-                LocalVariableExtractor wrapper = getFactory().getExtractor(variable);
+                LocalVariableWrapper wrapper = getFactory().wrap(variable);
                 wrapper.setParent(this);
                 wrapper.extract();
             }
@@ -197,24 +197,24 @@ public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMemb
     }
 
     protected void tagMethodRequested(CtMethod<?> method) {
-        tagRequests(getFactory().getExtractor(method).getResource());
+        tagRequests(getFactory().wrap(method).getResource());
     }
 
     protected void tagConstructs(CtConstructor<?> executable) {
-        Resource constructed = getFactory().getExtractor(executable).getResource();
-        addTriple(this, Ontology.CONSTRUCTS_PROPERTY, constructed);
+        Resource constructed = getFactory().wrap(executable).getResource();
+        RDFWriter.addTriple(this, Ontology.CONSTRUCTS_PROPERTY, constructed);
     }
 
     protected void tagConstructs(CtExecutableReference<?> reference) {
-        Extractor<?> extractor = getFactory().getExtractor(reference);
-        addTriple(this, Ontology.CONSTRUCTS_PROPERTY, extractor.getResource());
+        Wrapper<?> wrapper = getFactory().wrap(reference);
+        RDFWriter.addTriple(this, Ontology.CONSTRUCTS_PROPERTY, wrapper.getResource());
         if (reference.getDeclaration() == null) {
-            extractor.extract();
+            wrapper.extract();
         }
     }
 
     protected void tagRequests(RDFNode node) {
-        addTriple(this, Ontology.REQUESTS_PROPERTY, node);
+        RDFWriter.addTriple(this, Ontology.REQUESTS_PROPERTY, node);
     }
 
     protected void tagReturnsVariable(CtReturn<?> returnStatement) {
@@ -232,15 +232,15 @@ public abstract class ExecutableExtractor<E extends CtExecutable<?> & CtTypeMemb
     }
 
     protected void tagReturnsLocalVariable(CtLocalVariable<?> variable) {
-        LocalVariableExtractor wrapper = getFactory().getExtractor(variable);
+        LocalVariableWrapper wrapper = getFactory().wrap(variable);
         wrapper.setParent(this);
-        addTriple(this, Ontology.RETURNS_VAR_PROPERTY, wrapper.getResource());
+        RDFWriter.addTriple(this, Ontology.RETURNS_VAR_PROPERTY, wrapper.getResource());
     }
 
     protected void tagReturnsField(CtField<?> field) {
         if (field != null) {
-            Extractor extractor =  getFactory().getExtractor(field);
-            addTriple(this, Ontology.RETURNS_FIELD_PROPERTY, extractor.getResource());
+            Wrapper wrapper =  getFactory().wrap(field);
+            RDFWriter.addTriple(this, Ontology.RETURNS_FIELD_PROPERTY, wrapper.getResource());
         }
     }
 

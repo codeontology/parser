@@ -9,14 +9,14 @@ import java.util.Set;
 
 public class ModifiableTagger {
 
-    Extractor<? extends CtModifiable> extractor;
+    Wrapper<? extends CtModifiable> wrapper;
 
-    public ModifiableTagger(Extractor<? extends CtModifiable> extractor) {
-        this.extractor = extractor;
+    public ModifiableTagger(Wrapper<? extends CtModifiable> wrapper) {
+        this.wrapper = wrapper;
     }
 
     protected void tagVisibility() {
-        ModifierKind modifier = extractor.getElement().getVisibility();
+        ModifierKind modifier = wrapper.getElement().getVisibility();
         Resource encapsulation;
 
         if (modifier == null) {
@@ -38,11 +38,11 @@ public class ModifiableTagger {
             }
         }
 
-        extractor.addTriple(extractor, Ontology.VISIBILITY_PROPERTY, encapsulation);
+        RDFWriter.addTriple(wrapper, Ontology.VISIBILITY_PROPERTY, encapsulation);
     }
 
     protected void tagModifier() {
-        Set<ModifierKind> modifiers = extractor.getElement().getModifiers();
+        Set<ModifierKind> modifiers = wrapper.getElement().getModifiers();
         Resource modifier;
 
         for (ModifierKind current : modifiers) {
@@ -73,7 +73,7 @@ public class ModifiableTagger {
                     break;
             }
             if (modifier != null) {
-                extractor.addTriple(extractor, Ontology.MODIFIER_PROPERTY, modifier);
+                RDFWriter.addTriple(wrapper, Ontology.MODIFIER_PROPERTY, modifier);
             }
         }
     }

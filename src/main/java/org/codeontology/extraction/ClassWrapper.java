@@ -7,13 +7,14 @@ import spoon.reflect.declaration.CtConstructor;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtTypeReference;
 
+import java.util.List;
 import java.util.Set;
 
-public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
+public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
 
     private ModifiableTagger modifiableTagger;
 
-    public ClassExtractor(CtTypeReference<?> reference) {
+    public ClassWrapper(CtTypeReference<?> reference) {
         super(reference);
         modifiableTagger = new ModifiableTagger(this);
     }
@@ -38,6 +39,7 @@ public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
             tagNestedTypes();
             tagVisibility();
             tagModifier();
+            tagFormalTypeParameters();
         }
     }
 
@@ -49,16 +51,16 @@ public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
         Set<CtConstructor<T>> constructors = getElement().getConstructors();
 
         for (CtConstructor<T> constructor : constructors) {
-            getFactory().getExtractor(constructor).extract();
+            getFactory().wrap(constructor).extract();
         }
     }
 
     protected void tagNestedTypes() {
         Set<CtType<?>> nestedTypes = getElement().getNestedTypes();
         for (CtType<?> type : nestedTypes) {
-            Extractor extractor = getFactory().getExtractor(type);
-            addTriple(extractor, Ontology.IS_NESTED_IN_PROPERTY, this.getResource());
-            extractor.extract();
+            Wrapper wrapper = getFactory().wrap(type);
+            RDFWriter.addTriple(wrapper, Ontology.IS_NESTED_IN_PROPERTY, this.getResource());
+            wrapper.extract();
         }
     }
 
@@ -68,5 +70,17 @@ public class ClassExtractor<T> extends TypeExtractor<CtClass<T>> {
 
     protected void tagModifier() {
         modifiableTagger.tagModifier();
+    }
+
+    protected void tagFormalTypeParameters() {
+        List<CtTypeReference<?>> parameters = getElement().getFormalTypeParameters();
+        int size = parameters.size();
+        for (int i = 0; i < size; i++) {
+            TypeVariableWrapper wrapper = ((TypeVariableWrapper) getFactory().wrap(parameters.get(i)));
+            wrapper.setParent(this);
+            wrapper.setPosition(i);
+            RDFWriter.addTriple(this, Ontology.FORMAL_TYPE_PARAMETER_PROPERTY, wrapper);
+            wrapper.extract();
+        }
     }
 }

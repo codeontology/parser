@@ -5,9 +5,9 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.reference.CtTypeReference;
 
-public class EnumExtractor<T extends Enum<?>> extends ClassExtractor<T> {
+public class EnumWrapper<T extends Enum<?>> extends ClassWrapper<T> {
 
-    public EnumExtractor(CtTypeReference<?> reference) {
+    public EnumWrapper(CtTypeReference<?> reference) {
         super(reference);
     }
 

@@ -6,11 +6,11 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtInterface;
 import spoon.reflect.reference.CtTypeReference;
 
-public class InterfaceExtractor extends TypeExtractor<CtInterface<?>> {
+public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> {
 
     private ModifiableTagger modifiableTagger;
 
-    public InterfaceExtractor(CtTypeReference<?> reference) {
+    public InterfaceWrapper(CtTypeReference<?> reference) {
         super(reference);
         modifiableTagger = new ModifiableTagger(this);
     }

@@ -29,10 +29,10 @@ public class ClasspathLoader {
     }
 
     public void load(String path) {
-        laod(new File(path));
+        load(new File(path));
     }
 
-    public void laod(File file) {
+    public void load(File file) {
         try {
             load(file.toURI().toURL());
         } catch (MalformedURLException e) {
@@ -63,7 +63,7 @@ public class ClasspathLoader {
                 TrueFileFilter.INSTANCE));
 
         for (File jar : jars) {
-            laod(jar);
+            load(jar);
         }
     }
 

@@ -5,6 +5,7 @@ import spoon.reflect.declaration.CtEnum;
 import spoon.reflect.declaration.CtInterface;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtArrayTypeReference;
+import spoon.reflect.reference.CtTypeParameterReference;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.support.reflect.reference.SpoonClassNotFoundException;
 
@@ -15,12 +16,16 @@ public enum TypeEntity {
     ENUM,
     PRIMITIVE,
     ARRAY,
-    GENERIC;
+    TYPE_VARIABLE;
 
     public static TypeEntity getEntity(CtTypeReference<?> reference) {
 
         if (reference instanceof CtArrayTypeReference<?>) {
             return ARRAY;
+        }
+
+        if (reference instanceof CtTypeParameterReference) {
+            return TYPE_VARIABLE;
         }
 
         CtType<?> type = reference.getDeclaration();
@@ -41,11 +46,7 @@ public enum TypeEntity {
             } else if (actualClass.isInterface()) {
                 return INTERFACE;
             } else {
-                if (reference.getPackage() != null) {
-                    return CLASS;
-                } else {
-                    return GENERIC;
-                }
+                return CLASS;
             }
         } catch (SpoonClassNotFoundException e) {
             return null;

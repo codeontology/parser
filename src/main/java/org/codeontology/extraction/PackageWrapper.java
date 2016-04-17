@@ -9,9 +9,9 @@ import spoon.reflect.declaration.CtType;
 import java.util.Set;
 
 
-public class PackageExtractor extends Extractor<CtPackage> {
+public class PackageWrapper extends Wrapper<CtPackage> {
 
-    public PackageExtractor(CtPackage pack) {
+    public PackageWrapper(CtPackage pack) {
         super(pack);
     }
 
@@ -42,13 +42,13 @@ public class PackageExtractor extends Extractor<CtPackage> {
 
     protected void tagPackageOf(Set<CtType<?>> types) {
         for (CtType<?> current : types) {
-            TypeExtractor<?> extractor = getFactory().getExtractor(current);
-            addTriple(this, Ontology.PACKAGE_OF_PROPERTY, extractor.getResource());
+            TypeWrapper<?> wrapper = getFactory().wrap(current);
+            RDFWriter.addTriple(this, Ontology.PACKAGE_OF_PROPERTY, wrapper.getResource());
             if (CodeOntology.verboseMode()) {
                 System.out.println("Extracting triples for " + current.getQualifiedName());
             }
-            extractor.extract();
-            writeRDF();
+            wrapper.extract();
+            RDFWriter.writeRDF();
         }
     }
 }

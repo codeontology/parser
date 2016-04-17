@@ -5,9 +5,9 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtAnnotationType;
 import spoon.reflect.reference.CtTypeReference;
 
-public class AnnotationExtractor extends TypeExtractor<CtAnnotationType<?>> {
+public class AnnotationWrapper extends TypeWrapper<CtAnnotationType<?>> {
 
-    public AnnotationExtractor(CtTypeReference<?> reference) {
+    public AnnotationWrapper(CtTypeReference<?> reference) {
         super(reference);
     }
 

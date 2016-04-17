@@ -5,14 +5,18 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtField;
 
 
-public class FieldExtractor extends TypeMemberExtractor<CtField<?>> {
-    public FieldExtractor(CtField<?> field) {
+public class FieldWrapper extends TypeMemberWrapper<CtField<?>> {
+
+    JavaTypeTagger tagger;
+
+    public FieldWrapper(CtField<?> field) {
         super(field);
+        tagger = new JavaTypeTagger(this);
     }
 
     @Override
     protected String getRelativeURI() {
-        return getFactory().getExtractor(getElement().getDeclaringType()).getRelativeURI() + SEPARATOR + getElement().getSimpleName();
+        return getFactory().wrap(getElement().getDeclaringType()).getRelativeURI() + SEPARATOR + getElement().getSimpleName();
     }
 
     @Override
@@ -30,6 +34,10 @@ public class FieldExtractor extends TypeMemberExtractor<CtField<?>> {
         tagModifier();
         tagDeclaringType();
         // todo: tagDefaultValue();
+    }
+
+    protected void tagJavaType() {
+        tagger.tagJavaType(getElement().getDeclaringType());
     }
 }
 

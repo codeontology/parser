@@ -11,14 +11,14 @@ import spoon.reflect.reference.CtTypeReference;
 import java.util.List;
 import java.util.Set;
 
-public abstract class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
+public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
 
-    public TypeExtractor(T type) {
+    public TypeWrapper(T type) {
         super(type);
         checkNullType();
     }
 
-    public TypeExtractor(CtTypeReference<?> reference) {
+    public TypeWrapper(CtTypeReference<?> reference) {
         super(reference);
         checkNullType();
     }
@@ -41,10 +41,10 @@ public abstract class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
     protected void tagSuperClass() {
         CtTypeReference<?> superclass = getReference().getSuperclass();
         if (superclass != null) {
-            TypeExtractor<?> extractor = getFactory().getExtractor(superclass);
-            addTriple(this, Ontology.EXTENDS_PROPERTY, extractor.getResource());
+            TypeWrapper<?> wrapper = getFactory().wrap(superclass);
+            RDFWriter.addTriple(this, Ontology.EXTENDS_PROPERTY, wrapper.getResource());
             if (superclass.getDeclaration() == null) {
-                extractor.extract();
+                wrapper.extract();
             }
         }
     }
@@ -53,12 +53,12 @@ public abstract class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
         Set<CtTypeReference<?>> references = getReference().getSuperInterfaces();
 
         for (CtTypeReference<?> reference : references) {
-            TypeExtractor<?> extractor = getFactory().getExtractor(reference);
+            TypeWrapper<?> wrapper = getFactory().wrap(reference);
 
-            addTriple(this, property, extractor.getResource());
+            RDFWriter.addTriple(this, property, wrapper.getResource());
 
             if (reference.getDeclaration() == null) {
-                extractor.extract();
+                wrapper.extract();
             }
         }
     }
@@ -67,7 +67,7 @@ public abstract class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
         Set<CtMethod<?>> methods = getElement().getMethods();
 
         for (CtMethod<?> method : methods) {
-            getFactory().getExtractor(method).extract();
+            getFactory().wrap(method).extract();
         }
     }
 
@@ -75,7 +75,7 @@ public abstract class TypeExtractor<T extends CtType<?>> extends Extractor<T> {
         List<CtField<?>> fields = getElement().getFields();
 
         for (CtField<?> field : fields) {
-            getFactory().getExtractor(field).extract();
+            getFactory().wrap(field).extract();
         }
     }
 }

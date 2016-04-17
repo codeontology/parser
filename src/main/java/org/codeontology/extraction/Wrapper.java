@@ -1,34 +1,29 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtNamedElement;
 import spoon.reflect.reference.CtReference;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 
-public abstract class Extractor<E extends CtNamedElement> {
+public abstract class Wrapper<E extends CtNamedElement> {
 
-    private static Model model = Ontology.getModel();
     private E element;
     private CtReference reference;
     public static final String SEPARATOR = "-";
-    private static String outputFile = "output.nt";
+    public static Model model = RDFWriter.getModel();
 
-    public Extractor(E element) {
+    public Wrapper(E element) {
         setElement(element);
     }
 
-    public Extractor(CtReference reference) {
+    public Wrapper(CtReference reference) {
         setReference(reference);
     }
 
+    @SuppressWarnings("unchecked")
     public void setReference(CtReference reference) {
         if (reference == null) {
             throw new IllegalArgumentException();
@@ -36,10 +31,6 @@ public abstract class Extractor<E extends CtNamedElement> {
 
         this.reference = reference;
         this.element = (E) reference.getDeclaration();
-    }
-
-    public Model getModel() {
-        return model;
     }
 
     public E getElement() {
@@ -60,18 +51,6 @@ public abstract class Extractor<E extends CtNamedElement> {
 
     public abstract void extract();
 
-    protected void addTriple(Extractor subject, Property property, Extractor object) {
-        addTriple(subject, property, object.getResource());
-    }
-
-    protected void addTriple(Extractor subject, Property property, RDFNode object) {
-        if (property != null && object != null) {
-            model.add(model.createStatement(subject.getResource(), property, object));
-        } else {
-            throw new IllegalArgumentException();
-        }
-    }
-
     protected Resource getResource() {
         return model.createResource(Ontology.WOC + getRelativeURI());
     }
@@ -83,11 +62,11 @@ public abstract class Extractor<E extends CtNamedElement> {
     }
 
     protected void tagType() {
-        addTriple(this, Ontology.RDF_TYPE_PROPERTY, getType());
+        RDFWriter.addTriple(this, Ontology.RDF_TYPE_PROPERTY, getType());
     }
 
     protected void tagName() {
-        addTriple(this, Ontology.NAME_PROPERTY, getName());
+        RDFWriter.addTriple(this, Ontology.NAME_PROPERTY, getName());
     }
 
     protected void tagComment() {
@@ -95,27 +74,21 @@ public abstract class Extractor<E extends CtNamedElement> {
         if (comment == null) {
             comment = "";
         }
-        addTriple(this, Ontology.COMMENT_PROPERTY, model.createLiteral(comment));
+        RDFWriter.addTriple(this, Ontology.COMMENT_PROPERTY, model.createLiteral(comment));
     }
 
     protected abstract RDFNode getType();
 
     protected void tagSourceCode() {
-        addTriple(this, Ontology.SOURCE_CODE_PROPERTY, getModel().createLiteral(getElement().toString()));
+        RDFWriter.addTriple(this, Ontology.SOURCE_CODE_PROPERTY, model.createLiteral(getElement().toString()));
     }
 
-    public ExtractorFactory getFactory() {
-        return ExtractorFactory.getInstance();
+    public Model getModel() {
+        return model;
     }
 
-    public void writeRDF() {
-        try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)))) {
-            getModel().write(writer, "N-TRIPLE");
-            model = Ontology.getModel();
-        } catch (IOException e) {
-            System.out.println("Unable to write triples");
-            System.exit(-1);
-        }
+    public WrapperFactory getFactory() {
+        return WrapperFactory.getInstance();
     }
 
     public CtReference getReference() {
@@ -126,8 +99,5 @@ public abstract class Extractor<E extends CtNamedElement> {
         return getElement() != null;
     }
 
-    public static void setOutputFile(String path) {
-        outputFile = path;
-    }
 }
 

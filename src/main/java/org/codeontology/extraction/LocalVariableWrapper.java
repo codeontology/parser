@@ -4,12 +4,14 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.code.CtLocalVariable;
 
-public class LocalVariableExtractor extends TypedElementExtractor<CtLocalVariable<?>> {
+public class LocalVariableWrapper extends Wrapper<CtLocalVariable<?>> {
 
-    private ExecutableExtractor<?> parent;
+    private ExecutableWrapper<?> parent;
+    private JavaTypeTagger tagger;
 
-    public LocalVariableExtractor(CtLocalVariable<?> variable) {
+    public LocalVariableWrapper(CtLocalVariable<?> variable) {
         super(variable);
+        tagger = new JavaTypeTagger(this);
     }
 
     @Override
@@ -22,7 +24,7 @@ public class LocalVariableExtractor extends TypedElementExtractor<CtLocalVariabl
 
     @Override
     protected String getRelativeURI() {
-        return getParent().getRelativeURI() + SEPARATOR + getElement().getSimpleName();
+        return parent.getRelativeURI() + SEPARATOR + getElement().getSimpleName();
     }
 
     @Override
@@ -31,14 +33,15 @@ public class LocalVariableExtractor extends TypedElementExtractor<CtLocalVariabl
     }
 
     public void tagDeclaredBy() {
-        addTriple(this, Ontology.DECLARED_BY_PROPERTY, getParent().getResource());
+        RDFWriter.addTriple(this, Ontology.DECLARED_BY_PROPERTY, parent);
     }
 
-    public ExecutableExtractor<?> getParent() {
-        return parent;
+    protected void tagJavaType() {
+        tagger.tagJavaType(parent);
     }
 
-    public void setParent(ExecutableExtractor<?> parent) {
+    public void setParent(ExecutableWrapper<?> parent) {
         this.parent = parent;
     }
+
 }

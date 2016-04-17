@@ -5,13 +5,13 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtConstructor;
 import spoon.reflect.reference.CtExecutableReference;
 
-public class ConstructorExtractor extends ExecutableExtractor<CtConstructor<?>> {
+public class ConstructorWrapper extends ExecutableWrapper<CtConstructor<?>> {
 
-    public ConstructorExtractor(CtConstructor<?> constructor) {
+    public ConstructorWrapper(CtConstructor<?> constructor) {
         super(constructor);
     }
 
-    public ConstructorExtractor(CtExecutableReference<?> reference) {
+    public ConstructorWrapper(CtExecutableReference<?> reference) {
         super(reference);
     }
 

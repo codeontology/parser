@@ -57,7 +57,7 @@ public class Ontology {
 
     public static final Resource ARRAY_CLASS = model.getResource(WOC + "Array");
 
-    public static final Resource GENERIC_CLASS =  model.getResource(WOC + "Generic");
+    public static final Resource TYPE_VARIABLE_CLASS =  model.getResource(WOC + "TypeVariable");
 
     public static final Resource FIELD_CLASS =  model.getResource(WOC + "Field");
 
@@ -98,7 +98,7 @@ public class Ontology {
 
     public static final Property THROWS_PROPERTY = model.getProperty(WOC + "throws");
 
-    public static final Property IS_NESTED_IN_PROPERTY = model.getProperty(WOC + "isNestedIn");
+    public static final Property IS_NESTED_IN_PROPERTY = model.getProperty(WOC + "nestedIn");
 
     public static final Property MODIFIER_PROPERTY = model.getProperty(WOC + "modifier");
 
@@ -115,6 +115,8 @@ public class Ontology {
     public static final Property ARRAY_OF_PROPERTY = model.getProperty(WOC + "arrayOf");
 
     public static final Property DIMENSIONS_PROPERTY = model.getProperty(WOC + "dimensions");
+
+    public static final Property FORMAL_TYPE_PARAMETER_PROPERTY = model.getProperty(WOC + "formalTypeParameter");
 
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");

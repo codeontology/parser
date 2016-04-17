@@ -6,16 +6,16 @@ import spoon.reflect.declaration.CtTypeMember;
 import spoon.reflect.declaration.CtTypedElement;
 import spoon.reflect.reference.CtReference;
 
-public abstract class TypeMemberExtractor<E extends CtTypedElement & CtTypeMember & CtNamedElement> extends TypedElementExtractor<E> {
+public abstract class TypeMemberWrapper<E extends CtTypedElement & CtTypeMember & CtNamedElement> extends Wrapper<E> {
 
     private ModifiableTagger tagger;
 
-    public TypeMemberExtractor(E member) {
+    public TypeMemberWrapper(E member) {
         super(member);
         tagger = new ModifiableTagger(this);
     }
 
-    public TypeMemberExtractor(CtReference reference) {
+    public TypeMemberWrapper(CtReference reference) {
         super(reference);
     }
 
@@ -24,8 +24,8 @@ public abstract class TypeMemberExtractor<E extends CtTypedElement & CtTypeMembe
             return;
         }
 
-        Extractor declaringType = getFactory().getExtractor(getElement().getDeclaringType());
-        addTriple(this, Ontology.DECLARED_BY_PROPERTY, declaringType.getResource());
+        Wrapper declaringType = getFactory().wrap(getElement().getDeclaringType());
+        RDFWriter.addTriple(this, Ontology.DECLARED_BY_PROPERTY, declaringType.getResource());
     }
 
     protected void tagModifier() {

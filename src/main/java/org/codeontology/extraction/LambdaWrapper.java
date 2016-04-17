@@ -4,11 +4,11 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.code.CtLambda;
 
-public class LambdaExtractor extends Extractor<CtLambda<?>> {
-    private ExecutableExtractor<?> parent;
+public class LambdaWrapper extends Wrapper<CtLambda<?>> {
+    private ExecutableWrapper<?> parent;
     private static final String TAG = "lambda";
 
-    public LambdaExtractor(CtLambda<?> lambda) {
+    public LambdaWrapper(CtLambda<?> lambda) {
         super(lambda);
     }
 
@@ -20,10 +20,10 @@ public class LambdaExtractor extends Extractor<CtLambda<?>> {
     }
 
     private void tagFunctionalImplements() {
-        Extractor<?> extractor = getFactory().getExtractor(getElement().getType());
-        addTriple(this, Ontology.IMPLEMENTS_PROPERTY, extractor.getResource());
-        if (extractor.getReference() == null) {
-            extractor.extract();
+        Wrapper<?> wrapper = getFactory().wrap(getElement().getType());
+        RDFWriter.addTriple(this, Ontology.IMPLEMENTS_PROPERTY, wrapper.getResource());
+        if (wrapper.getReference() == null) {
+            wrapper.extract();
         }
     }
 
@@ -38,11 +38,11 @@ public class LambdaExtractor extends Extractor<CtLambda<?>> {
         return Ontology.LAMBDA_CLASS;
     }
 
-    public void setParent(ExecutableExtractor<?> executable) {
+    public void setParent(ExecutableWrapper<?> executable) {
         this.parent = executable;
     }
 
-    public ExecutableExtractor<?> getParent() {
+    public ExecutableWrapper<?> getParent() {
         return parent;
     }
 }
