@@ -58,7 +58,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
                 ParameterWrapper parameterWrapper = getFactory().wrap(parameters.get(i));
                 parameterWrapper.setParent(this);
                 parameterWrapper.setPosition(i);
-                RDFWriter.addTriple(this, Ontology.PARAMETER_PROPERTY, parameterWrapper.getResource());
+                RDFWriter.addTriple(this, Ontology.PARAMETER_PROPERTY, parameterWrapper);
                 parameterWrapper.extract();
             }
 
@@ -71,7 +71,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
                 if (parameterWrapper != null) {
                     parameterWrapper.setParent(this);
                     parameterWrapper.setPosition(i);
-                    RDFWriter.addTriple(this, Ontology.PARAMETER_PROPERTY, parameterWrapper.getResource());
+                    RDFWriter.addTriple(this, Ontology.PARAMETER_PROPERTY, parameterWrapper);
                     parameterWrapper.extract();
                 }
             }

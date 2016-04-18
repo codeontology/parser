@@ -4,17 +4,32 @@ import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.code.CtLambda;
 import spoon.reflect.code.CtLocalVariable;
 import spoon.reflect.declaration.*;
+import spoon.reflect.factory.Factory;
+import spoon.reflect.reference.CtArrayTypeReference;
 import spoon.reflect.reference.CtExecutableReference;
+import spoon.reflect.reference.CtTypeParameterReference;
 import spoon.reflect.reference.CtTypeReference;
 
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
+import java.util.List;
+
 public class WrapperFactory {
+
+    private Factory parent;
+    private static WrapperFactory instance;
 
     private WrapperFactory() {
 
     }
 
     public static WrapperFactory getInstance() {
-        return new WrapperFactory();
+        if (instance == null) {
+            instance = new WrapperFactory();
+        }
+        return instance;
     }
 
     public PackageWrapper wrap(CtPackage pack) {
@@ -102,4 +117,45 @@ public class WrapperFactory {
     public LambdaWrapper wrap(CtLambda<?> lambda) {
         return new LambdaWrapper(lambda);
     }
+
+    public TypeVariableWrapper wrap(TypeVariable typeVariable) {
+        CtTypeParameterReference reference = createTypeParameterReference(typeVariable);
+        return new TypeVariableWrapper(reference);
+    }
+
+    public ArrayWrapper wrap(GenericArrayType array) {
+        Type type = array;
+
+        int i = 0;
+        do {
+            i++;
+            type = ((GenericArrayType) type).getGenericComponentType();
+        } while (type instanceof GenericArrayType);
+
+        CtTypeParameterReference typeVariable = createTypeParameterReference((TypeVariable) type);
+        CtArrayTypeReference arrayReference = getParent().Type().createArrayReference(typeVariable, i);
+        return new ArrayWrapper(arrayReference);
+    }
+
+    private CtTypeParameterReference createTypeParameterReference(TypeVariable typeVariable) {
+        String name = typeVariable.getName();
+        Type[] bounds = typeVariable.getBounds();
+
+        List<CtTypeReference<?>> boundsList = new ArrayList<>();
+
+        for (Type bound : bounds) {
+            boundsList.add(getParent().Type().createReference(bound.getTypeName()));
+        }
+
+        return getParent().Type().createTypeParameterReference(name, boundsList);
+    }
+
+    public void setParent(Factory parent) {
+        this.parent = parent;
+    }
+
+    public Factory getParent() {
+        return parent;
+    }
+
 }

@@ -4,12 +4,13 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.reference.CtExecutableReference;
-import spoon.reflect.reference.CtTypeParameterReference;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.support.reflect.reference.SpoonClassNotFoundException;
 
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.List;
 
 public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
@@ -36,39 +37,51 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
     }
 
     protected void tagReturns() {
-        if (isDeclarationAvailable()) {
-            tagReturnsByReference();
-        } else {
-            tagReturnsByReflection();
-        }
+        RDFWriter.addTriple(this, Ontology.RETURNS_PROPERTY, getReturnType());
     }
 
-    private void tagReturnsByReference() {
+    private TypeWrapper getReturnType() {
+        TypeWrapper returnType = getGenericReturnType();
+        if (returnType != null) {
+            return returnType;
+        }
+
         CtTypeReference<?> reference = ((CtExecutableReference<?>) getReference()).getType();
-        Wrapper returnType = getFactory().wrap(reference);
-        if (reference instanceof CtTypeParameterReference) {
+        returnType = getFactory().wrap(reference);
+        if (returnType instanceof TypeVariableWrapper) {
             ((TypeVariableWrapper) returnType).findAndSetParent(this);
+        } else if (returnType instanceof ArrayWrapper) {
+            ((ArrayWrapper) returnType).setParent(getReference());
         } else if (reference.getDeclaration() == null) {
             returnType.extract();
         }
-        RDFWriter.addTriple(this, Ontology.RETURNS_PROPERTY, returnType);
+
+        return returnType;
     }
 
-    private void tagReturnsByReflection() {
-        CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference());
-        try {
-            Method method = reference.getActualMethod();
-            Type returnType = method.getGenericReturnType();
-            String name = returnType.getTypeName();
-            name = name.replaceAll("<|>", SEPARATOR);
-            RDFWriter.addTriple(this, Ontology.RETURNS_PROPERTY, getModel().getResource(Ontology.WOC + name));
-            Wrapper wrapper = getFactory().wrap(reference.getType());
-            if (wrapper != null && !wrapper.isDeclarationAvailable()) {
-                wrapper.extract();
+    private TypeWrapper getGenericReturnType() {
+        TypeWrapper result = null;
+        if (!isDeclarationAvailable()) {
+            try {
+                CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference());
+                Method method = reference.getActualMethod();
+                Type returnType = method.getGenericReturnType();
+
+                if (returnType instanceof GenericArrayType) {
+                    ArrayWrapper arrayType = getFactory().wrap((GenericArrayType) returnType);
+                    arrayType.setParent(this.getReference());
+                    result = arrayType;
+                } else if (returnType instanceof TypeVariable) {
+                    TypeVariableWrapper typeVariable = getFactory().wrap((TypeVariable) returnType);
+                    typeVariable.findAndSetParent(this);
+                    result = typeVariable;
+                }
+            } catch (SpoonClassNotFoundException | NullPointerException e) {
+                return null;
             }
-        } catch (SpoonClassNotFoundException | NullPointerException e) {
-            tagReturnsByReference();
         }
+
+        return result;
     }
 
     protected void tagFormalTypeParameters() {

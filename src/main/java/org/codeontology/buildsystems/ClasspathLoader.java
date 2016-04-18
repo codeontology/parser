@@ -33,13 +33,17 @@ public class ClasspathLoader {
     }
 
     public void load(File file) {
+        if (file.isDirectory()) {
+            loadAllJars(file);
+            return;
+        }
+        
         try {
             load(file.toURI().toURL());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
     }
-
 
     public void load(URL url) {
         URLClassLoader loader = (URLClassLoader) ClassLoader.getSystemClassLoader();
