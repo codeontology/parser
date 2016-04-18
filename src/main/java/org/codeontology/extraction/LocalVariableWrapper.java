@@ -37,11 +37,14 @@ public class LocalVariableWrapper extends Wrapper<CtLocalVariable<?>> {
     }
 
     protected void tagJavaType() {
-        tagger.tagJavaType(parent);
+        tagger.tagJavaType(this);
     }
 
     public void setParent(ExecutableWrapper<?> parent) {
         this.parent = parent;
     }
 
+    public ExecutableWrapper<?> getParent() {
+        return parent;
+    }
 }

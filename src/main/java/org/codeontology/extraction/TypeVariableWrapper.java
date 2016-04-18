@@ -2,6 +2,9 @@ package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
+import spoon.reflect.declaration.CtExecutable;
+import spoon.reflect.declaration.CtField;
+import spoon.reflect.declaration.CtParameter;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtIntersectionTypeReference;
@@ -22,6 +25,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     public TypeVariableWrapper(CtTypeReference<?> reference) {
         super(reference);
     }
+
     @Override
     public void extract() {
         tagType();
@@ -81,15 +85,8 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     }
 
     private void setParent(Class<?> clazz) {
-        /*CtTypeReference declaringClassReference = new CtTypeReferenceImpl();
-        declaringClassReference.setSimpleName(clazz.getSimpleName());
-        CtPackageReference pack = new CtPackageReferenceImpl();
-        pack.setSimpleName(clazz.getPackage().getName());
-        declaringClassReference.setPackage(pack);
-        setParent(declaringClassReference);*/
         CtTypeReference<?> parent = getReference().getFactory().Class().createReference(clazz);
         setParent(parent);
-
     }
 
     public void findAndSetParent(ExecutableWrapper<?> executable) {
@@ -107,7 +104,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         }
     }
 
-    private void findAndSetParent(CtExecutableReference executableReference) {
+    public void findAndSetParent(CtExecutableReference executableReference) {
         if (executableReference.getDeclaration() != null) {
             findAndSetParent(getFactory().wrap(executableReference));
         }
@@ -136,7 +133,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         findAndSetParent(declaringClass);
     }
 
-    private void findAndSetParent(Class<?> clazz) {
+    public void findAndSetParent(Class<?> clazz) {
         TypeVariable<?>[] typeParameters = clazz.getTypeParameters();
 
         for (TypeVariable variable : typeParameters) {
@@ -147,11 +144,6 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         }
 
         findAndSetParent(clazz.getDeclaringClass());
-    }
-
-
-    public void findAndSetParent(TypeWrapper type) {
-        findAndSetParent(type.getReference());
     }
 
     public void findAndSetParent(CtTypeReference<?> reference) {
@@ -171,10 +163,18 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
             }
             setParent(type);
         }
-        else {
-            System.out.println("Throwing exception for: " + getReference());
-            throw new IllegalArgumentException();
-        }
+    }
+
+    public void findAndSetParent(CtExecutable<?> executable) {
+        findAndSetParent(executable.getReference());
+    }
+
+    public void findAndSetParent(CtField<?> field) {
+        findAndSetParent(field.getDeclaringType());
+    }
+
+    public void findAndSetParent(CtParameter<?> parameter) {
+        findAndSetParent(parameter.getParent());
     }
 }
 

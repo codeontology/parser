@@ -3,6 +3,7 @@ package org.codeontology.extraction;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.declaration.CtTypedElement;
+import spoon.reflect.reference.CtReference;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.reference.CtVariableReference;
 
@@ -21,7 +22,7 @@ public class JavaTypeTagger {
         }
     }
 
-    protected void tagJavaType() {
+    private void tagJavaType() {
         RDFWriter.addTriple(typedElement, Ontology.JAVA_TYPE_PROPERTY, type);
         if (!type.isDeclarationAvailable()) {
             type.extract();
@@ -32,13 +33,15 @@ public class JavaTypeTagger {
         if (isTypeVariable()) {
             getTypeVariable().findAndSetParent(executable);
         }
+        handleGenericArray(executable.getReference());
         tagJavaType();
     }
 
-    protected void tagJavaType(CtTypeReference reference) {
+    protected void tagJavaType(LocalVariableWrapper variable) {
         if (isTypeVariable()) {
-            getTypeVariable().findAndSetParent(reference);
+            getTypeVariable().findAndSetParent(variable.getParent());
         }
+        handleGenericArray(variable.getParent().getReference());
         tagJavaType();
     }
 
@@ -46,6 +49,7 @@ public class JavaTypeTagger {
         if (isTypeVariable()) {
             getTypeVariable().findAndSetParent(type);
         }
+        handleGenericArray(type.getReference());
         tagJavaType();
     }
 
@@ -55,6 +59,12 @@ public class JavaTypeTagger {
 
     private TypeVariableWrapper getTypeVariable() {
         return (TypeVariableWrapper) type;
+    }
+
+    private void handleGenericArray(CtReference parent) {
+        if (type instanceof ArrayWrapper) {
+            ((ArrayWrapper) type).setParent(parent);
+        }
     }
 
 
