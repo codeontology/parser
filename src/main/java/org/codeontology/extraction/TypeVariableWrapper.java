@@ -3,8 +3,6 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtExecutable;
-import spoon.reflect.declaration.CtField;
-import spoon.reflect.declaration.CtParameter;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtIntersectionTypeReference;
@@ -107,6 +105,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     public void findAndSetParent(CtExecutableReference executableReference) {
         if (executableReference.getDeclaration() != null) {
             findAndSetParent(getFactory().wrap(executableReference));
+            return;
         }
 
         Method method = executableReference.getActualMethod();
@@ -167,14 +166,6 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
 
     public void findAndSetParent(CtExecutable<?> executable) {
         findAndSetParent(executable.getReference());
-    }
-
-    public void findAndSetParent(CtField<?> field) {
-        findAndSetParent(field.getDeclaringType());
-    }
-
-    public void findAndSetParent(CtParameter<?> parameter) {
-        findAndSetParent(parameter.getParent());
     }
 }
 
