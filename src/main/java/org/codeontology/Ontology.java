@@ -59,6 +59,8 @@ public class Ontology {
 
     public static final Resource TYPE_VARIABLE_CLASS =  model.getResource(WOC + "TypeVariable");
 
+    public static final Resource PARAMETERIZED_TYPE_CLASS =  model.getResource(WOC + "ParameterizedType");
+
     public static final Resource FIELD_CLASS =  model.getResource(WOC + "Field");
 
     public static final Resource CONSTRUCTOR_CLASS = model.getResource(WOC + "Constructor");
@@ -117,6 +119,10 @@ public class Ontology {
     public static final Property DIMENSIONS_PROPERTY = model.getProperty(WOC + "dimensions");
 
     public static final Property FORMAL_TYPE_PARAMETER_PROPERTY = model.getProperty(WOC + "formalTypeParameter");
+
+    public static final Property ACTUAL_TYPE_ARGUMENT_PROPERTY = model.getProperty(WOC + "actualTypeArgument");
+
+    public static final Property RAW_TYPE_PROPERTY = model.getProperty(WOC + "rawType");
 
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");

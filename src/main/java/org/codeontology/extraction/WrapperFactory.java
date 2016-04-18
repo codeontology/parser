@@ -82,6 +82,9 @@ public class WrapperFactory {
             case TYPE_VARIABLE:
                 wrapper = new TypeVariableWrapper(reference);
                 break;
+            case PARAMETERIZED_TYPE:
+                wrapper = new ParameterizedTypeWrapper(reference);
+                break;
         }
         return wrapper;
     }

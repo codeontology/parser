@@ -2,7 +2,6 @@ package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
-import spoon.reflect.declaration.CtExecutable;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtIntersectionTypeReference;
@@ -162,10 +161,6 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
             }
             setParent(type);
         }
-    }
-
-    public void findAndSetParent(CtExecutable<?> executable) {
-        findAndSetParent(executable.getReference());
     }
 }
 

@@ -33,7 +33,6 @@ public class FieldWrapper extends TypeMemberWrapper<CtField<?>> {
         tagVisibility();
         tagModifier();
         tagDeclaringType();
-        // todo: tagDefaultValue();
     }
 
     protected void tagJavaType() {

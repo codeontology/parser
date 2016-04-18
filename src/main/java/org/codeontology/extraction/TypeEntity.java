@@ -16,7 +16,8 @@ public enum TypeEntity {
     ENUM,
     PRIMITIVE,
     ARRAY,
-    TYPE_VARIABLE;
+    TYPE_VARIABLE,
+    PARAMETERIZED_TYPE;
 
     public static TypeEntity getEntity(CtTypeReference<?> reference) {
 
@@ -26,6 +27,10 @@ public enum TypeEntity {
 
         if (reference instanceof CtTypeParameterReference) {
             return TYPE_VARIABLE;
+        }
+
+        if (reference.getActualTypeArguments().size() > 0) {
+            return PARAMETERIZED_TYPE;
         }
 
         CtType<?> type = reference.getDeclaration();
@@ -54,9 +59,12 @@ public enum TypeEntity {
 
     }
 
-    public static TypeEntity getEntity(CtType<?> type) {
+    public static TypeEntity getEntity(CtType type) {
+
         if (type.getReference() instanceof CtArrayTypeReference) {
             return ARRAY;
+        } else if (type.getReference().getActualTypeArguments().size() > 0) {
+            return PARAMETERIZED_TYPE;
         } else if (type.isPrimitive()) {
             return PRIMITIVE;
         }  else if (type instanceof CtAnnotationType<?>) {
