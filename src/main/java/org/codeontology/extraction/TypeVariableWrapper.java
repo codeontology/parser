@@ -83,10 +83,10 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         }
 
         String uri = "?";
-        final String SEPARATOR = "_";
+        String separator = "_";
 
         if (bounds.size() > 0) {
-            uri = uri + SEPARATOR + clause;
+            uri = uri + separator + clause;
         }
 
         for (CtTypeReference bound : bounds) {
@@ -99,7 +99,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
                 ((ParameterizedTypeWrapper) wrapper).setParent(parent.getReference());
                 wrapper.extract();
             }
-            uri = uri + SEPARATOR + wrapper.getRelativeURI();
+            uri = uri + separator + wrapper.getRelativeURI();
         }
 
         return uri;

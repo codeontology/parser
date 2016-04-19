@@ -128,6 +128,8 @@ public class Ontology {
 
     public static final Property RAW_TYPE_PROPERTY = model.getProperty(WOC + "rawType");
 
+    public static final Property ANNOTATION_PROPERTY = model.getProperty(WOC + "annotation");
+
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");
 

@@ -35,6 +35,7 @@ public class ParameterWrapper extends Wrapper<CtParameter<?>> {
         tagJavaType();
         tagPosition();
         if (isDeclarationAvailable()) {
+            tagAnnotations();
             tagName();
         }
     }

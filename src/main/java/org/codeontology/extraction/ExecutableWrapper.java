@@ -40,6 +40,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         tagDeclaringType();
         tagParameters();
         if (isDeclarationAvailable()) {
+            tagAnnotations();
             tagComment();
             tagSourceCode();
             tagVisibility();

@@ -33,6 +33,7 @@ public class FieldWrapper extends TypeMemberWrapper<CtField<?>> {
         tagVisibility();
         tagModifier();
         tagDeclaringType();
+        tagAnnotations();
     }
 
     protected void tagJavaType() {

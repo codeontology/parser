@@ -25,6 +25,7 @@ public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> {
         tagType();
         tagName();
         if (isDeclarationAvailable()) {
+            tagAnnotations();
             tagSuperInterfaces();
             tagFields();
             tagMethods();

@@ -4,8 +4,11 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.codeontology.Ontology;
+import spoon.reflect.declaration.CtAnnotation;
 import spoon.reflect.declaration.CtNamedElement;
 import spoon.reflect.reference.CtReference;
+
+import java.util.List;
 
 
 public abstract class Wrapper<E extends CtNamedElement> {
@@ -71,10 +74,20 @@ public abstract class Wrapper<E extends CtNamedElement> {
 
     protected void tagComment() {
         String comment = getElement().getDocComment();
-        if (comment == null) {
-            comment = "";
+        if (comment != null) {
+            RDFWriter.addTriple(this, Ontology.COMMENT_PROPERTY, model.createLiteral(comment));
         }
-        RDFWriter.addTriple(this, Ontology.COMMENT_PROPERTY, model.createLiteral(comment));
+    }
+
+    protected void tagAnnotations() {
+        List<CtAnnotation<?>> annotations = getElement().getAnnotations();
+        for (CtAnnotation annotation : annotations) {
+            TypeWrapper annotationType = getFactory().wrap(annotation.getAnnotationType());
+            RDFWriter.addTriple(this, Ontology.ANNOTATION_PROPERTY, annotationType);
+            if (!annotationType.isDeclarationAvailable()) {
+                annotationType.extract();
+            }
+        }
     }
 
     protected abstract RDFNode getType();

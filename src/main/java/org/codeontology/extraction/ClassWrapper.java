@@ -29,6 +29,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
         tagType();
         tagName();
         if (isDeclarationAvailable()) {
+            tagAnnotations();
             tagSuperClass();
             tagSuperInterfaces();
             tagComment();
