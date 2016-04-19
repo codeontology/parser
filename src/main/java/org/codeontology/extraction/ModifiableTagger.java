@@ -38,7 +38,7 @@ public class ModifiableTagger {
             }
         }
 
-        RDFWriter.addTriple(wrapper, Ontology.VISIBILITY_PROPERTY, encapsulation);
+        RDFLogger.getInstance().addTriple(wrapper, Ontology.VISIBILITY_PROPERTY, encapsulation);
     }
 
     protected void tagModifier() {
@@ -73,7 +73,7 @@ public class ModifiableTagger {
                     break;
             }
             if (modifier != null) {
-                RDFWriter.addTriple(wrapper, Ontology.MODIFIER_PROPERTY, modifier);
+                RDFLogger.getInstance().addTriple(wrapper, Ontology.MODIFIER_PROPERTY, modifier);
             }
         }
     }

@@ -42,7 +42,7 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
         CtTypeReference<?> superclass = getReference().getSuperclass();
         if (superclass != null) {
             TypeWrapper<?> wrapper = getFactory().wrap(superclass);
-            RDFWriter.addTriple(this, Ontology.EXTENDS_PROPERTY, wrapper.getResource());
+            getLogger().addTriple(this, Ontology.EXTENDS_PROPERTY, wrapper.getResource());
             if (superclass.getDeclaration() == null) {
                 wrapper.extract();
             }
@@ -55,7 +55,7 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
         for (CtTypeReference<?> reference : references) {
             TypeWrapper<?> wrapper = getFactory().wrap(reference);
 
-            RDFWriter.addTriple(this, property, wrapper.getResource());
+            getLogger().addTriple(this, property, wrapper.getResource());
 
             if (reference.getDeclaration() == null) {
                 wrapper.extract();

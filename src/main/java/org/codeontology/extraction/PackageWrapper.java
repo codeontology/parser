@@ -43,12 +43,11 @@ public class PackageWrapper extends Wrapper<CtPackage> {
     protected void tagPackageOf(Set<CtType<?>> types) {
         for (CtType<?> current : types) {
             TypeWrapper<?> wrapper = getFactory().wrap(current);
-            RDFWriter.addTriple(this, Ontology.PACKAGE_OF_PROPERTY, wrapper.getResource());
+            getLogger().addTriple(this, Ontology.PACKAGE_OF_PROPERTY, wrapper.getResource());
             if (CodeOntology.verboseMode()) {
                 System.out.println("Extracting triples for " + current.getQualifiedName());
             }
             wrapper.extract();
-            RDFWriter.writeRDF();
         }
     }
 }

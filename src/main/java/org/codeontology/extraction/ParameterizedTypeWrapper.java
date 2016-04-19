@@ -52,14 +52,14 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         CtTypeReference<?> cloneReference = coreFactory.clone(getReference());
         cloneReference.setActualTypeArguments(new ArrayList<>());
         TypeWrapper rawType = getFactory().wrap(cloneReference);
-        RDFWriter.addTriple(this, Ontology.RAW_TYPE_PROPERTY, rawType);
+        getLogger().addTriple(this, Ontology.RAW_TYPE_PROPERTY, rawType);
     }
 
     protected void tagActualTypeArguments() {
         for (int i = 0; i < arguments.size(); i++) {
             TypeArgumentWrapper typeArgument = new TypeArgumentWrapper(arguments.get(i));
             typeArgument.setPosition(i);
-            RDFWriter.addTriple(this, Ontology.ACTUAL_TYPE_ARGUMENT_PROPERTY, typeArgument);
+            getLogger().addTriple(this, Ontology.ACTUAL_TYPE_ARGUMENT_PROPERTY, typeArgument);
             typeArgument.extract();
         }
     }
@@ -87,14 +87,14 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         }
 
         private void tagJavaType() {
-            RDFWriter.addTriple(this, Ontology.JAVA_TYPE_PROPERTY, argument);
+            getLogger().addTriple(this, Ontology.JAVA_TYPE_PROPERTY, argument);
             if (!argument.isDeclarationAvailable()) {
                 argument.extract();
             }
         }
 
         private void tagPosition() {
-            RDFWriter.addTriple(TypeArgumentWrapper.this, Ontology.POSITION_PROPERTY, getModel().createTypedLiteral(position));
+            getLogger().addTriple(TypeArgumentWrapper.this, Ontology.POSITION_PROPERTY, getModel().createTypedLiteral(position));
         }
 
         @Override

@@ -25,7 +25,7 @@ public abstract class TypeMemberWrapper<E extends CtTypedElement & CtTypeMember 
         }
 
         Wrapper declaringType = getFactory().wrap(getElement().getDeclaringType());
-        RDFWriter.addTriple(this, Ontology.DECLARED_BY_PROPERTY, declaringType.getResource());
+        getLogger().addTriple(this, Ontology.DECLARED_BY_PROPERTY, declaringType.getResource());
     }
 
     protected void tagModifier() {

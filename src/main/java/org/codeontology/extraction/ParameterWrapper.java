@@ -46,7 +46,7 @@ public class ParameterWrapper extends Wrapper<CtParameter<?>> {
     }
 
     public void tagPosition() {
-        RDFWriter.addTriple(this, Ontology.POSITION_PROPERTY, getModel().createTypedLiteral(position));
+        getLogger().addTriple(this, Ontology.POSITION_PROPERTY, getModel().createTypedLiteral(position));
     }
 
     public void setPosition(int position) {

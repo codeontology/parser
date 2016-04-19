@@ -60,7 +60,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
         Set<CtType<?>> nestedTypes = getElement().getNestedTypes();
         for (CtType<?> type : nestedTypes) {
             Wrapper wrapper = getFactory().wrap(type);
-            RDFWriter.addTriple(wrapper, Ontology.IS_NESTED_IN_PROPERTY, this.getResource());
+            getLogger().addTriple(wrapper, Ontology.IS_NESTED_IN_PROPERTY, this.getResource());
             wrapper.extract();
         }
     }
@@ -80,7 +80,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
             TypeVariableWrapper wrapper = ((TypeVariableWrapper) getFactory().wrap(parameters.get(i)));
             wrapper.setParent(this);
             wrapper.setPosition(i);
-            RDFWriter.addTriple(this, Ontology.FORMAL_TYPE_PARAMETER_PROPERTY, wrapper);
+            getLogger().addTriple(this, Ontology.FORMAL_TYPE_PARAMETER_PROPERTY, wrapper);
             wrapper.extract();
         }
     }

@@ -59,7 +59,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
                 ParameterWrapper parameterWrapper = getFactory().wrap(parameters.get(i));
                 parameterWrapper.setParent(this);
                 parameterWrapper.setPosition(i);
-                RDFWriter.addTriple(this, Ontology.PARAMETER_PROPERTY, parameterWrapper);
+                getLogger().addTriple(this, Ontology.PARAMETER_PROPERTY, parameterWrapper);
                 parameterWrapper.extract();
             }
 
@@ -72,7 +72,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
                 if (parameterWrapper != null) {
                     parameterWrapper.setParent(this);
                     parameterWrapper.setPosition(i);
-                    RDFWriter.addTriple(this, Ontology.PARAMETER_PROPERTY, parameterWrapper);
+                    getLogger().addTriple(this, Ontology.PARAMETER_PROPERTY, parameterWrapper);
                     parameterWrapper.extract();
                 }
             }
@@ -83,7 +83,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         Set<CtTypeReference<? extends Throwable>> thrownTypes = getElement().getThrownTypes();
         for (CtTypeReference<? extends Throwable> current : thrownTypes) {
             Resource thrownTypeResource = getFactory().wrap(current).getResource();
-            RDFWriter.addTriple(this, Ontology.THROWS_PROPERTY, thrownTypeResource);
+            getLogger().addTriple(this, Ontology.THROWS_PROPERTY, thrownTypeResource);
         }
     }
 
@@ -209,19 +209,19 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
     protected void tagConstructs(CtConstructor<?> executable) {
         Resource constructed = getFactory().wrap(executable).getResource();
-        RDFWriter.addTriple(this, Ontology.CONSTRUCTS_PROPERTY, constructed);
+        getLogger().addTriple(this, Ontology.CONSTRUCTS_PROPERTY, constructed);
     }
 
     protected void tagConstructs(CtExecutableReference<?> reference) {
         Wrapper<?> wrapper = getFactory().wrap(reference);
-        RDFWriter.addTriple(this, Ontology.CONSTRUCTS_PROPERTY, wrapper.getResource());
+        getLogger().addTriple(this, Ontology.CONSTRUCTS_PROPERTY, wrapper.getResource());
         if (reference.getDeclaration() == null) {
             wrapper.extract();
         }
     }
 
     protected void tagRequests(RDFNode node) {
-        RDFWriter.addTriple(this, Ontology.REQUESTS_PROPERTY, node);
+        getLogger().addTriple(this, Ontology.REQUESTS_PROPERTY, node);
     }
 
     protected void tagReturnsVariable(CtReturn<?> returnStatement) {
@@ -241,13 +241,13 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     protected void tagReturnsLocalVariable(CtLocalVariable<?> variable) {
         LocalVariableWrapper wrapper = getFactory().wrap(variable);
         wrapper.setParent(this);
-        RDFWriter.addTriple(this, Ontology.RETURNS_VAR_PROPERTY, wrapper.getResource());
+        getLogger().addTriple(this, Ontology.RETURNS_VAR_PROPERTY, wrapper.getResource());
     }
 
     protected void tagReturnsField(CtField<?> field) {
         if (field != null) {
             Wrapper wrapper =  getFactory().wrap(field);
-            RDFWriter.addTriple(this, Ontology.RETURNS_FIELD_PROPERTY, wrapper.getResource());
+            getLogger().addTriple(this, Ontology.RETURNS_FIELD_PROPERTY, wrapper.getResource());
         }
     }
 

@@ -38,7 +38,7 @@ public class ArrayWrapper extends TypeWrapper<CtType<?>> {
     }
 
     protected void tagArrayOf() {
-        RDFWriter.addTriple(this, Ontology.ARRAY_OF_PROPERTY, componentType);
+        getLogger().addTriple(this, Ontology.ARRAY_OF_PROPERTY, componentType);
         if (!componentType.isDeclarationAvailable()) {
             componentType.extract();
         }
@@ -46,7 +46,7 @@ public class ArrayWrapper extends TypeWrapper<CtType<?>> {
 
     protected void tagDimensions() {
         int dimensions = ((CtArrayTypeReference<?>) getReference()).getDimensionCount();
-        RDFWriter.addTriple(this, Ontology.DIMENSIONS_PROPERTY, getModel().createTypedLiteral(dimensions));
+        getLogger().addTriple(this, Ontology.DIMENSIONS_PROPERTY, getModel().createTypedLiteral(dimensions));
     }
 
     public void setParent(CtReference parent) {

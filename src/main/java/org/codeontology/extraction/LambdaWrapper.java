@@ -21,7 +21,7 @@ public class LambdaWrapper extends Wrapper<CtLambda<?>> {
 
     private void tagFunctionalImplements() {
         Wrapper<?> wrapper = getFactory().wrap(getElement().getType());
-        RDFWriter.addTriple(this, Ontology.IMPLEMENTS_PROPERTY, wrapper.getResource());
+        getLogger().addTriple(this, Ontology.IMPLEMENTS_PROPERTY, wrapper.getResource());
         if (wrapper.getReference() == null) {
             wrapper.extract();
         }

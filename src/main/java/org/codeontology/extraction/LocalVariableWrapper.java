@@ -33,7 +33,7 @@ public class LocalVariableWrapper extends Wrapper<CtLocalVariable<?>> {
     }
 
     public void tagDeclaredBy() {
-        RDFWriter.addTriple(this, Ontology.DECLARED_BY_PROPERTY, parent);
+        getLogger().addTriple(this, Ontology.DECLARED_BY_PROPERTY, parent);
     }
 
     protected void tagJavaType() {

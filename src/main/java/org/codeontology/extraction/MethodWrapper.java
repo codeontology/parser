@@ -37,7 +37,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
     }
 
     protected void tagReturns() {
-        RDFWriter.addTriple(this, Ontology.RETURNS_PROPERTY, getReturnType());
+        getLogger().addTriple(this, Ontology.RETURNS_PROPERTY, getReturnType());
     }
 
     private TypeWrapper getReturnType() {
@@ -94,7 +94,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
             TypeVariableWrapper wrapper = ((TypeVariableWrapper) getFactory().wrap(parameters.get(i)));
             wrapper.setParent(this);
             wrapper.setPosition(i);
-            RDFWriter.addTriple(this, Ontology.FORMAL_TYPE_PARAMETER_PROPERTY, wrapper);
+            getLogger().addTriple(this, Ontology.FORMAL_TYPE_PARAMETER_PROPERTY, wrapper);
             wrapper.extract();
         }
     }

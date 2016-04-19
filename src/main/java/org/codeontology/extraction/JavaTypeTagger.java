@@ -23,7 +23,7 @@ public class JavaTypeTagger {
     }
 
     private void tagJavaType() {
-        RDFWriter.addTriple(typedElement, Ontology.JAVA_TYPE_PROPERTY, type);
+        RDFLogger.getInstance().addTriple(typedElement, Ontology.JAVA_TYPE_PROPERTY, type);
         if (!type.isDeclarationAvailable()) {
             type.extract();
         }

@@ -16,7 +16,7 @@ public abstract class Wrapper<E extends CtNamedElement> {
     private E element;
     private CtReference reference;
     public static final String SEPARATOR = "-";
-    public static Model model = RDFWriter.getModel();
+    public static Model model = RDFLogger.getInstance().getModel();
 
     public Wrapper(E element) {
         setElement(element);
@@ -65,17 +65,17 @@ public abstract class Wrapper<E extends CtNamedElement> {
     }
 
     protected void tagType() {
-        RDFWriter.addTriple(this, Ontology.RDF_TYPE_PROPERTY, getType());
+        getLogger().addTriple(this, Ontology.RDF_TYPE_PROPERTY, getType());
     }
 
     protected void tagName() {
-        RDFWriter.addTriple(this, Ontology.NAME_PROPERTY, getName());
+        getLogger().addTriple(this, Ontology.NAME_PROPERTY, getName());
     }
 
     protected void tagComment() {
         String comment = getElement().getDocComment();
         if (comment != null) {
-            RDFWriter.addTriple(this, Ontology.COMMENT_PROPERTY, model.createLiteral(comment));
+            getLogger().addTriple(this, Ontology.COMMENT_PROPERTY, model.createLiteral(comment));
         }
     }
 
@@ -83,7 +83,7 @@ public abstract class Wrapper<E extends CtNamedElement> {
         List<CtAnnotation<?>> annotations = getElement().getAnnotations();
         for (CtAnnotation annotation : annotations) {
             TypeWrapper annotationType = getFactory().wrap(annotation.getAnnotationType());
-            RDFWriter.addTriple(this, Ontology.ANNOTATION_PROPERTY, annotationType);
+            getLogger().addTriple(this, Ontology.ANNOTATION_PROPERTY, annotationType);
             if (!annotationType.isDeclarationAvailable()) {
                 annotationType.extract();
             }
@@ -93,7 +93,7 @@ public abstract class Wrapper<E extends CtNamedElement> {
     protected abstract RDFNode getType();
 
     protected void tagSourceCode() {
-        RDFWriter.addTriple(this, Ontology.SOURCE_CODE_PROPERTY, model.createLiteral(getElement().toString()));
+        getLogger().addTriple(this, Ontology.SOURCE_CODE_PROPERTY, model.createLiteral(getElement().toString()));
     }
 
     public Model getModel() {
@@ -110,6 +110,10 @@ public abstract class Wrapper<E extends CtNamedElement> {
 
     public boolean isDeclarationAvailable() {
         return getElement() != null;
+    }
+
+    public RDFLogger getLogger() {
+        return RDFLogger.getInstance();
     }
 
 }

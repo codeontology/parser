@@ -41,7 +41,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     }
 
     private void tagPosition() {
-        RDFWriter.addTriple(this, Ontology.POSITION_PROPERTY, getModel().createTypedLiteral(position));
+        getLogger().addTriple(this, Ontology.POSITION_PROPERTY, getModel().createTypedLiteral(position));
     }
 
     protected void tagBounds() {
@@ -56,9 +56,9 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
             ((TypeVariableWrapper) bound).findAndSetParent(parent);
         }
         if (((CtTypeParameterReference) getReference()).isUpper()) {
-            RDFWriter.addTriple(this, Ontology.EXTENDS_PROPERTY, bound);
+            getLogger().addTriple(this, Ontology.EXTENDS_PROPERTY, bound);
         } else {
-            RDFWriter.addTriple(this, Ontology.SUPER_PROPERTY, bound);
+            getLogger().addTriple(this, Ontology.SUPER_PROPERTY, bound);
         }
         if (!bound.isDeclarationAvailable()) {
             bound.extract();

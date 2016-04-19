@@ -3,7 +3,7 @@ package org.codeontology;
 import com.martiansoftware.jsap.JSAPException;
 import org.codeontology.buildsystems.DependenciesLoader;
 import org.codeontology.buildsystems.LoaderFactory;
-import org.codeontology.extraction.RDFWriter;
+import org.codeontology.extraction.RDFLogger;
 import org.codeontology.extraction.SourceProcessor;
 import spoon.Launcher;
 
@@ -70,10 +70,12 @@ public class CodeOntology {
     }
 
     private void extractAllTriples() {
-        RDFWriter.setOutputFile(getArguments().getOutput());
+        RDFLogger logger = RDFLogger.getInstance();
+        logger.setOutputFile(getArguments().getOutput());
         System.out.println("Extracting triples...");
         spoon.addProcessor(new SourceProcessor());
         spoon.process();
+        logger.writeRDF();
         System.out.println("Triples extracted successfully.");
     }
 
