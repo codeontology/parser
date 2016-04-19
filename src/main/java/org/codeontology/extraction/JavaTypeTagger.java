@@ -37,7 +37,7 @@ public class JavaTypeTagger {
         if (isTypeVariable()) {
             getTypeVariable().findAndSetParent(executable);
         }
-        handleGenericArray(executable.getReference());
+        handleGenericCompositeType(executable.getReference());
         tagJavaType();
     }
 
@@ -45,7 +45,7 @@ public class JavaTypeTagger {
         if (isTypeVariable()) {
             getTypeVariable().findAndSetParent(variable.getParent());
         }
-        handleGenericArray(variable.getParent().getReference());
+        handleGenericCompositeType(variable.getParent().getReference());
         tagJavaType();
     }
 
@@ -53,7 +53,7 @@ public class JavaTypeTagger {
         if (isTypeVariable()) {
             getTypeVariable().findAndSetParent(type);
         }
-        handleGenericArray(type.getReference());
+        handleGenericCompositeType(type.getReference());
         tagJavaType();
     }
 
@@ -65,9 +65,11 @@ public class JavaTypeTagger {
         return (TypeVariableWrapper) type;
     }
 
-    private void handleGenericArray(CtReference parent) {
+    private void handleGenericCompositeType(CtReference parent) {
         if (type instanceof ArrayWrapper) {
             ((ArrayWrapper) type).setParent(parent);
+        } else if (type instanceof ParameterizedTypeWrapper) {
+            ((ParameterizedTypeWrapper) type).setParent(parent);
         }
     }
 

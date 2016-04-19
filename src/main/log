@@ -1,0 +1,8 @@
+Exception in thread "main" spoon.compiler.ModelBuildingException: The method addProcessor(String) in the type Launcher is not applicable for the arguments (SourceProcessor) at /home/mattia/Scrivania/CodeOntology/codeontology/src/main/java/org/codeontology/CodeOntology.java:66
+	at spoon.support.compiler.jdt.JDTBasedSpoonCompiler.report(JDTBasedSpoonCompiler.java:535)
+	at spoon.support.compiler.jdt.JDTBasedSpoonCompiler.reportProblems(JDTBasedSpoonCompiler.java:551)
+	at spoon.support.compiler.jdt.JDTBasedSpoonCompiler.build(JDTBasedSpoonCompiler.java:507)
+	at spoon.Launcher.buildModel(Launcher.java:751)
+	at spoon.Launcher.run(Launcher.java:702)
+	at spoon.Launcher.run(Launcher.java:104)
+	at spoon.Launcher.main(Launcher.java:97)

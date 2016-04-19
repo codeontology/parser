@@ -52,6 +52,9 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
             ((TypeVariableWrapper) returnType).findAndSetParent(this);
         } else if (returnType instanceof ArrayWrapper) {
             ((ArrayWrapper) returnType).setParent(getReference());
+        } else if (returnType instanceof ParameterizedTypeWrapper) {
+            ((ParameterizedTypeWrapper) returnType).setParent(getReference());
+            returnType.extract();
         } else if (reference.getDeclaration() == null) {
             returnType.extract();
         }

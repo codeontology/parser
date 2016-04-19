@@ -47,16 +47,24 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         }
     }
 
-    private void tagBound(CtTypeReference bound) {
-        Wrapper wrapper = getFactory().wrap(bound);
-        RDFWriter.addTriple(this, Ontology.EXTENDS_PROPERTY, wrapper);
-        if (!wrapper.isDeclarationAvailable()) {
-            wrapper.extract();
+    private void tagBound(CtTypeReference boundReference) {
+        TypeWrapper bound = getFactory().wrap(boundReference);
+        if (bound instanceof TypeVariableWrapper) {
+            //((TypeVariableWrapper) bound).findAndSetParent(parent);
+            return;
+        }
+        RDFWriter.addTriple(this, Ontology.EXTENDS_PROPERTY, bound);
+        if (!bound.isDeclarationAvailable()) {
+            bound.extract();
         }
     }
 
     @Override
     public String getRelativeURI() {
+        if (isWildcard()) {
+            return "?";
+        }
+
         return parent.getRelativeURI() + SEPARATOR + getReference().getQualifiedName();
     }
 
@@ -90,7 +98,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         CtExecutableReference<?> executableReference = (CtExecutableReference<?>) executable.getReference();
 
         if (executable.isDeclarationAvailable()) {
-            List<CtTypeReference<?>> parameters = new FormalTypeParametersList(executable.getElement().getFormalTypeParameters());
+            List<CtTypeReference<?>> parameters = new TypeVariableList(executable.getElement().getFormalTypeParameters());
             if (parameters.contains(getReference())) {
                 setParent(executable);
             } else {
@@ -104,6 +112,11 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     public void findAndSetParent(CtExecutableReference executableReference) {
         if (executableReference.getDeclaration() != null) {
             findAndSetParent(getFactory().wrap(executableReference));
+            return;
+        }
+
+        if (isWildcard()) {
+            setParent(getFactory().wrap(executableReference));
             return;
         }
 
@@ -154,19 +167,23 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
 
     public void findAndSetParent(CtType type) {
         if (type != null) {
-            List<CtTypeReference<?>> formalTypes = new FormalTypeParametersList(type.getFormalTypeParameters());
+            List<CtTypeReference<?>> formalTypes = new TypeVariableList(type.getFormalTypeParameters());
             while (!formalTypes.contains(getReference())) {
                 type = type.getDeclaringType();
-                formalTypes = new FormalTypeParametersList(type.getFormalTypeParameters());
+                formalTypes = new TypeVariableList(type.getFormalTypeParameters());
             }
             setParent(type);
         }
     }
+
+    public boolean isWildcard() {
+        return getReference().getSimpleName().equals("?");
+    }
 }
 
-class FormalTypeParametersList extends ArrayList<CtTypeReference<?>> {
+class TypeVariableList extends ArrayList<CtTypeReference<?>> {
 
-    public FormalTypeParametersList(List<CtTypeReference<?>> parameters) {
+    public TypeVariableList(List<CtTypeReference<?>> parameters) {
         super(parameters);
     }
 
@@ -176,6 +193,10 @@ class FormalTypeParametersList extends ArrayList<CtTypeReference<?>> {
             return super.contains(object);
         }
         CtTypeReference<?> parameter = (CtTypeReference<?>) object;
+
+        if (parameter.getSimpleName().equals("?")) {
+            return true;
+        }
 
         for (CtTypeReference currentParameter : this) {
             if (currentParameter.getQualifiedName().equals(parameter.getQualifiedName())) {

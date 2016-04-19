@@ -73,6 +73,8 @@ public class Ontology {
 
     public static final Resource LAMBDA_CLASS = model.getResource(WOC + "Lambda");
 
+    public static final Resource TYPE_ARGUMENT_CLASS = model.getResource(WOC + "TypeArgument");
+
 
     public static final Property RDF_TYPE_PROPERTY = model.getProperty(RDF + "type");
 
