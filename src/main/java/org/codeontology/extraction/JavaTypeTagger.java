@@ -20,10 +20,6 @@ public class JavaTypeTagger {
         } else {
             type = WrapperFactory.getInstance().wrap((CtTypeReference<?>) typedElement.getReference());
         }
-
-        if (type instanceof ParameterizedTypeWrapper) {
-            type.extract();
-        }
     }
 
     private void tagJavaType() {
@@ -70,6 +66,7 @@ public class JavaTypeTagger {
             ((ArrayWrapper) type).setParent(parent);
         } else if (type instanceof ParameterizedTypeWrapper) {
             ((ParameterizedTypeWrapper) type).setParent(parent);
+            type.extract();
         }
     }
 

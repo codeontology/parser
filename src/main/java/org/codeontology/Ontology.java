@@ -114,6 +114,8 @@ public class Ontology {
 
     public static final Property IMPLEMENTS_PROPERTY = model.getProperty(WOC + "implements");
 
+    public static final Property SUPER_PROPERTY = model.getProperty(WOC + "super");
+
     public static final Property PACKAGE_OF_PROPERTY = model.getProperty(WOC + "packageOf");
 
     public static final Property ARRAY_OF_PROPERTY = model.getProperty(WOC + "arrayOf");

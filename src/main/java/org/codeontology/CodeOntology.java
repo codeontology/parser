@@ -26,7 +26,7 @@ public class CodeOntology {
             launcher.spoon();
             launcher.extractAllTriples();
         } catch (Exception e) {
-            System.out.println("Sorry, something went wrong: " + e.getClass().getSimpleName());
+            System.out.println("Sorry, something went awry.");
             if (e.getMessage() != null) {
                 System.out.println(e.getMessage());
             }

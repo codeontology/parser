@@ -3,10 +3,7 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtType;
-import spoon.reflect.reference.CtExecutableReference;
-import spoon.reflect.reference.CtIntersectionTypeReference;
-import spoon.reflect.reference.CtTypeParameterReference;
-import spoon.reflect.reference.CtTypeReference;
+import spoon.reflect.reference.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -50,10 +47,13 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     private void tagBound(CtTypeReference boundReference) {
         TypeWrapper bound = getFactory().wrap(boundReference);
         if (bound instanceof TypeVariableWrapper) {
-            //((TypeVariableWrapper) bound).findAndSetParent(parent);
-            return;
+            ((TypeVariableWrapper) bound).findAndSetParent(parent);
         }
-        RDFWriter.addTriple(this, Ontology.EXTENDS_PROPERTY, bound);
+        if (((CtTypeParameterReference) getReference()).isUpper()) {
+            RDFWriter.addTriple(this, Ontology.EXTENDS_PROPERTY, bound);
+        } else {
+            RDFWriter.addTriple(this, Ontology.SUPER_PROPERTY, bound);
+        }
         if (!bound.isDeclarationAvailable()) {
             bound.extract();
         }
@@ -173,6 +173,15 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
                 formalTypes = new TypeVariableList(type.getFormalTypeParameters());
             }
             setParent(type);
+        }
+    }
+
+    public void findAndSetParent(Wrapper wrapper) {
+        CtReference reference = wrapper.getReference();
+        if (reference instanceof CtTypeReference<?>) {
+            findAndSetParent((CtTypeReference) reference);
+        } else if (reference instanceof CtExecutableReference) {
+            findAndSetParent((CtExecutableReference) reference);
         }
     }
 

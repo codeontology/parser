@@ -172,11 +172,17 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
     protected void tagRequestedTypes(Collection<CtTypeReference<?>> types) {
         for (CtTypeReference<?> reference : types) {
-            TypeWrapper wrapper = getFactory().wrap(reference);
-            if (wrapper != null) {
-                tagRequests(wrapper.getResource());
+            TypeWrapper type = getFactory().wrap(reference);
+            if (type != null) {
+                tagRequests(type.getResource());
                 if (reference.getDeclaration() == null) {
-                    wrapper.extract();
+                    if (type instanceof ArrayWrapper) {
+                        ((ArrayWrapper) type).setParent(getReference());
+                    } else if (type instanceof ParameterizedTypeWrapper) {
+                        ((ParameterizedTypeWrapper) type).setParent(getReference());
+                        type.extract();
+                    }
+                    type.extract();
                 }
             }
         }
