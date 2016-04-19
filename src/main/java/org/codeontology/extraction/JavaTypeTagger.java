@@ -20,6 +20,10 @@ public class JavaTypeTagger {
         } else {
             type = WrapperFactory.getInstance().wrap((CtTypeReference<?>) typedElement.getReference());
         }
+
+        if (type instanceof ParameterizedTypeWrapper) {
+            type.extract();
+        }
     }
 
     private void tagJavaType() {

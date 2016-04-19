@@ -24,6 +24,8 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
             uri = uri + SEPARATOR + argument;
         }
 
+        uri = uri.replace(" ", "_");
+
         return uri;
     }
 
