@@ -15,9 +15,22 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
 
     private int position;
     private Wrapper parent;
+    private List<CtTypeReference<?>> bounds;
 
     public TypeVariableWrapper(CtTypeReference<?> reference) {
         super(reference);
+        setBounds();
+    }
+
+    private void setBounds() {
+        bounds = new ArrayList<>();
+        CtTypeParameterReference reference = (CtTypeParameterReference) getReference();
+        CtTypeReference<?> boundingType = reference.getBoundingType();
+        if (boundingType instanceof CtIntersectionTypeReference) {
+            bounds = boundingType.asCtIntersectionTypeReference().getBounds();
+        } else if (boundingType != null) {
+            bounds.add(boundingType);
+        }
     }
 
     @Override
@@ -32,15 +45,8 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     }
 
     protected void tagBounds() {
-        CtTypeParameterReference reference = (CtTypeParameterReference) getReference();
-        CtTypeReference<?> boundingType = reference.getBoundingType();
-        if (boundingType instanceof CtIntersectionTypeReference) {
-            List<CtTypeReference<?>> bounds = boundingType.asCtIntersectionTypeReference().getBounds();
-            for (CtTypeReference bound : bounds) {
-                tagBound(bound);
-            }
-        } else if (boundingType != null) {
-            tagBound(boundingType);
+        for (CtTypeReference bound : bounds) {
+            tagBound(bound);
         }
     }
 
@@ -62,10 +68,41 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     @Override
     public String getRelativeURI() {
         if (isWildcard()) {
-            return "?";
+            return wildcardURI();
         }
 
         return parent.getRelativeURI() + SEPARATOR + getReference().getQualifiedName();
+    }
+
+    private String wildcardURI() {
+        String clause;
+        if (((CtTypeParameterReference) getReference()).isUpper()) {
+            clause = "extends";
+        } else {
+            clause = "super";
+        }
+
+        String uri = "?";
+        final String SEPARATOR = "_";
+
+        if (bounds.size() > 0) {
+            uri = uri + SEPARATOR + clause;
+        }
+
+        for (CtTypeReference bound : bounds) {
+            TypeWrapper wrapper = getFactory().wrap(bound);
+            if (wrapper instanceof TypeVariableWrapper) {
+                ((TypeVariableWrapper) wrapper).findAndSetParent(parent);
+            }  else if (wrapper instanceof ArrayWrapper) {
+                ((ArrayWrapper) wrapper).setParent(parent.getReference());
+            } else if (wrapper instanceof ParameterizedTypeWrapper) {
+                ((ParameterizedTypeWrapper) wrapper).setParent(parent.getReference());
+                wrapper.extract();
+            }
+            uri = uri + SEPARATOR + wrapper.getRelativeURI();
+        }
+
+        return uri;
     }
 
     @Override
