@@ -3,10 +3,13 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.code.CtLambda;
+import spoon.reflect.reference.CtExecutableReference;
+import spoon.reflect.reference.CtTypeReference;
 
 public class LambdaWrapper extends Wrapper<CtLambda<?>> {
     private ExecutableWrapper<?> parent;
     private static final String TAG = "lambda";
+
 
     public LambdaWrapper(CtLambda<?> lambda) {
         super(lambda);
@@ -20,11 +23,18 @@ public class LambdaWrapper extends Wrapper<CtLambda<?>> {
     }
 
     private void tagFunctionalImplements() {
-        Wrapper<?> wrapper = getFactory().wrap(getElement().getType());
-        getLogger().addTriple(this, Ontology.IMPLEMENTS_PROPERTY, wrapper.getResource());
-        if (wrapper.getReference() == null) {
-            wrapper.extract();
+        Wrapper<?> implementedType = getFactory().wrap(getElement().getType());
+        if (implementedType instanceof TypeVariableWrapper) {
+            ((TypeVariableWrapper) implementedType).findAndSetParent(parent);
+        } else if (implementedType instanceof ArrayWrapper) {
+            ((ArrayWrapper) implementedType).setParent(parent.getReference());
+        } else if (implementedType instanceof ParameterizedTypeWrapper) {
+            ((ParameterizedTypeWrapper) implementedType).setParent(parent.getReference());
         }
+        if (!implementedType.isDeclarationAvailable()) {
+            implementedType.extract();
+        }
+        getLogger().addTriple(this, Ontology.IMPLEMENTS_PROPERTY, implementedType);
     }
 
     @Override

@@ -44,6 +44,21 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
         }
     }
 
+    protected void tagSuperClass() {
+        CtTypeReference<?> superclass = getReference().getSuperclass();
+        if (superclass == null) {
+            superclass = getFactory().getParent().Type().createReference(Object.class);
+        }
+        TypeWrapper<?> wrapper = getFactory().wrap(superclass);
+        if (wrapper instanceof ParameterizedTypeWrapper) {
+            ((ParameterizedTypeWrapper) wrapper).setParent(getReference());
+        }
+        getLogger().addTriple(this, Ontology.EXTENDS_PROPERTY, wrapper);
+        if (!wrapper.isDeclarationAvailable()) {
+            wrapper.extract();
+        }
+    }
+
     protected void tagSuperInterfaces() {
         tagSuperInterfaces(Ontology.IMPLEMENTS_PROPERTY);
     }

@@ -1,11 +1,16 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import org.apache.commons.lang3.ObjectUtils;
 import org.codeontology.Ontology;
+import spoon.reflect.declaration.CtExecutable;
 import spoon.reflect.declaration.CtType;
+import spoon.reflect.internal.CtCircularTypeReference;
 import spoon.reflect.reference.*;
+import tdb.cmdline.CmdSub;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
@@ -54,6 +59,10 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         TypeWrapper bound = getFactory().wrap(boundReference);
         if (bound instanceof TypeVariableWrapper) {
             ((TypeVariableWrapper) bound).findAndSetParent(parent);
+        } else if (bound instanceof ArrayWrapper) {
+            ((ArrayWrapper) bound).setParent(parent.getReference());
+        } else if (bound instanceof ParameterizedTypeWrapper) {
+            ((ParameterizedTypeWrapper) bound).setParent(parent.getReference());
         }
         if (((CtTypeParameterReference) getReference()).isUpper()) {
             getLogger().addTriple(this, Ontology.EXTENDS_PROPERTY, bound);
@@ -70,7 +79,6 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         if (isWildcard()) {
             return wildcardURI();
         }
-
         return parent.getRelativeURI() + SEPARATOR + getReference().getQualifiedName();
     }
 
@@ -146,7 +154,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         }
     }
 
-    public void findAndSetParent(CtExecutableReference executableReference) {
+    public void findAndSetParent(CtExecutableReference<?> executableReference) {
         if (executableReference.getDeclaration() != null) {
             findAndSetParent(getFactory().wrap(executableReference));
             return;
@@ -157,19 +165,9 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
             return;
         }
 
-        Method method = executableReference.getActualMethod();
-        Constructor<?> constructor = executableReference.getActualConstructor();
-
-        TypeVariable<?>[] typeParameters;
-        Class<?> declaringClass;
-
-        try {
-            typeParameters = method.getTypeParameters();
-            declaringClass = method.getDeclaringClass();
-        } catch (NullPointerException e) {
-            typeParameters = constructor.getTypeParameters();
-            declaringClass = constructor.getDeclaringClass();
-        }
+        Executable executable = getActualExecutable(executableReference);
+        TypeVariable<?>[] typeParameters = executable.getTypeParameters();
+        Class<?> declaringClass = executable.getDeclaringClass();
 
         for (TypeVariable current : typeParameters) {
             if (current.getName().equals(getReference().getQualifiedName())) {
@@ -179,6 +177,58 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         }
 
         findAndSetParent(declaringClass);
+    }
+
+
+    private Executable getActualExecutable(CtExecutableReference<?> executableReference) {
+
+        Executable executable = executableReference.getActualMethod();
+
+        if (executable == null) {
+            executable = executableReference.getActualConstructor();
+        }
+
+        if (executable == null) {
+            try {
+                Class<?> declaringClass = Class.forName(executableReference.getDeclaringType().getQualifiedName());
+
+                Executable[] executables = declaringClass.getDeclaredMethods();
+                if (executableReference.isConstructor()) {
+                    executables = declaringClass.getConstructors();
+                }
+
+                List<CtTypeReference<?>> types = executableReference.getParameters();
+                System.out.println(types);
+
+                for (Executable current : executables) {
+                    if (current.getName().equals(executableReference.getSimpleName())) {
+                        if (current.getParameterCount() == executableReference.getParameters().size()) {
+                            List<CtTypeReference<?>> parameters = executableReference.getParameters();
+                            Class<?>[] classes = new Class<?>[parameters.size()];
+                            for (int i = 0; i < parameters.size(); i++) {
+                                classes[i] = parameters.get(i).getActualClass();
+                            }
+
+                            boolean acc = true;
+
+                            Class<?>[] parameterTypes = current.getParameterTypes();
+                            for (int i = 0; i < classes.length && acc; i++) {
+                                acc = classes[i].isAssignableFrom(parameterTypes[i]);
+                            }
+
+                            if (acc) {
+                                executable = current;
+                                break;
+                            }
+                        }
+                    }
+                }
+            } catch (ClassNotFoundException | NoSuchMethodError e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return executable;
     }
 
     public void findAndSetParent(Class<?> clazz) {

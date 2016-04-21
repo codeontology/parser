@@ -5,14 +5,11 @@ import spoon.reflect.code.CtLambda;
 import spoon.reflect.code.CtLocalVariable;
 import spoon.reflect.declaration.*;
 import spoon.reflect.factory.Factory;
-import spoon.reflect.reference.CtArrayTypeReference;
 import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtTypeParameterReference;
 import spoon.reflect.reference.CtTypeReference;
 
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +17,7 @@ public class WrapperFactory {
 
     private Factory parent;
     private static WrapperFactory instance;
+    private TypeVariable previous = null;
 
     private WrapperFactory() {
 
@@ -127,6 +125,51 @@ public class WrapperFactory {
     }
 
     public ArrayWrapper wrap(GenericArrayType array) {
+        return new ArrayWrapper(createGenericArrayReference(array));
+    }
+
+    public ParameterizedTypeWrapper wrap(ParameterizedType parameterizedType) {
+        return new ParameterizedTypeWrapper(createParameterizedTypeReference(parameterizedType));
+    }
+
+    private CtTypeReference<?> createParameterizedTypeReference(ParameterizedType parameterizedType) {
+        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+        Type rawType = parameterizedType.getRawType();
+        CtTypeReference<?> reference;
+
+        if (rawType instanceof Class) {
+            reference = getParent().Type().createReference((Class) rawType);
+        } else {
+            reference = getParent().Type().createReference(rawType.getTypeName());
+        }
+
+        for (Type actualArgument : actualTypeArguments) {
+            reference.addActualTypeArgument(createTypeReference(actualArgument));
+        }
+
+        return reference;
+    }
+
+    private CtTypeReference createTypeReference(Type type) {
+        CtTypeReference reference;
+        if (type instanceof ParameterizedType) {
+            reference = createParameterizedTypeReference((ParameterizedType) type);
+        } else if (type instanceof TypeVariable) {
+            reference = createTypeParameterReference((TypeVariable) type);
+        } else if (type instanceof GenericArrayType) {
+            reference = createGenericArrayReference((GenericArrayType) type);
+        } else if (type instanceof Class) {
+            reference = getParent().Type().createReference((Class) type);
+        } else if (type instanceof WildcardType) {
+            reference = createWildcardReference((WildcardType) type);
+        } else {
+            reference = getParent().Type().createReference(type.getTypeName());
+        }
+
+        return reference;
+    }
+
+    private CtTypeReference createGenericArrayReference(GenericArrayType array) {
         Type type = array;
 
         int i = 0;
@@ -135,22 +178,56 @@ public class WrapperFactory {
             type = ((GenericArrayType) type).getGenericComponentType();
         } while (type instanceof GenericArrayType);
 
-        CtTypeParameterReference typeVariable = createTypeParameterReference((TypeVariable) type);
-        CtArrayTypeReference arrayReference = getParent().Type().createArrayReference(typeVariable, i);
-        return new ArrayWrapper(arrayReference);
+        CtTypeReference<?> componentType;
+
+        if (type instanceof TypeVariable) {
+            componentType = createTypeParameterReference((TypeVariable) type);
+        } else {
+            componentType = createParameterizedTypeReference((ParameterizedType) type);
+        }
+        return getParent().Type().createArrayReference(componentType, i);
     }
 
     private CtTypeParameterReference createTypeParameterReference(TypeVariable typeVariable) {
+        if (typeVariable.equals(previous)) {
+            return getParent().Type().createTypeParameterReference(typeVariable.getName());
+        }
+
+        previous = typeVariable;
+
         String name = typeVariable.getName();
         Type[] bounds = typeVariable.getBounds();
 
         List<CtTypeReference<?>> boundsList = new ArrayList<>();
 
         for (Type bound : bounds) {
-            boundsList.add(getParent().Type().createReference(bound.getTypeName()));
+            boundsList.add(createTypeReference(bound));
         }
 
+        previous = null;
+
         return getParent().Type().createTypeParameterReference(name, boundsList);
+    }
+
+    private CtTypeParameterReference createWildcardReference(WildcardType wildcard) {
+        String name = "?";
+        Type[] upperBounds = wildcard.getUpperBounds();
+        Type[] lowerBounds = wildcard.getLowerBounds();
+
+        List<CtTypeReference<?>> boundsList = new ArrayList<>();
+
+        for (Type bound : upperBounds) {
+            boundsList.add(createTypeReference(bound));
+        }
+
+        for (Type bound: lowerBounds) {
+            boundsList.add(createTypeReference(bound));
+        }
+
+        CtTypeParameterReference wildcardReference = getParent().Type().createTypeParameterReference(name, boundsList);
+        wildcardReference.setUpper(upperBounds.length > 0);
+
+        return wildcardReference;
     }
 
     public void setParent(Factory parent) {

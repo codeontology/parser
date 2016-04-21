@@ -11,13 +11,10 @@ import spoon.support.reflect.reference.CtExecutableReferenceImpl;
 import spoon.support.reflect.reference.CtFieldReferenceImpl;
 import spoon.support.reflect.reference.CtLocalVariableReferenceImpl;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember & CtGenericElement> extends TypeMemberWrapper<E> {
-    
+
     public ExecutableWrapper(E executable) {
         super(executable);
     }
@@ -82,8 +79,11 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     protected void tagThrows() {
         Set<CtTypeReference<? extends Throwable>> thrownTypes = getElement().getThrownTypes();
         for (CtTypeReference<? extends Throwable> current : thrownTypes) {
-            Resource thrownTypeResource = getFactory().wrap(current).getResource();
-            getLogger().addTriple(this, Ontology.THROWS_PROPERTY, thrownTypeResource);
+            TypeWrapper thrownType = getFactory().wrap(current);
+            if (thrownType instanceof TypeVariableWrapper) {
+              ((TypeVariableWrapper) thrownType).findAndSetParent(this);
+            }
+            getLogger().addTriple(this, Ontology.THROWS_PROPERTY, thrownType);
         }
     }
 
@@ -118,6 +118,13 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
     protected void tagInvocations(CtStatement statement) {
         Set<CtExecutableReference<?>> references = new HashSet<>(statement.getReferences(new ReferenceTypeFilter<>(CtExecutableReferenceImpl.class)));
+
+        /*if (statement instanceof CtInvocation) {
+            List<CtExpression<?>> arguments = ((CtInvocation<?>) statement).getArguments();
+            for (CtExpression<?> e : arguments) {
+                System.out.println(e.getClass());
+            }
+        }*/
 
         for (CtExecutableReference<?> reference : references) {
             CtExecutable<?> executable = reference.getDeclaration();
@@ -155,7 +162,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         } else {
             tagRequests(wrapper.getResource());
         }
-        if (reference.getDeclaration() == null) {
+        if (!wrapper.isDeclarationAvailable()) {
             wrapper.extract();
         }
     }
@@ -175,14 +182,15 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         for (CtTypeReference<?> reference : types) {
             TypeWrapper type = getFactory().wrap(reference);
             if (type != null) {
-                tagRequests(type.getResource());
                 if (reference.getDeclaration() == null) {
                     if (type instanceof ArrayWrapper) {
                         ((ArrayWrapper) type).setParent(getReference());
                     } else if (type instanceof ParameterizedTypeWrapper) {
                         ((ParameterizedTypeWrapper) type).setParent(getReference());
-                        type.extract();
+                    } else if (type instanceof TypeVariableWrapper) {
+                        ((TypeVariableWrapper) type).findAndSetParent(this);
                     }
+                    tagRequests(type.getResource());
                     type.extract();
                 }
             }
@@ -190,6 +198,11 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     }
 
     private void tagLocalVariables(CtStatement statement) {
+        List<CtNewClass> newClasses = statement.getElements(element -> element != null);
+        if (!newClasses.isEmpty()) {
+            return;
+        }
+
         List<CtLocalVariableReference<?>> references = statement.getReferences(new ReferenceTypeFilter<>(CtLocalVariableReferenceImpl.class));
 
         for (CtLocalVariableReference<?> reference : references) {
@@ -200,7 +213,6 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
                 wrapper.extract();
             }
         }
-
     }
 
     protected void tagMethodRequested(CtMethod<?> method) {
@@ -242,6 +254,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         LocalVariableWrapper wrapper = getFactory().wrap(variable);
         wrapper.setParent(this);
         getLogger().addTriple(this, Ontology.RETURNS_VAR_PROPERTY, wrapper.getResource());
+        wrapper.extract();
     }
 
     protected void tagReturnsField(CtField<?> field) {

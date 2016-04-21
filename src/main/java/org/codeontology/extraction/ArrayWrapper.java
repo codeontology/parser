@@ -63,6 +63,10 @@ public class ArrayWrapper extends TypeWrapper<CtType<?>> {
             } else if (parent instanceof CtExecutableReference) {
                 typeVariable.findAndSetParent((CtExecutableReference) parent);
             }
+        } else if (componentType instanceof ArrayWrapper) {
+            ((ArrayWrapper) componentType).setParent(parent);
+        } else if (componentType instanceof ParameterizedTypeWrapper) {
+            ((ParameterizedTypeWrapper) componentType).setParent(parent);
         }
     }
 }

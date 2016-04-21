@@ -6,11 +6,9 @@ import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.support.reflect.reference.SpoonClassNotFoundException;
+import tdb.cmdline.CmdSub;
 
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
+import java.lang.reflect.*;
 import java.util.List;
 
 public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
@@ -32,7 +30,20 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
         super.extract();
         tagReturns();
         if (isDeclarationAvailable()) {
+            tagOverrides();
             tagFormalTypeParameters();
+        }
+    }
+
+    protected void tagOverrides() {
+        CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference()).getOverridingExecutable();
+        if (reference != null) {
+            ExecutableWrapper overridingMethod = getFactory().wrap(reference);
+            getLogger().addTriple(this, Ontology.OVERRIDES_PROPERTY, overridingMethod);
+
+            if (!overridingMethod.isDeclarationAvailable()) {
+                overridingMethod.extract();
+            }
         }
     }
 
@@ -78,6 +89,10 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
                     TypeVariableWrapper typeVariable = getFactory().wrap((TypeVariable) returnType);
                     typeVariable.findAndSetParent(this);
                     result = typeVariable;
+                } else if (returnType instanceof ParameterizedType) {
+                    ParameterizedTypeWrapper parameterizedType = getFactory().wrap((ParameterizedType) returnType);
+                    parameterizedType.setParent(getReference());
+                    result = parameterizedType;
                 }
             } catch (SpoonClassNotFoundException | NullPointerException e) {
                 return null;

@@ -38,26 +38,19 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
         return (CtTypeReference<?>) super.getReference();
     }
 
-    protected void tagSuperClass() {
-        CtTypeReference<?> superclass = getReference().getSuperclass();
-        if (superclass != null) {
-            TypeWrapper<?> wrapper = getFactory().wrap(superclass);
-            getLogger().addTriple(this, Ontology.EXTENDS_PROPERTY, wrapper.getResource());
-            if (superclass.getDeclaration() == null) {
-                wrapper.extract();
-            }
-        }
-    }
-
     protected void tagSuperInterfaces(Property property) {
         Set<CtTypeReference<?>> references = getReference().getSuperInterfaces();
 
         for (CtTypeReference<?> reference : references) {
             TypeWrapper<?> wrapper = getFactory().wrap(reference);
 
+            if (wrapper instanceof ParameterizedTypeWrapper) {
+                ((ParameterizedTypeWrapper) wrapper).setParent(getReference());
+            }
+
             getLogger().addTriple(this, property, wrapper.getResource());
 
-            if (reference.getDeclaration() == null) {
+            if (!wrapper.isDeclarationAvailable()) {
                 wrapper.extract();
             }
         }

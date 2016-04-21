@@ -27,7 +27,21 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         String uri = getReference().getQualifiedName();
 
         for (CtTypeReference<?> argument : arguments) {
-            uri = uri + SEPARATOR + argument;
+            TypeWrapper argumentWrapper = getFactory().wrap(argument);
+            if (argumentWrapper instanceof TypeVariableWrapper) {
+                TypeVariableWrapper typeVariable = (TypeVariableWrapper) argumentWrapper;
+
+                if (parent instanceof CtTypeReference) {
+                    typeVariable.findAndSetParent((CtTypeReference) parent);
+                } else if (parent instanceof CtExecutableReference) {
+                    typeVariable.findAndSetParent((CtExecutableReference) parent);
+                }
+            } else if (argumentWrapper instanceof ArrayWrapper) {
+                ((ArrayWrapper) argumentWrapper).setParent(parent);
+            } else if (argumentWrapper instanceof ParameterizedTypeWrapper) {
+                ((ParameterizedTypeWrapper) argumentWrapper).setParent(parent);
+            }
+            uri = uri + SEPARATOR + argumentWrapper.getRelativeURI();
         }
 
         uri = uri.replace(" ", "_");
@@ -120,6 +134,10 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
                 } else if (parent instanceof CtExecutableReference) {
                     typeVariable.findAndSetParent((CtExecutableReference) parent);
                 }
+            } else if (argument instanceof ArrayWrapper) {
+                ((ArrayWrapper) argument).setParent(parent);
+            } else if (argument instanceof ParameterizedTypeWrapper) {
+                ((ParameterizedTypeWrapper) argument).setParent(parent);
             }
         }
     }
