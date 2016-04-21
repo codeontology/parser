@@ -194,14 +194,11 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
 
                 Executable[] executables = declaringClass.getDeclaredMethods();
                 if (executableReference.isConstructor()) {
-                    executables = declaringClass.getConstructors();
+                    executables = declaringClass.getDeclaredConstructors();
                 }
 
-                List<CtTypeReference<?>> types = executableReference.getParameters();
-                System.out.println(types);
-
                 for (Executable current : executables) {
-                    if (current.getName().equals(executableReference.getSimpleName())) {
+                    if (current.getName().equals(executableReference.getSimpleName()) || current instanceof Constructor) {
                         if (current.getParameterCount() == executableReference.getParameters().size()) {
                             List<CtTypeReference<?>> parameters = executableReference.getParameters();
                             Class<?>[] classes = new Class<?>[parameters.size()];

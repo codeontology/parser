@@ -103,13 +103,15 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
         for (CtStatement statement : statements) {
             types.addAll(statement.getReferencedTypes());
-            tagInvocations(statement);
-            tagRequestedFields(statement);
-            tagLocalVariables(statement);
-            tagLambdas(statement);
+            if (!createsAnonymousClass(statement)) {
+                tagInvocations(statement);
+                tagRequestedFields(statement);
+                tagLocalVariables(statement);
+                tagLambdas(statement);
 
-            if (statement instanceof CtReturn<?>) {
-                tagReturnsVariable((CtReturn<?>) statement);
+                if (statement instanceof CtReturn<?>) {
+                    tagReturnsVariable((CtReturn<?>) statement);
+                }
             }
         }
 
@@ -118,13 +120,6 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
     protected void tagInvocations(CtStatement statement) {
         Set<CtExecutableReference<?>> references = new HashSet<>(statement.getReferences(new ReferenceTypeFilter<>(CtExecutableReferenceImpl.class)));
-
-        /*if (statement instanceof CtInvocation) {
-            List<CtExpression<?>> arguments = ((CtInvocation<?>) statement).getArguments();
-            for (CtExpression<?> e : arguments) {
-                System.out.println(e.getClass());
-            }
-        }*/
 
         for (CtExecutableReference<?> reference : references) {
             CtExecutable<?> executable = reference.getDeclaration();
@@ -197,12 +192,12 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    private void tagLocalVariables(CtStatement statement) {
+    private boolean createsAnonymousClass(CtStatement statement) {
         List<CtNewClass> newClasses = statement.getElements(element -> element != null);
-        if (!newClasses.isEmpty()) {
-            return;
-        }
+        return !newClasses.isEmpty();
+    }
 
+    private void tagLocalVariables(CtStatement statement) {
         List<CtLocalVariableReference<?>> references = statement.getReferences(new ReferenceTypeFilter<>(CtLocalVariableReferenceImpl.class));
 
         for (CtLocalVariableReference<?> reference : references) {

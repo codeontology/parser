@@ -11,16 +11,18 @@ import spoon.reflect.reference.CtTypeReference;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class WrapperFactory {
 
     private Factory parent;
     private static WrapperFactory instance;
-    private TypeVariable previous = null;
+    private Set<TypeVariable> previousVariables;
 
     private WrapperFactory() {
-
+        previousVariables = new HashSet<>();
     }
 
     public static WrapperFactory getInstance() {
@@ -133,6 +135,7 @@ public class WrapperFactory {
     }
 
     private CtTypeReference<?> createParameterizedTypeReference(ParameterizedType parameterizedType) {
+
         Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
         Type rawType = parameterizedType.getRawType();
         CtTypeReference<?> reference;
@@ -189,11 +192,11 @@ public class WrapperFactory {
     }
 
     private CtTypeParameterReference createTypeParameterReference(TypeVariable typeVariable) {
-        if (typeVariable.equals(previous)) {
+        if (previousVariables.contains(typeVariable)) {
             return getParent().Type().createTypeParameterReference(typeVariable.getName());
         }
 
-        previous = typeVariable;
+        previousVariables.add(typeVariable);
 
         String name = typeVariable.getName();
         Type[] bounds = typeVariable.getBounds();
@@ -204,7 +207,7 @@ public class WrapperFactory {
             boundsList.add(createTypeReference(bound));
         }
 
-        previous = null;
+        previousVariables.remove(typeVariable);
 
         return getParent().Type().createTypeParameterReference(name, boundsList);
     }
