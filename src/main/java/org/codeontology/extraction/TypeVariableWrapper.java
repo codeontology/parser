@@ -79,7 +79,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         if (isWildcard()) {
             return wildcardURI();
         }
-        return parent.getRelativeURI() + SEPARATOR + getReference().getQualifiedName();
+        return getReference().getQualifiedName() + ":" + parent.getRelativeURI();
     }
 
     private String wildcardURI() {

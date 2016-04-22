@@ -122,7 +122,7 @@ public class WrapperFactory {
     }
 
     public TypeVariableWrapper wrap(TypeVariable typeVariable) {
-        CtTypeParameterReference reference = createTypeParameterReference(typeVariable);
+        CtTypeParameterReference reference = createTypeVariableReference(typeVariable);
         return new TypeVariableWrapper(reference);
     }
 
@@ -158,7 +158,7 @@ public class WrapperFactory {
         if (type instanceof ParameterizedType) {
             reference = createParameterizedTypeReference((ParameterizedType) type);
         } else if (type instanceof TypeVariable) {
-            reference = createTypeParameterReference((TypeVariable) type);
+            reference = createTypeVariableReference((TypeVariable) type);
         } else if (type instanceof GenericArrayType) {
             reference = createGenericArrayReference((GenericArrayType) type);
         } else if (type instanceof Class) {
@@ -184,14 +184,14 @@ public class WrapperFactory {
         CtTypeReference<?> componentType;
 
         if (type instanceof TypeVariable) {
-            componentType = createTypeParameterReference((TypeVariable) type);
+            componentType = createTypeVariableReference((TypeVariable) type);
         } else {
             componentType = createParameterizedTypeReference((ParameterizedType) type);
         }
         return getParent().Type().createArrayReference(componentType, i);
     }
 
-    private CtTypeParameterReference createTypeParameterReference(TypeVariable typeVariable) {
+    private CtTypeParameterReference createTypeVariableReference(TypeVariable typeVariable) {
         if (previousVariables.contains(typeVariable)) {
             return getParent().Type().createTypeParameterReference(typeVariable.getName());
         }

@@ -1,16 +1,19 @@
 package org.codeontology.extraction;
 
 
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.declaration.CtParameter;
 import spoon.reflect.reference.CtTypeReference;
 
+import java.util.List;
+
 public class ParameterWrapper extends Wrapper<CtParameter<?>> {
 
     private int position;
-    private ExecutableWrapper<?> parent;
+    private ExecutableWrapper parent;
     private boolean parameterAvailable = true;
     private JavaTypeTagger tagger;
 
@@ -37,6 +40,7 @@ public class ParameterWrapper extends Wrapper<CtParameter<?>> {
         if (isDeclarationAvailable()) {
             tagAnnotations();
             tagName();
+            tagComment();
         }
     }
 
@@ -73,5 +77,24 @@ public class ParameterWrapper extends Wrapper<CtParameter<?>> {
     @Override
     public boolean isDeclarationAvailable() {
         return parameterAvailable;
+    }
+
+    @Override
+    protected void tagComment() {
+        if (parent.isDeclarationAvailable()) {
+            String methodComment = parent.getElement().getDocComment();
+            if (methodComment != null) {
+                ParamTagParser parser = new ParamTagParser(methodComment);
+                parser.parse();
+                List<ParamTag> tags = parser.paramTags();
+                for (ParamTag tag : tags) {
+                    if (tag.getParameterName().equals(getElement().getSimpleName())) {
+                        Literal comment = getModel().createLiteral(tag.getParameterComment());
+                        getLogger().addTriple(this, Ontology.COMMENT_PROPERTY, comment);
+                        break;
+                    }
+                }
+            }
+        }
     }
 }

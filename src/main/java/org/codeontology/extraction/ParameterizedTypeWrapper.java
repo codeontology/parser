@@ -25,6 +25,7 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
     public String getRelativeURI() {
         arguments = getReference().getActualTypeArguments();
         String uri = getReference().getQualifiedName();
+        String argumentsString = "";
 
         for (CtTypeReference<?> argument : arguments) {
             TypeWrapper argumentWrapper = getFactory().wrap(argument);
@@ -41,9 +42,14 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
             } else if (argumentWrapper instanceof ParameterizedTypeWrapper) {
                 ((ParameterizedTypeWrapper) argumentWrapper).setParent(parent);
             }
-            uri = uri + SEPARATOR + argumentWrapper.getRelativeURI();
+            if (argumentsString.equals("")) {
+                argumentsString = argumentWrapper.getRelativeURI();
+            } else {
+                argumentsString = argumentsString + SEPARATOR + argumentWrapper.getRelativeURI();
+            }
         }
 
+        uri = uri + "[" + argumentsString + "]";
         uri = uri.replace(" ", "_");
 
         return uri;
