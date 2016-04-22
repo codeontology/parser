@@ -1,7 +1,6 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
 import org.codeontology.Ontology;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.*;
@@ -102,8 +101,8 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
 
         for (CtStatement statement : statements) {
-            types.addAll(statement.getReferencedTypes());
-            if (!createsAnonymousClass(statement)) {
+            try {
+                types.addAll(statement.getReferencedTypes());
                 tagInvocations(statement);
                 tagRequestedFields(statement);
                 tagLocalVariables(statement);
@@ -111,6 +110,10 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
                 if (statement instanceof CtReturn<?>) {
                     tagReturnsVariable((CtReturn<?>) statement);
+                }
+            } catch (RuntimeException e) {
+                if (!createsAnonymousClass(statement)) {
+                    throw e;
                 }
             }
         }
@@ -123,14 +126,10 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
         for (CtExecutableReference<?> reference : references) {
             CtExecutable<?> executable = reference.getDeclaration();
-            if (executable instanceof CtMethod<?>) {
-                tagMethodRequested((CtMethod<?>) executable);
-            } else if (executable instanceof CtConstructor<?>) {
-                tagConstructs((CtConstructor<?>) executable);
-            } else if (executable instanceof CtLambda<?>) {
+            if (executable instanceof CtLambda<?>) {
                 tagLambdaRequested((CtLambda<?>) executable);
-            } else if (executable == null) {
-                tagExternalExecutableRequested(reference);
+            } else {
+                tagExecutableRequested(reference);
             }
         }
     }
@@ -146,19 +145,6 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         List<CtLambda<?>> lambdas = statement.getElements(element -> element != null);
         for (CtLambda<?> lambda : lambdas) {
             tagLambdaRequested(lambda);
-        }
-    }
-
-
-    private void tagExternalExecutableRequested(CtExecutableReference<?> reference) {
-        Wrapper wrapper = getFactory().wrap(reference);
-        if (reference.isConstructor()) {
-            tagConstructs(reference);
-        } else {
-            tagRequests(wrapper.getResource());
-        }
-        if (!wrapper.isDeclarationAvailable()) {
-            wrapper.extract();
         }
     }
 
@@ -210,20 +196,18 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    protected void tagMethodRequested(CtMethod<?> method) {
-        tagRequests(getFactory().wrap(method).getResource());
-    }
-
-    protected void tagConstructs(CtConstructor<?> executable) {
-        Resource constructed = getFactory().wrap(executable).getResource();
-        getLogger().addTriple(this, Ontology.CONSTRUCTS_PROPERTY, constructed);
+    protected void tagExecutableRequested(CtExecutableReference<?> executable) {
+        tagRequests(getFactory().wrap(executable).getResource());
+        if (executable.isConstructor()) {
+            tagConstructs(executable);
+        }
     }
 
     protected void tagConstructs(CtExecutableReference<?> reference) {
-        Wrapper<?> wrapper = getFactory().wrap(reference);
-        getLogger().addTriple(this, Ontology.CONSTRUCTS_PROPERTY, wrapper.getResource());
-        if (reference.getDeclaration() == null) {
-            wrapper.extract();
+        Wrapper<?> declaringType = getFactory().wrap(reference.getDeclaringType());
+        getLogger().addTriple(this, Ontology.CONSTRUCTS_PROPERTY, declaringType);
+        if (!declaringType.isDeclarationAvailable()) {
+            declaringType.extract();
         }
     }
 

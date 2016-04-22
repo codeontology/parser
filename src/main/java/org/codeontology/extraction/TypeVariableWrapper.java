@@ -1,17 +1,12 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import org.apache.commons.lang3.ObjectUtils;
 import org.codeontology.Ontology;
-import spoon.reflect.declaration.CtExecutable;
 import spoon.reflect.declaration.CtType;
-import spoon.reflect.internal.CtCircularTypeReference;
 import spoon.reflect.reference.*;
-import tdb.cmdline.CmdSub;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
-import java.lang.reflect.Method;
 import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;

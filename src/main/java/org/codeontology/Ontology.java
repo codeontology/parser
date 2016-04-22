@@ -23,10 +23,6 @@ public class Ontology {
     public static final String RDFS = "http://www.w3.org/2000/01/rdf-schema#";
     public static final String WOC = "http://rdf.webofcode.org/woc/";
 
-    /**
-     * Create a default model with programming languages getModel.
-     * @return	A default model with programming languages getModel.
-     */
     private static Model ontology() {
         try {
             File ontology = new File(System.getProperty("user.dir") + "/ontology/woc.xml");

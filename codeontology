@@ -1,3 +1,4 @@
 #! /bin/bash
-
+sudo su
 java -cp target/codeontology-1.0-SNAPSHOT-jar-with-dependencies.jar -d64 -Xms2G -Xmx4G org.codeontology.CodeOntology $@
+shutdown now
