@@ -44,7 +44,6 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
             tagModifier();
             tagThrows();
             processStatements();
-            System.out.println(getElement().getDocComment());
         }
     }
 

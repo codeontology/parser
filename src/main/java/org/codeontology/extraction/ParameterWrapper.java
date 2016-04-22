@@ -4,6 +4,9 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
+import org.codeontology.commentparser.DocCommentParser;
+import org.codeontology.commentparser.ParamTag;
+import org.codeontology.commentparser.Tag;
 import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.declaration.CtParameter;
 import spoon.reflect.reference.CtTypeReference;
@@ -46,7 +49,7 @@ public class ParameterWrapper extends Wrapper<CtParameter<?>> {
 
     @Override
     protected String getRelativeURI() {
-        return getParent().getRelativeURI() + position;
+        return getParent().getRelativeURI() + SEPARATOR  + position;
     }
 
     public void tagPosition() {
@@ -84,12 +87,12 @@ public class ParameterWrapper extends Wrapper<CtParameter<?>> {
         if (parent.isDeclarationAvailable()) {
             String methodComment = parent.getElement().getDocComment();
             if (methodComment != null) {
-                ParamTagParser parser = new ParamTagParser(methodComment);
-                parser.parse();
-                List<ParamTag> tags = parser.paramTags();
-                for (ParamTag tag : tags) {
-                    if (tag.getParameterName().equals(getElement().getSimpleName())) {
-                        Literal comment = getModel().createLiteral(tag.getParameterComment());
+                DocCommentParser parser = new DocCommentParser(methodComment);
+                List<Tag> tags = parser.getTags("@param");
+                for (Tag tag : tags) {
+                    ParamTag paramTag = (ParamTag) tag;
+                    if (paramTag.getParameterName().equals(getElement().getSimpleName())) {
+                        Literal comment = getModel().createLiteral(paramTag.getParameterComment());
                         getLogger().addTriple(this, Ontology.COMMENT_PROPERTY, comment);
                         break;
                     }
