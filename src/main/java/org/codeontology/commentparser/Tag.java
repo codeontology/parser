@@ -1,5 +1,7 @@
 package org.codeontology.commentparser;
 
+import java.util.Arrays;
+
 public class Tag {
     private String text;
     private String name;
@@ -30,7 +32,21 @@ public class Tag {
     }
 
     protected String[] splitText() {
-        return text.split(" ", 2);
+        return ensureSize(text.split(" ", 2), 2);
+    }
+
+    private String[] ensureSize(String[] array, int size) {
+        String[] result;
+
+        if (array.length >= size) {
+            result = array;
+        } else {
+            result = new String[size];
+            Arrays.fill(result, "");
+            System.arraycopy(array, 0, result, 0, array.length);
+        }
+
+        return result;
     }
 }
 
