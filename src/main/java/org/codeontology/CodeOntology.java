@@ -8,6 +8,7 @@ import org.codeontology.extraction.SourceProcessor;
 import spoon.Launcher;
 
 import java.io.File;
+import java.io.IOException;
 
 public class CodeOntology {
     private static CodeOntology launcher;
@@ -25,6 +26,7 @@ public class CodeOntology {
             launcher.loadDependencies();
             launcher.spoon();
             launcher.extractAllTriples();
+            launcher.postCompletionTasks();
         } catch (Exception e) {
             System.out.println("Sorry, something went awry.");
             if (e.getMessage() != null) {
@@ -93,5 +95,20 @@ public class CodeOntology {
 
     public static boolean verboseMode() {
         return getLauncher().getArguments().getVerboseMode();
+    }
+
+    private void postCompletionTasks() {
+        if (getLauncher().getArguments().getShutdownFlag()) {
+            Thread shutdownThread = new Thread(() -> {
+                try {
+                    System.out.println("Shutting down...");
+                    ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "sleep 3; shutdown -h now");
+                    processBuilder.start();
+                } catch (IOException e) {
+                    System.out.println("Shutdown failed");
+                }
+            });
+            Runtime.getRuntime().addShutdownHook(shutdownThread);
+        }
     }
 }

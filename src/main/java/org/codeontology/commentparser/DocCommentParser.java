@@ -7,19 +7,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DocCommentParser {
-
     String comment;
     private List<Tag> tags;
     private boolean parsed;
-    public static final String REGEXP = "^\\s*(@\\w+)\\s+((\\s|.)*)$";
-    public static final Pattern PATTERN = Pattern.compile(REGEXP);
+    public static final String REGEXP = "^\\s*(@\\w+)\\s+(.*)$";
+    public static final Pattern PATTERN = Pattern.compile(REGEXP, Pattern.DOTALL);
 
     public DocCommentParser(String comment) {
         setComment(comment);
         tags = new ArrayList<>();
     }
 
-    public void setComment(String comment) {
+    private void setComment(String comment) {
         parsed = false;
         this.comment = comment;
     }

@@ -6,24 +6,26 @@ import java.io.File;
 
 public class CodeOntologyArguments {
 
-    public static final String INPUT_LONG_FLAG = "input";
-    public static final char INPUT_SHORT_FLAG = 'i';
+    public static final String INPUT_LONG = "input";
+    public static final char INPUT_SHORT = 'i';
 
-    public static final String OUTPUT_LONG_FLAG = "output";
-    public static final char OUTPUT_SHORT_FLAG = 'o';
+    public static final String OUTPUT_LONG = "output";
+    public static final char OUTPUT_SHORT = 'o';
 
-    public static final String CLASSPATH_LONG_FLAG = "classpath";
+    public static final String CLASSPATH_LONG = "classpath";
 
     public static final String ND = "nd";
 
-    public static final String VERBOSE_LONG_FLAG = "verbose";
-    public static final char VERBOSE_SHORT_FLAG = 'v';
+    public static final String VERBOSE_LONG = "verbose";
+    public static final char VERBOSE_SHORT = 'v';
 
-    public static final String STACKTRACE_LONG_FLAG = "stacktrace";
-    public static final char STACKTRACE_SHORT_FLAG = 't';
+    public static final String STACKTRACE_LONG = "stacktrace";
+    public static final char STACKTRACE_SHORT = 't';
 
-    public static final String HELP_LONG_FLAG = "help";
-    public static final char HELP_SHORT_FLAG = 'h';
+    public static final String HELP_LONG = "help";
+    public static final char HELP_SHORT = 'h';
+
+    public static final String SHUTDOWN_LONG = "shutdown";
 
     private JSAP jsap;
     private JSAPResult result;
@@ -39,25 +41,25 @@ public class CodeOntologyArguments {
         FlaggedOption option;
         Switch flag;
 
-        option = new FlaggedOption(INPUT_LONG_FLAG);
-        option.setShortFlag(INPUT_SHORT_FLAG);
-        option.setLongFlag(INPUT_LONG_FLAG);
+        option = new FlaggedOption(INPUT_LONG);
+        option.setShortFlag(INPUT_SHORT);
+        option.setLongFlag(INPUT_LONG);
         option.setStringParser(JSAP.STRING_PARSER);
         option.setRequired(true);
         option.setHelp("Path to source files.");
         jsap.registerParameter(option);
 
-        option = new FlaggedOption(OUTPUT_LONG_FLAG);
-        option.setShortFlag(OUTPUT_SHORT_FLAG);
-        option.setLongFlag(OUTPUT_LONG_FLAG);
+        option = new FlaggedOption(OUTPUT_LONG);
+        option.setShortFlag(OUTPUT_SHORT);
+        option.setLongFlag(OUTPUT_LONG);
         option.setStringParser(JSAP.STRING_PARSER);
         option.setRequired(false);
         option.setDefault(getDefaultOutput());
         option.setHelp("Output file name.");
         jsap.registerParameter(option);
 
-        option = new FlaggedOption(CLASSPATH_LONG_FLAG);
-        option.setLongFlag(CLASSPATH_LONG_FLAG);
+        option = new FlaggedOption(CLASSPATH_LONG);
+        option.setLongFlag(CLASSPATH_LONG);
         option.setStringParser(JSAP.STRING_PARSER);
         option.setRequired(false);
         option.setHelp("Specifies a list of directories, JAR files and classes separated by colons (:) to search for class files.");
@@ -69,26 +71,34 @@ public class CodeOntologyArguments {
         flag.setHelp("Do not download dependencies.");
         jsap.registerParameter(flag);
 
-        flag = new Switch(VERBOSE_LONG_FLAG);
-        flag.setLongFlag(VERBOSE_LONG_FLAG);
-        flag.setShortFlag(VERBOSE_SHORT_FLAG);
+        flag = new Switch(VERBOSE_LONG);
+        flag.setLongFlag(VERBOSE_LONG);
+        flag.setShortFlag(VERBOSE_SHORT);
         flag.setDefault("false");
         flag.setHelp("Verbosely lists all files processed.");
         jsap.registerParameter(flag);
 
-        flag = new Switch(STACKTRACE_LONG_FLAG);
-        flag.setLongFlag(STACKTRACE_LONG_FLAG);
-        flag.setShortFlag(STACKTRACE_SHORT_FLAG);
+        flag = new Switch(STACKTRACE_LONG);
+        flag.setLongFlag(STACKTRACE_LONG);
+        flag.setShortFlag(STACKTRACE_SHORT);
         flag.setDefault("false");
         flag.setHelp("Prints stack trace for exceptions.");
         jsap.registerParameter(flag);
 
-        flag = new Switch(HELP_LONG_FLAG);
-        flag.setLongFlag(HELP_LONG_FLAG);
-        flag.setShortFlag(HELP_SHORT_FLAG);
+        flag = new Switch(HELP_LONG);
+        flag.setLongFlag(HELP_LONG);
+        flag.setShortFlag(HELP_SHORT);
         flag.setDefault("false");
         flag.setHelp("Prints this help message.");
         jsap.registerParameter(flag);
+
+        flag = new Switch(SHUTDOWN_LONG);
+        flag.setLongFlag(SHUTDOWN_LONG);
+        flag.setDefault("false");
+        flag.setHelp("Shutdown after complete");
+        jsap.registerParameter(flag);
+
+
 
     }
 
@@ -97,7 +107,7 @@ public class CodeOntologyArguments {
 
         JSAPResult arguments = jsap.parse(args);
 
-        if (arguments.getBoolean(HELP_LONG_FLAG)) {
+        if (arguments.getBoolean(HELP_LONG)) {
             printHelp();
             System.exit(0);
         }
@@ -131,11 +141,11 @@ public class CodeOntologyArguments {
     }
 
     public String getInput() {
-        return result.getString(INPUT_LONG_FLAG);
+        return result.getString(INPUT_LONG);
     }
 
     public String getOutput() {
-        return result.getString(OUTPUT_LONG_FLAG);
+        return result.getString(OUTPUT_LONG);
     }
 
     public boolean getDownloadDependenciesFlag() {
@@ -143,11 +153,15 @@ public class CodeOntologyArguments {
     }
 
     public boolean getVerboseMode() {
-        return result.getBoolean(VERBOSE_LONG_FLAG);
+        return result.getBoolean(VERBOSE_LONG);
     }
 
     public boolean stackTraceMode() {
-        return result.getBoolean(STACKTRACE_LONG_FLAG);
+        return result.getBoolean(STACKTRACE_LONG);
+    }
+
+    public boolean getShutdownFlag() {
+        return result.getBoolean(SHUTDOWN_LONG);
     }
 
     private String getDefaultOutput() {
@@ -172,6 +186,6 @@ public class CodeOntologyArguments {
     }
 
     public String getClasspath() {
-        return result.getString(CLASSPATH_LONG_FLAG);
+        return result.getString(CLASSPATH_LONG);
     }
 }
