@@ -10,9 +10,15 @@ import spoon.support.reflect.reference.CtExecutableReferenceImpl;
 import spoon.support.reflect.reference.CtFieldReferenceImpl;
 import spoon.support.reflect.reference.CtLocalVariableReferenceImpl;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember & CtGenericElement> extends TypeMemberWrapper<E> {
+public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember & CtGenericElement> extends Wrapper<E> {
+
+    private ModifiableTagger modifiableTagger;
+    private DeclaredByTagger declaredByTagger;
 
     public ExecutableWrapper(E executable) {
         super(executable);
@@ -20,6 +26,12 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
     public ExecutableWrapper(CtExecutableReference<?> reference) {
         super(reference);
+        setTaggers();
+    }
+
+    private void setTaggers() {
+        modifiableTagger = new ModifiableTagger(this);
+        declaredByTagger = new DeclaredByTagger(this);
     }
 
     @Override
@@ -31,6 +43,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
     @Override
     public void extract() {
+        setTaggers();
         tagType();
         tagName();
         tagDeclaringType();
@@ -44,6 +57,18 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
             tagThrows();
             processStatements();
         }
+    }
+
+    protected void tagDeclaringType() {
+        declaredByTagger.tagDeclaredBy();
+    }
+
+    protected void tagVisibility() {
+        modifiableTagger.tagVisibility();
+    }
+
+    protected void tagModifier() {
+        modifiableTagger.tagModifier();
     }
 
     protected void tagParameters() {
@@ -196,10 +221,14 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    protected void tagExecutableRequested(CtExecutableReference<?> executable) {
-        tagRequests(getFactory().wrap(executable).getResource());
-        if (executable.isConstructor()) {
-            tagConstructs(executable);
+    protected void tagExecutableRequested(CtExecutableReference<?> reference) {
+        ExecutableWrapper<?> executable = getFactory().wrap(reference);
+        tagRequests(executable.getResource());
+        if (reference.isConstructor()) {
+            tagConstructs(reference);
+        }
+        if (!executable.isDeclarationAvailable()) {
+            executable.extract();
         }
     }
 

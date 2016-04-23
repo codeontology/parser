@@ -5,13 +5,15 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtField;
 
 
-public class FieldWrapper extends TypeMemberWrapper<CtField<?>> {
+public class FieldWrapper extends Wrapper<CtField<?>> {
 
-    JavaTypeTagger tagger;
+    JavaTypeTagger javaTypeTagger;
+    private ModifiableTagger modifiableTagger;
+    private DeclaredByTagger declaredByTagger;
 
     public FieldWrapper(CtField<?> field) {
         super(field);
-        tagger = new JavaTypeTagger(this);
+
     }
 
     @Override
@@ -24,8 +26,15 @@ public class FieldWrapper extends TypeMemberWrapper<CtField<?>> {
         return Ontology.FIELD_CLASS;
     }
 
+    private void setTaggers() {
+        javaTypeTagger = new JavaTypeTagger(this);
+        modifiableTagger = new ModifiableTagger(this);
+        declaredByTagger = new DeclaredByTagger(this);
+    }
+
     @Override
     public void extract() {
+        setTaggers();
         tagName();
         tagType();
         tagComment();
@@ -36,8 +45,20 @@ public class FieldWrapper extends TypeMemberWrapper<CtField<?>> {
         tagAnnotations();
     }
 
+    protected void tagDeclaringType() {
+        declaredByTagger.tagDeclaredBy();
+    }
+
+    protected void tagVisibility() {
+        modifiableTagger.tagVisibility();
+    }
+
+    protected void tagModifier() {
+        modifiableTagger.tagModifier();
+    }
+
     protected void tagJavaType() {
-        tagger.tagJavaType(getElement().getDeclaringType());
+        javaTypeTagger.tagJavaType(getElement().getDeclaringType());
     }
 }
 

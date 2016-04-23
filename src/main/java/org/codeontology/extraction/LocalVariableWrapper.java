@@ -7,19 +7,25 @@ import spoon.reflect.code.CtLocalVariable;
 public class LocalVariableWrapper extends Wrapper<CtLocalVariable<?>> {
 
     private ExecutableWrapper<?> parent;
-    private JavaTypeTagger tagger;
+    private JavaTypeTagger javaTypeTagger;
+    private DeclaredByTagger declaredByTagger;
 
     public LocalVariableWrapper(CtLocalVariable<?> variable) {
         super(variable);
-        tagger = new JavaTypeTagger(this);
     }
 
     @Override
     public void extract() {
+        setTaggers();
         tagType();
         tagName();
         tagJavaType();
         tagDeclaredBy();
+    }
+
+    private void setTaggers() {
+        declaredByTagger = new DeclaredByTagger(this);
+        javaTypeTagger = new JavaTypeTagger(this);
     }
 
     @Override
@@ -33,11 +39,11 @@ public class LocalVariableWrapper extends Wrapper<CtLocalVariable<?>> {
     }
 
     public void tagDeclaredBy() {
-        getLogger().addTriple(this, Ontology.DECLARED_BY_PROPERTY, parent);
+        declaredByTagger.tagDeclaredBy();
     }
 
     protected void tagJavaType() {
-        tagger.tagJavaType(this);
+        javaTypeTagger.tagJavaType(this);
     }
 
     public void setParent(ExecutableWrapper<?> parent) {

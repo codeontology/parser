@@ -15,12 +15,12 @@ public class DocCommentParser {
 
     public DocCommentParser(String comment) {
         setComment(comment);
-        tags = new ArrayList<>();
     }
 
     private void setComment(String comment) {
         parsed = false;
         this.comment = comment;
+        tags = new ArrayList<>();
     }
 
     public void parse() {
