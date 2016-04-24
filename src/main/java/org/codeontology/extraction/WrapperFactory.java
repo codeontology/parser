@@ -134,6 +134,10 @@ public class WrapperFactory {
         return new ParameterizedTypeWrapper(createParameterizedTypeReference(parameterizedType));
     }
 
+    public TypeWrapper<?> wrap(Type type) {
+        return wrap(createTypeReference(type));
+    }
+
     private CtTypeReference<?> createParameterizedTypeReference(ParameterizedType parameterizedType) {
 
         Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();

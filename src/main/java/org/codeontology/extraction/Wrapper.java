@@ -17,6 +17,7 @@ public abstract class Wrapper<E extends CtNamedElement> {
     private CtReference reference;
     public static final String SEPARATOR = "-";
     public static Model model = RDFLogger.getInstance().getModel();
+    private Wrapper<?> parent;
 
     public Wrapper(E element) {
         setElement(element);
@@ -116,5 +117,12 @@ public abstract class Wrapper<E extends CtNamedElement> {
         return RDFLogger.getInstance();
     }
 
+    public Wrapper<?> getParent() {
+        return parent;
+    }
+
+    public void setParent(Wrapper<?> parent) {
+        this.parent = parent;
+    }
 }
 

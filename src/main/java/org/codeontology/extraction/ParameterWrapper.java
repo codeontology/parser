@@ -18,12 +18,10 @@ public class ParameterWrapper extends Wrapper<CtParameter<?>> {
     private int position;
     private ExecutableWrapper parent;
     private boolean parameterAvailable = true;
-    private JavaTypeTagger tagger;
 
     public ParameterWrapper(CtParameter<?> parameter) {
         super(parameter);
         parameterAvailable = true;
-        tagger = new JavaTypeTagger(this);
     }
 
     public ParameterWrapper(CtTypeReference<?> reference) {
@@ -32,7 +30,6 @@ public class ParameterWrapper extends Wrapper<CtParameter<?>> {
         if (reference.getQualifiedName().equals(CtTypeReference.NULL_TYPE_NAME)) {
             throw new NullTypeException();
         }
-        tagger = new JavaTypeTagger(this);
     }
 
     @Override
@@ -74,7 +71,7 @@ public class ParameterWrapper extends Wrapper<CtParameter<?>> {
     }
 
     protected void tagJavaType() {
-        tagger.tagJavaType(parent);
+        new JavaTypeTagger(this).tagJavaType(parent);
     }
 
     @Override

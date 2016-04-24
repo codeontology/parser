@@ -1,7 +1,6 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.Property;
-import org.codeontology.Ontology;
 import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.declaration.CtField;
 import spoon.reflect.declaration.CtMethod;
@@ -42,16 +41,12 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
         Set<CtTypeReference<?>> references = getReference().getSuperInterfaces();
 
         for (CtTypeReference<?> reference : references) {
-            TypeWrapper<?> wrapper = getFactory().wrap(reference);
+            TypeWrapper<?> superInterface = getFactory().wrap(reference);
+            superInterface.setParent(this);
+            getLogger().addTriple(this, property, superInterface.getResource());
 
-            if (wrapper instanceof ParameterizedTypeWrapper) {
-                ((ParameterizedTypeWrapper) wrapper).setParent(getReference());
-            }
-
-            getLogger().addTriple(this, property, wrapper.getResource());
-
-            if (!wrapper.isDeclarationAvailable()) {
-                wrapper.extract();
+            if (!superInterface.isDeclarationAvailable()) {
+                superInterface.extract();
             }
         }
     }

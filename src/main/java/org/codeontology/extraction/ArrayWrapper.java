@@ -4,14 +4,10 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtArrayTypeReference;
-import spoon.reflect.reference.CtExecutableReference;
-import spoon.reflect.reference.CtReference;
 import spoon.reflect.reference.CtTypeReference;
 
 public class ArrayWrapper extends TypeWrapper<CtType<?>> {
-
-    private CtReference parent;
-    private TypeWrapper componentType;
+    private TypeWrapper<?> componentType;
 
     public ArrayWrapper(CtTypeReference<?> reference) {
         super(reference);
@@ -49,24 +45,9 @@ public class ArrayWrapper extends TypeWrapper<CtType<?>> {
         getLogger().addTriple(this, Ontology.DIMENSIONS_PROPERTY, getModel().createTypedLiteral(dimensions));
     }
 
-    public void setParent(CtReference parent) {
-        this.parent = parent;
-        handleGenericArray();
-    }
-
-    private void handleGenericArray() {
-        if (componentType instanceof TypeVariableWrapper) {
-            TypeVariableWrapper typeVariable = (TypeVariableWrapper) componentType;
-
-            if (parent instanceof CtTypeReference) {
-                typeVariable.findAndSetParent((CtTypeReference) parent);
-            } else if (parent instanceof CtExecutableReference) {
-                typeVariable.findAndSetParent((CtExecutableReference) parent);
-            }
-        } else if (componentType instanceof ArrayWrapper) {
-            ((ArrayWrapper) componentType).setParent(parent);
-        } else if (componentType instanceof ParameterizedTypeWrapper) {
-            ((ParameterizedTypeWrapper) componentType).setParent(parent);
-        }
+    @Override
+    public void setParent(Wrapper<?> parent) {
+        super.setParent(parent);
+        componentType.setParent(parent);
     }
 }

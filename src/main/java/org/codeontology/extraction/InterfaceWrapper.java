@@ -1,6 +1,5 @@
 package org.codeontology.extraction;
 
-
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtInterface;
@@ -8,11 +7,8 @@ import spoon.reflect.reference.CtTypeReference;
 
 public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> {
 
-    private ModifiableTagger modifiableTagger;
-
     public InterfaceWrapper(CtTypeReference<?> reference) {
         super(reference);
-        modifiableTagger = new ModifiableTagger(this);
     }
 
     @Override
@@ -31,7 +27,6 @@ public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> {
             tagMethods();
             tagSourceCode();
             tagComment();
-            tagVisibility();
             tagModifiers();
         }
     }
@@ -40,11 +35,7 @@ public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> {
         tagSuperInterfaces(Ontology.EXTENDS_PROPERTY);
     }
 
-    protected void tagVisibility() {
-        modifiableTagger.tagVisibility();
-    }
-
     protected void tagModifiers() {
-        modifiableTagger.tagModifier();
+        new ModifiableTagger(this).tagModifiers();
     }
 }

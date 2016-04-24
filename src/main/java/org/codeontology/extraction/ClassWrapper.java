@@ -12,11 +12,8 @@ import java.util.Set;
 
 public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
 
-    private ModifiableTagger modifiableTagger;
-
     public ClassWrapper(CtTypeReference<?> reference) {
         super(reference);
-        modifiableTagger = new ModifiableTagger(this);
     }
 
     @Override
@@ -38,8 +35,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
             tagMethods();
             tagSourceCode();
             tagNestedTypes();
-            tagVisibility();
-            tagModifier();
+            tagModifiers();
             tagFormalTypeParameters();
         }
     }
@@ -49,13 +45,11 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
         if (superclass == null) {
             superclass = getFactory().getParent().Type().createReference(Object.class);
         }
-        TypeWrapper<?> wrapper = getFactory().wrap(superclass);
-        if (wrapper instanceof ParameterizedTypeWrapper) {
-            ((ParameterizedTypeWrapper) wrapper).setParent(getReference());
-        }
-        getLogger().addTriple(this, Ontology.EXTENDS_PROPERTY, wrapper);
-        if (!wrapper.isDeclarationAvailable()) {
-            wrapper.extract();
+        TypeWrapper<?> superClass = getFactory().wrap(superclass);
+        superClass.setParent(this);
+        getLogger().addTriple(this, Ontology.EXTENDS_PROPERTY, superClass);
+        if (!superClass.isDeclarationAvailable()) {
+            superClass.extract();
         }
     }
 
@@ -80,12 +74,8 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
         }
     }
 
-    protected void tagVisibility() {
-        modifiableTagger.tagVisibility();
-    }
-
-    protected void tagModifier() {
-        modifiableTagger.tagModifier();
+    protected void tagModifiers() {
+        new ModifiableTagger(this).tagModifiers();
     }
 
     protected void tagFormalTypeParameters() {

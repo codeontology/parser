@@ -6,31 +6,21 @@ import spoon.reflect.code.CtLocalVariable;
 
 public class LocalVariableWrapper extends Wrapper<CtLocalVariable<?>> {
 
-    private ExecutableWrapper<?> parent;
-    private JavaTypeTagger javaTypeTagger;
-    private DeclaredByTagger declaredByTagger;
-
     public LocalVariableWrapper(CtLocalVariable<?> variable) {
         super(variable);
     }
 
     @Override
     public void extract() {
-        setTaggers();
         tagType();
         tagName();
         tagJavaType();
         tagDeclaredBy();
     }
 
-    private void setTaggers() {
-        declaredByTagger = new DeclaredByTagger(this);
-        javaTypeTagger = new JavaTypeTagger(this);
-    }
-
     @Override
     protected String getRelativeURI() {
-        return parent.getRelativeURI() + SEPARATOR + getElement().getSimpleName();
+        return getParent().getRelativeURI() + SEPARATOR + getElement().getSimpleName();
     }
 
     @Override
@@ -39,18 +29,10 @@ public class LocalVariableWrapper extends Wrapper<CtLocalVariable<?>> {
     }
 
     public void tagDeclaredBy() {
-        declaredByTagger.tagDeclaredBy();
+        new DeclaredByTagger(this).tagDeclaredBy();
     }
 
     protected void tagJavaType() {
-        javaTypeTagger.tagJavaType(this);
-    }
-
-    public void setParent(ExecutableWrapper<?> parent) {
-        this.parent = parent;
-    }
-
-    public ExecutableWrapper<?> getParent() {
-        return parent;
+        new JavaTypeTagger(this).tagJavaType(this.getParent());
     }
 }

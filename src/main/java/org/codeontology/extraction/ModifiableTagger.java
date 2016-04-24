@@ -15,7 +15,7 @@ public class ModifiableTagger {
         this.wrapper = wrapper;
     }
 
-    protected void tagVisibility() {
+    private void tagVisibility() {
         ModifierKind modifier = wrapper.getElement().getVisibility();
         Resource encapsulation;
 
@@ -41,7 +41,7 @@ public class ModifiableTagger {
         RDFLogger.getInstance().addTriple(wrapper, Ontology.VISIBILITY_PROPERTY, encapsulation);
     }
 
-    protected void tagModifier() {
+    private void tagModifier() {
         Set<ModifierKind> modifiers = wrapper.getElement().getModifiers();
         Resource modifier;
 
@@ -76,5 +76,10 @@ public class ModifiableTagger {
                 RDFLogger.getInstance().addTriple(wrapper, Ontology.MODIFIER_PROPERTY, modifier);
             }
         }
+    }
+
+    public void tagModifiers() {
+        tagVisibility();
+        tagModifier();
     }
 }

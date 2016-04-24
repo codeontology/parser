@@ -3,13 +3,10 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtField;
+import spoon.reflect.declaration.CtType;
 
 
 public class FieldWrapper extends Wrapper<CtField<?>> {
-
-    JavaTypeTagger javaTypeTagger;
-    private ModifiableTagger modifiableTagger;
-    private DeclaredByTagger declaredByTagger;
 
     public FieldWrapper(CtField<?> field) {
         super(field);
@@ -26,39 +23,30 @@ public class FieldWrapper extends Wrapper<CtField<?>> {
         return Ontology.FIELD_CLASS;
     }
 
-    private void setTaggers() {
-        javaTypeTagger = new JavaTypeTagger(this);
-        modifiableTagger = new ModifiableTagger(this);
-        declaredByTagger = new DeclaredByTagger(this);
-    }
-
     @Override
     public void extract() {
-        setTaggers();
         tagName();
         tagType();
         tagComment();
         tagJavaType();
-        tagVisibility();
-        tagModifier();
+        tagModifiers();
         tagDeclaringType();
         tagAnnotations();
     }
 
     protected void tagDeclaringType() {
-        declaredByTagger.tagDeclaredBy();
+        new DeclaredByTagger(this).tagDeclaredBy();
     }
 
-    protected void tagVisibility() {
-        modifiableTagger.tagVisibility();
-    }
 
-    protected void tagModifier() {
-        modifiableTagger.tagModifier();
+    protected void tagModifiers() {
+        new ModifiableTagger(this).tagModifiers();
     }
 
     protected void tagJavaType() {
-        javaTypeTagger.tagJavaType(getElement().getDeclaringType());
+        CtType<?> declaringType = getElement().getDeclaringType();
+        Wrapper<?> parent = getFactory().wrap(declaringType);
+        new JavaTypeTagger(this).tagJavaType(parent);
     }
 }
 

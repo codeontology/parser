@@ -6,7 +6,6 @@ import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.support.reflect.reference.SpoonClassNotFoundException;
-import tdb.cmdline.CmdSub;
 
 import java.lang.reflect.*;
 import java.util.List;
@@ -52,21 +51,15 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
     }
 
     private TypeWrapper getReturnType() {
-        TypeWrapper returnType = getGenericReturnType();
+        TypeWrapper<?> returnType = getGenericReturnType();
         if (returnType != null) {
             return returnType;
         }
 
         CtTypeReference<?> reference = ((CtExecutableReference<?>) getReference()).getType();
         returnType = getFactory().wrap(reference);
-        if (returnType instanceof TypeVariableWrapper) {
-            ((TypeVariableWrapper) returnType).findAndSetParent(this);
-        } else if (returnType instanceof ArrayWrapper) {
-            ((ArrayWrapper) returnType).setParent(getReference());
-        } else if (returnType instanceof ParameterizedTypeWrapper) {
-            ((ParameterizedTypeWrapper) returnType).setParent(getReference());
-            returnType.extract();
-        } else if (reference.getDeclaration() == null) {
+        returnType.setParent(this);
+        if (!returnType.isDeclarationAvailable()) {
             returnType.extract();
         }
 
@@ -74,25 +67,20 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
     }
 
     private TypeWrapper getGenericReturnType() {
-        TypeWrapper result = null;
+        TypeWrapper<?> result = null;
         if (!isDeclarationAvailable()) {
             try {
                 CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference());
                 Method method = reference.getActualMethod();
                 Type returnType = method.getGenericReturnType();
 
-                if (returnType instanceof GenericArrayType) {
-                    ArrayWrapper arrayType = getFactory().wrap((GenericArrayType) returnType);
-                    arrayType.setParent(this.getReference());
-                    result = arrayType;
-                } else if (returnType instanceof TypeVariable) {
-                    TypeVariableWrapper typeVariable = getFactory().wrap((TypeVariable) returnType);
-                    typeVariable.findAndSetParent(this);
-                    result = typeVariable;
-                } else if (returnType instanceof ParameterizedType) {
-                    ParameterizedTypeWrapper parameterizedType = getFactory().wrap((ParameterizedType) returnType);
-                    parameterizedType.setParent(getReference());
-                    result = parameterizedType;
+
+                if (returnType instanceof GenericArrayType ||
+                    returnType instanceof TypeVariable<?>  ||
+                    returnType instanceof ParameterizedType) {
+
+                    result = getFactory().wrap(returnType);
+                    result.setParent(this);
                 }
             } catch (SpoonClassNotFoundException | NullPointerException e) {
                 return null;

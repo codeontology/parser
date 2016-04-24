@@ -17,8 +17,6 @@ import java.util.Set;
 
 public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember & CtGenericElement> extends Wrapper<E> {
 
-    private ModifiableTagger modifiableTagger;
-    private DeclaredByTagger declaredByTagger;
 
     public ExecutableWrapper(E executable) {
         super(executable);
@@ -26,12 +24,6 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
     public ExecutableWrapper(CtExecutableReference<?> reference) {
         super(reference);
-        setTaggers();
-    }
-
-    private void setTaggers() {
-        modifiableTagger = new ModifiableTagger(this);
-        declaredByTagger = new DeclaredByTagger(this);
     }
 
     @Override
@@ -43,7 +35,6 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
     @Override
     public void extract() {
-        setTaggers();
         tagType();
         tagName();
         tagDeclaringType();
@@ -52,23 +43,18 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
             tagAnnotations();
             tagComment();
             tagSourceCode();
-            tagVisibility();
-            tagModifier();
+            tagModifiers();
             tagThrows();
             processStatements();
         }
     }
 
     protected void tagDeclaringType() {
-        declaredByTagger.tagDeclaredBy();
+        new DeclaredByTagger(this).tagDeclaredBy();
     }
 
-    protected void tagVisibility() {
-        modifiableTagger.tagVisibility();
-    }
-
-    protected void tagModifier() {
-        modifiableTagger.tagModifier();
+    protected void tagModifiers() {
+        new ModifiableTagger(this).tagModifiers();
     }
 
     protected void tagParameters() {
@@ -103,10 +89,8 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     protected void tagThrows() {
         Set<CtTypeReference<? extends Throwable>> thrownTypes = getElement().getThrownTypes();
         for (CtTypeReference<? extends Throwable> current : thrownTypes) {
-            TypeWrapper thrownType = getFactory().wrap(current);
-            if (thrownType instanceof TypeVariableWrapper) {
-              ((TypeVariableWrapper) thrownType).findAndSetParent(this);
-            }
+            TypeWrapper<?> thrownType = getFactory().wrap(current);
+            thrownType.setParent(this);
             getLogger().addTriple(this, Ontology.THROWS_PROPERTY, thrownType);
         }
     }
@@ -186,19 +170,13 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
     protected void tagRequestedTypes(Collection<CtTypeReference<?>> types) {
         for (CtTypeReference<?> reference : types) {
-            TypeWrapper type = getFactory().wrap(reference);
+            TypeWrapper<?> type = getFactory().wrap(reference);
             if (type != null) {
-                if (reference.getDeclaration() == null) {
-                    if (type instanceof ArrayWrapper) {
-                        ((ArrayWrapper) type).setParent(getReference());
-                    } else if (type instanceof ParameterizedTypeWrapper) {
-                        ((ParameterizedTypeWrapper) type).setParent(getReference());
-                    } else if (type instanceof TypeVariableWrapper) {
-                        ((TypeVariableWrapper) type).findAndSetParent(this);
-                    }
-                    tagRequests(type.getResource());
+                type.setParent(this);
+                if (!type.isDeclarationAvailable()) {
                     type.extract();
                 }
+                tagRequests(type.getResource());
             }
         }
     }
