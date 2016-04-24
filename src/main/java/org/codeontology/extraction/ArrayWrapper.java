@@ -33,14 +33,14 @@ public class ArrayWrapper extends TypeWrapper<CtType<?>> {
         return componentType.getRelativeURI() + "[]";
     }
 
-    protected void tagArrayOf() {
+    public void tagArrayOf() {
         getLogger().addTriple(this, Ontology.ARRAY_OF_PROPERTY, componentType);
         if (!componentType.isDeclarationAvailable()) {
             componentType.extract();
         }
     }
 
-    protected void tagDimensions() {
+    public void tagDimensions() {
         int dimensions = ((CtArrayTypeReference<?>) getReference()).getDimensionCount();
         getLogger().addTriple(this, Ontology.DIMENSIONS_PROPERTY, getModel().createTypedLiteral(dimensions));
     }

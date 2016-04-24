@@ -45,7 +45,7 @@ public class ParameterWrapper extends Wrapper<CtParameter<?>> {
     }
 
     @Override
-    protected String getRelativeURI() {
+    public String getRelativeURI() {
         return getParent().getRelativeURI() + SEPARATOR  + position;
     }
 
@@ -70,7 +70,7 @@ public class ParameterWrapper extends Wrapper<CtParameter<?>> {
         return Ontology.PARAMETER_CLASS;
     }
 
-    protected void tagJavaType() {
+    public void tagJavaType() {
         new JavaTypeTagger(this).tagJavaType(parent);
     }
 
@@ -80,7 +80,7 @@ public class ParameterWrapper extends Wrapper<CtParameter<?>> {
     }
 
     @Override
-    protected void tagComment() {
+    public void tagComment() {
         if (parent.isDeclarationAvailable()) {
             String methodComment = parent.getElement().getDocComment();
             if (methodComment != null) {

@@ -7,7 +7,6 @@ import spoon.reflect.declaration.CtConstructor;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtTypeReference;
 
-import java.util.List;
 import java.util.Set;
 
 public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
@@ -40,7 +39,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
         }
     }
 
-    protected void tagSuperClass() {
+    public void tagSuperClass() {
         CtTypeReference<?> superclass = getReference().getSuperclass();
         if (superclass == null) {
             superclass = getFactory().getParent().Type().createReference(Object.class);
@@ -53,11 +52,11 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
         }
     }
 
-    protected void tagSuperInterfaces() {
+    public void tagSuperInterfaces() {
         tagSuperInterfaces(Ontology.IMPLEMENTS_PROPERTY);
     }
 
-    protected void tagConstructors() {
+    public void tagConstructors() {
         Set<CtConstructor<T>> constructors = getElement().getConstructors();
 
         for (CtConstructor<T> constructor : constructors) {
@@ -65,7 +64,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
         }
     }
 
-    protected void tagNestedTypes() {
+    public void tagNestedTypes() {
         Set<CtType<?>> nestedTypes = getElement().getNestedTypes();
         for (CtType<?> type : nestedTypes) {
             Wrapper wrapper = getFactory().wrap(type);
@@ -74,19 +73,11 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
         }
     }
 
-    protected void tagModifiers() {
+    public void tagModifiers() {
         new ModifiableTagger(this).tagModifiers();
     }
 
-    protected void tagFormalTypeParameters() {
-        List<CtTypeReference<?>> parameters = getElement().getFormalTypeParameters();
-        int size = parameters.size();
-        for (int i = 0; i < size; i++) {
-            TypeVariableWrapper wrapper = ((TypeVariableWrapper) getFactory().wrap(parameters.get(i)));
-            wrapper.setParent(this);
-            wrapper.setPosition(i);
-            getLogger().addTriple(this, Ontology.FORMAL_TYPE_PARAMETER_PROPERTY, wrapper);
-            wrapper.extract();
-        }
+    public void tagFormalTypeParameters() {
+        new FormalTypeParametersTagger(this).tagFormalTypeParameters();
     }
 }

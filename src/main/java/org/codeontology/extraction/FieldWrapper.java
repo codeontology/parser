@@ -14,7 +14,7 @@ public class FieldWrapper extends Wrapper<CtField<?>> {
     }
 
     @Override
-    protected String getRelativeURI() {
+    public String getRelativeURI() {
         return getFactory().wrap(getElement().getDeclaringType()).getRelativeURI() + SEPARATOR + getElement().getSimpleName();
     }
 
@@ -34,16 +34,16 @@ public class FieldWrapper extends Wrapper<CtField<?>> {
         tagAnnotations();
     }
 
-    protected void tagDeclaringType() {
+    public void tagDeclaringType() {
         new DeclaredByTagger(this).tagDeclaredBy();
     }
 
 
-    protected void tagModifiers() {
+    public void tagModifiers() {
         new ModifiableTagger(this).tagModifiers();
     }
 
-    protected void tagJavaType() {
+    public void tagJavaType() {
         CtType<?> declaringType = getElement().getDeclaringType();
         Wrapper<?> parent = getFactory().wrap(declaringType);
         new JavaTypeTagger(this).tagJavaType(parent);

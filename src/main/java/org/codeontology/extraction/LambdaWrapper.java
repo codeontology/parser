@@ -28,7 +28,7 @@ public class LambdaWrapper extends Wrapper<CtLambda<?>> {
     }
 
     @Override
-    protected String getRelativeURI() {
+    public String getRelativeURI() {
         return getParent().getRelativeURI() + SEPARATOR + TAG + SEPARATOR +
                 getElement().getType().getQualifiedName();
     }

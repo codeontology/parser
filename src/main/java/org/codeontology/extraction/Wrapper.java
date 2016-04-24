@@ -59,28 +59,28 @@ public abstract class Wrapper<E extends CtNamedElement> {
         return model.createResource(Ontology.WOC + getRelativeURI());
     }
 
-    protected abstract String getRelativeURI();
+    public abstract String getRelativeURI();
 
-    protected RDFNode getName() {
+    private RDFNode getName() {
         return model.createLiteral(getReference().getSimpleName());
     }
 
-    protected void tagType() {
+    public void tagType() {
         getLogger().addTriple(this, Ontology.RDF_TYPE_PROPERTY, getType());
     }
 
-    protected void tagName() {
+    public void tagName() {
         getLogger().addTriple(this, Ontology.NAME_PROPERTY, getName());
     }
 
-    protected void tagComment() {
+    public void tagComment() {
         String comment = getElement().getDocComment();
         if (comment != null) {
             getLogger().addTriple(this, Ontology.COMMENT_PROPERTY, model.createLiteral(comment));
         }
     }
 
-    protected void tagAnnotations() {
+    public void tagAnnotations() {
         List<CtAnnotation<?>> annotations = getElement().getAnnotations();
         for (CtAnnotation annotation : annotations) {
             TypeWrapper annotationType = getFactory().wrap(annotation.getAnnotationType());
@@ -93,7 +93,7 @@ public abstract class Wrapper<E extends CtNamedElement> {
 
     protected abstract RDFNode getType();
 
-    protected void tagSourceCode() {
+    public void tagSourceCode() {
         getLogger().addTriple(this, Ontology.SOURCE_CODE_PROPERTY, model.createLiteral(getElement().toString()));
     }
 

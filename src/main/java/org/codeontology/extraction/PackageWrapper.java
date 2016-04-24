@@ -16,7 +16,7 @@ public class PackageWrapper extends Wrapper<CtPackage> {
     }
 
     @Override
-    protected String getRelativeURI() {
+    public String getRelativeURI() {
         String relativeURI = getElement().getQualifiedName();
         return relativeURI.replace(" ", SEPARATOR);
     }
@@ -40,7 +40,7 @@ public class PackageWrapper extends Wrapper<CtPackage> {
         tagPackageOf(types);
     }
 
-    protected void tagPackageOf(Set<CtType<?>> types) {
+    public void tagPackageOf(Set<CtType<?>> types) {
         for (CtType<?> current : types) {
             TypeWrapper<?> wrapper = getFactory().wrap(current);
             getLogger().addTriple(this, Ontology.PACKAGE_OF_PROPERTY, wrapper.getResource());

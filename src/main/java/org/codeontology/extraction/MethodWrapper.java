@@ -8,7 +8,6 @@ import spoon.reflect.reference.CtTypeReference;
 import spoon.support.reflect.reference.SpoonClassNotFoundException;
 
 import java.lang.reflect.*;
-import java.util.List;
 
 public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
     public MethodWrapper(CtMethod<?> method) {
@@ -34,7 +33,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
         }
     }
 
-    protected void tagOverrides() {
+    public void tagOverrides() {
         CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference()).getOverridingExecutable();
         if (reference != null) {
             ExecutableWrapper overridingMethod = getFactory().wrap(reference);
@@ -46,7 +45,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
         }
     }
 
-    protected void tagReturns() {
+    public void tagReturns() {
         getLogger().addTriple(this, Ontology.RETURNS_PROPERTY, getReturnType());
     }
 
@@ -90,15 +89,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
         return result;
     }
 
-    protected void tagFormalTypeParameters() {
-        List<CtTypeReference<?>> parameters = getElement().getFormalTypeParameters();
-        int size = parameters.size();
-        for (int i = 0; i < size; i++) {
-            TypeVariableWrapper wrapper = ((TypeVariableWrapper) getFactory().wrap(parameters.get(i)));
-            wrapper.setParent(this);
-            wrapper.setPosition(i);
-            getLogger().addTriple(this, Ontology.FORMAL_TYPE_PARAMETER_PROPERTY, wrapper);
-            wrapper.extract();
-        }
+    public void tagFormalTypeParameters() {
+        new FormalTypeParametersTagger(this).tagFormalTypeParameters();
     }
 }

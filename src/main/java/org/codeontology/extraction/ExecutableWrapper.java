@@ -27,7 +27,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     }
 
     @Override
-    protected String getRelativeURI() {
+    public String getRelativeURI() {
         String uri = getReference().toString();
         uri = uri.replaceAll(", |#", SEPARATOR);
         return uri;
@@ -49,15 +49,15 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    protected void tagDeclaringType() {
+    public void tagDeclaringType() {
         new DeclaredByTagger(this).tagDeclaredBy();
     }
 
-    protected void tagModifiers() {
+    public void tagModifiers() {
         new ModifiableTagger(this).tagModifiers();
     }
 
-    protected void tagParameters() {
+    public void tagParameters() {
         if (isDeclarationAvailable()) {
             List<CtParameter<?>> parameters = getElement().getParameters();
             int parametersNumber = parameters.size();
@@ -86,7 +86,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    protected void tagThrows() {
+    public void tagThrows() {
         Set<CtTypeReference<? extends Throwable>> thrownTypes = getElement().getThrownTypes();
         for (CtTypeReference<? extends Throwable> current : thrownTypes) {
             TypeWrapper<?> thrownType = getFactory().wrap(current);
@@ -130,7 +130,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         tagRequestedTypes(types);
     }
 
-    protected void tagInvocations(CtStatement statement) {
+    public void tagInvocations(CtStatement statement) {
         Set<CtExecutableReference<?>> references = new HashSet<>(statement.getReferences(new ReferenceTypeFilter<>(CtExecutableReferenceImpl.class)));
 
         for (CtExecutableReference<?> reference : references) {
@@ -157,7 +157,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    protected void tagRequestedFields(CtStatement statement) {
+    public void tagRequestedFields(CtStatement statement) {
         Set<CtFieldReference<?>> references = new HashSet<>(statement.getReferences(new ReferenceTypeFilter<>(CtFieldReferenceImpl.class)));
 
         for (CtFieldReference<?> currentReference : references) {
@@ -168,7 +168,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    protected void tagRequestedTypes(Collection<CtTypeReference<?>> types) {
+    public void tagRequestedTypes(Collection<CtTypeReference<?>> types) {
         for (CtTypeReference<?> reference : types) {
             TypeWrapper<?> type = getFactory().wrap(reference);
             if (type != null) {
@@ -199,7 +199,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    protected void tagExecutableRequested(CtExecutableReference<?> reference) {
+    public void tagExecutableRequested(CtExecutableReference<?> reference) {
         ExecutableWrapper<?> executable = getFactory().wrap(reference);
         tagRequests(executable.getResource());
         if (reference.isConstructor()) {
@@ -210,7 +210,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    protected void tagConstructs(CtExecutableReference<?> reference) {
+    public void tagConstructs(CtExecutableReference<?> reference) {
         Wrapper<?> declaringType = getFactory().wrap(reference.getDeclaringType());
         getLogger().addTriple(this, Ontology.CONSTRUCTS_PROPERTY, declaringType);
         if (!declaringType.isDeclarationAvailable()) {
@@ -218,11 +218,11 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    protected void tagRequests(RDFNode node) {
+    public void tagRequests(RDFNode node) {
         getLogger().addTriple(this, Ontology.REQUESTS_PROPERTY, node);
     }
 
-    protected void tagReturnsVariable(CtReturn<?> returnStatement) {
+    public void tagReturnsVariable(CtReturn<?> returnStatement) {
         CtExpression<?> returned = returnStatement.getReturnedExpression();
         if (returned instanceof CtVariableAccess<?>) {
             CtVariableReference<?> reference = ((CtVariableAccess<?>) returned).getVariable();
@@ -236,14 +236,14 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    protected void tagReturnsLocalVariable(CtLocalVariable<?> variable) {
+    public void tagReturnsLocalVariable(CtLocalVariable<?> variable) {
         LocalVariableWrapper wrapper = getFactory().wrap(variable);
         wrapper.setParent(this);
         getLogger().addTriple(this, Ontology.RETURNS_VAR_PROPERTY, wrapper.getResource());
         wrapper.extract();
     }
 
-    protected void tagReturnsField(CtField<?> field) {
+    public void tagReturnsField(CtField<?> field) {
         if (field != null) {
             Wrapper wrapper =  getFactory().wrap(field);
             getLogger().addTriple(this, Ontology.RETURNS_FIELD_PROPERTY, wrapper.getResource());

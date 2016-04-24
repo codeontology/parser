@@ -31,11 +31,11 @@ public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> {
         }
     }
 
-    protected void tagSuperInterfaces() {
+    public void tagSuperInterfaces() {
         tagSuperInterfaces(Ontology.EXTENDS_PROPERTY);
     }
 
-    protected void tagModifiers() {
+    public void tagModifiers() {
         new ModifiableTagger(this).tagModifiers();
     }
 }

@@ -27,7 +27,7 @@ public class JavaTypeTagger {
         }
     }
 
-    protected void tagJavaType(Wrapper<?> parent) {
+    public void tagJavaType(Wrapper<?> parent) {
         type.setParent(parent);
         tagJavaType();
     }

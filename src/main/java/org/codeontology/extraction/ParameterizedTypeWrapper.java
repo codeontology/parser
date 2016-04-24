@@ -52,7 +52,7 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         return Ontology.PARAMETERIZED_TYPE_CLASS;
     }
 
-    protected void tagRawType() {
+    public void tagRawType() {
         CoreFactory coreFactory = getReference().getFactory().Core();
         CtTypeReference<?> cloneReference = coreFactory.clone(getReference());
         cloneReference.setActualTypeArguments(new ArrayList<>());
@@ -60,7 +60,7 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         getLogger().addTriple(this, Ontology.RAW_TYPE_PROPERTY, rawType);
     }
 
-    protected void tagActualTypeArguments() {
+    public void tagActualTypeArguments() {
         for (int i = 0; i < arguments.size(); i++) {
             TypeArgumentWrapper typeArgument = new TypeArgumentWrapper(arguments.get(i));
             typeArgument.setPosition(i);
@@ -99,7 +99,7 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         }
 
         @Override
-        protected String getRelativeURI() {
+        public String getRelativeURI() {
             return ParameterizedTypeWrapper.this.getRelativeURI() + SEPARATOR + position;
         }
 

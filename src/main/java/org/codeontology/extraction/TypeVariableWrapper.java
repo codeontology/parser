@@ -43,7 +43,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         getLogger().addTriple(this, Ontology.POSITION_PROPERTY, getModel().createTypedLiteral(position));
     }
 
-    protected void tagBounds() {
+    public void tagBounds() {
         for (CtTypeReference bound : bounds) {
             tagBound(bound);
         }

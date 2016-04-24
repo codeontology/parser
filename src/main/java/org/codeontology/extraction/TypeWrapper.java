@@ -29,7 +29,7 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
     }
 
     @Override
-    protected String getRelativeURI() {
+    public String getRelativeURI() {
         return getReference().getQualifiedName();
     }
 
@@ -37,7 +37,7 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
         return (CtTypeReference<?>) super.getReference();
     }
 
-    protected void tagSuperInterfaces(Property property) {
+    public void tagSuperInterfaces(Property property) {
         Set<CtTypeReference<?>> references = getReference().getSuperInterfaces();
 
         for (CtTypeReference<?> reference : references) {
@@ -51,7 +51,7 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
         }
     }
 
-    protected void tagMethods() {
+    public void tagMethods() {
         Set<CtMethod<?>> methods = getElement().getMethods();
 
         for (CtMethod<?> method : methods) {
@@ -59,7 +59,7 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
         }
     }
 
-    protected void tagFields() {
+    public void tagFields() {
         List<CtField<?>> fields = getElement().getFields();
 
         for (CtField<?> field : fields) {

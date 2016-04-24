@@ -19,7 +19,7 @@ public class LocalVariableWrapper extends Wrapper<CtLocalVariable<?>> {
     }
 
     @Override
-    protected String getRelativeURI() {
+    public String getRelativeURI() {
         return getParent().getRelativeURI() + SEPARATOR + getElement().getSimpleName();
     }
 
@@ -32,7 +32,7 @@ public class LocalVariableWrapper extends Wrapper<CtLocalVariable<?>> {
         new DeclaredByTagger(this).tagDeclaredBy();
     }
 
-    protected void tagJavaType() {
+    public void tagJavaType() {
         new JavaTypeTagger(this).tagJavaType(this.getParent());
     }
 }
