@@ -42,7 +42,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
     public void tagSuperClass() {
         CtTypeReference<?> superclass = getReference().getSuperclass();
         if (superclass == null) {
-            superclass = getFactory().getParent().Type().createReference(Object.class);
+            superclass = ReflectionFactory.getInstance().createTypeReference(Object.class);
         }
         TypeWrapper<?> superClass = getFactory().wrap(superclass);
         superClass.setParent(this);

@@ -5,7 +5,6 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.*;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
@@ -134,76 +133,24 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     private void findAndSetParent(CtExecutableReference<?> executableReference) {
         if (executableReference.getDeclaration() != null) {
             findAndSetParent(getFactory().wrap(executableReference));
-            return;
-        }
-
-        if (isWildcard()) {
+        } else if (isWildcard()) {
             super.setParent(getFactory().wrap(executableReference));
-            return;
-        }
+        } else {
+            Executable executable = ReflectionFactory.getInstance().createActualExecutable(executableReference);
+            TypeVariable<?>[] typeParameters = executable.getTypeParameters();
+            Class<?> declaringClass = executable.getDeclaringClass();
 
-        Executable executable = getActualExecutable(executableReference);
-        TypeVariable<?>[] typeParameters = executable.getTypeParameters();
-        Class<?> declaringClass = executable.getDeclaringClass();
-
-        for (TypeVariable current : typeParameters) {
-            if (current.getName().equals(getReference().getQualifiedName())) {
-                super.setParent(getFactory().wrap(executableReference));
-                return;
+            for (TypeVariable current : typeParameters) {
+                if (current.getName().equals(getReference().getQualifiedName())) {
+                    super.setParent(getFactory().wrap(executableReference));
+                    return;
+                }
             }
-        }
 
-        findAndSetParent(declaringClass);
+            findAndSetParent(declaringClass);
+        }
     }
 
-
-    private Executable getActualExecutable(CtExecutableReference<?> executableReference) {
-
-        Executable executable = executableReference.getActualMethod();
-
-        if (executable == null) {
-            executable = executableReference.getActualConstructor();
-        }
-
-        if (executable == null) {
-            try {
-                Class<?> declaringClass = Class.forName(executableReference.getDeclaringType().getQualifiedName());
-
-                Executable[] executables = declaringClass.getDeclaredMethods();
-                if (executableReference.isConstructor()) {
-                    executables = declaringClass.getDeclaredConstructors();
-                }
-
-                for (Executable current : executables) {
-                    if (current.getName().equals(executableReference.getSimpleName()) || current instanceof Constructor) {
-                        if (current.getParameterCount() == executableReference.getParameters().size()) {
-                            List<CtTypeReference<?>> parameters = executableReference.getParameters();
-                            Class<?>[] classes = new Class<?>[parameters.size()];
-                            for (int i = 0; i < parameters.size(); i++) {
-                                classes[i] = parameters.get(i).getActualClass();
-                            }
-
-                            boolean acc = true;
-
-                            Class<?>[] parameterTypes = current.getParameterTypes();
-                            for (int i = 0; i < classes.length && acc; i++) {
-                                acc = classes[i].isAssignableFrom(parameterTypes[i]);
-                            }
-
-                            if (acc) {
-                                executable = current;
-                                break;
-                            }
-                        }
-                    }
-                }
-            } catch (ClassNotFoundException | NoSuchMethodError e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        return executable;
-    }
 
     private void findAndSetParent(Class<?> clazz) {
         TypeVariable<?>[] typeParameters = clazz.getTypeParameters();

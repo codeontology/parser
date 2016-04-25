@@ -3,7 +3,6 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtType;
-import spoon.reflect.factory.CoreFactory;
 import spoon.reflect.reference.CtTypeReference;
 
 import java.util.ArrayList;
@@ -53,8 +52,7 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
     }
 
     public void tagRawType() {
-        CoreFactory coreFactory = getReference().getFactory().Core();
-        CtTypeReference<?> cloneReference = coreFactory.clone(getReference());
+        CtTypeReference<?> cloneReference = ReflectionFactory.getInstance().clone(getReference());
         cloneReference.setActualTypeArguments(new ArrayList<>());
         TypeWrapper rawType = getFactory().wrap(cloneReference);
         getLogger().addTriple(this, Ontology.RAW_TYPE_PROPERTY, rawType);

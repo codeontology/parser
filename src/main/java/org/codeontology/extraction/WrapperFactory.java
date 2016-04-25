@@ -4,25 +4,21 @@ import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.code.CtLambda;
 import spoon.reflect.code.CtLocalVariable;
 import spoon.reflect.declaration.*;
-import spoon.reflect.factory.Factory;
 import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtTypeParameterReference;
 import spoon.reflect.reference.CtTypeReference;
 
-import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 
 public class WrapperFactory {
 
-    private Factory parent;
     private static WrapperFactory instance;
-    private Set<TypeVariable> previousVariables;
 
     private WrapperFactory() {
-        previousVariables = new HashSet<>();
+
     }
 
     public static WrapperFactory getInstance() {
@@ -122,127 +118,26 @@ public class WrapperFactory {
     }
 
     public TypeVariableWrapper wrap(TypeVariable typeVariable) {
-        CtTypeParameterReference reference = createTypeVariableReference(typeVariable);
+        CtTypeParameterReference reference = reflectionFactory().createTypeVariableReference(typeVariable);
         return new TypeVariableWrapper(reference);
     }
 
     public ArrayWrapper wrap(GenericArrayType array) {
-        return new ArrayWrapper(createGenericArrayReference(array));
+        CtTypeReference<?> reference = reflectionFactory().createGenericArrayReference(array);
+        return new ArrayWrapper(reference);
     }
 
     public ParameterizedTypeWrapper wrap(ParameterizedType parameterizedType) {
-        return new ParameterizedTypeWrapper(createParameterizedTypeReference(parameterizedType));
+        CtTypeReference reference = reflectionFactory().createParameterizedTypeReference(parameterizedType);
+        return new ParameterizedTypeWrapper(reference);
     }
 
     public TypeWrapper<?> wrap(Type type) {
-        return wrap(createTypeReference(type));
+        return wrap(reflectionFactory().createTypeReference(type));
     }
 
-    private CtTypeReference<?> createParameterizedTypeReference(ParameterizedType parameterizedType) {
-
-        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-        Type rawType = parameterizedType.getRawType();
-        CtTypeReference<?> reference;
-
-        if (rawType instanceof Class) {
-            reference = getParent().Type().createReference((Class) rawType);
-        } else {
-            reference = getParent().Type().createReference(rawType.getTypeName());
-        }
-
-        for (Type actualArgument : actualTypeArguments) {
-            reference.addActualTypeArgument(createTypeReference(actualArgument));
-        }
-
-        return reference;
-    }
-
-    private CtTypeReference createTypeReference(Type type) {
-        CtTypeReference reference;
-        if (type instanceof ParameterizedType) {
-            reference = createParameterizedTypeReference((ParameterizedType) type);
-        } else if (type instanceof TypeVariable) {
-            reference = createTypeVariableReference((TypeVariable) type);
-        } else if (type instanceof GenericArrayType) {
-            reference = createGenericArrayReference((GenericArrayType) type);
-        } else if (type instanceof Class) {
-            reference = getParent().Type().createReference((Class) type);
-        } else if (type instanceof WildcardType) {
-            reference = createWildcardReference((WildcardType) type);
-        } else {
-            reference = getParent().Type().createReference(type.getTypeName());
-        }
-
-        return reference;
-    }
-
-    private CtTypeReference createGenericArrayReference(GenericArrayType array) {
-        Type type = array;
-
-        int i = 0;
-        do {
-            i++;
-            type = ((GenericArrayType) type).getGenericComponentType();
-        } while (type instanceof GenericArrayType);
-
-        CtTypeReference<?> componentType;
-
-        if (type instanceof TypeVariable) {
-            componentType = createTypeVariableReference((TypeVariable) type);
-        } else {
-            componentType = createParameterizedTypeReference((ParameterizedType) type);
-        }
-        return getParent().Type().createArrayReference(componentType, i);
-    }
-
-    private CtTypeParameterReference createTypeVariableReference(TypeVariable typeVariable) {
-        if (previousVariables.contains(typeVariable)) {
-            return getParent().Type().createTypeParameterReference(typeVariable.getName());
-        }
-
-        previousVariables.add(typeVariable);
-
-        String name = typeVariable.getName();
-        Type[] bounds = typeVariable.getBounds();
-
-        List<CtTypeReference<?>> boundsList = new ArrayList<>();
-
-        for (Type bound : bounds) {
-            boundsList.add(createTypeReference(bound));
-        }
-
-        previousVariables.remove(typeVariable);
-
-        return getParent().Type().createTypeParameterReference(name, boundsList);
-    }
-
-    private CtTypeParameterReference createWildcardReference(WildcardType wildcard) {
-        String name = "?";
-        Type[] upperBounds = wildcard.getUpperBounds();
-        Type[] lowerBounds = wildcard.getLowerBounds();
-
-        List<CtTypeReference<?>> boundsList = new ArrayList<>();
-
-        for (Type bound : upperBounds) {
-            boundsList.add(createTypeReference(bound));
-        }
-
-        for (Type bound: lowerBounds) {
-            boundsList.add(createTypeReference(bound));
-        }
-
-        CtTypeParameterReference wildcardReference = getParent().Type().createTypeParameterReference(name, boundsList);
-        wildcardReference.setUpper(upperBounds.length > 0);
-
-        return wildcardReference;
-    }
-
-    public void setParent(Factory parent) {
-        this.parent = parent;
-    }
-
-    public Factory getParent() {
-        return parent;
+    private ReflectionFactory reflectionFactory() {
+        return ReflectionFactory.getInstance();
     }
 
 }
