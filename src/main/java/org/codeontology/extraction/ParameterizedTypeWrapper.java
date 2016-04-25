@@ -87,9 +87,7 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
 
         private void tagJavaType() {
             getLogger().addTriple(this, Ontology.JAVA_TYPE_PROPERTY, argument);
-            if (!argument.isDeclarationAvailable()) {
-                argument.extract();
-            }
+            argument.follow();
         }
 
         private void tagPosition() {

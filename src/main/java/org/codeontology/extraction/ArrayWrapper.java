@@ -35,9 +35,7 @@ public class ArrayWrapper extends TypeWrapper<CtType<?>> {
 
     public void tagArrayOf() {
         getLogger().addTriple(this, Ontology.ARRAY_OF_PROPERTY, componentType);
-        if (!componentType.isDeclarationAvailable()) {
-            componentType.extract();
-        }
+        componentType.follow();
     }
 
     public void tagDimensions() {

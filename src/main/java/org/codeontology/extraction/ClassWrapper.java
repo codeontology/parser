@@ -47,9 +47,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
         TypeWrapper<?> superClass = getFactory().wrap(superclass);
         superClass.setParent(this);
         getLogger().addTriple(this, Ontology.EXTENDS_PROPERTY, superClass);
-        if (!superClass.isDeclarationAvailable()) {
-            superClass.extract();
-        }
+        superClass.follow();
     }
 
     public void tagSuperInterfaces() {

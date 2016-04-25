@@ -38,10 +38,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
         if (reference != null) {
             ExecutableWrapper overridingMethod = getFactory().wrap(reference);
             getLogger().addTriple(this, Ontology.OVERRIDES_PROPERTY, overridingMethod);
-
-            if (!overridingMethod.isDeclarationAvailable()) {
-                overridingMethod.extract();
-            }
+            overridingMethod.follow();
         }
     }
 
@@ -58,9 +55,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
         CtTypeReference<?> reference = ((CtExecutableReference<?>) getReference()).getType();
         returnType = getFactory().wrap(reference);
         returnType.setParent(this);
-        if (!returnType.isDeclarationAvailable()) {
-            returnType.extract();
-        }
+        returnType.follow();
 
         return returnType;
     }

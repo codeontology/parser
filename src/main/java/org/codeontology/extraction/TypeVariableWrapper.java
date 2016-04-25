@@ -56,9 +56,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         } else {
             getLogger().addTriple(this, Ontology.SUPER_PROPERTY, bound);
         }
-        if (!bound.isDeclarationAvailable()) {
-            bound.extract();
-        }
+        bound.follow();
     }
 
     @Override

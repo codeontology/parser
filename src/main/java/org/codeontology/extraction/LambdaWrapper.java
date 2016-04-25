@@ -21,10 +21,8 @@ public class LambdaWrapper extends Wrapper<CtLambda<?>> {
     private void tagFunctionalImplements() {
         Wrapper<?> implementedType = getFactory().wrap(getElement().getType());
         implementedType.setParent(this.getParent());
-        if (!implementedType.isDeclarationAvailable()) {
-            implementedType.extract();
-        }
         getLogger().addTriple(this, Ontology.IMPLEMENTS_PROPERTY, implementedType);
+        implementedType.follow();
     }
 
     @Override

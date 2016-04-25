@@ -85,9 +85,7 @@ public abstract class Wrapper<E extends CtNamedElement> {
         for (CtAnnotation annotation : annotations) {
             TypeWrapper annotationType = getFactory().wrap(annotation.getAnnotationType());
             getLogger().addTriple(this, Ontology.ANNOTATION_PROPERTY, annotationType);
-            if (!annotationType.isDeclarationAvailable()) {
-                annotationType.extract();
-            }
+            annotationType.follow();
         }
     }
 
@@ -123,6 +121,27 @@ public abstract class Wrapper<E extends CtNamedElement> {
 
     public void setParent(Wrapper<?> parent) {
         this.parent = parent;
+    }
+
+    public void follow() {
+        if (!isDeclarationAvailable() && WrapperRegister.getInstance().add(this)) {
+            extract();
+        }
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Wrapper<?>)) {
+            return false;
+        }
+
+        Wrapper<?> other = (Wrapper<?>) object;
+        return other.getRelativeURI().equals(this.getRelativeURI());
+    }
+
+    @Override
+    public int hashCode() {
+        return getRelativeURI().hashCode();
     }
 }
 

@@ -44,10 +44,7 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
             TypeWrapper<?> superInterface = getFactory().wrap(reference);
             superInterface.setParent(this);
             getLogger().addTriple(this, property, superInterface.getResource());
-
-            if (!superInterface.isDeclarationAvailable()) {
-                superInterface.extract();
-            }
+            superInterface.follow();
         }
     }
 

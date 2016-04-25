@@ -4,6 +4,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.*;
+import spoon.reflect.internal.CtImplicitTypeReference;
 import spoon.reflect.reference.*;
 import spoon.reflect.visitor.filter.ReferenceTypeFilter;
 import spoon.support.reflect.reference.CtExecutableReferenceImpl;
@@ -16,7 +17,6 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember & CtGenericElement> extends Wrapper<E> {
-
 
     public ExecutableWrapper(E executable) {
         super(executable);
@@ -170,13 +170,13 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
     public void tagRequestedTypes(Collection<CtTypeReference<?>> types) {
         for (CtTypeReference<?> reference : types) {
-            TypeWrapper<?> type = getFactory().wrap(reference);
-            if (type != null) {
-                type.setParent(this);
-                if (!type.isDeclarationAvailable()) {
-                    type.extract();
+            if (!(reference instanceof CtImplicitTypeReference<?>)) {
+                TypeWrapper<?> type = getFactory().wrap(reference);
+                if (type != null) {
+                    type.setParent(this);
+                    type.follow();
+                    tagRequests(type.getResource());
                 }
-                tagRequests(type.getResource());
             }
         }
     }
@@ -205,17 +205,13 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         if (reference.isConstructor()) {
             tagConstructs(reference);
         }
-        if (!executable.isDeclarationAvailable()) {
-            executable.extract();
-        }
+        executable.follow();
     }
 
     public void tagConstructs(CtExecutableReference<?> reference) {
         Wrapper<?> declaringType = getFactory().wrap(reference.getDeclaringType());
         getLogger().addTriple(this, Ontology.CONSTRUCTS_PROPERTY, declaringType);
-        if (!declaringType.isDeclarationAvailable()) {
-            declaringType.extract();
-        }
+        declaringType.follow();
     }
 
     public void tagRequests(RDFNode node) {
