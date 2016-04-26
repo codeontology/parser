@@ -17,7 +17,7 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
     }
 
     @Override
-    public String getRelativeURI() {
+    public String buildRelativeURI() {
         arguments = getReference().getActualTypeArguments();
         String uri = getReference().getQualifiedName();
         String argumentsString = "";
@@ -95,7 +95,7 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         }
 
         @Override
-        public String getRelativeURI() {
+        public String buildRelativeURI() {
             return ParameterizedTypeWrapper.this.getRelativeURI() + SEPARATOR + position;
         }
 

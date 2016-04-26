@@ -29,7 +29,7 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
     }
 
     @Override
-    public String getRelativeURI() {
+    public String buildRelativeURI() {
         return getReference().getQualifiedName();
     }
 

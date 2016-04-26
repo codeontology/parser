@@ -60,7 +60,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     }
 
     @Override
-    public String getRelativeURI() {
+    public String buildRelativeURI() {
         if (isWildcard()) {
             return wildcardURI();
         }

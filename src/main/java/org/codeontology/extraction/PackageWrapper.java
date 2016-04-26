@@ -16,7 +16,7 @@ public class PackageWrapper extends Wrapper<CtPackage> {
     }
 
     @Override
-    public String getRelativeURI() {
+    public String buildRelativeURI() {
         String relativeURI = getElement().getQualifiedName();
         return relativeURI.replace(" ", SEPARATOR);
     }

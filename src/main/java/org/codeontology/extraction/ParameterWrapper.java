@@ -45,7 +45,7 @@ public class ParameterWrapper extends Wrapper<CtParameter<?>> {
     }
 
     @Override
-    public String getRelativeURI() {
+    public String buildRelativeURI() {
         return getParent().getRelativeURI() + SEPARATOR  + position;
     }
 

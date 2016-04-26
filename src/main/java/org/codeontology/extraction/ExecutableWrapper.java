@@ -27,7 +27,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     }
 
     @Override
-    public String getRelativeURI() {
+    public String buildRelativeURI() {
         String uri = getReference().toString();
         uri = uri.replaceAll(", |#", SEPARATOR);
         return uri;
@@ -136,6 +136,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         for (CtNewClass<?> newClass : newClasses) {
             AnonymousClassWrapper<?> anonymousClass = new AnonymousClassWrapper<>(newClass.getAnonymousClass());
             anonymousClass.setParent(this);
+            getLogger().addTriple(this, Ontology.ANONYMOUS_CLASS_PROPERTY, anonymousClass);
             anonymousClass.extract();
         }
     }
@@ -196,7 +197,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         return !newClasses.isEmpty();
     }
 
-    private void tagLocalVariables(CtStatement statement) {
+    public void tagLocalVariables(CtStatement statement) {
         List<CtLocalVariableReference<?>> references = statement.getReferences(new ReferenceTypeFilter<>(CtLocalVariableReferenceImpl.class));
 
         for (CtLocalVariableReference<?> reference : references) {

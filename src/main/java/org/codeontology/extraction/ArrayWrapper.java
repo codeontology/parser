@@ -29,7 +29,7 @@ public class ArrayWrapper extends TypeWrapper<CtType<?>> {
     }
 
     @Override
-    public String getRelativeURI() {
+    public String buildRelativeURI() {
         return componentType.getRelativeURI() + "[]";
     }
 

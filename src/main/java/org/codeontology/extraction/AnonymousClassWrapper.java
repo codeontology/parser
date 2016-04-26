@@ -1,5 +1,7 @@
 package org.codeontology.extraction;
 
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtClass;
 
 public class AnonymousClassWrapper<T> extends ClassWrapper<T> {
@@ -11,8 +13,13 @@ public class AnonymousClassWrapper<T> extends ClassWrapper<T> {
     }
 
     @Override
-    public String getRelativeURI() {
+    public String buildRelativeURI() {
         return getParent().getRelativeURI() + SEPARATOR + TAG + SEPARATOR + getElement().getSimpleName();
+    }
+
+    @Override
+    public RDFNode getType() {
+        return Ontology.ANONYMOUS_CLASS_CLASS;
     }
 
     @Override

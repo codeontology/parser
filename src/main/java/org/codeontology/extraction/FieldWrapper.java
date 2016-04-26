@@ -14,7 +14,7 @@ public class FieldWrapper extends Wrapper<CtField<?>> {
     }
 
     @Override
-    public String getRelativeURI() {
+    public String buildRelativeURI() {
         return getFactory().wrap(getElement().getDeclaringType()).getRelativeURI() + SEPARATOR + getElement().getSimpleName();
     }
 

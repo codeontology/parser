@@ -19,7 +19,7 @@ public class LocalVariableWrapper extends Wrapper<CtLocalVariable<?>> {
     }
 
     @Override
-    public String getRelativeURI() {
+    public String buildRelativeURI() {
         return getParent().getRelativeURI() + SEPARATOR + getElement().getSimpleName();
     }
 

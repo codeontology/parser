@@ -18,6 +18,7 @@ public abstract class Wrapper<E extends CtNamedElement> {
     public static final String SEPARATOR = "-";
     public static Model model = RDFLogger.getInstance().getModel();
     private Wrapper<?> parent;
+    private String uri;
 
     public Wrapper(E element) {
         setElement(element);
@@ -59,7 +60,7 @@ public abstract class Wrapper<E extends CtNamedElement> {
         return model.createResource(Ontology.WOC + getRelativeURI());
     }
 
-    public abstract String getRelativeURI();
+    protected abstract String buildRelativeURI();
 
     private RDFNode getName() {
         return model.createLiteral(getReference().getSimpleName());
@@ -127,6 +128,14 @@ public abstract class Wrapper<E extends CtNamedElement> {
         if (!isDeclarationAvailable() && WrapperRegister.getInstance().add(this)) {
             extract();
         }
+    }
+
+    public final String getRelativeURI() {
+        if (uri == null) {
+            uri = buildRelativeURI();
+        }
+
+        return uri;
     }
 
     @Override
