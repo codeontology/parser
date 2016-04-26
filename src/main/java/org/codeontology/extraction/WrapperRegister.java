@@ -6,6 +6,8 @@ import java.util.Set;
 public class WrapperRegister {
     private static WrapperRegister instance;
     private Set<String> register;
+    private int size;
+    public static final int LIMIT = 1000;
 
     private WrapperRegister() {
         register = new HashSet<>();
@@ -20,8 +22,16 @@ public class WrapperRegister {
     }
 
     public boolean add(Wrapper<?> wrapper) {
-        System.out.println("WrapperRegister size: " + register.size());
+        handleSize();
         return register.add(wrapper.getRelativeURI());
+    }
+
+    private void handleSize() {
+        size++;
+        if (size > LIMIT) {
+            size = 0;
+            register = new HashSet<>();
+        }
     }
 
 }

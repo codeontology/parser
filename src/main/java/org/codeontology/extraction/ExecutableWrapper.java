@@ -116,6 +116,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
                 tagRequestedFields(statement);
                 tagLocalVariables(statement);
                 tagLambdas(statement);
+                tagAnonymousClasses(statement);
 
                 if (statement instanceof CtReturn<?>) {
                     tagReturnsVariable((CtReturn<?>) statement);
@@ -128,6 +129,15 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
 
         tagRequestedTypes(types);
+    }
+
+    private void tagAnonymousClasses(CtStatement statement) {
+        List<CtNewClass<?>> newClasses = statement.getElements(element -> element != null);
+        for (CtNewClass<?> newClass : newClasses) {
+            AnonymousClassWrapper<?> anonymousClass = new AnonymousClassWrapper<>(newClass.getAnonymousClass());
+            anonymousClass.setParent(this);
+            anonymousClass.extract();
+        }
     }
 
     public void tagInvocations(CtStatement statement) {
@@ -236,7 +246,6 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         LocalVariableWrapper wrapper = getFactory().wrap(variable);
         wrapper.setParent(this);
         getLogger().addTriple(this, Ontology.RETURNS_VAR_PROPERTY, wrapper.getResource());
-        wrapper.extract();
     }
 
     public void tagReturnsField(CtField<?> field) {

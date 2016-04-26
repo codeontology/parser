@@ -69,6 +69,8 @@ public class Ontology {
 
     public static final Resource LAMBDA_CLASS = model.getResource(WOC + "Lambda");
 
+    public static final Resource ANONYMOUS_CLASS_CLASS = model.getResource(WOC + "AnonymousClass");
+
     public static final Resource TYPE_ARGUMENT_CLASS = model.getResource(WOC + "TypeArgument");
 
 
@@ -127,6 +129,8 @@ public class Ontology {
     public static final Property ANNOTATION_PROPERTY = model.getProperty(WOC + "annotation");
 
     public static final Property OVERRIDES_PROPERTY = model.getProperty(WOC + "overrides");
+
+    public static final Property ANONYMOUS_CLASS_PROPERTY = model.getProperty(WOC + "anonymousClass");
 
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");

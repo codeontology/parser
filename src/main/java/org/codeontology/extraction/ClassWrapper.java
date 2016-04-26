@@ -11,6 +11,10 @@ import java.util.Set;
 
 public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
 
+    public ClassWrapper(CtClass<T> clazz) {
+        super(clazz);
+    }
+
     public ClassWrapper(CtTypeReference<?> reference) {
         super(reference);
     }

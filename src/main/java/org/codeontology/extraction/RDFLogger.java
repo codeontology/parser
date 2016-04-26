@@ -3,6 +3,7 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Statement;
 import org.codeontology.Ontology;
 
 import java.io.BufferedWriter;
@@ -15,7 +16,7 @@ public class RDFLogger {
     private String outputFile = "triples.nt";
     private int counter = 0;
     private static RDFLogger instance = new RDFLogger();
-    public static final int LIMIT = 100000;
+    public static final int LIMIT = 10000;
 
     private RDFLogger() {
 
@@ -36,8 +37,6 @@ public class RDFLogger {
     public void writeRDF() {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)))) {
             getModel().write(writer, "N-TRIPLE");
-            model = Ontology.getModel();
-            counter = 0;
         } catch (IOException e) {
             System.out.println("Unable to write triples");
             System.exit(-1);
@@ -50,13 +49,20 @@ public class RDFLogger {
 
     public void addTriple(Wrapper subject, Property property, RDFNode object) {
         if (property != null && object != null) {
-            model.add(model.createStatement(subject.getResource(), property, object));
+            Statement triple = model.createStatement(subject.getResource(), property, object);
+            model.add(triple);
             counter++;
-            if (counter >= LIMIT) {
-                writeRDF();
+            if (counter > LIMIT) {
+                handleLimitExceeded();
             }
         } else {
             throw new IllegalArgumentException();
         }
+    }
+
+    private void handleLimitExceeded() {
+        model = Ontology.getModel();
+        counter = 0;
+        writeRDF();
     }
 }
