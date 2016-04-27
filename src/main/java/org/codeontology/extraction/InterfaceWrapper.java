@@ -1,6 +1,7 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtInterface;
 import spoon.reflect.reference.CtTypeReference;
@@ -20,11 +21,13 @@ public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> {
     public void extract() {
         tagType();
         tagName();
-        if (isDeclarationAvailable()) {
-            tagAnnotations();
+        if (isDeclarationAvailable() || CodeOntology.isJarExplorationEnabled()) {
             tagSuperInterfaces();
             tagFields();
             tagMethods();
+        }
+        if (isDeclarationAvailable()) {
+            tagAnnotations();
             tagSourceCode();
             tagComment();
             tagModifiers();
