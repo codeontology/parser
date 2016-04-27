@@ -1,6 +1,7 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtConstructor;
@@ -9,12 +10,13 @@ import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtTypeReference;
 
 import java.lang.reflect.Constructor;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
 
-    private Set<ConstructorWrapper> constructors;
+    private List<ConstructorWrapper> constructors;
 
     public ClassWrapper(CtClass<T> clazz) {
         super(clazz);
@@ -33,14 +35,16 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
     public void extract() {
         tagType();
         tagName();
-        tagMethods();
         tagSuperClass();
         tagSuperInterfaces();
-        tagConstructors();
+        if (isDeclarationAvailable() || CodeOntology.isJarExplorationEnabled()) {
+            tagFields();
+            tagConstructors();
+            tagMethods();
+        }
         if (isDeclarationAvailable()) {
             tagAnnotations();
             tagComment();
-            tagFields();
             tagSourceCode();
             tagNestedTypes();
             tagModifiers();
@@ -64,14 +68,14 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
     }
 
     public void tagConstructors() {
-        Set<ConstructorWrapper> constructors = getConstructors();
+        List<ConstructorWrapper> constructors = getConstructors();
 
         for (ConstructorWrapper constructor : constructors) {
             constructor.extract();
         }
     }
 
-    public Set<ConstructorWrapper> getConstructors() {
+    public List<ConstructorWrapper> getConstructors() {
         if (constructors == null) {
             setConstructors();
         }
@@ -80,7 +84,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
     }
 
     private void setConstructors() {
-        constructors = new HashSet<>();
+        constructors = new ArrayList<>();
 
         if (isDeclarationAvailable()) {
             Set<CtConstructor<T>> ctConstructors = getElement().getConstructors();

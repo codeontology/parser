@@ -1,22 +1,24 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.Property;
-import org.codeontology.CodeOntology;
 import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.declaration.CtField;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtExecutableReference;
+import spoon.reflect.reference.CtFieldReference;
 import spoon.reflect.reference.CtTypeReference;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
 
-    private Set<MethodWrapper> methods;
+    private List<MethodWrapper> methods;
+    private List<FieldWrapper> fields;
 
     public TypeWrapper(T type) {
         super(type);
@@ -55,15 +57,13 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
     }
 
     public void tagMethods() {
-        if (isDeclarationAvailable() || CodeOntology.isJarExplorationEnabled()) {
-            Set<MethodWrapper> methods = getMethods();
-            for (MethodWrapper method : methods) {
-                method.extract();
-            }
+        List<MethodWrapper> methods = getMethods();
+        for (MethodWrapper method : methods) {
+            method.extract();
         }
     }
 
-    public Set<MethodWrapper> getMethods() {
+    public List<MethodWrapper> getMethods() {
         if (methods == null) {
             setMethods();
         }
@@ -71,7 +71,7 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
     }
 
     private void setMethods() {
-        methods = new HashSet<>();
+        methods = new ArrayList<>();
 
         if (isDeclarationAvailable()) {
             Set<CtMethod<?>> ctMethods = getElement().getMethods();
@@ -87,11 +87,35 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
         }
     }
 
-    public void tagFields() {
-        List<CtField<?>> fields = getElement().getFields();
+    public List<FieldWrapper> getFields() {
+        if (fields == null) {
+            setFields();
+        }
 
-        for (CtField<?> field : fields) {
-            getFactory().wrap(field).extract();
+        return fields;
+    }
+
+    private void setFields() {
+        fields = new ArrayList<>();
+        if (isDeclarationAvailable()) {
+            List<CtField<?>> ctFields = getElement().getFields();
+            for (CtField<?> current : ctFields) {
+                fields.add(getFactory().wrap(current));
+            }
+        } else {
+            Field[] actualFields = getReference().getActualClass().getFields();
+            for (Field current : actualFields) {
+                CtFieldReference<?> reference = ReflectionFactory.getInstance().createField(current);
+                fields.add(getFactory().wrap(reference));
+            }
+        }
+    }
+
+    public void tagFields() {
+        List<FieldWrapper> fields = getFields();
+
+        for (FieldWrapper field : fields) {
+            field.extract();
         }
     }
 }

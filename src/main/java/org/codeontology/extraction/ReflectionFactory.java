@@ -1,10 +1,7 @@
 package org.codeontology.extraction;
 
 import spoon.reflect.factory.Factory;
-import spoon.reflect.reference.CtExecutableReference;
-import spoon.reflect.reference.CtPackageReference;
-import spoon.reflect.reference.CtTypeParameterReference;
-import spoon.reflect.reference.CtTypeReference;
+import spoon.reflect.reference.*;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
@@ -191,6 +188,10 @@ public class ReflectionFactory {
 
     public CtExecutableReference<?> createConstructor(Constructor constructor) {
         return getParent().Constructor().createReference(constructor);
+    }
+
+    public CtFieldReference<?> createField(Field field) {
+        return getParent().Field().createReference(field);
     }
 
     public void setParent(Factory parent) {

@@ -3,19 +3,25 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtField;
-import spoon.reflect.declaration.CtType;
+import spoon.reflect.reference.CtFieldReference;
+import spoon.reflect.reference.CtTypeReference;
 
 
 public class FieldWrapper extends Wrapper<CtField<?>> {
 
     public FieldWrapper(CtField<?> field) {
         super(field);
+    }
 
+    public FieldWrapper(CtFieldReference<?> field) {
+        super(field);
     }
 
     @Override
     public String buildRelativeURI() {
-        return getFactory().wrap(getElement().getDeclaringType()).getRelativeURI() + SEPARATOR + getElement().getSimpleName();
+        CtTypeReference<?> reference = ((CtFieldReference) getReference()).getDeclaringType();
+        TypeWrapper<?> declaringType = getFactory().wrap(reference);
+        return declaringType.getRelativeURI() + SEPARATOR + getReference().getSimpleName();
     }
 
     @Override
@@ -27,11 +33,13 @@ public class FieldWrapper extends Wrapper<CtField<?>> {
     public void extract() {
         tagName();
         tagType();
-        tagComment();
-        tagJavaType();
-        tagModifiers();
         tagDeclaringType();
-        tagAnnotations();
+        tagJavaType();
+        if (isDeclarationAvailable()) {
+            tagComment();
+            tagModifiers();
+            tagAnnotations();
+        }
     }
 
     public void tagDeclaringType() {
@@ -44,7 +52,7 @@ public class FieldWrapper extends Wrapper<CtField<?>> {
     }
 
     public void tagJavaType() {
-        CtType<?> declaringType = getElement().getDeclaringType();
+        CtTypeReference<?> declaringType = ((CtFieldReference<?>) getReference()).getDeclaringType();
         Wrapper<?> parent = getFactory().wrap(declaringType);
         new JavaTypeTagger(this).tagJavaType(parent);
     }
