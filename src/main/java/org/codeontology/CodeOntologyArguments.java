@@ -27,6 +27,10 @@ public class CodeOntologyArguments {
 
     public static final String SHUTDOWN_LONG = "shutdown";
 
+    public static final String JAR_INPUT_LONG = "jar";
+
+    public static final String  EXPLORE_JARS_LONG = "expore-jars";
+
     private JSAP jsap;
     private JSAPResult result;
 
@@ -45,7 +49,7 @@ public class CodeOntologyArguments {
         option.setShortFlag(INPUT_SHORT);
         option.setLongFlag(INPUT_LONG);
         option.setStringParser(JSAP.STRING_PARSER);
-        option.setRequired(true);
+        //option.setRequired(true);
         option.setHelp("Path to source files.");
         jsap.registerParameter(option);
 
@@ -58,11 +62,18 @@ public class CodeOntologyArguments {
         option.setHelp("Output file name.");
         jsap.registerParameter(option);
 
+        option = new FlaggedOption(JAR_INPUT_LONG);
+        option.setLongFlag(JAR_INPUT_LONG);
+        option.setStringParser(JSAP.STRING_PARSER);
+        option.setRequired(false);
+        option.setHelp("Path to a jar input file");
+        jsap.registerParameter(option);
+
         option = new FlaggedOption(CLASSPATH_LONG);
         option.setLongFlag(CLASSPATH_LONG);
         option.setStringParser(JSAP.STRING_PARSER);
         option.setRequired(false);
-        option.setHelp("Specifies a list of directories, JAR files and classes separated by colons (:) to search for class files.");
+        option.setHelp("Specifies a list of directories and JAR files separated by colons (:) to search for class files.");
         jsap.registerParameter(option);
 
         flag = new Switch(ND);
@@ -92,13 +103,17 @@ public class CodeOntologyArguments {
         flag.setHelp("Prints this help message.");
         jsap.registerParameter(flag);
 
+        flag = new Switch(EXPLORE_JARS_LONG);
+        flag.setLongFlag(EXPLORE_JARS_LONG);
+        flag.setDefault("false");
+        flag.setHelp("Explore jars in the classpath");
+        jsap.registerParameter(flag);
+
         flag = new Switch(SHUTDOWN_LONG);
         flag.setLongFlag(SHUTDOWN_LONG);
         flag.setDefault("false");
         flag.setHelp("Shutdown after complete");
         jsap.registerParameter(flag);
-
-
 
     }
 
@@ -148,11 +163,11 @@ public class CodeOntologyArguments {
         return result.getString(OUTPUT_LONG);
     }
 
-    public boolean getDownloadDependenciesFlag() {
+    public boolean downloadDependencies() {
         return !result.getBoolean(ND);
     }
 
-    public boolean getVerboseMode() {
+    public boolean verboseMode() {
         return result.getBoolean(VERBOSE_LONG);
     }
 
@@ -160,7 +175,7 @@ public class CodeOntologyArguments {
         return result.getBoolean(STACKTRACE_LONG);
     }
 
-    public boolean getShutdownFlag() {
+    public boolean shutdownFlag() {
         return result.getBoolean(SHUTDOWN_LONG);
     }
 
@@ -183,6 +198,14 @@ public class CodeOntologyArguments {
         }
 
         return defaultName;
+    }
+
+    public String getJarInput() {
+        return result.getString(JAR_INPUT_LONG);
+    }
+
+    public boolean exploreJars() {
+        return result.getBoolean(EXPLORE_JARS_LONG);
     }
 
     public String getClasspath() {

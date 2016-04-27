@@ -3,6 +3,7 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
+import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtAnnotation;
 import spoon.reflect.declaration.CtNamedElement;
@@ -125,7 +126,8 @@ public abstract class Wrapper<E extends CtNamedElement> {
     }
 
     public void follow() {
-        if (!isDeclarationAvailable() && WrapperRegister.getInstance().add(this)) {
+        if (!isDeclarationAvailable() && !CodeOntology.isJarExplorationEnabled()
+                && WrapperRegister.getInstance().add(this)) {
             extract();
         }
     }

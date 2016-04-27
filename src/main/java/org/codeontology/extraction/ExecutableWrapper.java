@@ -131,7 +131,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         tagRequestedTypes(types);
     }
 
-    private void tagAnonymousClasses(CtStatement statement) {
+    public void tagAnonymousClasses(CtStatement statement) {
         List<CtNewClass<?>> newClasses = statement.getElements(element -> element != null);
         for (CtNewClass<?> newClass : newClasses) {
             AnonymousClassWrapper<?> anonymousClass = new AnonymousClassWrapper<>(newClass.getAnonymousClass());
@@ -154,14 +154,14 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    private void tagLambdaRequested(CtLambda<?> lambda) {
+    public void tagLambdaRequested(CtLambda<?> lambda) {
         LambdaWrapper wrapper = getFactory().wrap(lambda);
         wrapper.setParent(this);
         tagRequests(wrapper.getResource());
         wrapper.extract();
     }
 
-    private void tagLambdas(CtStatement statement) {
+    public void tagLambdas(CtStatement statement) {
         List<CtLambda<?>> lambdas = statement.getElements(element -> element != null);
         for (CtLambda<?> lambda : lambdas) {
             tagLambdaRequested(lambda);

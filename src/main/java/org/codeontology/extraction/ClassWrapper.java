@@ -5,11 +5,16 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtConstructor;
 import spoon.reflect.declaration.CtType;
+import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtTypeReference;
 
+import java.lang.reflect.Constructor;
+import java.util.HashSet;
 import java.util.Set;
 
 public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
+
+    private Set<ConstructorWrapper> constructors;
 
     public ClassWrapper(CtClass<T> clazz) {
         super(clazz);
@@ -28,14 +33,14 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
     public void extract() {
         tagType();
         tagName();
+        tagMethods();
+        tagSuperClass();
+        tagSuperInterfaces();
+        tagConstructors();
         if (isDeclarationAvailable()) {
             tagAnnotations();
-            tagSuperClass();
-            tagSuperInterfaces();
             tagComment();
             tagFields();
-            tagConstructors();
-            tagMethods();
             tagSourceCode();
             tagNestedTypes();
             tagModifiers();
@@ -59,10 +64,35 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
     }
 
     public void tagConstructors() {
-        Set<CtConstructor<T>> constructors = getElement().getConstructors();
+        Set<ConstructorWrapper> constructors = getConstructors();
 
-        for (CtConstructor<T> constructor : constructors) {
-            getFactory().wrap(constructor).extract();
+        for (ConstructorWrapper constructor : constructors) {
+            constructor.extract();
+        }
+    }
+
+    public Set<ConstructorWrapper> getConstructors() {
+        if (constructors == null) {
+            setConstructors();
+        }
+
+        return constructors;
+    }
+
+    private void setConstructors() {
+        constructors = new HashSet<>();
+
+        if (isDeclarationAvailable()) {
+            Set<CtConstructor<T>> ctConstructors = getElement().getConstructors();
+            for (CtConstructor ctConstructor : ctConstructors) {
+                constructors.add(getFactory().wrap(ctConstructor));
+            }
+        } else {
+            Constructor[] actualConstructors = getReference().getActualClass().getDeclaredConstructors();
+            for (Constructor actualConstructor : actualConstructors) {
+                CtExecutableReference<?> reference = ReflectionFactory.getInstance().createConstructor(actualConstructor);
+                constructors.add((ConstructorWrapper) getFactory().wrap(reference));
+            }
         }
     }
 
@@ -70,7 +100,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
         Set<CtType<?>> nestedTypes = getElement().getNestedTypes();
         for (CtType<?> type : nestedTypes) {
             Wrapper wrapper = getFactory().wrap(type);
-            getLogger().addTriple(wrapper, Ontology.IS_NESTED_IN_PROPERTY, this.getResource());
+            getLogger().addTriple(wrapper, Ontology.IS_NESTED_IN_PROPERTY, this);
             wrapper.extract();
         }
     }

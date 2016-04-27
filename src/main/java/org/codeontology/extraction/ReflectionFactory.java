@@ -2,6 +2,7 @@ package org.codeontology.extraction;
 
 import spoon.reflect.factory.Factory;
 import spoon.reflect.reference.CtExecutableReference;
+import spoon.reflect.reference.CtPackageReference;
 import spoon.reflect.reference.CtTypeParameterReference;
 import spoon.reflect.reference.CtTypeReference;
 
@@ -177,7 +178,19 @@ public class ReflectionFactory {
     }
 
     public CtTypeReference<?> createTypeReference(Class<?> clazz) {
-        return getParent().Type().createReference(clazz);
+        return getParent().Class().createReference(clazz);
+    }
+
+    public CtPackageReference createPackageReference(Package pack) {
+        return getParent().Package().createReference(pack);
+    }
+
+    public CtExecutableReference<?> createMethod(Method method) {
+        return getParent().Method().createReference(method);
+    }
+
+    public CtExecutableReference<?> createConstructor(Constructor constructor) {
+        return getParent().Constructor().createReference(constructor);
     }
 
     public void setParent(Factory parent) {

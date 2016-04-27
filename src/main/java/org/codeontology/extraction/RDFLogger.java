@@ -36,7 +36,7 @@ public class RDFLogger {
 
     public void writeRDF() {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)))) {
-            getModel().write(writer, "N-TRIPLE");
+            model.write(writer, "N-TRIPLE");
         } catch (IOException e) {
             System.out.println("Unable to write triples");
             System.exit(-1);
@@ -53,16 +53,16 @@ public class RDFLogger {
             model.add(triple);
             counter++;
             if (counter > LIMIT) {
-                handleLimitExceeded();
+                writeRDF();
+                free();
             }
         } else {
             throw new IllegalArgumentException();
         }
     }
 
-    private void handleLimitExceeded() {
+    private void free() {
         model = Ontology.getModel();
         counter = 0;
-        writeRDF();
     }
 }

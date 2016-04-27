@@ -5,6 +5,7 @@ import spoon.reflect.code.CtLambda;
 import spoon.reflect.code.CtLocalVariable;
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.CtExecutableReference;
+import spoon.reflect.reference.CtPackageReference;
 import spoon.reflect.reference.CtTypeParameterReference;
 import spoon.reflect.reference.CtTypeReference;
 
@@ -29,6 +30,10 @@ public class WrapperFactory {
     }
 
     public PackageWrapper wrap(CtPackage pack) {
+        return new PackageWrapper(pack);
+    }
+
+    public PackageWrapper wrap(CtPackageReference pack) {
         return new PackageWrapper(pack);
     }
 

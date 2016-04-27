@@ -36,6 +36,7 @@ public class DocCommentParser {
                 tags.add(tag);
             }
         }
+        scanner.close();
         parsed = true;
     }
 

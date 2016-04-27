@@ -10,7 +10,7 @@ public class WrapperRegister {
     public static final int LIMIT = 1000;
 
     private WrapperRegister() {
-        register = new HashSet<>();
+        register = new HashSet<>(LIMIT);
     }
 
     public static WrapperRegister getInstance() {
@@ -30,7 +30,7 @@ public class WrapperRegister {
         size++;
         if (size > LIMIT) {
             size = 0;
-            register = new HashSet<>();
+            register = new HashSet<>(LIMIT);
         }
     }
 
