@@ -133,7 +133,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
                     tagReturnsVariable((CtReturn<?>) statement);
                 }
             } catch (RuntimeException e) {
-                if (!createsAnonymousClass(statement)) {
+                if (!createsAnonymousClass(statement) && !(statement instanceof CtClass<?>)) {
                     throw e;
                 }
             }
