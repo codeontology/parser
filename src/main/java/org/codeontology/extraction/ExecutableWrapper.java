@@ -12,10 +12,7 @@ import spoon.support.reflect.reference.CtFieldReferenceImpl;
 import spoon.support.reflect.reference.CtLocalVariableReferenceImpl;
 
 import java.lang.reflect.Executable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember & CtGenericElement> extends Wrapper<E> implements ModifiableWrapper {
 
@@ -64,8 +61,11 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         } else {
             CtExecutableReference<?> reference = (CtExecutableReference<?>) getReference();
             Executable executable = ReflectionFactory.getInstance().createActualExecutable(reference);
-            int modifiersCode = executable.getModifiers();
-            return ModifierClass.asList(modifiersCode);
+            if (executable != null) {
+                int modifiersCode = executable.getModifiers();
+                return ModifierClass.asList(modifiersCode);
+            }
+            return new ArrayList<>();
         }
     }
 

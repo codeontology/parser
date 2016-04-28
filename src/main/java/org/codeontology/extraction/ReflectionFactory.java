@@ -2,6 +2,7 @@ package org.codeontology.extraction;
 
 import spoon.reflect.factory.Factory;
 import spoon.reflect.reference.*;
+import spoon.support.reflect.reference.SpoonClassNotFoundException;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
@@ -127,15 +128,14 @@ public class ReflectionFactory {
     }
 
     public Executable createActualExecutable(CtExecutableReference<?> executableReference) {
+        try {
+            Executable executable = executableReference.getActualMethod();
 
-        Executable executable = executableReference.getActualMethod();
+            if (executable == null) {
+                executable = executableReference.getActualConstructor();
+            }
 
-        if (executable == null) {
-            executable = executableReference.getActualConstructor();
-        }
-
-        if (executable == null) {
-            try {
+            if (executable == null) {
                 Class<?> declaringClass = Class.forName(executableReference.getDeclaringType().getQualifiedName());
 
                 Executable[] executables = declaringClass.getDeclaredMethods();
@@ -166,12 +166,15 @@ public class ReflectionFactory {
                         }
                     }
                 }
-            } catch (ClassNotFoundException | NoSuchMethodError e) {
-                throw new RuntimeException(e);
             }
-        }
 
-        return executable;
+            return executable;
+
+        } catch (ClassNotFoundException | NoSuchMethodError e) {
+            throw new RuntimeException(e);
+        } catch (SpoonClassNotFoundException e) {
+            return null;
+        }
     }
 
     public CtTypeReference<?> createTypeReference(Class<?> clazz) {
