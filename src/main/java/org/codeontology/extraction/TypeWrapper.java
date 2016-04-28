@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
+public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> implements ModifiableWrapper {
 
     private List<MethodWrapper> methods;
     private List<FieldWrapper> fields;
@@ -117,5 +117,18 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
         for (FieldWrapper field : fields) {
             field.extract();
         }
+    }
+
+    @Override
+    public List<ModifierClass> getModifiers() {
+        if (isDeclarationAvailable()) {
+            return ModifierClass.asList(getElement().getModifiers());
+        } else {
+            return ModifierClass.asList(getReference().getActualClass().getModifiers());
+        }
+    }
+
+    public void tagModifiers() {
+        new ModifiableTagger(this).tagModifiers();
     }
 }

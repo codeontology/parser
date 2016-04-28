@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
+public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements ModifiableWrapper {
 
     private List<ConstructorWrapper> constructors;
 
@@ -37,6 +37,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
         tagName();
         tagSuperClass();
         tagSuperInterfaces();
+        tagModifiers();
         if (isDeclarationAvailable() || CodeOntology.isJarExplorationEnabled()) {
             tagFields();
             tagConstructors();
@@ -47,7 +48,6 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
             tagComment();
             tagSourceCode();
             tagNestedTypes();
-            tagModifiers();
             tagFormalTypeParameters();
         }
     }
@@ -107,10 +107,6 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
             getLogger().addTriple(wrapper, Ontology.IS_NESTED_IN_PROPERTY, this);
             wrapper.extract();
         }
-    }
-
-    public void tagModifiers() {
-        new ModifiableTagger(this).tagModifiers();
     }
 
     public void tagFormalTypeParameters() {

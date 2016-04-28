@@ -25,20 +25,16 @@ public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> {
             tagSuperInterfaces();
             tagFields();
             tagMethods();
+            tagModifiers();
         }
         if (isDeclarationAvailable()) {
             tagAnnotations();
             tagSourceCode();
             tagComment();
-            tagModifiers();
         }
     }
 
     public void tagSuperInterfaces() {
         tagSuperInterfaces(Ontology.EXTENDS_PROPERTY);
-    }
-
-    public void tagModifiers() {
-        new ModifiableTagger(this).tagModifiers();
     }
 }

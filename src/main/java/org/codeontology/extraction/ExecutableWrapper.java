@@ -11,12 +11,13 @@ import spoon.support.reflect.reference.CtExecutableReferenceImpl;
 import spoon.support.reflect.reference.CtFieldReferenceImpl;
 import spoon.support.reflect.reference.CtLocalVariableReferenceImpl;
 
+import java.lang.reflect.Executable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember & CtGenericElement> extends Wrapper<E> {
+public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember & CtGenericElement> extends Wrapper<E> implements ModifiableWrapper {
 
     public ExecutableWrapper(E executable) {
         super(executable);
@@ -39,11 +40,11 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         tagName();
         tagDeclaringType();
         tagParameters();
+        tagModifiers();
         if (isDeclarationAvailable()) {
             tagAnnotations();
             tagComment();
             tagSourceCode();
-            tagModifiers();
             tagThrows();
             processStatements();
         }
@@ -55,6 +56,17 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
     public void tagModifiers() {
         new ModifiableTagger(this).tagModifiers();
+    }
+
+    public List<ModifierClass> getModifiers() {
+        if (isDeclarationAvailable()) {
+            return ModifierClass.asList(getElement().getModifiers());
+        } else {
+            CtExecutableReference<?> reference = (CtExecutableReference<?>) getReference();
+            Executable executable = ReflectionFactory.getInstance().createActualExecutable(reference);
+            int modifiersCode = executable.getModifiers();
+            return ModifierClass.asList(modifiersCode);
+        }
     }
 
     public void tagParameters() {
@@ -96,8 +108,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     }
 
     protected void processStatements() {
-        Set<CtTypeReference<?>> types = new HashSet<>();
-        types.addAll(getElement().getThrownTypes());
+        tagRequestedTypes(new HashSet<>(getElement().getThrownTypes()));
 
         CtExecutable executable = getElement();
         CtBlock<?> body = executable.getBody();
@@ -111,7 +122,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
 
         for (CtStatement statement : statements) {
             try {
-                types.addAll(statement.getReferencedTypes());
+                tagRequestedTypes(statement.getReferencedTypes());
                 tagInvocations(statement);
                 tagRequestedFields(statement);
                 tagLocalVariables(statement);
@@ -128,7 +139,6 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
             }
         }
 
-        tagRequestedTypes(types);
     }
 
     public void tagAnonymousClasses(CtStatement statement) {
@@ -142,13 +152,13 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     }
 
     public void tagInvocations(CtStatement statement) {
-        Set<CtExecutableReference<?>> references = new HashSet<>(statement.getReferences(new ReferenceTypeFilter<>(CtExecutableReferenceImpl.class)));
+        List<CtExecutableReference<?>> references = statement.getReferences(new ReferenceTypeFilter<>(CtExecutableReferenceImpl.class));
 
         for (CtExecutableReference<?> reference : references) {
             CtExecutable<?> executable = reference.getDeclaration();
             if (executable instanceof CtLambda<?>) {
                 tagLambdaRequested((CtLambda<?>) executable);
-            } else {
+            } else if (!(reference.getParent() instanceof CtExecutableReferenceExpression<?, ?>)) {
                 tagExecutableRequested(reference);
             }
         }

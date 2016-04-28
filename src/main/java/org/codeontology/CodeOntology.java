@@ -39,7 +39,7 @@ public class CodeOntology {
             launcher.processJars();
             launcher.postCompletionTasks();
         } catch (Exception e) {
-            System.out.println("Sorry, something went awry.");
+            System.out.println("It was a good plan that went awry.");
             if (e.getMessage() != null) {
                 System.out.println(e.getMessage());
             }

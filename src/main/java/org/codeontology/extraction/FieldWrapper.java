@@ -6,8 +6,10 @@ import spoon.reflect.declaration.CtField;
 import spoon.reflect.reference.CtFieldReference;
 import spoon.reflect.reference.CtTypeReference;
 
+import java.util.List;
 
-public class FieldWrapper extends Wrapper<CtField<?>> {
+
+public class FieldWrapper extends Wrapper<CtField<?>> implements ModifiableWrapper {
 
     public FieldWrapper(CtField<?> field) {
         super(field);
@@ -35,9 +37,9 @@ public class FieldWrapper extends Wrapper<CtField<?>> {
         tagType();
         tagDeclaringType();
         tagJavaType();
+        tagModifiers();
         if (isDeclarationAvailable()) {
             tagComment();
-            tagModifiers();
             tagAnnotations();
         }
     }
@@ -46,6 +48,14 @@ public class FieldWrapper extends Wrapper<CtField<?>> {
         new DeclaredByTagger(this).tagDeclaredBy();
     }
 
+    @Override
+    public List<ModifierClass> getModifiers() {
+        if (isDeclarationAvailable()) {
+            return ModifierClass.asList(getElement().getModifiers());
+        } else {
+            return ModifierClass.asList(((CtFieldReference<?>) getReference()).getModifiers());
+        }
+    }
 
     public void tagModifiers() {
         new ModifiableTagger(this).tagModifiers();
