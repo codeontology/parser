@@ -30,7 +30,7 @@ public class GradleLoader extends DependenciesLoader {
         Set<File> modules = modulesHandler.findModules();
         Set<File> subProjects = modulesHandler.findSubProjects();
 
-        if (CodeOntology.getDownloadDependenciesFlag()) {
+        if (CodeOntology.downloadDependencies()) {
             downloadDependencies();
         }
 

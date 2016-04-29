@@ -132,7 +132,7 @@ public class CodeOntology {
         return arguments;
     }
 
-    public static boolean getDownloadDependenciesFlag() {
+    public static boolean downloadDependencies() {
         return getLauncher().getArguments().downloadDependencies();
     }
 
