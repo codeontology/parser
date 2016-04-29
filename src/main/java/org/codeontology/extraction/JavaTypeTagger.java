@@ -1,23 +1,15 @@
 package org.codeontology.extraction;
 
 import org.codeontology.Ontology;
-import spoon.reflect.declaration.CtTypedElement;
-import spoon.reflect.reference.CtTypeReference;
-import spoon.reflect.reference.CtVariableReference;
 
 public class JavaTypeTagger {
 
-    private Wrapper<? extends CtTypedElement> typedElement;
+    private TypedElementWrapper<?> typedElement;
     private TypeWrapper<?> type;
 
-    public JavaTypeTagger(Wrapper<? extends CtTypedElement> typedElement) {
+    public JavaTypeTagger(TypedElementWrapper<?> typedElement) {
         this.typedElement = typedElement;
-        if (typedElement.getReference() instanceof CtVariableReference) {
-            CtTypeReference reference = ((CtVariableReference) typedElement.getReference()).getType();
-            type = WrapperFactory.getInstance().wrap(reference);
-        } else {
-            type = WrapperFactory.getInstance().wrap((CtTypeReference<?>) typedElement.getReference());
-        }
+        this.type = typedElement.getJavaType();
     }
 
     private void tagJavaType() {

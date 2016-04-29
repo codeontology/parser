@@ -2,10 +2,10 @@ package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
-import spoon.reflect.declaration.CtNamedElement;
+import spoon.reflect.declaration.CtElement;
 import spoon.reflect.reference.CtReference;
 
-public interface Wrapper<E extends CtNamedElement> {
+public interface Wrapper<E extends CtElement> {
 
     String SEPARATOR = "-";
 

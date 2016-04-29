@@ -9,8 +9,7 @@ import spoon.reflect.reference.CtTypeReference;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class FieldWrapper extends AbstractWrapper<CtField<?>> implements ModifiableWrapper<CtField<?>>, MemberWrapper<CtField<?>> {
+public class FieldWrapper extends AbstractWrapper<CtField<?>> implements ModifiableWrapper<CtField<?>>, MemberWrapper<CtField<?>>, TypedElementWrapper<CtField<?>> {
 
     public FieldWrapper(CtField<?> field) {
         super(field);
@@ -62,6 +61,12 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
         new ModifiableTagger(this).tagModifiers();
     }
 
+    @Override
+    public TypeWrapper<?> getJavaType() {
+        CtFieldReference<?> reference = (CtFieldReference<?>) getReference();
+        return getFactory().wrap(reference.getType());
+    }
+
     public void tagJavaType() {
         CtTypeReference<?> declaringType = ((CtFieldReference<?>) getReference()).getDeclaringType();
         Wrapper<?> parent = getFactory().wrap(declaringType);
@@ -79,4 +84,3 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
         new DeclaringElementTagger(this).tagDeclaredBy();
     }
 }
-
