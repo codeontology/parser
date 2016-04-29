@@ -7,8 +7,9 @@ import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtTypeReference;
 
 import java.lang.reflect.*;
+import java.util.List;
 
-public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
+public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements GenericDeclarationWrapper<CtMethod<?>> {
     public MethodWrapper(CtMethod<?> method) {
         super(method);
     }
@@ -67,7 +68,6 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
                 Method method = reference.getActualMethod();
                 Type returnType = method.getGenericReturnType();
 
-
                 if (returnType instanceof GenericArrayType ||
                     returnType instanceof TypeVariable<?>  ||
                     returnType instanceof ParameterizedType) {
@@ -75,12 +75,18 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
                     result = getFactory().wrap(returnType);
                     result.setParent(this);
                 }
+
             } catch (Throwable t) {
                 return null;
             }
         }
 
         return result;
+    }
+
+    @Override
+    public List<TypeVariableWrapper> getFormalTypeParameters() {
+        return FormalTypeParametersTagger.formalTypeParametersOf(this);
     }
 
     public void tagFormalTypeParameters() {

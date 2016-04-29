@@ -189,7 +189,9 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         Set<CtFieldReference<?>> references = new HashSet<>(statement.getReferences(new ReferenceTypeFilter<>(CtFieldReferenceImpl.class)));
 
         for (CtFieldReference<?> currentReference : references) {
-            tagRequests(getFactory().wrap(currentReference).getResource());
+            if (currentReference.getDeclaration() != null) {
+                tagRequests(getFactory().wrap(currentReference.getDeclaration()).getResource());
+            }
         }
     }
 

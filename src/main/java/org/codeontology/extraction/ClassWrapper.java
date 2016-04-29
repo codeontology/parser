@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements ModifiableWrapper<CtClass<T>> {
+public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements ModifiableWrapper<CtClass<T>>, GenericDeclarationWrapper<CtClass<T>> {
 
     private List<ConstructorWrapper> constructors;
 
@@ -119,6 +119,11 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
             getLogger().addTriple(wrapper, Ontology.IS_NESTED_IN_PROPERTY, this);
             wrapper.extract();
         }
+    }
+
+    @Override
+    public List<TypeVariableWrapper> getFormalTypeParameters() {
+        return FormalTypeParametersTagger.formalTypeParametersOf(this);
     }
 
     public void tagFormalTypeParameters() {
