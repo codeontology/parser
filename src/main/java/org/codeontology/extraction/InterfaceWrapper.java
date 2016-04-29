@@ -14,7 +14,7 @@ public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.INTERFACE_CLASS;
+        return Ontology.INTERFACE_ENTITY;
     }
 
     @Override

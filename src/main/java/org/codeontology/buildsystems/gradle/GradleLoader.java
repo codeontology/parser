@@ -24,10 +24,6 @@ public class GradleLoader extends DependenciesLoader {
         this.root = root;
     }
 
-    public GradleLoader(String path) {
-        this(new File(path));
-    }
-
     @Override
     public void loadDependencies() {
         GradleModulesHandler modulesHandler = new GradleModulesHandler(root);
@@ -82,21 +78,21 @@ public class GradleLoader extends DependenciesLoader {
             File error = new File(root.getPath() + "/error");
             File output = new File(root.getPath() + "/output");
 
-            ProcessBuilder prB = new ProcessBuilder("gradle", "dependencies");
-            prB.directory(root);
-            prB.redirectError(error);
-            prB.redirectOutput(output);
+            ProcessBuilder builder = new ProcessBuilder("gradle", "dependencies");
+            builder.directory(root);
+            builder.redirectError(error);
+            builder.redirectOutput(output);
 
-            prB.start().waitFor();
+            builder.start().waitFor();
             System.out.println("Done.");
 
             System.out.println("Preparing tests with " + testJarTask + "... ");
-            prB = new ProcessBuilder("gradle", testJarTask);
-            prB.directory(root);
-            prB.redirectError(error);
-            prB.redirectOutput(output);
+            builder = new ProcessBuilder("gradle", testJarTask);
+            builder.directory(root);
+            builder.redirectError(error);
+            builder.redirectOutput(output);
 
-            prB.start().waitFor();
+            builder.start().waitFor();
             System.out.println("Done.");
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);

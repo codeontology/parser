@@ -11,12 +11,14 @@ import spoon.Launcher;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 public class CodeOntology {
     private static CodeOntology launcher;
     private CodeOntologyArguments arguments;
     private Launcher spoon;
     private boolean exploreJarsFlag;
+    private DependenciesLoader loader;
 
     private CodeOntology(String[] args) throws JSAPException {
         spoon = new Launcher();
@@ -32,8 +34,10 @@ public class CodeOntology {
 
             if (launcher.isInputSet()) {
                 launcher.loadDependencies();
-                launcher.spoon();
-                launcher.extractAllTriples();
+                if (!launcher.getArguments().doNotExtractTriples()) {
+                    launcher.spoon();
+                    launcher.extractAllTriples();
+                }
             }
 
             launcher.processJars();
@@ -60,7 +64,7 @@ public class CodeOntology {
 
     private void loadDependencies() {
         LoaderFactory factory = LoaderFactory.getInstance();
-        DependenciesLoader loader = factory.getLoader(getArguments().getInput());
+        loader = factory.getLoader(getArguments().getInput());
         loader.loadDependencies();
 
         String classpath = getArguments().getClasspath();
@@ -83,6 +87,13 @@ public class CodeOntology {
         if (path != null) {
             JarProcessor processor = new JarProcessor(path);
             processor.process();
+        }
+
+        if (getArguments().exploreJars() && loader != null) {
+            Set<File> jars = loader.getJarsLoaded();
+            for (File jar : jars) {
+                new JarProcessor(jar).process();
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package org.codeontology.extraction;
 import org.codeontology.buildsystems.ClasspathLoader;
 import spoon.reflect.reference.CtPackageReference;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -19,6 +20,10 @@ public class JarProcessor {
         this.jarFile = new JarFile(path);
         ClasspathLoader.getInstance().load(path);
         systemErr = System.err;
+    }
+
+    public JarProcessor(File jar) throws IOException {
+        this(jar.getPath());
     }
 
 

@@ -17,6 +17,6 @@ public class ConstructorWrapper extends ExecutableWrapper<CtConstructor<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.CONSTRUCTOR_CLASS;
+        return Ontology.CONSTRUCTOR_ENTITY;
     }
 }

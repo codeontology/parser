@@ -55,15 +55,15 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         new ModifiableTagger(this).tagModifiers();
     }
 
-    public List<ModifierClass> getModifiers() {
+    public List<Modifier> getModifiers() {
         if (isDeclarationAvailable()) {
-            return ModifierClass.asList(getElement().getModifiers());
+            return Modifier.asList(getElement().getModifiers());
         } else {
             CtExecutableReference<?> reference = (CtExecutableReference<?>) getReference();
             Executable executable = ReflectionFactory.getInstance().createActualExecutable(reference);
             if (executable != null) {
                 int modifiersCode = executable.getModifiers();
-                return ModifierClass.asList(modifiersCode);
+                return Modifier.asList(modifiersCode);
             }
             return new ArrayList<>();
         }
@@ -132,6 +132,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
                 if (statement instanceof CtReturn<?>) {
                     tagReturnsVariable((CtReturn<?>) statement);
                 }
+
             } catch (RuntimeException e) {
                 if (!createsAnonymousClass(statement) && !(statement instanceof CtClass<?>)) {
                     throw e;
@@ -256,13 +257,13 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     public void tagReturnsLocalVariable(CtLocalVariable<?> variable) {
         LocalVariableWrapper wrapper = getFactory().wrap(variable);
         wrapper.setParent(this);
-        getLogger().addTriple(this, Ontology.RETURNS_VAR_PROPERTY, wrapper.getResource());
+        getLogger().addTriple(this, Ontology.RETURNS_VAR_PROPERTY, wrapper);
     }
 
     public void tagReturnsField(CtField<?> field) {
         if (field != null) {
             Wrapper wrapper =  getFactory().wrap(field);
-            getLogger().addTriple(this, Ontology.RETURNS_FIELD_PROPERTY, wrapper.getResource());
+            getLogger().addTriple(this, Ontology.RETURNS_FIELD_PROPERTY, wrapper);
         }
     }
 

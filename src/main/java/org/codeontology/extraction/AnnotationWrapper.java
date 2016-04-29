@@ -13,7 +13,7 @@ public class AnnotationWrapper extends TypeWrapper<CtAnnotationType<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.ANNOTATION_CLASS;
+        return Ontology.ANNOTATION_ENTITY;
     }
 
     @Override

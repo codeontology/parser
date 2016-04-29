@@ -38,7 +38,7 @@ public class RDFLogger {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)))) {
             model.write(writer, "N-TRIPLE");
         } catch (IOException e) {
-            System.out.println("Unable to write triples");
+            System.out.println("Cannot write triples.");
             System.exit(-1);
         }
     }

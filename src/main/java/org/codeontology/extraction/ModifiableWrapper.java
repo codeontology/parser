@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ModifiableWrapper {
 
-    List<ModifierClass> getModifiers();
+    List<Modifier> getModifiers();
 
     void tagModifiers();
 

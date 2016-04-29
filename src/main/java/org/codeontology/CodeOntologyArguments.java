@@ -29,7 +29,9 @@ public class CodeOntologyArguments {
 
     public static final String JAR_INPUT_LONG = "jar";
 
-    public static final String  EXPLORE_JARS_LONG = "expore-jars";
+    public static final String EXPLORE_DEPENDENCIES_LONG = "explore-dependencies";
+
+    public static final String DO_NOT_EXTRACT_LONG = "do-not-extract";
 
     private JSAP jsap;
     private JSAPResult result;
@@ -49,7 +51,6 @@ public class CodeOntologyArguments {
         option.setShortFlag(INPUT_SHORT);
         option.setLongFlag(INPUT_LONG);
         option.setStringParser(JSAP.STRING_PARSER);
-        //option.setRequired(true);
         option.setHelp("Path to source files.");
         jsap.registerParameter(option);
 
@@ -103,8 +104,8 @@ public class CodeOntologyArguments {
         flag.setHelp("Prints this help message.");
         jsap.registerParameter(flag);
 
-        flag = new Switch(EXPLORE_JARS_LONG);
-        flag.setLongFlag(EXPLORE_JARS_LONG);
+        flag = new Switch(EXPLORE_DEPENDENCIES_LONG);
+        flag.setLongFlag(EXPLORE_DEPENDENCIES_LONG);
         flag.setDefault("false");
         flag.setHelp("Explore jars in the classpath");
         jsap.registerParameter(flag);
@@ -113,6 +114,12 @@ public class CodeOntologyArguments {
         flag.setLongFlag(SHUTDOWN_LONG);
         flag.setDefault("false");
         flag.setHelp("Shutdown after complete");
+        jsap.registerParameter(flag);
+
+        flag = new Switch(DO_NOT_EXTRACT_LONG);
+        flag.setLongFlag(DO_NOT_EXTRACT_LONG);
+        flag.setDefault("false");
+        flag.setHelp("Do not extract triples, just download dependencies");
         jsap.registerParameter(flag);
 
     }
@@ -179,6 +186,10 @@ public class CodeOntologyArguments {
         return result.getBoolean(SHUTDOWN_LONG);
     }
 
+    public boolean doNotExtractTriples() {
+        return result.getBoolean(DO_NOT_EXTRACT_LONG);
+    }
+
     private String getDefaultOutput() {
         String extension = ".nt";
         String base = "triples";
@@ -205,7 +216,7 @@ public class CodeOntologyArguments {
     }
 
     public boolean exploreJars() {
-        return result.getBoolean(EXPLORE_JARS_LONG);
+        return result.getBoolean(EXPLORE_DEPENDENCIES_LONG);
     }
 
     public String getClasspath() {

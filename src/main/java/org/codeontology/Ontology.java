@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-
 /**
  * General programming language ontology interface.
  */
@@ -39,39 +38,39 @@ public class Ontology {
 
     public static Model model = ontology();
 
-    public static final Resource PACKAGE_CLASS = model.getResource(WOC + "Package");
+    public static final Resource PACKAGE_ENTITY = model.getResource(WOC + "Package");
 
-    public static final Resource CLASS_CLASS = model.getResource(WOC + "Class");
+    public static final Resource CLASS_ENTITY = model.getResource(WOC + "Class");
 
-    public static final Resource INTERFACE_CLASS = model.getResource(WOC + "Interface");
+    public static final Resource INTERFACE_ENTITY = model.getResource(WOC + "Interface");
 
-    public static final Resource ENUM_CLASS = model.getResource(WOC + "Enum");
+    public static final Resource ENUM_ENTITY = model.getResource(WOC + "Enum");
 
-    public static final Resource ANNOTATION_CLASS = model.getResource(WOC + "Annotation");
+    public static final Resource ANNOTATION_ENTITY = model.getResource(WOC + "Annotation");
 
-    public static final Resource PRIMITIVE_CLASS = model.getResource(WOC + "Primitive");
+    public static final Resource PRIMITIVE_ENTITY = model.getResource(WOC + "Primitive");
 
-    public static final Resource ARRAY_CLASS = model.getResource(WOC + "Array");
+    public static final Resource ARRAY_ENTITY = model.getResource(WOC + "Array");
 
-    public static final Resource TYPE_VARIABLE_CLASS =  model.getResource(WOC + "TypeVariable");
+    public static final Resource TYPE_VARIABLE_ENTITY =  model.getResource(WOC + "TypeVariable");
 
-    public static final Resource PARAMETERIZED_TYPE_CLASS =  model.getResource(WOC + "ParameterizedType");
+    public static final Resource PARAMETERIZED_TYPE_ENTITY =  model.getResource(WOC + "ParameterizedType");
 
-    public static final Resource FIELD_CLASS =  model.getResource(WOC + "Field");
+    public static final Resource FIELD_ENTITY =  model.getResource(WOC + "Field");
 
-    public static final Resource CONSTRUCTOR_CLASS = model.getResource(WOC + "Constructor");
+    public static final Resource CONSTRUCTOR_ENTITY = model.getResource(WOC + "Constructor");
 
-    public static final Resource METHOD_CLASS = model.getResource(WOC + "Method");
+    public static final Resource METHOD_ENTITY = model.getResource(WOC + "Method");
 
-    public static final Resource PARAMETER_CLASS = model.getResource(WOC + "Parameter");
+    public static final Resource PARAMETER_ENTITY = model.getResource(WOC + "Parameter");
 
-    public static final Resource VARIABLE_CLASS = model.getResource(WOC + "Variable");
+    public static final Resource VARIABLE_ENTITY = model.getResource(WOC + "Variable");
 
-    public static final Resource LAMBDA_CLASS = model.getResource(WOC + "Lambda");
+    public static final Resource LAMBDA_ENTITY = model.getResource(WOC + "Lambda");
 
-    public static final Resource ANONYMOUS_CLASS_CLASS = model.getResource(WOC + "AnonymousClass");
+    public static final Resource ANONYMOUS_CLASS_ENTITY = model.getResource(WOC + "AnonymousClass");
 
-    public static final Resource TYPE_ARGUMENT_CLASS = model.getResource(WOC + "TypeArgument");
+    public static final Resource TYPE_ARGUMENT_ENTITY = model.getResource(WOC + "TypeArgument");
 
 
     public static final Property RDF_TYPE_PROPERTY = model.getProperty(RDF + "type");

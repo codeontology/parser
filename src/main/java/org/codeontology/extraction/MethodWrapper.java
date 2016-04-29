@@ -20,7 +20,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.METHOD_CLASS;
+        return Ontology.METHOD_ENTITY;
     }
 
     @Override

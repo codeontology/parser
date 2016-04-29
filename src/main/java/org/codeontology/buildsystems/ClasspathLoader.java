@@ -16,9 +16,10 @@ import java.util.Set;
 public class ClasspathLoader {
 
     private static ClasspathLoader instance;
+    private Set<File> classpath;
 
     private ClasspathLoader() {
-
+        classpath = new HashSet<>();
     }
 
     public static ClasspathLoader getInstance() {
@@ -37,7 +38,11 @@ public class ClasspathLoader {
             loadAllJars(file);
             return;
         }
-        
+
+        if (file.getPath().endsWith(".jar")) {
+            classpath.add(file);
+        }
+
         try {
             load(file.toURI().toURL());
         } catch (MalformedURLException e) {
@@ -45,7 +50,7 @@ public class ClasspathLoader {
         }
     }
 
-    public void load(URL url) {
+    private void load(URL url) {
         URLClassLoader loader = (URLClassLoader) ClassLoader.getSystemClassLoader();
         Class<URLClassLoader> clazz = URLClassLoader.class;
         final Class[] PARAMETERS = new Class[]{URL.class};
@@ -80,6 +85,10 @@ public class ClasspathLoader {
         for (String path : paths) {
             load(path);
         }
+    }
+
+    public Set<File> getJarsLoaded() {
+        return classpath;
     }
 }
 

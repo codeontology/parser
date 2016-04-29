@@ -33,6 +33,6 @@ public class LambdaWrapper extends Wrapper<CtLambda<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.LAMBDA_CLASS;
+        return Ontology.LAMBDA_ENTITY;
     }
 }

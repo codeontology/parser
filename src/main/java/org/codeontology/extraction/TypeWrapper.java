@@ -120,11 +120,11 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> implem
     }
 
     @Override
-    public List<ModifierClass> getModifiers() {
+    public List<Modifier> getModifiers() {
         if (isDeclarationAvailable()) {
-            return ModifierClass.asList(getElement().getModifiers());
+            return Modifier.asList(getElement().getModifiers());
         } else {
-            return ModifierClass.asList(getReference().getActualClass().getModifiers());
+            return Modifier.asList(getReference().getActualClass().getModifiers());
         }
     }
 

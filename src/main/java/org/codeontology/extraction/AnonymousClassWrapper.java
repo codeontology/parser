@@ -19,7 +19,7 @@ public class AnonymousClassWrapper<T> extends ClassWrapper<T> {
 
     @Override
     public RDFNode getType() {
-        return Ontology.ANONYMOUS_CLASS_CLASS;
+        return Ontology.ANONYMOUS_CLASS_ENTITY;
     }
 
     @Override

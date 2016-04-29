@@ -28,7 +28,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
 
     @Override
     protected RDFNode getType() {
-        return Ontology.CLASS_CLASS;
+        return Ontology.CLASS_ENTITY;
     }
 
     @Override

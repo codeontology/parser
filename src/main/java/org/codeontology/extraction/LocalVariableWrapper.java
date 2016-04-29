@@ -25,7 +25,7 @@ public class LocalVariableWrapper extends Wrapper<CtLocalVariable<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.VARIABLE_CLASS;
+        return Ontology.VARIABLE_ENTITY;
     }
 
     public void tagDeclaredBy() {

@@ -32,7 +32,7 @@ public class PackageWrapper extends Wrapper<CtPackage> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.PACKAGE_CLASS;
+        return Ontology.PACKAGE_ENTITY;
     }
 
     @Override

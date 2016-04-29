@@ -48,7 +48,7 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.PARAMETERIZED_TYPE_CLASS;
+        return Ontology.PARAMETERIZED_TYPE_ENTITY;
     }
 
     public void tagRawType() {
@@ -101,7 +101,7 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
 
         @Override
         protected RDFNode getType() {
-            return Ontology.TYPE_ARGUMENT_CLASS;
+            return Ontology.TYPE_ARGUMENT_ENTITY;
         }
 
         public void setPosition(int position) {

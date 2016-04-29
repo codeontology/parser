@@ -25,7 +25,7 @@ public class ArrayWrapper extends TypeWrapper<CtType<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.ARRAY_CLASS;
+        return Ontology.ARRAY_ENTITY;
     }
 
     @Override

@@ -16,17 +16,18 @@ def tag(data):
 
 def tag_comments(comments_list, start, tries):
 	res = []
-	comments = comments_list[(int(start)):]
+	length = len(comments_list);
 		
 	max_tries = 8
 
-	i = int(start)
-	for comment in comments:
+	i = 0
+
+	while (i < length):	
 		try:
+			comment = comments_list[i]
 			(URI, text) = (comment.split(" ")[0], " ".join(comment.split(" ")[1:]))
 			print("URI: " + str(URI) + " - text: " + str(text))
 			encoded_comment = urllib.parse.urlencode({"text" : text})
-			#print("comment" + str(encoded_commment))
 			print("requesting http://spotlight.dbpedia.org/rest/annotate?" + encoded_comment + "&confidence=0.2&support=20")
 			req = urllib.request.Request("http://spotlight.dbpedia.org/rest/annotate?" + encoded_comment
 			  								+ "&confidence=0.2"
@@ -43,13 +44,12 @@ def tag_comments(comments_list, start, tries):
 				open('links.nt', 'a').write("<" + URI + ">"
 						    	+ " <http://www.w3.org/2000/01/rdf-schema#about> "
 							+ "<" + about_URI + "> ."'\n')
-			i = int(i) + 1
+			i = i + 1
 
-		except Exception:			
+		except Exception:	
 			if tries < max_tries:
-				tag_comments(comments_list, i, tries + 1)
-			else:
-				tag_comments(comments_list, i + 1, 0)
+				i = i - 1
+				tries = tries + 1
 
 
 

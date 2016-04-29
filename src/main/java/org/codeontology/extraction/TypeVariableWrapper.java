@@ -93,7 +93,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.TYPE_VARIABLE_CLASS;
+        return Ontology.TYPE_VARIABLE_ENTITY;
     }
 
     public void setPosition(int position) {

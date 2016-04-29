@@ -14,9 +14,9 @@ public class ModifiableTagger {
     }
 
     public void tagModifiers() {
-        List<ModifierClass> modifiers = modifiable.getModifiers();
+        List<Modifier> modifiers = modifiable.getModifiers();
 
-        for (ModifierClass modifier : modifiers) {
+        for (Modifier modifier : modifiers) {
             Property modifierProperty;
             if (modifier.isAccessModifier()) {
                 modifierProperty = Ontology.VISIBILITY_PROPERTY;

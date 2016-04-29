@@ -28,7 +28,7 @@ public class FieldWrapper extends Wrapper<CtField<?>> implements ModifiableWrapp
 
     @Override
     protected RDFNode getType() {
-        return Ontology.FIELD_CLASS;
+        return Ontology.FIELD_ENTITY;
     }
 
     @Override
@@ -49,11 +49,11 @@ public class FieldWrapper extends Wrapper<CtField<?>> implements ModifiableWrapp
     }
 
     @Override
-    public List<ModifierClass> getModifiers() {
+    public List<Modifier> getModifiers() {
         if (isDeclarationAvailable()) {
-            return ModifierClass.asList(getElement().getModifiers());
+            return Modifier.asList(getElement().getModifiers());
         } else {
-            return ModifierClass.asList(((CtFieldReference<?>) getReference()).getModifiers());
+            return Modifier.asList(((CtFieldReference<?>) getReference()).getModifiers());
         }
     }
 

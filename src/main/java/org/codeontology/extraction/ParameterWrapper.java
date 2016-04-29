@@ -67,7 +67,7 @@ public class ParameterWrapper extends Wrapper<CtParameter<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.PARAMETER_CLASS;
+        return Ontology.PARAMETER_ENTITY;
     }
 
     public void tagJavaType() {
