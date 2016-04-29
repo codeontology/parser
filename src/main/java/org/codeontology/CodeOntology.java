@@ -109,7 +109,6 @@ public class CodeOntology {
                 }
             });
             Runtime.getRuntime().addShutdownHook(shutdownThread);
-
         }
     }
 

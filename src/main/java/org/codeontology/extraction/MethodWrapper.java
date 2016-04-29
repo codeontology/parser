@@ -5,7 +5,6 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtTypeReference;
-import spoon.support.reflect.reference.SpoonClassNotFoundException;
 
 import java.lang.reflect.*;
 
@@ -76,7 +75,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
                     result = getFactory().wrap(returnType);
                     result.setParent(this);
                 }
-            } catch (SpoonClassNotFoundException | NullPointerException e) {
+            } catch (Throwable t) {
                 return null;
             }
         }

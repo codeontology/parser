@@ -6,6 +6,7 @@ import spoon.reflect.declaration.CtField;
 import spoon.reflect.reference.CtFieldReference;
 import spoon.reflect.reference.CtTypeReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -53,7 +54,11 @@ public class FieldWrapper extends Wrapper<CtField<?>> implements ModifiableWrapp
         if (isDeclarationAvailable()) {
             return Modifier.asList(getElement().getModifiers());
         } else {
-            return Modifier.asList(((CtFieldReference<?>) getReference()).getModifiers());
+            try {
+                return Modifier.asList(((CtFieldReference<?>) getReference()).getModifiers());
+            } catch (NoClassDefFoundError e) {
+                return new ArrayList<>();
+            }
         }
     }
 

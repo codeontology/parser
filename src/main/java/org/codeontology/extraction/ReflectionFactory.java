@@ -128,53 +128,54 @@ public class ReflectionFactory {
     }
 
     public Executable createActualExecutable(CtExecutableReference<?> executableReference) {
+        Executable executable = null;
+        Class<?> declaringClass;
+
         try {
-            Executable executable = executableReference.getActualMethod();
+            executable = executableReference.getActualMethod();
 
             if (executable == null) {
                 executable = executableReference.getActualConstructor();
             }
 
-            if (executable == null) {
-                Class<?> declaringClass = Class.forName(executableReference.getDeclaringType().getQualifiedName());
+            declaringClass = Class.forName(executableReference.getDeclaringType().getQualifiedName());
 
-                Executable[] executables = declaringClass.getDeclaredMethods();
-                if (executableReference.isConstructor()) {
-                    executables = declaringClass.getDeclaredConstructors();
-                }
+        } catch (ClassNotFoundException | NoClassDefFoundError | SpoonClassNotFoundException e) {
+            declaringClass = null;
+        }
 
-                for (Executable current : executables) {
-                    if (current.getName().equals(executableReference.getSimpleName()) || current instanceof Constructor) {
-                        if (current.getParameterCount() == executableReference.getParameters().size()) {
-                            List<CtTypeReference<?>> parameters = executableReference.getParameters();
-                            Class<?>[] classes = new Class<?>[parameters.size()];
-                            for (int i = 0; i < parameters.size(); i++) {
-                                classes[i] = parameters.get(i).getActualClass();
-                            }
+        if (executable == null && declaringClass != null) {
+            Executable[] executables = declaringClass.getDeclaredMethods();
+            if (executableReference.isConstructor()) {
+                executables = declaringClass.getDeclaredConstructors();
+            }
 
-                            boolean acc = true;
+            for (Executable current : executables) {
+                if (current.getName().equals(executableReference.getSimpleName()) || current instanceof Constructor) {
+                    if (current.getParameterCount() == executableReference.getParameters().size()) {
+                        List<CtTypeReference<?>> parameters = executableReference.getParameters();
+                        Class<?>[] classes = new Class<?>[parameters.size()];
+                        for (int i = 0; i < parameters.size(); i++) {
+                            classes[i] = parameters.get(i).getActualClass();
+                        }
 
-                            Class<?>[] parameterTypes = current.getParameterTypes();
-                            for (int i = 0; i < classes.length && acc; i++) {
-                                acc = classes[i].isAssignableFrom(parameterTypes[i]);
-                            }
+                        boolean acc = true;
 
-                            if (acc) {
-                                executable = current;
-                                break;
-                            }
+                        Class<?>[] parameterTypes = current.getParameterTypes();
+                        for (int i = 0; i < classes.length && acc; i++) {
+                            acc = classes[i].isAssignableFrom(parameterTypes[i]);
+                        }
+
+                        if (acc) {
+                            executable = current;
+                            break;
                         }
                     }
                 }
             }
-
-            return executable;
-
-        } catch (ClassNotFoundException | NoSuchMethodError e) {
-            throw new RuntimeException(e);
-        } catch (SpoonClassNotFoundException e) {
-            return null;
         }
+
+        return executable;
     }
 
     public CtTypeReference<?> createTypeReference(Class<?> clazz) {

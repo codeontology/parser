@@ -92,11 +92,19 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
                 constructors.add(getFactory().wrap(ctConstructor));
             }
         } else {
+            setConstructorsByReflection();
+        }
+    }
+
+    private void setConstructorsByReflection() {
+        try {
             Constructor[] actualConstructors = getReference().getActualClass().getDeclaredConstructors();
             for (Constructor actualConstructor : actualConstructors) {
                 CtExecutableReference<?> reference = ReflectionFactory.getInstance().createConstructor(actualConstructor);
                 constructors.add((ConstructorWrapper) getFactory().wrap(reference));
             }
+        } catch (Throwable t) {
+            showMemberAccessWarning();
         }
     }
 

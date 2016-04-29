@@ -50,13 +50,15 @@ public class JarProcessor {
                     Class<?> clazz = Class.forName(typeName);
                     Package pack = clazz.getPackage();
                     Set<Class<?>> types = map.get(pack);
-                    if (types == null) {
-                        types = new HashSet<>();
+                    if (pack != null) {
+                        if (types == null) {
+                            types = new HashSet<>();
+                        }
+                        types.add(clazz);
+                        map.put(pack, types);
                     }
-                    types.add(clazz);
-                    map.put(pack, types);
-                } catch (ClassNotFoundException | NoClassDefFoundError e) {
-                    // this error means it was not possible to get a class object from this jar entry
+                } catch (Throwable e) {
+                    // it was not possible to get a class object from this jar entry
                     // we just skip this entry
                 }
             }

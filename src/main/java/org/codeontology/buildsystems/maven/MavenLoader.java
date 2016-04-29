@@ -18,10 +18,6 @@ public class MavenLoader extends DependenciesLoader {
         project.setFile(pom);
     }
 
-    public MavenLoader(String path) {
-        this(new File(path));
-    }
-
     @Override
     public void loadDependencies() {
         try {
@@ -62,12 +58,12 @@ public class MavenLoader extends DependenciesLoader {
             }
 
             System.out.println("Downloading dependencies...");
-            ProcessBuilder prB = new ProcessBuilder("mvn", "dependency:copy-dependencies");
-            prB.directory(project.getBasedir());
-            prB.redirectError(error);
-            prB.redirectOutput(output);
+            ProcessBuilder builder = new ProcessBuilder("mvn", "dependency:copy-dependencies");
+            builder.directory(project.getBasedir());
+            builder.redirectError(error);
+            builder.redirectOutput(output);
 
-            prB.start().waitFor();
+            builder.start().waitFor();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

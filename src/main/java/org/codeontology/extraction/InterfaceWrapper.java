@@ -21,11 +21,11 @@ public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> {
     public void extract() {
         tagType();
         tagName();
+        tagSuperInterfaces();
+        tagModifiers();
         if (isDeclarationAvailable() || CodeOntology.isJarExplorationEnabled()) {
-            tagSuperInterfaces();
             tagFields();
             tagMethods();
-            tagModifiers();
         }
         if (isDeclarationAvailable()) {
             tagAnnotations();

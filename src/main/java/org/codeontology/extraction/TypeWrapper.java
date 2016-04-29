@@ -1,6 +1,7 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.Property;
+import org.codeontology.CodeOntology;
 import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.declaration.CtField;
 import spoon.reflect.declaration.CtMethod;
@@ -79,11 +80,19 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> implem
                 methods.add(getFactory().wrap(ctMethod));
             }
         } else {
+            setMethodsByReflection();
+        }
+    }
+
+    private void setMethodsByReflection() {
+        try {
             Method[] actualMethods = getReference().getActualClass().getDeclaredMethods();
             for (Method actualMethod : actualMethods) {
                 CtExecutableReference<?> reference = ReflectionFactory.getInstance().createMethod(actualMethod);
                 methods.add((MethodWrapper) getFactory().wrap(reference));
             }
+        } catch (Throwable t) {
+            showMemberAccessWarning();
         }
     }
 
@@ -103,11 +112,19 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> implem
                 fields.add(getFactory().wrap(current));
             }
         } else {
+            setFieldsByReflection();
+        }
+    }
+
+    private void setFieldsByReflection() {
+        try {
             Field[] actualFields = getReference().getActualClass().getFields();
             for (Field current : actualFields) {
                 CtFieldReference<?> reference = ReflectionFactory.getInstance().createField(current);
                 fields.add(getFactory().wrap(reference));
             }
+        } catch (Throwable t) {
+            showMemberAccessWarning();
         }
     }
 
@@ -130,5 +147,11 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> implem
 
     public void tagModifiers() {
         new ModifiableTagger(this).tagModifiers();
+    }
+
+    protected void showMemberAccessWarning() {
+        if (CodeOntology.verboseMode()) {
+            System.out.println("[WARNING] Cannot extract members of " + getReference().getQualifiedName());
+        }
     }
 }
