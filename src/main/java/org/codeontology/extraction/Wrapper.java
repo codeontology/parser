@@ -1,158 +1,39 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
-import org.codeontology.CodeOntology;
-import org.codeontology.Ontology;
-import spoon.reflect.declaration.CtAnnotation;
 import spoon.reflect.declaration.CtNamedElement;
 import spoon.reflect.reference.CtReference;
 
-import java.util.List;
+public interface Wrapper<E extends CtNamedElement> {
 
+    String SEPARATOR = "-";
 
-public abstract class Wrapper<E extends CtNamedElement> {
+    void setReference(CtReference reference);
 
-    private E element;
-    private CtReference reference;
-    public static final String SEPARATOR = "-";
-    public static Model model = RDFLogger.getInstance().getModel();
-    private Wrapper<?> parent;
-    private String uri;
+    E getElement();
 
-    public Wrapper(E element) {
-        setElement(element);
-    }
+    void extract();
 
-    public Wrapper(CtReference reference) {
-        setReference(reference);
-    }
+    void setElement(E element);
 
-    @SuppressWarnings("unchecked")
-    public void setReference(CtReference reference) {
-        if (reference == null) {
-            throw new IllegalArgumentException();
-        }
+    Model getModel();
 
-        this.reference = reference;
-        this.element = (E) reference.getDeclaration();
-    }
+    WrapperFactory getFactory();
 
-    public E getElement() {
-        return element;
-    }
+    CtReference getReference();
 
-    public void setElement(E element) {
-        if (element == null) {
-            throw new IllegalArgumentException();
-        }
-        this.element = element;
-        try {
-            this.reference = element.getReference();
-        } catch (ClassCastException e) {
-            this.reference = null;
-        }
-    }
+    boolean isDeclarationAvailable();
 
-    public abstract void extract();
+    RDFLogger getLogger();
 
-    protected Resource getResource() {
-        return model.createResource(Ontology.WOC + getRelativeURI());
-    }
+    Wrapper<?> getParent();
 
-    protected abstract String buildRelativeURI();
+    void setParent(Wrapper<?> parent);
 
-    private RDFNode getName() {
-        return model.createLiteral(getReference().getSimpleName());
-    }
+    void follow();
 
-    public void tagType() {
-        getLogger().addTriple(this, Ontology.RDF_TYPE_PROPERTY, getType());
-    }
+    String getRelativeURI();
 
-    public void tagName() {
-        getLogger().addTriple(this, Ontology.NAME_PROPERTY, getName());
-    }
-
-    public void tagComment() {
-        String comment = getElement().getDocComment();
-        if (comment != null) {
-            getLogger().addTriple(this, Ontology.COMMENT_PROPERTY, model.createLiteral(comment));
-        }
-    }
-
-    public void tagAnnotations() {
-        List<CtAnnotation<?>> annotations = getElement().getAnnotations();
-        for (CtAnnotation annotation : annotations) {
-            TypeWrapper annotationType = getFactory().wrap(annotation.getAnnotationType());
-            getLogger().addTriple(this, Ontology.ANNOTATION_PROPERTY, annotationType);
-            annotationType.follow();
-        }
-    }
-
-    protected abstract RDFNode getType();
-
-    public void tagSourceCode() {
-        getLogger().addTriple(this, Ontology.SOURCE_CODE_PROPERTY, model.createLiteral(getElement().toString()));
-    }
-
-    public Model getModel() {
-        return model;
-    }
-
-    public WrapperFactory getFactory() {
-        return WrapperFactory.getInstance();
-    }
-
-    public CtReference getReference() {
-        return reference;
-    }
-
-    public boolean isDeclarationAvailable() {
-        return getElement() != null;
-    }
-
-    public RDFLogger getLogger() {
-        return RDFLogger.getInstance();
-    }
-
-    public Wrapper<?> getParent() {
-        return parent;
-    }
-
-    public void setParent(Wrapper<?> parent) {
-        this.parent = parent;
-    }
-
-    public void follow() {
-        if (!isDeclarationAvailable() && !CodeOntology.isJarExplorationEnabled()
-                && WrapperRegister.getInstance().add(this)) {
-            extract();
-        }
-    }
-
-    public final String getRelativeURI() {
-        if (uri == null) {
-            uri = buildRelativeURI();
-        }
-
-        return uri;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Wrapper<?>)) {
-            return false;
-        }
-
-        Wrapper<?> other = (Wrapper<?>) object;
-        return other.getRelativeURI().equals(this.getRelativeURI());
-    }
-
-    @Override
-    public int hashCode() {
-        return getRelativeURI().hashCode();
-    }
+    Resource getResource();
 }
-

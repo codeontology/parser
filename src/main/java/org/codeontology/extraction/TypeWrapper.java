@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> implements ModifiableWrapper {
+public abstract class TypeWrapper<T extends CtType<?>> extends AbstractWrapper<T> implements ModifiableWrapper<T> {
 
     private List<MethodWrapper> methods;
     private List<FieldWrapper> fields;
@@ -77,7 +77,9 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> implem
         if (isDeclarationAvailable()) {
             Set<CtMethod<?>> ctMethods = getElement().getMethods();
             for (CtMethod ctMethod : ctMethods) {
-                methods.add(getFactory().wrap(ctMethod));
+                MethodWrapper method = getFactory().wrap(ctMethod);
+                method.setParent(this);
+                methods.add(method);
             }
         } else {
             setMethodsByReflection();
@@ -89,7 +91,9 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> implem
             Method[] actualMethods = getReference().getActualClass().getDeclaredMethods();
             for (Method actualMethod : actualMethods) {
                 CtExecutableReference<?> reference = ReflectionFactory.getInstance().createMethod(actualMethod);
-                methods.add((MethodWrapper) getFactory().wrap(reference));
+                MethodWrapper method = (MethodWrapper) getFactory().wrap(reference);
+                method.setParent(this);
+                methods.add(method);
             }
         } catch (Throwable t) {
             showMemberAccessWarning();
@@ -109,7 +113,9 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> implem
         if (isDeclarationAvailable()) {
             List<CtField<?>> ctFields = getElement().getFields();
             for (CtField<?> current : ctFields) {
-                fields.add(getFactory().wrap(current));
+                FieldWrapper currentField = getFactory().wrap(current);
+                currentField.setParent(this);
+                fields.add(currentField);
             }
         } else {
             setFieldsByReflection();
@@ -121,7 +127,9 @@ public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> implem
             Field[] actualFields = getReference().getActualClass().getFields();
             for (Field current : actualFields) {
                 CtFieldReference<?> reference = ReflectionFactory.getInstance().createField(current);
-                fields.add(getFactory().wrap(reference));
+                FieldWrapper currentField = getFactory().wrap(reference);
+                currentField.setParent(this);
+                fields.add(currentField);
             }
         } catch (Throwable t) {
             showMemberAccessWarning();

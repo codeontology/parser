@@ -13,7 +13,7 @@ import spoon.reflect.reference.CtTypeReference;
 
 import java.util.List;
 
-public class ParameterWrapper extends Wrapper<CtParameter<?>> {
+public class ParameterWrapper extends AbstractWrapper<CtParameter<?>> {
 
     private int position;
     private ExecutableWrapper parent;

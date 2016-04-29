@@ -58,7 +58,7 @@ public class JarProcessor {
                         map.put(pack, types);
                     }
                 } catch (Throwable e) {
-                    // it was not possible to get a class object from this jar entry
+                    // Cannot get a class object from this jar entry
                     // we just skip this entry
                 }
             }

@@ -4,7 +4,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.code.CtLocalVariable;
 
-public class LocalVariableWrapper extends Wrapper<CtLocalVariable<?>> {
+public class LocalVariableWrapper extends AbstractWrapper<CtLocalVariable<?>> implements MemberWrapper<CtLocalVariable<?>> {
 
     public LocalVariableWrapper(CtLocalVariable<?> variable) {
         super(variable);
@@ -15,7 +15,7 @@ public class LocalVariableWrapper extends Wrapper<CtLocalVariable<?>> {
         tagType();
         tagName();
         tagJavaType();
-        tagDeclaredBy();
+        tagDeclaringElement();
     }
 
     @Override
@@ -28,8 +28,13 @@ public class LocalVariableWrapper extends Wrapper<CtLocalVariable<?>> {
         return Ontology.VARIABLE_ENTITY;
     }
 
-    public void tagDeclaredBy() {
-        new DeclaredByTagger(this).tagDeclaredBy();
+    @Override
+    public Wrapper<?> getDeclaringElement() {
+        return getParent();
+    }
+
+    public void tagDeclaringElement() {
+        new DeclaringElementTagger(this).tagDeclaredBy();
     }
 
     public void tagJavaType() {

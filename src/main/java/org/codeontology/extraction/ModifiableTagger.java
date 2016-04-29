@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ModifiableTagger {
 
-    ModifiableWrapper modifiable;
+    ModifiableWrapper<?> modifiable;
 
     public ModifiableTagger(ModifiableWrapper modifiable) {
         this.modifiable = modifiable;
@@ -24,7 +24,7 @@ public class ModifiableTagger {
                 modifierProperty = Ontology.MODIFIER_PROPERTY;
             }
 
-            RDFLogger.getInstance().addTriple((Wrapper<?>) modifiable, modifierProperty, modifier.getIndividual());
+            RDFLogger.getInstance().addTriple(modifiable, modifierProperty, modifier.getIndividual());
         }
     }
 }

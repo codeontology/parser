@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FieldWrapper extends Wrapper<CtField<?>> implements ModifiableWrapper {
+public class FieldWrapper extends AbstractWrapper<CtField<?>> implements ModifiableWrapper<CtField<?>>, MemberWrapper<CtField<?>> {
 
     public FieldWrapper(CtField<?> field) {
         super(field);
@@ -36,17 +36,13 @@ public class FieldWrapper extends Wrapper<CtField<?>> implements ModifiableWrapp
     public void extract() {
         tagName();
         tagType();
-        tagDeclaringType();
+        tagDeclaringElement();
         tagJavaType();
         tagModifiers();
         if (isDeclarationAvailable()) {
             tagComment();
             tagAnnotations();
         }
-    }
-
-    public void tagDeclaringType() {
-        new DeclaredByTagger(this).tagDeclaredBy();
     }
 
     @Override
@@ -70,6 +66,17 @@ public class FieldWrapper extends Wrapper<CtField<?>> implements ModifiableWrapp
         CtTypeReference<?> declaringType = ((CtFieldReference<?>) getReference()).getDeclaringType();
         Wrapper<?> parent = getFactory().wrap(declaringType);
         new JavaTypeTagger(this).tagJavaType(parent);
+    }
+
+    @Override
+    public Wrapper<?> getDeclaringElement() {
+        CtFieldReference<?> reference = (CtFieldReference) getReference();
+        return getFactory().wrap(reference.getDeclaringType());
+    }
+
+    @Override
+    public void tagDeclaringElement() {
+        new DeclaringElementTagger(this).tagDeclaredBy();
     }
 }
 

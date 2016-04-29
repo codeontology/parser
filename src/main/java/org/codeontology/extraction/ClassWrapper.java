@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements ModifiableWrapper {
+public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements ModifiableWrapper<CtClass<T>> {
 
     private List<ConstructorWrapper> constructors;
 
@@ -89,7 +89,9 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
         if (isDeclarationAvailable()) {
             Set<CtConstructor<T>> ctConstructors = getElement().getConstructors();
             for (CtConstructor ctConstructor : ctConstructors) {
-                constructors.add(getFactory().wrap(ctConstructor));
+                ConstructorWrapper constructor = getFactory().wrap(ctConstructor);
+                constructor.setParent(this);
+                constructors.add(constructor);
             }
         } else {
             setConstructorsByReflection();
@@ -101,7 +103,9 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
             Constructor[] actualConstructors = getReference().getActualClass().getDeclaredConstructors();
             for (Constructor actualConstructor : actualConstructors) {
                 CtExecutableReference<?> reference = ReflectionFactory.getInstance().createConstructor(actualConstructor);
-                constructors.add((ConstructorWrapper) getFactory().wrap(reference));
+                ConstructorWrapper constructor = (ConstructorWrapper) getFactory().wrap(reference);
+                constructor.setParent(this);
+                constructors.add(constructor);
             }
         } catch (Throwable t) {
             showMemberAccessWarning();

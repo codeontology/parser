@@ -80,6 +80,7 @@ public class CodeOntology {
         spoon.process();
         RDFLogger.getInstance().writeRDF();
         System.out.println("Triples extracted successfully.");
+        spoon = new Launcher();
     }
 
     private void processJars() throws IOException {

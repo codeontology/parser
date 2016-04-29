@@ -43,11 +43,11 @@ public class RDFLogger {
         }
     }
 
-    public void addTriple(Wrapper subject, Property property, Wrapper object) {
+    public void addTriple(Wrapper<?> subject, Property property, Wrapper object) {
         addTriple(subject, property, object.getResource());
     }
 
-    public void addTriple(Wrapper subject, Property property, RDFNode object) {
+    public void addTriple(Wrapper<?> subject, Property property, RDFNode object) {
         if (property != null && object != null) {
             Statement triple = model.createStatement(subject.getResource(), property, object);
             model.add(triple);

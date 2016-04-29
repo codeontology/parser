@@ -14,7 +14,8 @@ import spoon.support.reflect.reference.CtLocalVariableReferenceImpl;
 import java.lang.reflect.Executable;
 import java.util.*;
 
-public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember & CtGenericElement> extends Wrapper<E> implements ModifiableWrapper {
+public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember & CtGenericElement>
+        extends AbstractWrapper<E> implements ModifiableWrapper<E>, MemberWrapper<E> {
 
     public ExecutableWrapper(E executable) {
         super(executable);
@@ -35,7 +36,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     public void extract() {
         tagType();
         tagName();
-        tagDeclaringType();
+        tagDeclaringElement();
         tagParameters();
         tagModifiers();
         if (isDeclarationAvailable()) {
@@ -47,8 +48,13 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    public void tagDeclaringType() {
-        new DeclaredByTagger(this).tagDeclaredBy();
+    public Wrapper<?> getDeclaringElement() {
+        CtExecutableReference<?> reference = (CtExecutableReference<?>) getReference();
+        return getFactory().wrap(reference.getDeclaringType());
+    }
+
+    public void tagDeclaringElement() {
+        new DeclaringElementTagger(this).tagDeclaredBy();
     }
 
     public void tagModifiers() {
