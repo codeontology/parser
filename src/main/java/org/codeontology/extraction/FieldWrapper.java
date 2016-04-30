@@ -21,9 +21,7 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
 
     @Override
     public String buildRelativeURI() {
-        CtTypeReference<?> reference = ((CtFieldReference) getReference()).getDeclaringType();
-        TypeWrapper<?> declaringType = getFactory().wrap(reference);
-        return declaringType.getRelativeURI() + SEPARATOR + getReference().getSimpleName();
+        return getDeclaringElement().getRelativeURI() + SEPARATOR + getReference().getSimpleName();
     }
 
     @Override
@@ -75,8 +73,12 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
 
     @Override
     public Wrapper<?> getDeclaringElement() {
-        CtFieldReference<?> reference = (CtFieldReference) getReference();
-        return getFactory().wrap(reference.getDeclaringType());
+        if (isDeclarationAvailable()) {
+            return getFactory().wrap(getElement().getDeclaringType());
+        } else {
+            CtFieldReference<?> reference = (CtFieldReference) getReference();
+            return getFactory().wrap(reference.getDeclaringType());
+        }
     }
 
     @Override

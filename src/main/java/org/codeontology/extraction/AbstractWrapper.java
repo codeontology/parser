@@ -134,7 +134,7 @@ public abstract class AbstractWrapper<E extends CtNamedElement> implements Wrapp
 
     @Override
     public void follow() {
-        if (!isDeclarationAvailable() && !CodeOntology.isJarExplorationEnabled()
+        if ((!isDeclarationAvailable() && !CodeOntology.isJarExplorationEnabled() || this instanceof ParameterizedTypeWrapper)
                 && WrapperRegister.getInstance().add(this)) {
             extract();
         }
