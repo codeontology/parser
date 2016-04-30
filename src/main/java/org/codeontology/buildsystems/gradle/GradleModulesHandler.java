@@ -103,12 +103,12 @@ public class GradleModulesHandler {
                 writer.close();
             }
 
-            ProcessBuilder prB = new ProcessBuilder("gradle", "jar");
-            prB.directory(projectRoot);
-            prB.redirectError(error);
-            prB.redirectOutput(output);
+            ProcessBuilder builder = new ProcessBuilder("gradle", "jar");
+            builder.directory(projectRoot);
+            builder.redirectError(error);
+            builder.redirectOutput(output);
 
-            prB.start().waitFor();
+            builder.start().waitFor();
             System.out.println("Done.");
 
             jars.addAll(FileUtils.listFiles(projectRoot,

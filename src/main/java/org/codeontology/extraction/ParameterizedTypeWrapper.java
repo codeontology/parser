@@ -67,6 +67,13 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         }
     }
 
+    @Override
+    public void follow() {
+        if (WrapperRegister.getInstance().add(this))  {
+            extract();
+        }
+    }
+
     class TypeArgumentWrapper extends TypeWrapper<CtType<?>> {
 
         private int position = 0;

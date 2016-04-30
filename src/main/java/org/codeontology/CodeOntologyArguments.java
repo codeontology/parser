@@ -107,7 +107,7 @@ public class CodeOntologyArguments {
         flag = new Switch(EXPLORE_DEPENDENCIES_LONG);
         flag.setLongFlag(EXPLORE_DEPENDENCIES_LONG);
         flag.setDefault("false");
-        flag.setHelp("Explore jars in the classpath");
+        flag.setHelp("Explore jar files in classpath");
         jsap.registerParameter(flag);
 
         flag = new Switch(SHUTDOWN_LONG);

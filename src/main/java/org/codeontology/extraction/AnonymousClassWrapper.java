@@ -32,7 +32,6 @@ public class AnonymousClassWrapper<T> extends ClassWrapper<T> {
         tagMethods();
         tagSourceCode();
         tagNestedTypes();
-        tagFormalTypeParameters();
     }
 
 

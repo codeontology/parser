@@ -5,7 +5,6 @@ import org.codeontology.Ontology;
 import spoon.reflect.code.CtLambda;
 
 public class LambdaWrapper extends AbstractWrapper<CtLambda<?>> {
-    private static final String TAG = "lambda";
 
     public LambdaWrapper(CtLambda<?> lambda) {
         super(lambda);

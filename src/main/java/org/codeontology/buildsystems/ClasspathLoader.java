@@ -5,7 +5,6 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -76,7 +75,7 @@ public class ClasspathLoader {
         }
     }
 
-    public void loadAllJars(String path) throws IOException {
+    public void loadAllJars(String path) {
         loadAllJars(new File(path));
     }
 
