@@ -48,6 +48,4 @@ public class AnonymousClassWrapper<T> extends ClassWrapper<T> {
         superType.setParent(getParent());
         getLogger().addTriple(this, Ontology.IMPLEMENTS_PROPERTY, superType);
     }
-
-
 }

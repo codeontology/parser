@@ -3,9 +3,11 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtField;
+import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtFieldReference;
 import spoon.reflect.reference.CtTypeReference;
 
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,14 +63,44 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
 
     @Override
     public TypeWrapper<?> getJavaType() {
-        CtFieldReference<?> reference = (CtFieldReference<?>) getReference();
-        return getFactory().wrap(reference.getType());
+        if (isDeclarationAvailable()) {
+            return getFactory().wrap(getElement().getType());
+        } else {
+            TypeWrapper<?> type = getGenericType();
+            if (type == null) {
+                CtTypeReference<?> typeReference = ((CtFieldReference<?>) getReference()).getType();
+                type = getFactory().wrap(typeReference);
+            }
+            type.setParent(getDeclaringElement());
+            return type;
+        }
+    }
+
+    private TypeWrapper<?> getGenericType() {
+        TypeWrapper<?> result = null;
+        if (!isDeclarationAvailable()) {
+            try {
+                CtFieldReference<?> reference = ((CtFieldReference<?>) getReference());
+                Field field = (Field) reference.getActualField();
+                Type genericType = field.getGenericType();
+
+                if (genericType instanceof GenericArrayType ||
+                        genericType instanceof TypeVariable<?>  ||
+                        genericType instanceof ParameterizedType) {
+
+                    result = getFactory().wrap(genericType);
+                }
+
+            } catch (Throwable t) {
+                return null;
+            }
+        }
+
+        return result;
     }
 
     public void tagJavaType() {
-        CtTypeReference<?> declaringType = ((CtFieldReference<?>) getReference()).getDeclaringType();
-        Wrapper<?> parent = getFactory().wrap(declaringType);
-        new JavaTypeTagger(this).tagJavaType(parent);
+        new JavaTypeTagger(this).tagJavaType(getDeclaringElement());
     }
 
     @Override

@@ -7,11 +7,15 @@ import org.codeontology.extraction.JarProcessor;
 import org.codeontology.extraction.RDFLogger;
 import org.codeontology.extraction.ReflectionFactory;
 import org.codeontology.extraction.SourceProcessor;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 import spoon.Launcher;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
+
+import org.joda.time.Period;
 
 public class CodeOntology {
     private static CodeOntology launcher;
@@ -19,6 +23,7 @@ public class CodeOntology {
     private Launcher spoon;
     private boolean exploreJarsFlag;
     private DependenciesLoader loader;
+    private PeriodFormatter formatter;
 
     private CodeOntology(String[] args) throws JSAPException {
         spoon = new Launcher();
@@ -26,6 +31,17 @@ public class CodeOntology {
         exploreJarsFlag = arguments.exploreJars() || (arguments.getJarInput() != null);
         ReflectionFactory.getInstance().setParent(spoon.createFactory());
         RDFLogger.getInstance().setOutputFile(arguments.getOutput());
+
+        formatter = new PeriodFormatterBuilder()
+                .appendHours()
+                .appendSuffix(" hours, ")
+                .appendMinutes()
+                .appendSuffix(" minutes, ")
+                .appendSeconds()
+                .appendSuffix(" seconds, ")
+                .appendMillis()
+                .appendSuffix(" millis")
+                .toFormatter();
     }
 
     public static void main(String[] args) {
@@ -75,11 +91,18 @@ public class CodeOntology {
     }
 
     private void extractAllTriples() {
+
+        long start = System.currentTimeMillis();
+
         System.out.println("Extracting triples for " + getArguments().getInput() + "...");
         spoon.addProcessor(new SourceProcessor());
         spoon.process();
         RDFLogger.getInstance().writeRDF();
-        System.out.println("Triples extracted successfully.");
+
+        long end = System.currentTimeMillis();
+
+        Period period = new Period(start, end);
+        System.out.println("Triples extracted successfully in " + formatter.print(period) + ".");
         spoon = new Launcher();
     }
 

@@ -65,7 +65,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements Gen
         if (!isDeclarationAvailable()) {
             try {
                 CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference());
-                Method method = reference.getActualMethod();
+                Method method = (Method) ReflectionFactory.getInstance().createActualExecutable(reference);
                 Type returnType = method.getGenericReturnType();
 
                 if (returnType instanceof GenericArrayType ||
