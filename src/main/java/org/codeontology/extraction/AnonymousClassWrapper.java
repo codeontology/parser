@@ -38,9 +38,15 @@ public class AnonymousClassWrapper<T> extends ClassWrapper<T> {
 
     public void tagSuperType() {
         Set<CtTypeReference<?>> references = getReference().getSuperInterfaces();
-        if (references.size() > 1) {
-            throw new RuntimeException("size > 1");
+        CtTypeReference<?> superTypeReference;
+        if (references.isEmpty()) {
+            superTypeReference = getReference().getSuperclass();
+        } else {
+            superTypeReference = (CtTypeReference<?>) references.toArray()[0];
         }
+        TypeWrapper<?> superType = getFactory().wrap(superTypeReference);
+        superType.setParent(getParent());
+        getLogger().addTriple(this, Ontology.IMPLEMENTS_PROPERTY, superType);
     }
 
 
