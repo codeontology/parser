@@ -153,22 +153,17 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
 
         for (CtStatement statement : statements) {
-            try {
+            if (createsAnonymousClass(statement) || statement instanceof CtClass) {
+                addAnonymousClasses(statement);
+            } else {
                 addRequestedTypes(statement.getReferencedTypes());
                 addInvocations(statement);
                 addRequestedFields(statement);
                 addLocalVariables(statement);
                 addLambdas(statement);
-                addAnonymousClasses(statement);
-
-                if (statement instanceof CtReturn<?>) {
-                    tagReturnsVariable((CtReturn<?>) statement);
-                }
-
-            } catch (RuntimeException e) {
-                if (!createsAnonymousClass(statement) && !(statement instanceof CtClass<?>)) {
-                    throw e;
-                }
+            }
+            if (statement instanceof CtReturn<?>) {
+                tagReturnsVariable((CtReturn<?>) statement);
             }
         }
 

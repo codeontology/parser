@@ -6,7 +6,9 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtInterface;
 import spoon.reflect.reference.CtTypeReference;
 
-public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> {
+import java.util.List;
+
+public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> implements GenericDeclarationWrapper<CtInterface<?>> {
 
     public InterfaceWrapper(CtTypeReference<?> reference) {
         super(reference);
@@ -31,10 +33,21 @@ public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> {
             tagAnnotations();
             tagSourceCode();
             tagComment();
+            tagFormalTypeParameters();
         }
     }
 
     public void tagSuperInterfaces() {
         tagSuperInterfaces(Ontology.EXTENDS_PROPERTY);
+    }
+
+    @Override
+    public List<TypeVariableWrapper> getFormalTypeParameters() {
+        return FormalTypeParametersTagger.formalTypeParametersOf(this);
+    }
+
+    @Override
+    public void tagFormalTypeParameters() {
+        new FormalTypeParametersTagger(this).tagFormalTypeParameters();
     }
 }

@@ -2,7 +2,11 @@ package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
+import spoon.reflect.code.CtNewClass;
+import spoon.reflect.declaration.CtElement;
+import spoon.reflect.declaration.CtExecutable;
 import spoon.reflect.declaration.CtType;
+import spoon.reflect.declaration.ParentNotInitializedException;
 import spoon.reflect.reference.*;
 
 import java.lang.reflect.Executable;
@@ -160,11 +164,18 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
             }
         }
 
-        findAndSetParent(clazz.getDeclaringClass());
+        if (clazz.isAnonymousClass()) {
+            CtExecutableReference<?> reference = ReflectionFactory.getInstance().createMethod(clazz.getEnclosingMethod());
+            findAndSetParent(reference);
+        } else {
+            findAndSetParent(clazz.getDeclaringClass());
+        }
     }
 
     private void findAndSetParent(CtTypeReference<?> reference) {
-        if (reference.getDeclaration() != null) {
+        if (isWildcard()) {
+            setParent(reference);
+        } else if (reference.getDeclaration() != null) {
             findAndSetParent(reference.getDeclaration());
         } else {
             findAndSetParent(reference.getActualClass());
@@ -172,13 +183,22 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     }
 
     private void findAndSetParent(CtType type) {
-        if (type != null) {
-            List<CtTypeReference<?>> formalTypes = new TypeVariableList(type.getFormalTypeParameters());
-            while (!formalTypes.contains(getReference())) {
-                type = type.getDeclaringType();
-                formalTypes = new TypeVariableList(type.getFormalTypeParameters());
-            }
+        List<CtTypeReference<?>> formalTypes = new TypeVariableList(type.getFormalTypeParameters());
+        if (formalTypes.contains(getReference())) {
             setParent(type);
+        } else {
+            CtElement parent;
+            try {
+                parent = type.getParent();
+            } catch (ParentNotInitializedException e) {
+                parent = null;
+            }
+
+            if (parent instanceof CtNewClass<?>) {
+                findAndSetParent(parent.getParent(CtExecutable.class).getReference());
+            } else {
+                findAndSetParent(type.getDeclaringType());
+            }
         }
     }
 

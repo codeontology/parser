@@ -3,6 +3,9 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtClass;
+import spoon.reflect.reference.CtTypeReference;
+
+import java.util.Set;
 
 public class AnonymousClassWrapper<T> extends ClassWrapper<T> {
 
@@ -25,13 +28,19 @@ public class AnonymousClassWrapper<T> extends ClassWrapper<T> {
     @Override
     public void extract() {
         tagType();
-        tagSuperClass();
-        tagSuperInterfaces();
+        tagSuperType();
         tagComment();
         tagFields();
         tagMethods();
         tagSourceCode();
         tagNestedTypes();
+    }
+
+    public void tagSuperType() {
+        Set<CtTypeReference<?>> references = getReference().getSuperInterfaces();
+        if (references.size() > 1) {
+            throw new RuntimeException("size > 1");
+        }
     }
 
 

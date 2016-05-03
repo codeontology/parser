@@ -77,7 +77,9 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
             return getFactory().wrap(getElement().getDeclaringType());
         } else {
             CtFieldReference<?> reference = (CtFieldReference) getReference();
-            return getFactory().wrap(reference.getDeclaringType());
+            CtTypeReference<?> declaringType = ReflectionFactory.getInstance().clone(reference.getDeclaringType());
+            declaringType.setActualTypeArguments(new ArrayList<>());
+            return getFactory().wrap(declaringType);
         }
     }
 
