@@ -33,6 +33,8 @@ public class CodeOntologyArguments {
 
     public static final String DO_NOT_EXTRACT_LONG = "do-not-extract";
 
+    public static final String RM_TESTS_LONG = "rmtests";
+
     private JSAP jsap;
     private JSAPResult result;
 
@@ -120,6 +122,12 @@ public class CodeOntologyArguments {
         flag.setLongFlag(DO_NOT_EXTRACT_LONG);
         flag.setDefault("false");
         flag.setHelp("Do not extract triples, just download dependencies");
+        jsap.registerParameter(flag);
+
+        flag = new Switch(RM_TESTS_LONG);
+        flag.setLongFlag(RM_TESTS_LONG);
+        flag.setDefault("false");
+        flag.setHelp("Remove tests if compilation fails.");
         jsap.registerParameter(flag);
 
     }
@@ -221,5 +229,9 @@ public class CodeOntologyArguments {
 
     public String getClasspath() {
         return result.getString(CLASSPATH_LONG);
+    }
+
+    public boolean removeTests() {
+        return result.getBoolean(RM_TESTS_LONG);
     }
 }

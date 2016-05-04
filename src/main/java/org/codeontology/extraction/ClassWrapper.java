@@ -116,7 +116,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
         Set<CtType<?>> nestedTypes = getElement().getNestedTypes();
         for (CtType<?> type : nestedTypes) {
             Wrapper wrapper = getFactory().wrap(type);
-            getLogger().addTriple(wrapper, Ontology.IS_NESTED_IN_PROPERTY, this);
+            getLogger().addTriple(wrapper, Ontology.NESTED_IN_PROPERTY, this);
             wrapper.extract();
         }
     }

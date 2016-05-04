@@ -99,7 +99,7 @@ public class Ontology {
 
     public static final Property THROWS_PROPERTY = model.getProperty(WOC + "throws");
 
-    public static final Property IS_NESTED_IN_PROPERTY = model.getProperty(WOC + "nestedIn");
+    public static final Property NESTED_IN_PROPERTY = model.getProperty(WOC + "nestedIn");
 
     public static final Property MODIFIER_PROPERTY = model.getProperty(WOC + "modifier");
 
