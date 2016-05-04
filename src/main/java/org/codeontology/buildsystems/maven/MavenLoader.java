@@ -36,18 +36,22 @@ public class MavenLoader extends DependenciesLoader {
             builder.directory(project.getBasedir());
             builder.redirectError(error);
             builder.redirectOutput(output);
-            builder.start().waitFor();
+            int exitStatus = builder.start().waitFor();
 
-            File classpath = new File(project.getBasedir() + "/.cp");
-            Scanner reader = new Scanner(classpath);
-            reader.useDelimiter("\\Z");
-            if (reader.hasNext()) {
-                getLoader().loadClasspath(reader.next());
+            if (exitStatus == 0) {
+                File classpath = new File(project.getBasedir() + "/.cp");
+                Scanner reader = new Scanner(classpath);
+                reader.useDelimiter("\\Z");
+                if (reader.hasNext()) {
+                    getLoader().loadClasspath(reader.next());
+                }
+                reader.close();
+                classpath.deleteOnExit();
             } else {
                 getLoader().loadAllJars(project.getBasedir());
+                getLoader().loadAllJars(System.getProperty("user.home") + "/.m2");
             }
-            reader.close();
-            classpath.deleteOnExit();
+
 
             Set<File> modules = modulesHandler.findModules();
             for (File module : modules) {

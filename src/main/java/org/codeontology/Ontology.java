@@ -129,6 +129,8 @@ public class Ontology {
 
     public static final Property OVERRIDES_PROPERTY = model.getProperty(WOC + "overrides");
 
+    public static final Property VAR_ARGS_PROPERTY = model.getProperty(WOC + "isVarArgs");
+
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");
 

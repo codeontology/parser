@@ -3,7 +3,6 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtField;
-import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtFieldReference;
 import spoon.reflect.reference.CtTypeReference;
 
@@ -63,17 +62,19 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
 
     @Override
     public TypeWrapper<?> getJavaType() {
+        TypeWrapper<?> type;
         if (isDeclarationAvailable()) {
-            return getFactory().wrap(getElement().getType());
+            type = getFactory().wrap(getElement().getType());
         } else {
-            TypeWrapper<?> type = getGenericType();
+            type = getGenericType();
             if (type == null) {
                 CtTypeReference<?> typeReference = ((CtFieldReference<?>) getReference()).getType();
                 type = getFactory().wrap(typeReference);
             }
-            type.setParent(getDeclaringElement());
-            return type;
         }
+
+        type.setParent(getDeclaringElement());
+        return type;
     }
 
     private TypeWrapper<?> getGenericType() {

@@ -6,9 +6,7 @@ import spoon.reflect.declaration.*;
 import spoon.reflect.internal.CtImplicitTypeReference;
 import spoon.reflect.reference.*;
 import spoon.reflect.visitor.filter.ReferenceTypeFilter;
-import spoon.support.reflect.reference.CtExecutableReferenceImpl;
-import spoon.support.reflect.reference.CtFieldReferenceImpl;
-import spoon.support.reflect.reference.CtLocalVariableReferenceImpl;
+import spoon.support.reflect.reference.*;
 
 import java.lang.reflect.Executable;
 import java.util.ArrayList;
@@ -25,6 +23,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     private Set<AnonymousClassWrapper> anonymousClasses;
     private Set<LocalVariableWrapper> localVariables;
     private Set<FieldWrapper> fields;
+    private List<ParameterWrapper> parameters;
 
     public ExecutableWrapper(E executable) {
         super(executable);
@@ -59,6 +58,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         tagDeclaringElement();
         tagParameters();
         tagModifiers();
+        tagVarArgs();
         if (isDeclarationAvailable()) {
             processStatements();
             tagRequestedTypes();
@@ -102,30 +102,36 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     }
 
     public void tagParameters() {
+        List<ParameterWrapper> parameters = getParameters();
+        int size = parameters.size();
+        for (int i = 0; i < size; i++) {
+            ParameterWrapper parameter = parameters.get(i);
+            parameter.setParent(this);
+            parameter.setPosition(i);
+            getLogger().addTriple(this, Ontology.PARAMETER_PROPERTY, parameter);
+            parameter.extract();
+        }
+    }
+
+    public List<ParameterWrapper> getParameters() {
+        if (parameters == null) {
+            setParameters();
+        }
+
+        return parameters;
+    }
+
+    private void setParameters() {
+        parameters = new ArrayList<>();
         if (isDeclarationAvailable()) {
-            List<CtParameter<?>> parameters = getElement().getParameters();
-            int parametersNumber = parameters.size();
-
-            for (int i = 0; i < parametersNumber; i++) {
-                ParameterWrapper parameterWrapper = getFactory().wrap(parameters.get(i));
-                parameterWrapper.setParent(this);
-                parameterWrapper.setPosition(i);
-                getLogger().addTriple(this, Ontology.PARAMETER_PROPERTY, parameterWrapper);
-                parameterWrapper.extract();
+            List<CtParameter<?>> parameterList = getElement().getParameters();
+            for (CtParameter<?> current : parameterList) {
+                parameters.add(getFactory().wrap(current));
             }
-
         } else {
-            List<CtTypeReference<?>> parameters = ((CtExecutableReference<?>) getReference()).getParameters();
-            int parametersNumber = parameters.size();
-
-            for (int i = 0; i < parametersNumber; i++) {
-                ParameterWrapper parameterWrapper = getFactory().wrapByTypeReference(parameters.get(i));
-                if (parameterWrapper != null) {
-                    parameterWrapper.setParent(this);
-                    parameterWrapper.setPosition(i);
-                    getLogger().addTriple(this, Ontology.PARAMETER_PROPERTY, parameterWrapper);
-                    parameterWrapper.extract();
-                }
+            List<CtTypeReference<?>> references = ((CtExecutableReference<?>) getReference()).getParameters();
+            for (CtTypeReference<?> reference : references) {
+                parameters.add(getFactory().wrapByTypeReference(reference));
             }
         }
     }
@@ -179,9 +185,13 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     }
 
     public void tagAnonymousClasses() {
-        for (AnonymousClassWrapper anonymousClass : anonymousClasses) {
+        for (AnonymousClassWrapper<?> anonymousClass : anonymousClasses) {
             getLogger().addTriple(this, Ontology.CONSTRUCTS_PROPERTY, anonymousClass);
             anonymousClass.extract();
+            Set<Wrapper<?>> requestedResources = anonymousClass.getRequestedResources();
+            for (Wrapper<?> resource : requestedResources) {
+                tagRequests(resource);
+            }
         }
     }
 
@@ -323,4 +333,32 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
+    public List<Wrapper<?>> getRequestedResources() {
+        List<Wrapper<?>> requestedResources = new ArrayList<>();
+
+        requestedResources.addAll(executables);
+        requestedResources.addAll(fields);
+        requestedResources.addAll(requestedTypes);
+
+        return requestedResources;
+    }
+
+    public void tagVarArgs() {
+        List<ParameterWrapper> parameters = getParameters();
+        int size = parameters.size();
+        boolean value = false;
+        if (size != 0) {
+            ParameterWrapper last = parameters.get(size - 1);
+            if (last.isDeclarationAvailable()) {
+                value = last.getElement().isVarArgs();
+            } else {
+                CtExecutableReference<?> reference = (CtExecutableReference<?>) getReference();
+                Executable executable = ReflectionFactory.getInstance().createActualExecutable(reference);
+                if (executable != null) {
+                    value = executable.isVarArgs();
+                }
+            }
+        }
+        getLogger().addTriple(this, Ontology.VAR_ARGS_PROPERTY, getModel().createTypedLiteral(value));
+    }
 }

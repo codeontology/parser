@@ -247,9 +247,9 @@ class TypeVariableCache {
     private static TypeVariableCache instance;
     private Table<String, Wrapper<?>, Wrapper<?>> table;
     private int size;
-    private static final int ROWS = 8;
-    private static final int COLS = 16;
-    private static final int MAX_SIZE = ROWS * COLS;
+    private static final int ROWS = 16;
+    private static final int COLS = 48;
+    private static final int MAX_SIZE = (ROWS * COLS) / 2;
 
     private TypeVariableCache() {
         init();

@@ -16,7 +16,7 @@ public class RDFLogger {
     private String outputFile = "triples.nt";
     private int counter = 0;
     private static RDFLogger instance = new RDFLogger();
-    public static final int LIMIT = 10000;
+    public static final int MAX_SIZE = 10000;
 
     private RDFLogger() {
 
@@ -52,7 +52,7 @@ public class RDFLogger {
             Statement triple = model.createStatement(subject.getResource(), property, object);
             model.add(triple);
             counter++;
-            if (counter > LIMIT) {
+            if (counter > MAX_SIZE) {
                 writeRDF();
                 free();
             }

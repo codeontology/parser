@@ -5,14 +5,18 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtClass;
 import spoon.reflect.reference.CtTypeReference;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class AnonymousClassWrapper<T> extends ClassWrapper<T> {
 
     public static final String TAG = "anonymous-class";
+    private Set<Wrapper<?>> requestedResources;
 
     public AnonymousClassWrapper(CtClass<T> anonymousClass) {
         super(anonymousClass);
+        requestedResources = new HashSet<>();
     }
 
     @Override
@@ -47,5 +51,28 @@ public class AnonymousClassWrapper<T> extends ClassWrapper<T> {
         TypeWrapper<?> superType = getFactory().wrap(superTypeReference);
         superType.setParent(getParent());
         getLogger().addTriple(this, Ontology.IMPLEMENTS_PROPERTY, superType);
+        requestedResources.add(superType);
+    }
+
+    public Set<Wrapper<?>> getRequestedResources() {
+        return requestedResources;
+    }
+
+    @Override
+    public void tagMethods() {
+        List<MethodWrapper> methods = getMethods();
+        for (MethodWrapper method : methods) {
+            method.extract();
+            requestedResources.addAll(method.getRequestedResources());
+        }
+    }
+
+    @Override
+    public void tagFields() {
+        List<FieldWrapper> fields = getFields();
+        for (FieldWrapper field : fields) {
+            field.extract();
+            requestedResources.add(field.getJavaType());
+        }
     }
 }

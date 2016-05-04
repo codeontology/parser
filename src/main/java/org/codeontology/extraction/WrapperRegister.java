@@ -7,10 +7,11 @@ public class WrapperRegister {
     private static WrapperRegister instance;
     private Set<String> register;
     private int size;
-    public static final int LIMIT = 1000;
+    private static final int SIZE = 2048;
+    private static final int LOAD = SIZE / 2;
 
     private WrapperRegister() {
-        register = new HashSet<>(LIMIT);
+        register = new HashSet<>(SIZE);
     }
 
     public static WrapperRegister getInstance() {
@@ -28,9 +29,9 @@ public class WrapperRegister {
 
     private void handleSize() {
         size++;
-        if (size > LIMIT) {
+        if (size > LOAD) {
             size = 0;
-            register = new HashSet<>(LIMIT);
+            register = new HashSet<>(SIZE);
         }
     }
 

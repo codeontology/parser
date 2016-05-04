@@ -89,6 +89,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements Gen
         return FormalTypeParametersTagger.formalTypeParametersOf(this);
     }
 
+    @Override
     public void tagFormalTypeParameters() {
         new FormalTypeParametersTagger(this).tagFormalTypeParameters();
     }

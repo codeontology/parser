@@ -128,7 +128,7 @@ public class CodeOntology {
                     System.out.println("Shutting down...");
                     ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "sleep 3; shutdown -h now");
                     processBuilder.start();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     System.out.println("Shutdown failed");
                 }
             });
@@ -139,11 +139,11 @@ public class CodeOntology {
     private void checkInput() {
         File input = new File(getArguments().getInput());
         if (!input.exists()) {
-            System.out.println("Folder " + input.getPath() + " doesn't seem to exist.");
+            System.out.println("File " + input.getPath() + " doesn't seem to exist.");
             System.exit(-1);
         }
         if (!input.canRead() && !input.setReadable(true)) {
-            System.out.println("Folder " + input.getPath() + " doesn't seem to be readable.");
+            System.out.println("File " + input.getPath() + " doesn't seem to be readable.");
             System.exit(-1);
         }
     }
