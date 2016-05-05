@@ -36,24 +36,28 @@ public class GradleModulesHandler {
      * @return              The set of modules.
      */
     public Set<File> findSubProjects() {
-        Set<File> subProjects= new HashSet<>();
         try {
+            Set<File> subProjects= new HashSet<>();
             File settings = new File(projectRoot.getPath() + "/settings.gradle");
-            Scanner scanner = new Scanner(settings);
 
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
+            if (settings.exists()) {
+                Scanner scanner = new Scanner(settings);
 
-                if (line.startsWith("include ")) {
-                    String module = line.split(" ")[1].replace(":", "/");
-                    subProjects.add(new File(projectRoot.getPath() + "/" + module.substring(1,module.length() - 1)));
+                while (scanner.hasNextLine()) {
+                    String line = scanner.nextLine();
+
+                    if (line.startsWith("include ")) {
+                        String module = line.split(" ")[1].replace(":", "/");
+                        subProjects.add(new File(projectRoot.getPath() + "/" + module.substring(1, module.length() - 1)));
+                    }
                 }
             }
+
+            return subProjects;
+
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-
-        return subProjects;
     }
 
     /**

@@ -72,6 +72,8 @@ public class Ontology {
 
     public static final Resource TYPE_ARGUMENT_ENTITY = model.getResource(WOC + "TypeArgument");
 
+    public static final Resource WILDCARD_ENTITY = model.getResource(WOC + "Wildcard");
+
 
     public static final Property RDF_TYPE_PROPERTY = model.getProperty(RDF + "type");
 
