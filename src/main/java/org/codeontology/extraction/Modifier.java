@@ -82,25 +82,27 @@ public enum Modifier {
     }
 
     public static Modifier valueOf(ModifierKind modifier) {
-        switch (modifier) {
-            case PUBLIC:
-                return PUBLIC;
-            case PRIVATE:
-                return PRIVATE;
-            case PROTECTED:
-                return PROTECTED;
-            case ABSTRACT:
-                return ABSTRACT;
-            case FINAL:
-                return FINAL;
-            case STATIC:
-                return STATIC;
-            case SYNCHRONIZED:
-                return SYNCHRONYZED;
-            case VOLATILE:
-                return VOLATILE;
-            default:
-                return null;
+        if (modifier != null) {
+            switch (modifier) {
+                case PUBLIC:
+                    return PUBLIC;
+                case PRIVATE:
+                    return PRIVATE;
+                case PROTECTED:
+                    return PROTECTED;
+                case ABSTRACT:
+                    return ABSTRACT;
+                case FINAL:
+                    return FINAL;
+                case STATIC:
+                    return STATIC;
+                case SYNCHRONIZED:
+                    return SYNCHRONYZED;
+                case VOLATILE:
+                    return VOLATILE;
+            }
         }
+
+        return null;
     }
 }

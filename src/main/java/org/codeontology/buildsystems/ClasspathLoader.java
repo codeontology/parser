@@ -16,9 +16,11 @@ public class ClasspathLoader {
 
     private static ClasspathLoader instance;
     private Set<File> classpath;
+    private boolean locked;
 
     private ClasspathLoader() {
         classpath = new HashSet<>();
+        locked = false;
     }
 
     public static ClasspathLoader getInstance() {
@@ -38,7 +40,7 @@ public class ClasspathLoader {
             return;
         }
 
-        if (file.getPath().endsWith(".jar")) {
+        if (file.getPath().endsWith(".jar") && !locked) {
             classpath.add(file);
         }
 
@@ -88,6 +90,14 @@ public class ClasspathLoader {
 
     public Set<File> getJarsLoaded() {
         return classpath;
+    }
+
+    public void lock() {
+        locked = true;
+    }
+
+    public void release() {
+        locked = false;
     }
 }
 

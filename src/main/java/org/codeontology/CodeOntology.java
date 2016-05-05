@@ -28,6 +28,8 @@ public class CodeOntology {
     private boolean exploreJarsFlag;
     private DependenciesLoader loader;
     private PeriodFormatter formatter;
+    private int tries;
+    private String[] directories = {"test", "examples"};
 
     private CodeOntology(String[] args) throws JSAPException {
         spoon = new Launcher();
@@ -82,8 +84,13 @@ public class CodeOntology {
             spoon.buildModel();
             System.out.println("Model built successfully.");
         } catch (ModelBuildingException e) {
-            if (getArguments().removeTests()) {
-                boolean result = removeTests();
+            if (getArguments().removeTests() && tries < directories.length) {
+                boolean result;
+                do {
+                    result = removeDirectoriesByName(directories[tries]);
+                    tries++;
+                } while (!result && tries < directories.length);
+
                 if (result) {
                     spoon = new Launcher();
                     spoon();
@@ -110,7 +117,7 @@ public class CodeOntology {
 
         long start = System.currentTimeMillis();
 
-        System.out.println("Extracting triples for " + getArguments().getInput() + "...");
+        System.out.println("Running on " + getArguments().getInput() + "...");
         spoon.addProcessor(new SourceProcessor());
         spoon.process();
         RDFLogger.getInstance().writeRDF();
@@ -188,17 +195,15 @@ public class CodeOntology {
         return getArguments().getInput() != null;
     }
 
-    private boolean removeTests() {
+    private boolean removeDirectoriesByName(String name) {
         try {
             Path[] tests = Files.walk(Paths.get(getArguments().getInput()))
-                    .filter(path -> path.toFile().getName().equals("test") && path.toFile().isDirectory())
+                    .filter(path -> path.toFile().getName().equals(name) && path.toFile().isDirectory())
                     .toArray(Path[]::new);
 
             if (tests.length == 0) {
                 return false;
             }
-
-            System.out.println("Removing tests...");
 
             for (Path testPath : tests) {
                 System.out.println("Removing " + testPath.toFile().getAbsolutePath());

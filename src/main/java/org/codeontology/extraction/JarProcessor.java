@@ -26,7 +26,6 @@ public class JarProcessor {
         this(jar.getPath());
     }
 
-
     public void process() {
         try {
             hideMessages();
@@ -44,7 +43,7 @@ public class JarProcessor {
         while (entries.hasMoreElements()) {
             JarEntry entry = (JarEntry) entries.nextElement();
             String entryPath = entry.getName();
-            if (entryPath.endsWith(".class") && !entryPath.contains("$")) {
+            if (entryPath.endsWith(".class")) {
                 String typeName = entry.getName().replace("/", ".").substring(0, entryPath.length() - 6);
                 try {
                     Class<?> clazz = Class.forName(typeName);
@@ -77,7 +76,7 @@ public class JarProcessor {
 
 
     private void extractAllTriples() {
-        System.out.println("Extracting triples for " + jarFile.getName() + "...");
+        System.out.println("Running on " + jarFile.getName() + "...");
         Set<Package> packages = map.keySet();
         for (Package pack : packages) {
             CtPackageReference packageReference = ReflectionFactory.getInstance().createPackageReference(pack);

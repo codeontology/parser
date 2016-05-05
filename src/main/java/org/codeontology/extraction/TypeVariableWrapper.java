@@ -13,7 +13,8 @@ import spoon.reflect.reference.*;
 
 import java.lang.reflect.Executable;
 import java.lang.reflect.TypeVariable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
 

@@ -56,7 +56,7 @@ public class PackageWrapper extends AbstractWrapper<CtPackage> {
         for (TypeWrapper type : types) {
             getLogger().addTriple(this, Ontology.PACKAGE_OF_PROPERTY, type);
             if (CodeOntology.verboseMode()) {
-                System.out.println("Extracting triples for " + type.getReference().getQualifiedName());
+                System.out.println("Running on " + type.getReference().getQualifiedName());
             }
             type.extract();
         }

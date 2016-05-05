@@ -10,8 +10,8 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 
 /**
  * General programming language ontology interface.
@@ -25,7 +25,7 @@ public class Ontology {
     private static Model ontology() {
         try {
             File ontology = new File(System.getProperty("user.dir") + "/ontology/woc.xml");
-            FileReader reader = new FileReader(ontology);
+            FileInputStream reader = new FileInputStream(ontology);
             return ModelFactory.createDefaultModel().read(reader, "");
         } catch (FileNotFoundException e) {
            throw new RuntimeException(e);

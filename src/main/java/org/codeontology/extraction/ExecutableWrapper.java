@@ -6,7 +6,9 @@ import spoon.reflect.declaration.*;
 import spoon.reflect.internal.CtImplicitTypeReference;
 import spoon.reflect.reference.*;
 import spoon.reflect.visitor.filter.ReferenceTypeFilter;
-import spoon.support.reflect.reference.*;
+import spoon.support.reflect.reference.CtExecutableReferenceImpl;
+import spoon.support.reflect.reference.CtFieldReferenceImpl;
+import spoon.support.reflect.reference.CtLocalVariableReferenceImpl;
 
 import java.lang.reflect.Executable;
 import java.util.ArrayList;

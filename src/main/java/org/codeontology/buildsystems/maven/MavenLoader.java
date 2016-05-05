@@ -2,6 +2,7 @@ package org.codeontology.buildsystems.maven;
 
 import org.apache.maven.project.MavenProject;
 import org.codeontology.CodeOntology;
+import org.codeontology.buildsystems.ClasspathLoader;
 import org.codeontology.buildsystems.DependenciesLoader;
 
 import java.io.File;
@@ -14,6 +15,7 @@ public class MavenLoader extends DependenciesLoader {
     private final File output;
     private final File error;
     private MavenProject project;
+    private static boolean m2Loaded = false;
 
     public MavenLoader(File root) {
         project = new MavenProject();
@@ -49,7 +51,13 @@ public class MavenLoader extends DependenciesLoader {
                 classpath.deleteOnExit();
             } else {
                 getLoader().loadAllJars(project.getBasedir());
-                getLoader().loadAllJars(System.getProperty("user.home") + "/.m2");
+                if (!m2Loaded) {
+                    ClasspathLoader loader = getLoader();
+                    loader.lock();
+                    loader.loadAllJars(System.getProperty("user.home") + "/.m2");
+                    loader.release();
+                    m2Loaded = true;
+                }
             }
 
 
