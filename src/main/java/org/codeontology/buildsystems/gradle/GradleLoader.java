@@ -40,24 +40,7 @@ public class GradleLoader extends DependenciesLoader {
 
         runTasks();
 
-        File classpathFile = new File(root + "/build/cp");
-        String classpath = "";
-
-        try (Scanner scanner = new Scanner(classpathFile)) {
-            if (scanner.hasNext()) {
-                classpath = scanner.next().trim();
-            }
-            if (classpath.equals("")) {
-                loadAllAvailableJars();
-            }
-        } catch (FileNotFoundException e) {
-            loadAllAvailableJars();
-        }
-
-        File src = new File(root.getPath() + "/src/");
-        if (src.exists()) {
-            getLoader().loadAllJars(src);
-        }
+        loadClasspath();
 
         // Run on sub-modules
         for (File module : modules) {
@@ -72,7 +55,30 @@ public class GradleLoader extends DependenciesLoader {
         }
     }
 
-    private void loadAllAvailableJars() {
+    protected void loadClasspath() {
+        File classpathFile = new File(root + "/build/cp");
+        String classpath = "";
+
+        try (Scanner scanner = new Scanner(classpathFile)) {
+            if (scanner.hasNext()) {
+                classpath = scanner.next().trim();
+            }
+            if (classpath.equals("")) {
+                loadAllAvailableJars();
+            } else {
+                getLoader().loadClasspath(classpath);
+            }
+        } catch (FileNotFoundException e) {
+            loadAllAvailableJars();
+        }
+
+        File src = new File(root.getPath() + "/src/");
+        if (src.exists()) {
+            getLoader().loadAllJars(src);
+        }
+    }
+
+    protected void loadAllAvailableJars() {
         getLoader().loadAllJars(root);
         getLoader().loadAllJars(gradleLocalRepository);
     }
@@ -109,7 +115,7 @@ public class GradleLoader extends DependenciesLoader {
         String cpFileTask = "CodeOntologyCpFile";
         String cpFileTaskBody = "{" + separator +
                 '\t' + "buildDir.mkdirs()" + separator +
-                '\t' + "new File(buildDir, \"cp\").text = configurations.runtime.asPath" + separator +
+                '\t' + "new File(buildDir, \"../../build/cp\").text = configurations.runtime.asPath" + separator +
                 "}";
 
         runTask(cpFileTask, cpFileTaskBody);
@@ -127,15 +133,23 @@ public class GradleLoader extends DependenciesLoader {
         }
     }
 
-    private void runTask(String name, String body) {
+    protected void addTask(String name, String body) {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(buildFile, true)))) {
             String build = getBuildFileContent();
-            Pattern pattern = Pattern.compile(".*\\s+task\\s+" + name + ".*", Pattern.DOTALL);
+            Pattern pattern = Pattern.compile(".*task\\s+" + name + ".*", Pattern.DOTALL);
             if (build != null && !pattern.matcher(build).matches()) {
                 writer.write("\n" + "\n" + "task " + name + " " + body);
             }
+        } catch (IOException e) {
+            CodeOntology.showWarning("Could not add task " + name);
+        }
+    }
+
+    protected void runTask(String name, String body) {
+        try {
+            addTask(name, body);
             System.out.println("Running task " + name + "... ");
-            ProcessBuilder builder = new ProcessBuilder("gradle", name);
+            ProcessBuilder builder = new ProcessBuilder("bash", "-c", "gradle " + name);
             builder.directory(root);
             builder.redirectError(error);
             builder.redirectOutput(output);
@@ -157,5 +171,13 @@ public class GradleLoader extends DependenciesLoader {
         } catch (FileNotFoundException e) {
             return null;
         }
+    }
+
+    public File getRoot() {
+        return root;
+    }
+
+    protected void setRoot(File root) {
+        this.root = root;
     }
 }

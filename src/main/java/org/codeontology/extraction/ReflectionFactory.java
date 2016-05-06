@@ -140,7 +140,7 @@ public class ReflectionFactory {
 
             declaringClass = Class.forName(executableReference.getDeclaringType().getQualifiedName());
 
-        } catch (ClassNotFoundException | NoClassDefFoundError | SpoonClassNotFoundException e) {
+        } catch (Throwable t) {
             declaringClass = null;
         }
 

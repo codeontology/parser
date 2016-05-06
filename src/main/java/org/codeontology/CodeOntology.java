@@ -23,13 +23,14 @@ import java.util.Set;
 
 public class CodeOntology {
     private static CodeOntology launcher;
+    private boolean downloadDependencies;
     private CodeOntologyArguments arguments;
     private Launcher spoon;
     private boolean exploreJarsFlag;
     private DependenciesLoader loader;
     private PeriodFormatter formatter;
     private int tries;
-    private String[] directories = {"test", "examples"};
+    private String[] directories = {"test", "examples", "debug"};
 
     private CodeOntology(String[] args) throws JSAPException {
         spoon = new Launcher();
@@ -37,6 +38,7 @@ public class CodeOntology {
         exploreJarsFlag = arguments.exploreJars() || (arguments.getJarInput() != null);
         ReflectionFactory.getInstance().setParent(spoon.createFactory());
         RDFLogger.getInstance().setOutputFile(arguments.getOutput());
+        downloadDependencies = arguments.downloadDependencies();
 
         formatter = new PeriodFormatterBuilder()
                 .appendHours()
@@ -180,7 +182,11 @@ public class CodeOntology {
     }
 
     public static boolean downloadDependencies() {
-        return getLauncher().getArguments().downloadDependencies();
+        return getLauncher().downloadDependencies;
+    }
+
+    public static void signalDependenciesDownloaded() {
+        getLauncher().downloadDependencies = true;
     }
 
     public static boolean verboseMode() {
@@ -214,6 +220,10 @@ public class CodeOntology {
         }
 
         return true;
+    }
+
+    public static void showWarning(String message) {
+        System.out.println("[WARNING] " + message);
     }
 
 }
