@@ -109,7 +109,8 @@ public class GradleLoader extends DependenciesLoader {
                 '\t' + "from sourceSets.test.output" + '\n' +
                 "}";
 
-        runTask(testJarTask, testJarTaskBody);
+        addTask(testJarTask, testJarTaskBody);
+        runTask(testJarTask);
 
         String separator = System.getProperty("line.separator");
         String cpFileTask = "CodeOntologyCpFile";
@@ -118,7 +119,8 @@ public class GradleLoader extends DependenciesLoader {
                 '\t' + "new File(buildDir, \"../../build/cp\").text = configurations.runtime.asPath" + separator +
                 "}";
 
-        runTask(cpFileTask, cpFileTaskBody);
+        addTask(cpFileTask, cpFileTaskBody);
+        runTask(cpFileTask);
     }
 
     private void applyPlugin(String plugin) {
@@ -145,9 +147,8 @@ public class GradleLoader extends DependenciesLoader {
         }
     }
 
-    protected void runTask(String name, String body) {
+    protected void runTask(String name) {
         try {
-            addTask(name, body);
             System.out.println("Running task " + name + "... ");
             ProcessBuilder builder = new ProcessBuilder("bash", "-c", "gradle " + name);
             builder.directory(root);

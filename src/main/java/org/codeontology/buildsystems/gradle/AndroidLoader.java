@@ -18,9 +18,10 @@ public class AndroidLoader extends GradleLoader {
     @Override
     public void loadDependencies() {
         System.out.println("Loading dependencies for Android project...");
-        runClasspathTask();
+        addClasspathTask();
         removeLocalProperties();
         build();
+        runTask("CodeOntologyCpFile");
         CodeOntology.signalDependenciesDownloaded();
         loadClasspath();
         loadAndroidSdkDependencies();
@@ -53,7 +54,7 @@ public class AndroidLoader extends GradleLoader {
         }
     }
 
-    protected void runClasspathTask() {
+    protected void addClasspathTask() {
         String name = "CodeOntologyCpFile";
         String body =  "{\n" +
                 "\tbuildDir.mkdirs()\n" +
@@ -61,7 +62,7 @@ public class AndroidLoader extends GradleLoader {
                 "\t\tnew File(buildDir, \"cp\").text = variant.javaCompile.classpath.asPath\t\n" +
                 "\t}\n" +
                 "}";
-        runTask(name, body);
+        addTask(name, body);
     }
 
     private void loadAndroidSdkDependencies() {
