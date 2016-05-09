@@ -16,9 +16,9 @@ public class GradleLoader extends DependenciesLoader {
 
     private File gradleLocalRepository;
     private File root;
-    File buildFile;
-    File error;
-    File output;
+    private File buildFile;
+    private File error;
+    private File output;
 
     public GradleLoader(File root) {
         gradleLocalRepository = new File(System.getProperty("user.home") + "/.gradle");
@@ -80,7 +80,9 @@ public class GradleLoader extends DependenciesLoader {
 
     protected void loadAllAvailableJars() {
         getLoader().loadAllJars(root);
+        getLoader().lock();
         getLoader().loadAllJars(gradleLocalRepository);
+        getLoader().release();
     }
 
     public void downloadDependencies() {
@@ -149,8 +151,7 @@ public class GradleLoader extends DependenciesLoader {
 
     protected void runTask(String name) {
         try {
-            System.out.println("Running task " + name + "... ");
-            ProcessBuilder builder = new ProcessBuilder("bash", "-c", "gradle " + name);
+            ProcessBuilder builder = new ProcessBuilder("gradle", name);
             builder.directory(root);
             builder.redirectError(error);
             builder.redirectOutput(output);
@@ -178,7 +179,11 @@ public class GradleLoader extends DependenciesLoader {
         return root;
     }
 
-    protected void setRoot(File root) {
-        this.root = root;
+    public File getError() {
+        return error;
+    }
+
+    public File getOutput() {
+        return output;
     }
 }

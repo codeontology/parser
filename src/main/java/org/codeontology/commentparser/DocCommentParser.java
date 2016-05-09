@@ -57,14 +57,6 @@ public class DocCommentParser {
         return "";
     }
 
-    public List<Tag> getTags() {
-        if (!parsed) {
-            parse();
-        }
-
-        return tags;
-    }
-
     public List<Tag> getTags(String name) {
         if (!parsed) {
             parse();

@@ -56,8 +56,6 @@ public class RDFLogger {
                 writeRDF();
                 free();
             }
-        } else {
-            throw new IllegalArgumentException();
         }
     }
 

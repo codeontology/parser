@@ -70,7 +70,12 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         if (isWildcard()) {
             return wildcardURI();
         }
-        return getReference().getQualifiedName() + ":" + getParent().getRelativeURI();
+
+        if (getParent() != null) {
+            return getReference().getQualifiedName() + ":" + getParent().getRelativeURI();
+        } else {
+            return null;
+        }
     }
 
     private String wildcardURI() {
@@ -132,6 +137,9 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
             return getFactory().wrap(executableReference);
         } else {
             Executable executable = ReflectionFactory.getInstance().createActualExecutable(executableReference);
+            if (executable == null) {
+                return null;
+            }
             TypeVariable<?>[] typeParameters = executable.getTypeParameters();
             Class<?> declaringClass = executable.getDeclaringClass();
 
@@ -157,8 +165,12 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         }
 
         if (clazz.isAnonymousClass()) {
-            CtExecutableReference<?> reference = ReflectionFactory.getInstance().createMethod(clazz.getEnclosingMethod());
-            return findParent(reference);
+            try {
+                CtExecutableReference<?> reference = ReflectionFactory.getInstance().createMethod(clazz.getEnclosingMethod());
+                return findParent(reference);
+            } catch (Exception | Error e) {
+                return null;
+            }
         } else {
             return findParent(clazz.getDeclaringClass());
         }
@@ -175,23 +187,27 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     }
 
     private Wrapper<?> findParent(CtType type) {
-        List<CtTypeReference<?>> formalTypes = new TypeVariableList(type.getFormalTypeParameters());
-        if (formalTypes.contains(getReference())) {
-            return getFactory().wrap(type);
-        } else {
-            CtElement parent;
-            try {
-                parent = type.getParent();
-            } catch (ParentNotInitializedException e) {
-                parent = null;
-            }
-
-            if (parent instanceof CtNewClass<?>) {
-                return findParent(parent.getParent(CtExecutable.class).getReference());
+        if (type != null) {
+            List<CtTypeReference<?>> formalTypes = new TypeVariableList(type.getFormalTypeParameters());
+            if (formalTypes.contains(getReference())) {
+                return getFactory().wrap(type);
             } else {
-                return findParent(type.getDeclaringType());
+                CtElement parent;
+                try {
+                    parent = type.getParent();
+                } catch (ParentNotInitializedException e) {
+                    parent = null;
+                }
+
+                if (parent instanceof CtNewClass<?>) {
+                    return findParent(parent.getParent(CtExecutable.class).getReference());
+                } else {
+                    return findParent(type.getDeclaringType());
+                }
             }
         }
+
+        return null;
     }
 
     @Override

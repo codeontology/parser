@@ -16,7 +16,7 @@ public enum Modifier {
     ABSTRACT (Ontology.ABSTRACT_INDIVIDUAL, false),
     FINAL (Ontology.FINAL_INDIVIDUAL, false),
     STATIC (Ontology.STATIC_INDIVIDUAL, false),
-    SYNCHRONYZED (Ontology.SYNCHRONIZED_INDIVIDUAL, false),
+    SYNCHRONIZED (Ontology.SYNCHRONIZED_INDIVIDUAL, false),
     VOLATILE (Ontology.VOLATILE_INDIVIDUAL, false);
 
     private Resource individual;
@@ -71,7 +71,7 @@ public enum Modifier {
         }
 
         if (java.lang.reflect.Modifier.isSynchronized(code)) {
-            list.add(SYNCHRONYZED);
+            list.add(SYNCHRONIZED);
         }
 
         if (java.lang.reflect.Modifier.isVolatile(code)) {
@@ -97,7 +97,7 @@ public enum Modifier {
                 case STATIC:
                     return STATIC;
                 case SYNCHRONIZED:
-                    return SYNCHRONYZED;
+                    return SYNCHRONIZED;
                 case VOLATILE:
                     return VOLATILE;
             }

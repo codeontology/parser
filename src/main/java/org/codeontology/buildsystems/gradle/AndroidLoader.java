@@ -1,7 +1,6 @@
 package org.codeontology.buildsystems.gradle;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.jena.web.HttpSC;
 import org.codeontology.CodeOntology;
 
 import java.io.*;
@@ -33,7 +32,7 @@ public class AndroidLoader extends GradleLoader {
             try {
                 FileUtils.forceDelete(localProperties);
             } catch (IOException e) {
-                CodeOntology.showWarning("Could not delete local properties");
+                CodeOntology.showWarning("Could not delete local properties.");
             }
         }
     }
@@ -41,13 +40,16 @@ public class AndroidLoader extends GradleLoader {
     private void build() {
         try {
             String gradlew = "../gradlew";
-            String chmod = "chmod +x " + gradlew;
-            String build = gradlew + " build";
-            ProcessBuilder builder = new ProcessBuilder("bash", "-c", chmod + "; " + build);
-            builder.directory(getRoot());
-            builder.redirectError(error);
-            builder.redirectOutput(output);
-            builder.start().waitFor();
+            if (new File(getRoot().getPath() + "/" + gradlew).setExecutable(true)) {
+                String build = gradlew + " build";
+                ProcessBuilder builder = new ProcessBuilder("bash", "-c", build);
+                builder.directory(getRoot());
+                builder.redirectError(getError());
+                builder.redirectOutput(getOutput());
+                builder.start().waitFor();
+            } else {
+                CodeOntology.showWarning("Could not execute gradlew.");
+            }
 
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -98,7 +100,9 @@ public class AndroidLoader extends GradleLoader {
             }
         }
         if (sdkVersion != null) {
+            getLoader().lock();
             getLoader().loadAllJars(androidHome + "/platforms/android-" + sdkVersion);
+            getLoader().release();
         } else {
             CodeOntology.showWarning("Could not find sdk version.");
         }

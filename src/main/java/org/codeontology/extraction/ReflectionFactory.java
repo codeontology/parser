@@ -2,7 +2,6 @@ package org.codeontology.extraction;
 
 import spoon.reflect.factory.Factory;
 import spoon.reflect.reference.*;
-import spoon.support.reflect.reference.SpoonClassNotFoundException;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
@@ -138,9 +137,13 @@ public class ReflectionFactory {
                 executable = executableReference.getActualConstructor();
             }
 
-            declaringClass = Class.forName(executableReference.getDeclaringType().getQualifiedName());
+            try {
+                declaringClass = executable.getDeclaringClass();
+            } catch (Exception | Error e) {
+                declaringClass = Class.forName(executableReference.getDeclaringType().getQualifiedName());
+            }
 
-        } catch (Throwable t) {
+        } catch (Exception | Error e) {
             declaringClass = null;
         }
 

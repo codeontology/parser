@@ -55,8 +55,8 @@ public class CodeOntology {
     public static void main(String[] args) {
         try {
             launcher = new CodeOntology(args);
-
             if (launcher.isInputSet()) {
+                System.out.println("Running on " + launcher.getArguments().getInput() + "...");
                 launcher.loadDependencies();
                 if (!launcher.getArguments().doNotExtractTriples()) {
                     launcher.spoon();
@@ -119,7 +119,7 @@ public class CodeOntology {
 
         long start = System.currentTimeMillis();
 
-        System.out.println("Running on " + getArguments().getInput() + "...");
+        System.out.println("Extracting triples...");
         spoon.addProcessor(new SourceProcessor());
         spoon.process();
         RDFLogger.getInstance().writeRDF();
