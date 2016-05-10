@@ -1,6 +1,5 @@
 package org.codeontology.buildsystems.gradle;
 
-import org.apache.commons.io.FileUtils;
 import org.codeontology.CodeOntology;
 
 import java.io.*;
@@ -18,23 +17,11 @@ public class AndroidLoader extends GradleLoader {
     public void loadDependencies() {
         System.out.println("Loading dependencies for Android project...");
         addClasspathTask();
-        removeLocalProperties();
         build();
         runTask("CodeOntologyCpFile");
         CodeOntology.signalDependenciesDownloaded();
         loadClasspath();
         loadAndroidSdkDependencies();
-    }
-
-    private void removeLocalProperties() {
-        File localProperties = new File(getRoot().getPath() + "/../local.properties");
-        if (localProperties.exists()) {
-            try {
-                FileUtils.forceDelete(localProperties);
-            } catch (IOException e) {
-                CodeOntology.showWarning("Could not delete local properties.");
-            }
-        }
     }
 
     private void build() {

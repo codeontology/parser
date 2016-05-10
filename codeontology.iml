@@ -76,5 +76,6 @@
     <orderEntry type="library" name="Maven: fr.inria.gforge.spoon:spoon-core:5.1.0" level="project" />
     <orderEntry type="library" name="Maven: com.martiansoftware:jsap:2.1" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.2" level="project" />
+    <orderEntry type="library" name="Maven: org.gradle:gradle-tooling-api:2.6" level="project" />
   </component>
 </module>

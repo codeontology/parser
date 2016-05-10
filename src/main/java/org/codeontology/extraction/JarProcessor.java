@@ -37,7 +37,7 @@ public class JarProcessor {
     }
 
     private void buildMap() {
-        System.out.println("Analyzing file " + jarFile.getName() + "...");
+        System.out.println("Analyzing file " + jarFile.getName());
         Enumeration entries = jarFile.entries();
         map = new HashMap<>();
         while (entries.hasMoreElements()) {
@@ -76,7 +76,7 @@ public class JarProcessor {
 
 
     private void extractAllTriples() {
-        System.out.println("Running on " + jarFile.getName() + "...");
+        System.out.println("Running on " + jarFile.getName());
         Set<Package> packages = map.keySet();
         for (Package pack : packages) {
             CtPackageReference packageReference = ReflectionFactory.getInstance().createPackageReference(pack);

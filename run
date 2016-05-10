@@ -1,0 +1,16 @@
+#!/bin/bash
+
+repositories=$(ls $1)
+
+if ! [ -e output ]; then
+	mkdir output
+fi
+
+if ! [ -e triples ]; then
+	mkdir triples
+fi
+
+for repository in $repositories; do
+	echo "Running on $repository"
+	./codeontology -i $1/$repository -o triples/$repository.nt -vt --explore-dependencies --rmtests &> output/$repository.out
+done

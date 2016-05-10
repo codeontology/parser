@@ -1,5 +1,6 @@
 package org.codeontology.buildsystems.gradle;
 
+import org.apache.commons.io.FileUtils;
 import org.codeontology.CodeOntology;
 import org.codeontology.buildsystems.DependenciesLoader;
 
@@ -30,6 +31,8 @@ public class GradleLoader extends DependenciesLoader {
 
     @Override
     public void loadDependencies() {
+        System.out.println("Loading dependencies with gradle...");
+        removeLocalProperties();
         GradleModulesHandler modulesHandler = new GradleModulesHandler(root);
         Set<File> modules = modulesHandler.findModules();
         Set<File> subProjects = modulesHandler.findSubProjects();
@@ -52,6 +55,17 @@ public class GradleLoader extends DependenciesLoader {
         for (File subProject : subProjects) {
             System.out.println("Running on sub-project: " + subProject.getPath());
             getFactory().getLoader(subProject).loadDependencies();
+        }
+    }
+
+    private void removeLocalProperties() {
+        File localProperties = new File(getRoot().getPath() + "/local.properties");
+        if (localProperties.exists()) {
+            try {
+                FileUtils.forceDelete(localProperties);
+            } catch (IOException e) {
+                CodeOntology.showWarning("Could not delete local properties.");
+            }
         }
     }
 
@@ -87,16 +101,12 @@ public class GradleLoader extends DependenciesLoader {
 
     public void downloadDependencies() {
         try {
-            System.out.println("file: " + buildFile.getPath());
-
             System.out.println("Downloading dependencies...");
             ProcessBuilder builder = new ProcessBuilder("gradle", "dependencies");
             builder.directory(root);
             builder.redirectError(error);
             builder.redirectOutput(output);
             builder.start().waitFor();
-            System.out.println("Done.");
-
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -118,7 +128,7 @@ public class GradleLoader extends DependenciesLoader {
         String cpFileTask = "CodeOntologyCpFile";
         String cpFileTaskBody = "{" + separator +
                 '\t' + "buildDir.mkdirs()" + separator +
-                '\t' + "new File(buildDir, \"../../build/cp\").text = configurations.runtime.asPath" + separator +
+                '\t' + "new File(buildDir, \"cp\").text = configurations.runtime.asPath" + separator +
                 "}";
 
         addTask(cpFileTask, cpFileTaskBody);
@@ -156,7 +166,6 @@ public class GradleLoader extends DependenciesLoader {
             builder.redirectError(error);
             builder.redirectOutput(output);
             builder.start().waitFor();
-            System.out.println("Done.");
         } catch (IOException | InterruptedException e) {
             System.out.println("Could not run task " + name);
         }

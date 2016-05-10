@@ -27,6 +27,7 @@ public class MavenLoader extends DependenciesLoader {
 
     @Override
     public void loadDependencies() {
+        System.out.println("Loading dependencies with Maven");
         try {
             MavenModulesHandler modulesHandler = new MavenModulesHandler(project.getBasedir());
             if (CodeOntology.downloadDependencies()) {

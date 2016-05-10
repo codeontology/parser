@@ -56,26 +56,34 @@ public class CodeOntology {
         try {
             launcher = new CodeOntology(args);
             if (launcher.isInputSet()) {
-                System.out.println("Running on " + launcher.getArguments().getInput() + "...");
+                System.out.println("Running on " + launcher.getArguments().getInput());
                 launcher.loadDependencies();
                 if (!launcher.getArguments().doNotExtractTriples()) {
                     launcher.spoon();
                     launcher.extractAllTriples();
                 }
             }
+        } catch (Exception e) {
+            handleFailure(e);
+        }
 
+        try {
             launcher.processJars();
             launcher.postCompletionTasks();
         } catch (Exception e) {
-            System.out.println("It was a good plan that went awry.");
-            if (e.getMessage() != null) {
-                System.out.println(e.getMessage());
-            }
-            if (launcher.getArguments().stackTraceMode()) {
-                e.printStackTrace();
-            }
-            System.exit(-1);
+            handleFailure(e);
         }
+    }
+
+    private static void handleFailure(Exception e) {
+        System.out.println("It was a good plan that went awry.");
+        if (e.getMessage() != null) {
+            System.out.println(e.getMessage());
+        }
+        if (launcher.getArguments().stackTraceMode()) {
+            e.printStackTrace();
+        }
+        System.exit(-1);
     }
 
     private void spoon() {

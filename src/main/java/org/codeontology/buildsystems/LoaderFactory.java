@@ -31,9 +31,8 @@ public class LoaderFactory {
             case MAVEN:
                 return new MavenLoader(project);
             case GRADLE:
-                if (new File(project.getPath() + "/app/src/main/AndroidManifest.xml").exists()) {
-                    File appRoot = new File(project.getPath() + "/app");
-                    return new AndroidLoader(appRoot);
+                if (new File(project.getPath() + "/src/main/AndroidManifest.xml").exists()) {
+                    return new AndroidLoader(project);
                 } else {
                     return new GradleLoader(project);
                 }
