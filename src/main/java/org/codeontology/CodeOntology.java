@@ -30,7 +30,7 @@ public class CodeOntology {
     private DependenciesLoader loader;
     private PeriodFormatter formatter;
     private int tries;
-    private String[] directories = {"test", "examples", "debug"};
+    private String[] directories = {"test", "examples", "debug", "samples"};
 
     private CodeOntology(String[] args) throws JSAPException {
         spoon = new Launcher();
@@ -89,10 +89,14 @@ public class CodeOntology {
     private void spoon() {
         checkInput();
         try {
+            long start = System.currentTimeMillis();
             spoon.addInputResource(getArguments().getInput());
             System.out.println("Building model...");
             spoon.buildModel();
-            System.out.println("Model built successfully.");
+            long end = System.currentTimeMillis();
+            Period period = new Period(start, end);
+            System.out.println("Model built successfully in " + formatter.print(period));
+
         } catch (ModelBuildingException e) {
             if (getArguments().removeTests() && tries < directories.length) {
                 boolean result;
@@ -112,6 +116,7 @@ public class CodeOntology {
     }
 
     private void loadDependencies() {
+        long start = System.currentTimeMillis();
         LoaderFactory factory = LoaderFactory.getInstance();
         loader = factory.getLoader(getArguments().getInput());
         loader.loadDependencies();
@@ -121,6 +126,8 @@ public class CodeOntology {
         if (classpath != null) {
             loader.loadClasspath(classpath);
         }
+        long end = System.currentTimeMillis();
+        System.out.println("Dependencies downloaded in " + formatter.print(new Period(start, end)) + ".");
     }
 
     private void extractAllTriples() {
@@ -140,6 +147,7 @@ public class CodeOntology {
     }
 
     private void processJars() throws IOException {
+        long start = System.currentTimeMillis();
         String path = getArguments().getJarInput();
         if (path != null) {
             JarProcessor processor = new JarProcessor(path);
@@ -151,6 +159,10 @@ public class CodeOntology {
             for (File jar : jars) {
                 new JarProcessor(jar).process();
             }
+
+            long end = System.currentTimeMillis();
+            Period period = new Period(start, end);
+            System.out.println("Jar files processed successfully in " + formatter.print(period) + ".");
         }
     }
 

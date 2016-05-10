@@ -1,6 +1,9 @@
 package org.codeontology.buildsystems.gradle;
 
 import org.codeontology.CodeOntology;
+import org.gradle.tooling.GradleConnector;
+import org.gradle.tooling.ProjectConnection;
+import org.gradle.tooling.model.GradleProject;
 
 import java.io.*;
 import java.util.Scanner;
@@ -26,11 +29,13 @@ public class AndroidLoader extends GradleLoader {
 
     private void build() {
         try {
-            String gradlew = "../gradlew";
-            if (new File(getRoot().getPath() + "/" + gradlew).setExecutable(true)) {
-                String build = gradlew + " build";
-                ProcessBuilder builder = new ProcessBuilder("bash", "-c", build);
-                builder.directory(getRoot());
+            ProjectConnection connection = GradleConnector.newConnector().forProjectDirectory(getRoot()).connect();
+            GradleProject project = connection.getModel(GradleProject.class);
+            File projectDirectory = project.getProjectDirectory();
+            System.out.println(projectDirectory.getAbsolutePath());
+            if (new File(projectDirectory.getPath() + "/gradlew").setExecutable(true)) {
+                ProcessBuilder builder = new ProcessBuilder("bash", "-c", "./gradlew build");
+                builder.directory(projectDirectory);
                 builder.redirectError(getError());
                 builder.redirectOutput(getOutput());
                 builder.start().waitFor();
