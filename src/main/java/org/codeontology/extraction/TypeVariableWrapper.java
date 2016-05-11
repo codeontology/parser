@@ -155,35 +155,43 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
 
 
     private Wrapper<?> findParent(Class<?> clazz) {
-        TypeVariable<?>[] typeParameters = clazz.getTypeParameters();
+        if (clazz != null) {
+            TypeVariable<?>[] typeParameters = clazz.getTypeParameters();
 
-        for (TypeVariable variable : typeParameters) {
-            if (variable.getName().equals(getReference().getQualifiedName())) {
-                CtTypeReference<?> reference = ReflectionFactory.getInstance().createTypeReference(clazz);
-                return getFactory().wrap(reference);
+            for (TypeVariable variable : typeParameters) {
+                if (variable.getName().equals(getReference().getQualifiedName())) {
+                    CtTypeReference<?> reference = ReflectionFactory.getInstance().createTypeReference(clazz);
+                    return getFactory().wrap(reference);
+                }
+            }
+
+            if (clazz.isAnonymousClass()) {
+                try {
+                    CtExecutableReference<?> reference = ReflectionFactory.getInstance().createMethod(clazz.getEnclosingMethod());
+                    return findParent(reference);
+                } catch (Exception | Error e) {
+                    return null;
+                }
+            } else {
+                return findParent(clazz.getDeclaringClass());
             }
         }
 
-        if (clazz.isAnonymousClass()) {
-            try {
-                CtExecutableReference<?> reference = ReflectionFactory.getInstance().createMethod(clazz.getEnclosingMethod());
-                return findParent(reference);
-            } catch (Exception | Error e) {
-                return null;
-            }
-        } else {
-            return findParent(clazz.getDeclaringClass());
-        }
+        return null;
     }
 
     private Wrapper<?> findParent(CtTypeReference<?> reference) {
-        if (isWildcard()) {
-            return getFactory().wrap(reference);
-        } else if (reference.getDeclaration() != null) {
-            return findParent(reference.getDeclaration());
-        } else {
-            return findParent(reference.getActualClass());
+        if (reference != null) {
+            if (isWildcard()) {
+                return getFactory().wrap(reference);
+            } else if (reference.getDeclaration() != null) {
+                return findParent(reference.getDeclaration());
+            } else {
+                return findParent(reference.getActualClass());
+            }
         }
+
+        return null;
     }
 
     private Wrapper<?> findParent(CtType type) {

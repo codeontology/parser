@@ -5,6 +5,7 @@ import org.codeontology.CodeOntology;
 import org.codeontology.buildsystems.DependenciesLoader;
 
 import java.io.*;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -20,6 +21,7 @@ public class GradleLoader extends DependenciesLoader {
     private File buildFile;
     private File error;
     private File output;
+    private boolean subProject;
 
     public GradleLoader(File root) {
         gradleLocalRepository = new File(System.getProperty("user.home") + "/.gradle");
@@ -27,44 +29,70 @@ public class GradleLoader extends DependenciesLoader {
         buildFile = new File(root.getPath() + "/build.gradle");
         error = new File(root.getPath() + "/error");
         output = new File(root.getPath() + "/output");
+        subProject = false;
     }
 
     @Override
     public void loadDependencies() {
         System.out.println("Loading dependencies with gradle...");
-        removeLocalProperties();
-        GradleModulesHandler modulesHandler = new GradleModulesHandler(root);
+        handleLocalProperties();
+
+        GradleModulesHandler modulesHandler = new GradleModulesHandler(this);
         Set<File> modules = modulesHandler.findModules();
-        Set<File> subProjects = modulesHandler.findSubProjects();
+        Set<File> subProjects = new HashSet<>();
 
-        if (CodeOntology.downloadDependencies()) {
-            downloadDependencies();
+        if (!subProject) {
+            subProjects = modulesHandler.findSubProjects();
         }
-
-        runTasks();
-
-        loadClasspath();
 
         // Run on sub-modules
         for (File module : modules) {
             getLoader().loadAllJars(module);
         }
 
+        if (CodeOntology.downloadDependencies()) {
+            downloadDependencies();
+        }
+
+        runTasks();
+        loadClasspath();
+
         // Run on sub-projects: those may be gradle projects as well as maven/ant ones
         // need to get back to the main DefaultManager
         for (File subProject : subProjects) {
             System.out.println("Running on sub-project: " + subProject.getPath());
-            getFactory().getLoader(subProject).loadDependencies();
+            DependenciesLoader loader = getFactory().getLoader(subProject);
+            if (loader instanceof GradleLoader) {
+                ((GradleLoader) loader).setSubProject(true);
+            }
+            loader.loadDependencies();
         }
     }
 
-    private void removeLocalProperties() {
+    private void handleLocalProperties() {
         File localProperties = new File(getRoot().getPath() + "/local.properties");
+        File tmp = new File(getRoot().getPath() + "/.tmp.properties");
         if (localProperties.exists()) {
-            try {
-                FileUtils.forceDelete(localProperties);
-            } catch (IOException e) {
-                CodeOntology.showWarning("Could not delete local properties.");
+            try (Scanner scanner = new Scanner(localProperties)) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(tmp))) {
+
+                    while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine();
+                        if (!line.trim().startsWith("sdk.dir")) {
+                            writer.write(line + "\n");
+                        }
+                    }
+
+                    FileUtils.forceDelete(localProperties);
+                    boolean success = tmp.renameTo(localProperties);
+                    if (!success) {
+                        FileUtils.forceDelete(tmp);
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -143,7 +171,7 @@ public class GradleLoader extends DependenciesLoader {
                 writer.write("\n" + " \n" + applyPlugin);
             }
         } catch (IOException e) {
-            System.out.println("Could not apply plugin " + plugin);
+            CodeOntology.showWarning("Could not apply plugin " + plugin);
         }
     }
 
@@ -171,13 +199,14 @@ public class GradleLoader extends DependenciesLoader {
         }
     }
 
-    private String getBuildFileContent() {
+    public String getBuildFileContent() {
         try (Scanner scanner = new Scanner(buildFile)) {
             scanner.useDelimiter("\\Z");
             String build = "";
             if (scanner.hasNext()) {
                 build = scanner.next();
             }
+            scanner.close();
             return build;
         } catch (FileNotFoundException e) {
             return null;
@@ -194,5 +223,13 @@ public class GradleLoader extends DependenciesLoader {
 
     public File getOutput() {
         return output;
+    }
+
+    public File getBuildFile() {
+        return buildFile;
+    }
+
+    public void setSubProject(boolean subProject) {
+        this.subProject = subProject;
     }
 }

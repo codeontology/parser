@@ -34,11 +34,16 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements Gen
     }
 
     public void tagOverrides() {
-        CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference()).getOverridingExecutable();
-        if (reference != null) {
-            ExecutableWrapper overridingMethod = getFactory().wrap(reference);
-            getLogger().addTriple(this, Ontology.OVERRIDES_PROPERTY, overridingMethod);
-            overridingMethod.follow();
+        try {
+            CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference()).getOverridingExecutable();
+            if (reference != null) {
+                ExecutableWrapper overridingMethod = getFactory().wrap(reference);
+                getLogger().addTriple(this, Ontology.OVERRIDES_PROPERTY, overridingMethod);
+                overridingMethod.follow();
+            }
+        } catch (Exception | Error e) {
+            // could not get overriding executable
+            // we just skip this method
         }
     }
 

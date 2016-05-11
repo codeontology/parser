@@ -30,7 +30,10 @@ public class FormalTypeParametersTagger {
         List<TypeVariableWrapper> typeVariables = new ArrayList<>();
 
         for (CtTypeReference parameter : parameters) {
-            typeVariables.add((TypeVariableWrapper) WrapperFactory.getInstance().wrap(parameter));
+            Wrapper<?> wrapper = WrapperFactory.getInstance().wrap(parameter);
+            if (wrapper instanceof TypeVariableWrapper) {
+                typeVariables.add((TypeVariableWrapper) wrapper);
+            }
         }
 
         return typeVariables;
