@@ -166,12 +166,19 @@ public class GradleLoader extends DependenciesLoader {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(buildFile, true)))) {
             String build = getBuildFileContent();
             String applyPlugin = "apply plugin: " + "\'" + plugin + "\'";
-            if (build != null && !build.contains(applyPlugin)) {
+            if (build != null && !hasPlugin(plugin)) {
                 writer.write("\n" + " \n" + applyPlugin);
             }
         } catch (IOException e) {
             CodeOntology.showWarning("Could not apply plugin " + plugin);
         }
+    }
+
+    public boolean hasPlugin(String plugin) {
+        String buildFile = getBuildFileContent();
+        String regex = ".*apply\\s+plugin\\s*:\\s+\'" + plugin + "\'.*";
+        Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
+        return pattern.matcher(buildFile).matches();
     }
 
     protected void addTask(String name, String body) {

@@ -30,7 +30,7 @@ public class CodeOntology {
     private DependenciesLoader loader;
     private PeriodFormatter formatter;
     private int tries;
-    private String[] directories = {"test", "examples", "debug", "samples"};
+    private String[] directories = {"test", "examples", "debug", "samples", "sample", "example", "demo"};
 
     private CodeOntology(String[] args) {
         try {
@@ -237,7 +237,7 @@ public class CodeOntology {
                 FileUtils.deleteDirectory(testPath.toFile());
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            showWarning(e.getMessage());
         }
 
         return true;

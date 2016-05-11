@@ -16,7 +16,6 @@ public class AndroidLoader extends GradleLoader {
     @Override
     public void loadDependencies() {
         System.out.println("Loading dependencies for Android project...");
-        applyPlugin("com.android.application");
         addClasspathTask();
         build();
         runTask("CodeOntologyCpFile");
@@ -35,16 +34,22 @@ public class AndroidLoader extends GradleLoader {
 
     protected void addClasspathTask() {
         String name = "CodeOntologyCpFile";
-        String body =  "{\n" +
-                "\tbuildDir.mkdirs()\n" +
-                "\tandroid.applicationVariants.all { variant -> \n" +
-                "\t\tnew File(buildDir, \"cp\").text = variant.javaCompile.classpath.asPath\t\n" +
-                "\t}\n" +
-                "}";
-        addTask(name, body);
+        String variants = null;
+        if (hasPlugin("com.android.application")) {
+            variants = "applicationVariants";
+        } else if (hasPlugin("com.android.library")) {
+            variants = "libraryVariants";
+        }
+        if (variants != null) {
+            String body =  "{\n" +
+                    "\tbuildDir.mkdirs()\n" +
+                    "\tandroid." + variants + ".all { variant -> \n" +
+                    "\t\tnew File(buildDir, \"cp\").text = variant.javaCompile.classpath.asPath\t\n" +
+                    "\t}\n" +
+                    "}";
+            addTask(name, body);
+        }
     }
-
-
 
     private void loadAndroidSdkDependencies() {
         String androidHome = System.getenv().get("ANDROID_HOME");
