@@ -22,7 +22,7 @@ import java.nio.file.Paths;
 import java.util.Set;
 
 public class CodeOntology {
-    private static CodeOntology launcher;
+    private static CodeOntology codeOntology;
     private boolean downloadDependencies;
     private CodeOntologyArguments arguments;
     private Launcher spoon;
@@ -32,58 +32,60 @@ public class CodeOntology {
     private int tries;
     private String[] directories = {"test", "examples", "debug", "samples"};
 
-    private CodeOntology(String[] args) throws JSAPException {
-        spoon = new Launcher();
-        arguments = new CodeOntologyArguments(args);
-        exploreJarsFlag = arguments.exploreJars() || (arguments.getJarInput() != null);
-        ReflectionFactory.getInstance().setParent(spoon.createFactory());
-        RDFLogger.getInstance().setOutputFile(arguments.getOutput());
-        downloadDependencies = arguments.downloadDependencies();
-
-        formatter = new PeriodFormatterBuilder()
-                .appendHours()
-                .appendSuffix(" hours, ")
-                .appendMinutes()
-                .appendSuffix(" minutes, ")
-                .appendSeconds()
-                .appendSuffix(" seconds, ")
-                .appendMillis()
-                .appendSuffix(" millis")
-                .toFormatter();
+    private CodeOntology(String[] args) {
+        try {
+            spoon = new Launcher();
+            arguments = new CodeOntologyArguments(args);
+            exploreJarsFlag = arguments.exploreJars() || (arguments.getJarInput() != null);
+            ReflectionFactory.getInstance().setParent(spoon.createFactory());
+            RDFLogger.getInstance().setOutputFile(arguments.getOutput());
+            downloadDependencies = arguments.downloadDependencies();
+            formatter = new PeriodFormatterBuilder()
+                    .appendHours()
+                    .appendSuffix(" hours, ")
+                    .appendMinutes()
+                    .appendSuffix(" minutes, ")
+                    .appendSeconds()
+                    .appendSuffix(" seconds, ")
+                    .appendMillis()
+                    .appendSuffix(" millis")
+                    .toFormatter();
+        } catch (JSAPException e) {
+            System.out.println("Could not process arguments");
+        }
     }
 
     public static void main(String[] args) {
+        codeOntology = new CodeOntology(args);
+        codeOntology.processSources();
+        codeOntology.processJars();
+        codeOntology.postCompletionTasks();
+    }
+
+    private void processSources() {
         try {
-            launcher = new CodeOntology(args);
-            if (launcher.isInputSet()) {
-                System.out.println("Running on " + launcher.getArguments().getInput());
-                launcher.loadDependencies();
-                if (!launcher.getArguments().doNotExtractTriples()) {
-                    launcher.spoon();
-                    launcher.extractAllTriples();
+            if (codeOntology.isInputSet()) {
+                System.out.println("Running on " + codeOntology.getArguments().getInput());
+                codeOntology.loadDependencies();
+                if (!codeOntology.getArguments().doNotExtractTriples()) {
+                    codeOntology.spoon();
+                    codeOntology.extractAllTriples();
                 }
+
             }
         } catch (Exception e) {
             handleFailure(e);
         }
-
-        try {
-            launcher.processJars();
-            launcher.postCompletionTasks();
-        } catch (Exception e) {
-            handleFailure(e);
-        }
     }
 
-    private static void handleFailure(Exception e) {
+    public void handleFailure(Exception e) {
         System.out.println("It was a good plan that went awry.");
         if (e.getMessage() != null) {
             System.out.println(e.getMessage());
         }
-        if (launcher.getArguments().stackTraceMode()) {
+        if (codeOntology.getArguments().stackTraceMode()) {
             e.printStackTrace();
         }
-        System.exit(-1);
     }
 
     private void spoon() {
@@ -131,7 +133,6 @@ public class CodeOntology {
     }
 
     private void extractAllTriples() {
-
         long start = System.currentTimeMillis();
 
         System.out.println("Extracting triples...");
@@ -146,7 +147,7 @@ public class CodeOntology {
         spoon = new Launcher();
     }
 
-    private void processJars() throws IOException {
+    private void processJars() {
         long start = System.currentTimeMillis();
         String path = getArguments().getJarInput();
         if (path != null) {
@@ -167,7 +168,7 @@ public class CodeOntology {
     }
 
     private void postCompletionTasks() {
-        if (getLauncher().getArguments().shutdownFlag()) {
+        if (getInstance().getArguments().shutdownFlag()) {
             Thread shutdownThread = new Thread(() -> {
                 try {
                     System.out.println("Shutting down...");
@@ -193,8 +194,8 @@ public class CodeOntology {
         }
     }
 
-    public static CodeOntology getLauncher() {
-        return launcher;
+    public static CodeOntology getInstance() {
+        return codeOntology;
     }
 
     public CodeOntologyArguments getArguments() {
@@ -202,19 +203,19 @@ public class CodeOntology {
     }
 
     public static boolean downloadDependencies() {
-        return getLauncher().downloadDependencies;
+        return getInstance().downloadDependencies;
     }
 
     public static void signalDependenciesDownloaded() {
-        getLauncher().downloadDependencies = true;
+        getInstance().downloadDependencies = true;
     }
 
     public static boolean verboseMode() {
-        return getLauncher().getArguments().verboseMode();
+        return getInstance().getArguments().verboseMode();
     }
 
     public static boolean isJarExplorationEnabled() {
-        return getLauncher().exploreJarsFlag;
+        return getInstance().exploreJarsFlag;
     }
 
     private boolean isInputSet() {

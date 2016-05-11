@@ -16,6 +16,7 @@ public class AndroidLoader extends GradleLoader {
     @Override
     public void loadDependencies() {
         System.out.println("Loading dependencies for Android project...");
+        applyPlugin("com.android.application");
         addClasspathTask();
         build();
         runTask("CodeOntologyCpFile");
@@ -26,18 +27,7 @@ public class AndroidLoader extends GradleLoader {
 
     private void build() {
         try {
-            File root = getRoot();
-
-            if (new File(root.getPath() + "/gradlew").setExecutable(true)) {
-                ProcessBuilder builder = new ProcessBuilder("bash", "-c", "./gradlew build");
-                builder.directory(root);
-                builder.redirectError(getError());
-                builder.redirectOutput(getOutput());
-                builder.start().waitFor();
-            } else {
-                CodeOntology.showWarning("Could not execute gradlew.");
-            }
-
+            getBuilder("build").start().waitFor();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

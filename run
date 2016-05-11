@@ -1,6 +1,6 @@
 #!/bin/bash
 
-repositories=$(ls $1 | sort -R | tail -20)
+repositories=$(ls $1 | sort -R | tail -30)
 
 if ! [ -e output ]; then
 	mkdir output

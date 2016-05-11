@@ -89,9 +89,6 @@ public class GradleModulesHandler {
     public Set<File> jarModules() {
         try {
             Set<File> jars = new HashSet<>();
-
-            File error = new File(projectRoot.getPath() + "/error");
-            File output = new File(projectRoot.getPath() + "/output");
             File build = new File(projectRoot.getPath() + "/build.gradle");
 
             Scanner scanner = new Scanner(build);
@@ -112,13 +109,7 @@ public class GradleModulesHandler {
                 writer.close();
             }
 
-            ProcessBuilder builder = new ProcessBuilder("gradle", "jar");
-            builder.directory(projectRoot);
-            builder.redirectError(error);
-            builder.redirectOutput(output);
-
-            builder.start().waitFor();
-            System.out.println("Done.");
+            loader.getBuilder("jar").start().waitFor();
 
             jars.addAll(FileUtils.listFiles(projectRoot,
                     FileFilterUtils.suffixFileFilter(".jar"),

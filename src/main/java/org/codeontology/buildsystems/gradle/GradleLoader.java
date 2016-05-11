@@ -42,18 +42,17 @@ public class GradleLoader extends DependenciesLoader {
         GradleModulesHandler modulesHandler = new GradleModulesHandler(this);
         Set<File> modules = modulesHandler.findModules();
         Set<File> subProjects = new HashSet<>();
-
         if (!subProject) {
             subProjects = modulesHandler.findSubProjects();
+        }
+
+        if (CodeOntology.downloadDependencies()) {
+            downloadDependencies();
         }
 
         // Run on sub-modules
         for (File module : modules) {
             getLoader().loadAllJars(module);
-        }
-
-        if (CodeOntology.downloadDependencies()) {
-            downloadDependencies();
         }
 
         runTasks();
@@ -105,6 +104,7 @@ public class GradleLoader extends DependenciesLoader {
         String classpath = "";
 
         try (Scanner scanner = new Scanner(classpathFile)) {
+            scanner.useDelimiter("\\Z");
             if (scanner.hasNext()) {
                 classpath = scanner.next().trim();
             }
@@ -124,7 +124,7 @@ public class GradleLoader extends DependenciesLoader {
     }
 
     protected void loadAllAvailableJars() {
-        getLoader().loadAllJars(projectDirectory);
+        getLoader().loadAllJars(root);
         getLoader().lock();
         getLoader().loadAllJars(gradleLocalRepository);
         getLoader().release();
@@ -133,11 +133,7 @@ public class GradleLoader extends DependenciesLoader {
     public void downloadDependencies() {
         try {
             System.out.println("Downloading dependencies...");
-            ProcessBuilder builder = new ProcessBuilder("gradle", "dependencies");
-            builder.directory(projectDirectory);
-            builder.redirectError(error);
-            builder.redirectOutput(output);
-            builder.start().waitFor();
+            getBuilder("dependencies").start().waitFor();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -166,7 +162,7 @@ public class GradleLoader extends DependenciesLoader {
         runTask(cpFileTask);
     }
 
-    private void applyPlugin(String plugin) {
+    protected void applyPlugin(String plugin) {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(buildFile, true)))) {
             String build = getBuildFileContent();
             String applyPlugin = "apply plugin: " + "\'" + plugin + "\'";
@@ -192,11 +188,7 @@ public class GradleLoader extends DependenciesLoader {
 
     protected void runTask(String name) {
         try {
-            ProcessBuilder builder = new ProcessBuilder("gradle", name);
-            builder.directory(projectDirectory);
-            builder.redirectError(error);
-            builder.redirectOutput(output);
-            builder.start().waitFor();
+            getBuilder(name).start().waitFor();
         } catch (IOException | InterruptedException e) {
             System.out.println("Could not run task " + name);
         }
@@ -220,14 +212,6 @@ public class GradleLoader extends DependenciesLoader {
         return projectDirectory;
     }
 
-    public File getError() {
-        return error;
-    }
-
-    public File getOutput() {
-        return output;
-    }
-
     public File getBuildFile() {
         return buildFile;
     }
@@ -242,5 +226,25 @@ public class GradleLoader extends DependenciesLoader {
 
     public File getRoot() {
         return root;
+    }
+
+    public ProcessBuilder getBuilder(String command) {
+        ProcessBuilder builder;
+        File gradlew = new File(getRoot().getPath() + "/gradlew");
+        if (gradlew.exists()) {
+            if (!gradlew.setExecutable(true)) {
+                CodeOntology.showWarning("Could not execute gradlew");
+            }
+            builder = new ProcessBuilder("bash", "-c", "./gradlew " + command);
+            builder.directory(root);
+        } else {
+            builder = new ProcessBuilder("gradle", command);
+            builder.directory(projectDirectory);
+        }
+
+        builder.redirectError(error);
+        builder.redirectOutput(output);
+
+        return builder;
     }
 }

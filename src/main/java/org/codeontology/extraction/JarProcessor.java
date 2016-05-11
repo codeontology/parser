@@ -1,5 +1,6 @@
 package org.codeontology.extraction;
 
+import org.codeontology.CodeOntology;
 import org.codeontology.buildsystems.ClasspathLoader;
 import spoon.reflect.reference.CtPackageReference;
 
@@ -16,13 +17,17 @@ public class JarProcessor {
     private Map<Package, Set<Class<?>>> map;
     private PrintStream systemErr;
 
-    public JarProcessor(String path) throws IOException {
-        this.jarFile = new JarFile(path);
-        ClasspathLoader.getInstance().load(path);
-        systemErr = System.err;
+    public JarProcessor(String path) {
+        try {
+            this.jarFile = new JarFile(path);
+            ClasspathLoader.getInstance().load(path);
+            systemErr = System.err;
+        } catch (IOException e) {
+            System.out.println("Could not access file " + path);
+        }
     }
 
-    public JarProcessor(File jar) throws IOException {
+    public JarProcessor(File jar) {
         this(jar.getPath());
     }
 
@@ -76,15 +81,19 @@ public class JarProcessor {
 
 
     private void extractAllTriples() {
-        System.out.println("Running on " + jarFile.getName());
-        Set<Package> packages = map.keySet();
-        for (Package pack : packages) {
-            CtPackageReference packageReference = ReflectionFactory.getInstance().createPackageReference(pack);
-            PackageWrapper wrapper = WrapperFactory.getInstance().wrap(packageReference);
-            wrapper.setTypes(map.get(pack));
-            wrapper.extract();
+        try {
+            System.out.println("Running on " + jarFile.getName());
+            Set<Package> packages = map.keySet();
+            for (Package pack : packages) {
+                CtPackageReference packageReference = ReflectionFactory.getInstance().createPackageReference(pack);
+                PackageWrapper wrapper = WrapperFactory.getInstance().wrap(packageReference);
+                wrapper.setTypes(map.get(pack));
+                wrapper.extract();
+            }
+            RDFLogger.getInstance().writeRDF();
+            System.out.println("Triples extracted successfully.");
+        } catch (Exception e) {
+            CodeOntology.getInstance().handleFailure(e);
         }
-        RDFLogger.getInstance().writeRDF();
-        System.out.println("Triples extracted successfully.");
     }
 }
