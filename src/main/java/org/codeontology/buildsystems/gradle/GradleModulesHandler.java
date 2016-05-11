@@ -23,7 +23,7 @@ public class GradleModulesHandler {
 
     public GradleModulesHandler(GradleLoader loader) {
         this.loader = loader;
-        projectRoot = loader.getRoot();
+        projectRoot = loader.getProjectDirectory();
     }
 
     public void setUp() {
@@ -52,7 +52,7 @@ public class GradleModulesHandler {
 
             loader.runTask("CodeOntologySub");
 
-            try (Scanner scanner = new Scanner(new File(loader.getRoot().getPath() + "/subProjects"))) {
+            try (Scanner scanner = new Scanner(new File(loader.getProjectDirectory().getPath() + "/subProjects"))) {
                 while (scanner.hasNextLine()) {
                     subProjects.add(new File(scanner.nextLine()));
                 }

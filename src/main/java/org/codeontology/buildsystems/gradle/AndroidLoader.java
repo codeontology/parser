@@ -1,9 +1,6 @@
 package org.codeontology.buildsystems.gradle;
 
 import org.codeontology.CodeOntology;
-import org.gradle.tooling.GradleConnector;
-import org.gradle.tooling.ProjectConnection;
-import org.gradle.tooling.model.GradleProject;
 
 import java.io.*;
 import java.util.Scanner;
@@ -29,13 +26,11 @@ public class AndroidLoader extends GradleLoader {
 
     private void build() {
         try {
-            ProjectConnection connection = GradleConnector.newConnector().forProjectDirectory(getRoot()).connect();
-            GradleProject project = connection.getModel(GradleProject.class);
-            File projectDirectory = project.getProjectDirectory();
-            System.out.println(projectDirectory.getAbsolutePath());
-            if (new File(projectDirectory.getPath() + "/gradlew").setExecutable(true)) {
+            File root = getRoot();
+
+            if (new File(root.getPath() + "/gradlew").setExecutable(true)) {
                 ProcessBuilder builder = new ProcessBuilder("bash", "-c", "./gradlew build");
-                builder.directory(projectDirectory);
+                builder.directory(root);
                 builder.redirectError(getError());
                 builder.redirectOutput(getOutput());
                 builder.start().waitFor();
@@ -66,7 +61,7 @@ public class AndroidLoader extends GradleLoader {
         if (androidHome == null) {
             CodeOntology.showWarning("ANDROID_HOME environment variable is not set.");
         }
-        File appBuild = new File(getRoot().getPath() + "/build.gradle");
+        File appBuild = new File(getProjectDirectory().getPath() + "/build.gradle");
 
         String build = "";
 

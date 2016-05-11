@@ -17,19 +17,21 @@ import java.util.regex.Pattern;
 public class GradleLoader extends DependenciesLoader {
 
     private File gradleLocalRepository;
-    private File root;
+    private File projectDirectory;
     private File buildFile;
     private File error;
     private File output;
     private boolean subProject;
+    private File root;
 
-    public GradleLoader(File root) {
+    public GradleLoader(File projectDirectory) {
         gradleLocalRepository = new File(System.getProperty("user.home") + "/.gradle");
-        this.root = root;
-        buildFile = new File(root.getPath() + "/build.gradle");
-        error = new File(root.getPath() + "/error");
-        output = new File(root.getPath() + "/output");
+        this.projectDirectory = projectDirectory;
+        buildFile = new File(projectDirectory.getPath() + "/build.gradle");
+        error = new File(projectDirectory.getPath() + "/error");
+        output = new File(projectDirectory.getPath() + "/output");
         subProject = false;
+        this.root = projectDirectory;
     }
 
     @Override
@@ -64,14 +66,15 @@ public class GradleLoader extends DependenciesLoader {
             DependenciesLoader loader = getFactory().getLoader(subProject);
             if (loader instanceof GradleLoader) {
                 ((GradleLoader) loader).setSubProject(true);
+                ((GradleLoader) loader).setRoot(projectDirectory);
             }
             loader.loadDependencies();
         }
     }
 
     private void handleLocalProperties() {
-        File localProperties = new File(getRoot().getPath() + "/local.properties");
-        File tmp = new File(getRoot().getPath() + "/.tmp.properties");
+        File localProperties = new File(getProjectDirectory().getPath() + "/local.properties");
+        File tmp = new File(getProjectDirectory().getPath() + "/.tmp.properties");
         if (localProperties.exists()) {
             try (Scanner scanner = new Scanner(localProperties)) {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(tmp))) {
@@ -98,7 +101,7 @@ public class GradleLoader extends DependenciesLoader {
     }
 
     protected void loadClasspath() {
-        File classpathFile = new File(root + "/build/cp");
+        File classpathFile = new File(projectDirectory + "/build/cp");
         String classpath = "";
 
         try (Scanner scanner = new Scanner(classpathFile)) {
@@ -114,14 +117,14 @@ public class GradleLoader extends DependenciesLoader {
             loadAllAvailableJars();
         }
 
-        File src = new File(root.getPath() + "/src/");
+        File src = new File(projectDirectory.getPath() + "/src/");
         if (src.exists()) {
             getLoader().loadAllJars(src);
         }
     }
 
     protected void loadAllAvailableJars() {
-        getLoader().loadAllJars(root);
+        getLoader().loadAllJars(projectDirectory);
         getLoader().lock();
         getLoader().loadAllJars(gradleLocalRepository);
         getLoader().release();
@@ -131,7 +134,7 @@ public class GradleLoader extends DependenciesLoader {
         try {
             System.out.println("Downloading dependencies...");
             ProcessBuilder builder = new ProcessBuilder("gradle", "dependencies");
-            builder.directory(root);
+            builder.directory(projectDirectory);
             builder.redirectError(error);
             builder.redirectOutput(output);
             builder.start().waitFor();
@@ -190,7 +193,7 @@ public class GradleLoader extends DependenciesLoader {
     protected void runTask(String name) {
         try {
             ProcessBuilder builder = new ProcessBuilder("gradle", name);
-            builder.directory(root);
+            builder.directory(projectDirectory);
             builder.redirectError(error);
             builder.redirectOutput(output);
             builder.start().waitFor();
@@ -213,8 +216,8 @@ public class GradleLoader extends DependenciesLoader {
         }
     }
 
-    public File getRoot() {
-        return root;
+    public File getProjectDirectory() {
+        return projectDirectory;
     }
 
     public File getError() {
@@ -231,5 +234,13 @@ public class GradleLoader extends DependenciesLoader {
 
     public void setSubProject(boolean subProject) {
         this.subProject = subProject;
+    }
+
+    public void setRoot(File root) {
+        this.root = root;
+    }
+
+    public File getRoot() {
+        return root;
     }
 }
