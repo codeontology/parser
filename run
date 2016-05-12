@@ -12,5 +12,5 @@ fi
 
 for repository in $repositories; do
 	echo "Running on $repository"
-	./codeontology -i $1/$repository -o triples/$repository.nt -vt --explore-dependencies --rmtests &> output/$repository.out
+	./codeontology -i $1/$repository -o triples/$repository.nt -vt --explore-dependencies --clean &> output/$repository.out
 done

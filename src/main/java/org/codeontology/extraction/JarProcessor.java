@@ -22,7 +22,7 @@ public class JarProcessor {
             this.jarFile = new JarFile(path);
             ClasspathLoader.getInstance().load(path);
             systemErr = System.err;
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Could not access file " + path);
         }
     }
@@ -33,11 +33,15 @@ public class JarProcessor {
 
     public void process() {
         try {
-            hideMessages();
-            buildMap();
-            extractAllTriples();
-        } finally {
-            System.setErr(systemErr);
+            try {
+                hideMessages();
+                buildMap();
+                extractAllTriples();
+            } finally {
+                System.setErr(systemErr);
+            }
+        } catch (Exception e) {
+            CodeOntology.getInstance().handleFailure(e);
         }
     }
 
@@ -81,19 +85,16 @@ public class JarProcessor {
 
 
     private void extractAllTriples() {
-        try {
-            System.out.println("Running on " + jarFile.getName());
-            Set<Package> packages = map.keySet();
-            for (Package pack : packages) {
-                CtPackageReference packageReference = ReflectionFactory.getInstance().createPackageReference(pack);
-                PackageWrapper wrapper = WrapperFactory.getInstance().wrap(packageReference);
-                wrapper.setTypes(map.get(pack));
-                wrapper.extract();
-            }
-            RDFLogger.getInstance().writeRDF();
-            System.out.println("Triples extracted successfully.");
-        } catch (Exception e) {
-            CodeOntology.getInstance().handleFailure(e);
+        System.out.println("Running on " + jarFile.getName());
+        Set<Package> packages = map.keySet();
+        for (Package pack : packages) {
+            CtPackageReference packageReference = ReflectionFactory.getInstance().createPackageReference(pack);
+            PackageWrapper wrapper = WrapperFactory.getInstance().wrap(packageReference);
+            wrapper.setTypes(map.get(pack));
+            wrapper.extract();
         }
+        RDFLogger.getInstance().writeRDF();
+        System.out.println("Triples extracted successfully.");
+    
     }
 }

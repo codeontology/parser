@@ -9,7 +9,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.gradle:gradle-tooling-api:2.6" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jdt:org.eclipse.jdt.core:3.12.0.v20150913-1717" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jena:jena-tdb:1.1.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jena:jena-arq:2.13.0" level="project" />

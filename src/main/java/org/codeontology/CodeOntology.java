@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class CodeOntology {
     private static CodeOntology codeOntology;
@@ -30,7 +31,7 @@ public class CodeOntology {
     private DependenciesLoader loader;
     private PeriodFormatter formatter;
     private int tries;
-    private String[] directories = {"test", "examples", "debug", "samples", "sample", "example", "demo"};
+    private String[] directories = {"test", "examples", "debug", "androidTest", "samples", "sample", "example", "demo", ".*test.*", ".*demo.*", ".*sample.*", ".*example.*"};
 
     private CodeOntology(String[] args) {
         try {
@@ -225,7 +226,7 @@ public class CodeOntology {
     private boolean removeDirectoriesByName(String name) {
         try {
             Path[] tests = Files.walk(Paths.get(getArguments().getInput()))
-                    .filter(path -> path.toFile().getName().equals(name) && path.toFile().isDirectory())
+                    .filter(path -> match(path, name))
                     .toArray(Path[]::new);
 
             if (tests.length == 0) {
@@ -241,6 +242,15 @@ public class CodeOntology {
         }
 
         return true;
+    }
+
+    private boolean match(Path path, String name) {
+        if (!name.contains("*")) {
+           return path.toFile().getName().equals(name) && path.toFile().isDirectory();
+        } else {
+            Pattern pattern = Pattern.compile(name, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+            return pattern.matcher(path.toFile().getName()).matches();
+        }
     }
 
     public static void showWarning(String message) {
