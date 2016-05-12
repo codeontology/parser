@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 public class CodeOntology {
     private static CodeOntology codeOntology;
+    private static int status = 0;
     private boolean downloadDependencies;
     private CodeOntologyArguments arguments;
     private Launcher spoon;
@@ -61,6 +62,7 @@ public class CodeOntology {
         codeOntology.processSources();
         codeOntology.processJars();
         codeOntology.postCompletionTasks();
+        System.exit(status);
     }
 
     private void processSources() {
@@ -81,12 +83,15 @@ public class CodeOntology {
 
     public void handleFailure(Exception e) {
         System.out.println("It was a good plan that went awry.");
-        if (e.getMessage() != null) {
-            System.out.println(e.getMessage());
+        if (e != null) {
+            if (e.getMessage() != null) {
+                System.out.println(e.getMessage());
+            }
+            if (codeOntology.getArguments().stackTraceMode()) {
+                e.printStackTrace();
+            }
         }
-        if (codeOntology.getArguments().stackTraceMode()) {
-            e.printStackTrace();
-        }
+        status = -1;
     }
 
     private void spoon() {
@@ -226,7 +231,7 @@ public class CodeOntology {
     private boolean removeDirectoriesByName(String name) {
         try {
             Path[] tests = Files.walk(Paths.get(getArguments().getInput()))
-                    .filter(path -> match(path, name))
+                    .filter(path -> match(path, name) && path.toFile().isDirectory())
                     .toArray(Path[]::new);
 
             if (tests.length == 0) {
@@ -246,7 +251,7 @@ public class CodeOntology {
 
     private boolean match(Path path, String name) {
         if (!name.contains("*")) {
-           return path.toFile().getName().equals(name) && path.toFile().isDirectory();
+           return path.toFile().getName().equals(name);
         } else {
             Pattern pattern = Pattern.compile(name, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
             return pattern.matcher(path.toFile().getName()).matches();

@@ -23,7 +23,7 @@ public class JarProcessor {
             ClasspathLoader.getInstance().load(path);
             systemErr = System.err;
         } catch (Exception e) {
-            System.out.println("Could not access file " + path);
+            CodeOntology.showWarning("Could not access file " + path);
         }
     }
 
