@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember & CtGenericElement>
-        extends AbstractWrapper<E> implements ModifiableWrapper<E>, MemberWrapper<E> {
+        extends NamedElementWrapper<E> implements ModifiableWrapper<E>, MemberWrapper<E> {
 
     private Set<ExecutableWrapper<?>> executables;
     private Set<TypeWrapper<?>> requestedTypes;

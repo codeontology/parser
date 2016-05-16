@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public abstract class TypeWrapper<T extends CtType<?>> extends AbstractWrapper<T> implements ModifiableWrapper<T> {
+public abstract class TypeWrapper<T extends CtType<?>> extends NamedElementWrapper<T> implements ModifiableWrapper<T> {
 
     private List<MethodWrapper> methods;
     private List<FieldWrapper> fields;

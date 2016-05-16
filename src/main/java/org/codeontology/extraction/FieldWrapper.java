@@ -10,7 +10,7 @@ import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldWrapper extends AbstractWrapper<CtField<?>> implements ModifiableWrapper<CtField<?>>, MemberWrapper<CtField<?>>, TypedElementWrapper<CtField<?>> {
+public class FieldWrapper extends NamedElementWrapper<CtField<?>> implements ModifiableWrapper<CtField<?>>, MemberWrapper<CtField<?>>, TypedElementWrapper<CtField<?>> {
 
     public FieldWrapper(CtField<?> field) {
         super(field);

@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public class PackageWrapper extends AbstractWrapper<CtPackage> {
+public class PackageWrapper extends NamedElementWrapper<CtPackage> {
 
     private Set<TypeWrapper<?>> types;
 

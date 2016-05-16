@@ -220,7 +220,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
 
     @Override
     public void setParent(Wrapper<?> context) {
-        CtReference reference = context.getReference();
+        CtReference reference = ((NamedElementWrapper) context).getReference();
         String simpleName = getReference().getSimpleName();
 
         Wrapper<?> parent = TypeVariableCache.getInstance().getParent(simpleName, context);

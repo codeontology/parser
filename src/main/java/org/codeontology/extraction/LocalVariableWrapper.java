@@ -5,7 +5,7 @@ import org.codeontology.Ontology;
 import spoon.reflect.code.CtLocalVariable;
 import spoon.reflect.reference.CtTypeReference;
 
-public class LocalVariableWrapper extends AbstractWrapper<CtLocalVariable<?>> implements MemberWrapper<CtLocalVariable<?>>, TypedElementWrapper<CtLocalVariable<?>> {
+public class LocalVariableWrapper extends NamedElementWrapper<CtLocalVariable<?>> implements MemberWrapper<CtLocalVariable<?>>, TypedElementWrapper<CtLocalVariable<?>> {
 
     public LocalVariableWrapper(CtLocalVariable<?> variable) {
         super(variable);
