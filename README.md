@@ -1,12 +1,12 @@
 # CodeOntology
 
-### Extract RDF triples from Java source code
+### RDF-ization of source code
 CodeOntology is an extraction tool that parses Java source code to generate RDF triples. It actually supports both maven and gradle projects. For more details see [codeontology.org](http://codeontology.org/).
 
 ### Set up
-To set up the project, you have to clone this repository and build the tool:
+To set up codeontology, you have to clone the repository and build the tool:
 ```bash
-$ git clone https://bitbucket.org/atzori/codeontology
+$ git clone https://bitbucket.org/semanticweb/codeontology-parser
 $ cd codeontology
 $ mvn package -DskipTests
 ```
@@ -21,7 +21,8 @@ For a complete list of all command line options, just type:
 $ ./codeontology --help
 ```
 
-### Use case
+### Use cases
+#### JDK
 Let's use the tool to extract RDF triples from the JDK source code.
 
 First, be sure to have the latest version of java:
@@ -40,12 +41,43 @@ $ sudo apt-get install oracle-java8-installer
 $ sudo apt-get install oracle-java8-set-default
 ```
 
-Now, we need to get the JDK source code. It is available on github:
+Now, we need the JDK source code. It is available on github:
 ```bash
 $ git clone https://github.com/jdk-mirror/openjdk8
 ```
 You are ready to extract the triples. Just type:
 ```bash
-./codeontology -i openjdk8 -o jdk.nt
+$ ./codeontology -i openjdk8 -o jdk.nt
 ```
 This will run the tool on the openjdk8 directory and save the extracted RDF triples to the file jdk.nt.
+
+#### Sample Maven Repository
+Let's suppose you want to use the tool to extract RDF triples from a generic repository.
+Here the spoon maven repository is used to show how it works.
+
+First, you have to clone the repository:
+
+```bash
+$ git clone https://github.com/INRIA/spoon
+```
+
+The repository contains some tests that cause some troubles when building the abstract syntax tree. The --clean switch is added to solve this issue and get rid of the tests. Moreover, the --explore-dependencies switch is here used to parse all of the dependencies of the repository. The -v switch tells codeontology to verbosely print out all files processed.
+
+```bash
+$ ./codeontology -i spoon -o spoon.nt --clean --explore-dependencies -v
+```
+
+#### Jar files
+CodeOntology can also process jar files.
+Here the file weka.jar is used to show how it works.
+
+First, you have to download and extract the file:
+```bash
+$ wget -O weka.zip http://downloads.sourceforge.net/project/weka/weka-3-8/3.8.0/weka-3-8-0.zip?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fweka%2F&ts=1463402758&use_mirror=kent
+$ unzip -j weka.zip "weka.zip/weka-3-8-0/weka.jar" -d .
+```
+
+You are ready to extrat the triples. Just type:
+```bash
+$ ./codeontology --jar weka.jar -v
+```
