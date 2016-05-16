@@ -50,7 +50,7 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
         } else {
             try {
                 return Modifier.asList(((CtFieldReference<?>) getReference()).getModifiers());
-            } catch (NoClassDefFoundError e) {
+            } catch (Exception | Error e) {
                 return new ArrayList<>();
             }
         }

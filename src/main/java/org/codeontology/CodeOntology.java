@@ -59,9 +59,13 @@ public class CodeOntology {
 
     public static void main(String[] args) {
         codeOntology = new CodeOntology(args);
-        codeOntology.processSources();
-        codeOntology.processJars();
-        codeOntology.postCompletionTasks();
+        try {
+            codeOntology.processSources();
+            codeOntology.processJars();
+            codeOntology.postCompletionTasks();
+        } catch (Exception | Error e) {
+            codeOntology.handleFailure(e);
+        }
         System.exit(status);
     }
 
@@ -81,14 +85,14 @@ public class CodeOntology {
         }
     }
 
-    public void handleFailure(Exception e) {
+    public void handleFailure(Throwable t) {
         System.out.println("It was a good plan that went awry.");
-        if (e != null) {
-            if (e.getMessage() != null) {
-                System.out.println(e.getMessage());
+        if (t != null) {
+            if (t.getMessage() != null) {
+                System.out.println(t.getMessage());
             }
             if (codeOntology.getArguments().stackTraceMode()) {
-                e.printStackTrace();
+                t.printStackTrace();
             }
         }
         status = -1;

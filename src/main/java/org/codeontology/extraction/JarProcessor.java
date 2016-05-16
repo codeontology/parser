@@ -22,7 +22,7 @@ public class JarProcessor {
             this.jarFile = new JarFile(path);
             ClasspathLoader.getInstance().load(path);
             systemErr = System.err;
-        } catch (Exception e) {
+        } catch (Exception | Error e) {
             CodeOntology.showWarning("Could not access file " + path);
         }
     }
@@ -40,7 +40,7 @@ public class JarProcessor {
             } finally {
                 System.setErr(systemErr);
             }
-        } catch (Exception e) {
+        } catch (Exception | Error e) {
             CodeOntology.getInstance().handleFailure(e);
         }
     }
