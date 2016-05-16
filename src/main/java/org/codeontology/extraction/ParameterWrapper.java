@@ -18,6 +18,7 @@ public class ParameterWrapper extends AbstractWrapper<CtParameter<?>> implements
     private int position;
     private ExecutableWrapper parent;
     private boolean parameterAvailable = true;
+    private static final String TAG = "parameter";
 
     public ParameterWrapper(CtParameter<?> parameter) {
         super(parameter);
@@ -46,7 +47,7 @@ public class ParameterWrapper extends AbstractWrapper<CtParameter<?>> implements
 
     @Override
     public String buildRelativeURI() {
-        return getParent().getRelativeURI() + SEPARATOR  + position;
+        return getParent().getRelativeURI() + SEPARATOR + TAG + SEPARATOR + position;
     }
 
     public void tagPosition() {

@@ -6,6 +6,8 @@ import spoon.reflect.code.CtLambda;
 
 public class LambdaWrapper extends AbstractWrapper<CtLambda<?>> {
 
+    public static final String TAG = "lambda";
+
     public LambdaWrapper(CtLambda<?> lambda) {
         super(lambda);
     }
@@ -26,8 +28,7 @@ public class LambdaWrapper extends AbstractWrapper<CtLambda<?>> {
 
     @Override
     public String buildRelativeURI() {
-        return getParent().getRelativeURI() + SEPARATOR + getElement().getSimpleName() + SEPARATOR +
-                getElement().getType().getQualifiedName();
+        return getParent().getRelativeURI() + SEPARATOR + TAG + SEPARATOR + getElement().getSimpleName();
     }
 
     @Override
