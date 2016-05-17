@@ -9,18 +9,18 @@ import spoon.reflect.declaration.CtElement;
 
 import java.util.List;
 
-public abstract class AbstractWrapper<E extends CtElement> implements Wrapper<E> {
+public abstract class AbstractEntity<E extends CtElement> implements Entity<E> {
 
     private E element;
     private static Model model = RDFLogger.getInstance().getModel();
-    private Wrapper<?> parent;
+    private Entity<?> parent;
     private String uri;
 
-    AbstractWrapper() {
+    AbstractEntity() {
 
     }
 
-    AbstractWrapper(E element) {
+    AbstractEntity(E element) {
         setElement(element);
     }
 
@@ -53,7 +53,7 @@ public abstract class AbstractWrapper<E extends CtElement> implements Wrapper<E>
     public void tagAnnotations() {
         List<CtAnnotation<?>> annotations = getElement().getAnnotations();
         for (CtAnnotation annotation : annotations) {
-            TypeWrapper annotationType = getFactory().wrap(annotation.getAnnotationType());
+            TypeEntity annotationType = getFactory().wrap(annotation.getAnnotationType());
             getLogger().addTriple(this, Ontology.ANNOTATION_PROPERTY, annotationType);
             annotationType.follow();
         }
@@ -71,8 +71,8 @@ public abstract class AbstractWrapper<E extends CtElement> implements Wrapper<E>
     }
 
     @Override
-    public WrapperFactory getFactory() {
-        return WrapperFactory.getInstance();
+    public EntityFactory getFactory() {
+        return EntityFactory.getInstance();
     }
 
     @Override
@@ -81,12 +81,12 @@ public abstract class AbstractWrapper<E extends CtElement> implements Wrapper<E>
     }
 
     @Override
-    public Wrapper<?> getParent() {
+    public Entity<?> getParent() {
         return parent;
     }
 
     @Override
-    public void setParent(Wrapper<?> parent) {
+    public void setParent(Entity<?> parent) {
         this.parent = parent;
     }
 
@@ -106,11 +106,11 @@ public abstract class AbstractWrapper<E extends CtElement> implements Wrapper<E>
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Wrapper<?>)) {
+        if (!(object instanceof Entity<?>)) {
             return false;
         }
 
-        Wrapper<?> other = (Wrapper<?>) object;
+        Entity<?> other = (Entity<?>) object;
         return other.getRelativeURI().equals(this.getRelativeURI());
     }
 

@@ -89,9 +89,9 @@ public class JarProcessor {
         Set<Package> packages = map.keySet();
         for (Package pack : packages) {
             CtPackageReference packageReference = ReflectionFactory.getInstance().createPackageReference(pack);
-            PackageWrapper wrapper = WrapperFactory.getInstance().wrap(packageReference);
-            wrapper.setTypes(map.get(pack));
-            wrapper.extract();
+            PackageEntity entity = EntityFactory.getInstance().wrap(packageReference);
+            entity.setTypes(map.get(pack));
+            entity.extract();
         }
         RDFLogger.getInstance().writeRDF();
         System.out.println("Triples extracted successfully.");

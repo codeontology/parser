@@ -4,7 +4,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import spoon.reflect.declaration.CtElement;
 
-public interface Wrapper<E extends CtElement> {
+public interface Entity<E extends CtElement> {
 
     String SEPARATOR = "-";
 
@@ -14,13 +14,13 @@ public interface Wrapper<E extends CtElement> {
 
     Model getModel();
 
-    WrapperFactory getFactory();
+    EntityFactory getFactory();
 
     RDFLogger getLogger();
 
-    Wrapper<?> getParent();
+    Entity<?> getParent();
 
-    void setParent(Wrapper<?> parent);
+    void setParent(Entity<?> parent);
 
     void follow();
 

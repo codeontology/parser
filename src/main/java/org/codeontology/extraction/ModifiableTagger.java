@@ -7,9 +7,9 @@ import java.util.List;
 
 public class ModifiableTagger {
 
-    ModifiableWrapper<?> modifiable;
+    ModifiableEntity<?> modifiable;
 
-    public ModifiableTagger(ModifiableWrapper modifiable) {
+    public ModifiableTagger(ModifiableEntity modifiable) {
         this.modifiable = modifiable;
     }
 

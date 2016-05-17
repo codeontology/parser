@@ -5,11 +5,11 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.code.CtStatement;
 
-public class StatementWrapper<E extends CtStatement> extends AbstractWrapper<E> {
+public class StatementEntity<E extends CtStatement> extends AbstractEntity<E> {
     private static final String TAG = "statement";
     private int position;
 
-    public StatementWrapper(E element) {
+    public StatementEntity(E element) {
         super(element);
     }
 

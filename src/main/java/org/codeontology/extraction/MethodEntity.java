@@ -9,12 +9,12 @@ import spoon.reflect.reference.CtTypeReference;
 import java.lang.reflect.*;
 import java.util.List;
 
-public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements GenericDeclarationWrapper<CtMethod<?>> {
-    public MethodWrapper(CtMethod<?> method) {
+public class MethodEntity extends ExecutableEntity<CtMethod<?>> implements GenericDeclarationEntity<CtMethod<?>> {
+    public MethodEntity(CtMethod<?> method) {
         super(method);
     }
 
-    public MethodWrapper(CtExecutableReference<?> reference) {
+    public MethodEntity(CtExecutableReference<?> reference) {
         super(reference);
     }
 
@@ -37,7 +37,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements Gen
         try {
             CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference()).getOverridingExecutable();
             if (reference != null) {
-                ExecutableWrapper overridingMethod = getFactory().wrap(reference);
+                ExecutableEntity overridingMethod = getFactory().wrap(reference);
                 getLogger().addTriple(this, Ontology.OVERRIDES_PROPERTY, overridingMethod);
                 overridingMethod.follow();
             }
@@ -51,8 +51,8 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements Gen
         getLogger().addTriple(this, Ontology.RETURNS_PROPERTY, getReturnType());
     }
 
-    private TypeWrapper getReturnType() {
-        TypeWrapper<?> returnType = getGenericReturnType();
+    private TypeEntity getReturnType() {
+        TypeEntity<?> returnType = getGenericReturnType();
         if (returnType != null) {
             return returnType;
         }
@@ -65,8 +65,8 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements Gen
         return returnType;
     }
 
-    private TypeWrapper getGenericReturnType() {
-        TypeWrapper<?> result = null;
+    private TypeEntity getGenericReturnType() {
+        TypeEntity<?> result = null;
         if (!isDeclarationAvailable()) {
             try {
                 CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference());
@@ -90,7 +90,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements Gen
     }
 
     @Override
-    public List<TypeVariableWrapper> getFormalTypeParameters() {
+    public List<TypeVariableEntity> getFormalTypeParameters() {
         return FormalTypeParametersTagger.formalTypeParametersOf(this);
     }
 

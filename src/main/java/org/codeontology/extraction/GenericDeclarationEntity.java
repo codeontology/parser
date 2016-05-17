@@ -4,9 +4,9 @@ import spoon.reflect.declaration.CtGenericElement;
 
 import java.util.List;
 
-public interface GenericDeclarationWrapper<T extends CtGenericElement> extends Wrapper<T> {
+public interface GenericDeclarationEntity<T extends CtGenericElement> extends Entity<T> {
 
-    List<TypeVariableWrapper> getFormalTypeParameters();
+    List<TypeVariableEntity> getFormalTypeParameters();
 
     void tagFormalTypeParameters();
 

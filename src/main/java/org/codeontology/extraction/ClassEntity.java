@@ -14,15 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements ModifiableWrapper<CtClass<T>>, GenericDeclarationWrapper<CtClass<T>> {
+public class ClassEntity<T> extends TypeEntity<CtClass<T>> implements ModifiableEntity<CtClass<T>>, GenericDeclarationEntity<CtClass<T>> {
 
-    private List<ConstructorWrapper> constructors;
+    private List<ConstructorEntity> constructors;
 
-    public ClassWrapper(CtClass<T> clazz) {
+    public ClassEntity(CtClass<T> clazz) {
         super(clazz);
     }
 
-    public ClassWrapper(CtTypeReference<?> reference) {
+    public ClassEntity(CtTypeReference<?> reference) {
         super(reference);
     }
 
@@ -57,7 +57,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
         if (superclass == null) {
             superclass = ReflectionFactory.getInstance().createTypeReference(Object.class);
         }
-        TypeWrapper<?> superClass = getFactory().wrap(superclass);
+        TypeEntity<?> superClass = getFactory().wrap(superclass);
         superClass.setParent(this);
         getLogger().addTriple(this, Ontology.EXTENDS_PROPERTY, superClass);
         superClass.follow();
@@ -68,14 +68,14 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
     }
 
     public void tagConstructors() {
-        List<ConstructorWrapper> constructors = getConstructors();
+        List<ConstructorEntity> constructors = getConstructors();
 
-        for (ConstructorWrapper constructor : constructors) {
+        for (ConstructorEntity constructor : constructors) {
             constructor.extract();
         }
     }
 
-    public List<ConstructorWrapper> getConstructors() {
+    public List<ConstructorEntity> getConstructors() {
         if (constructors == null) {
             setConstructors();
         }
@@ -89,7 +89,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
         if (isDeclarationAvailable()) {
             Set<CtConstructor<T>> ctConstructors = getElement().getConstructors();
             for (CtConstructor ctConstructor : ctConstructors) {
-                ConstructorWrapper constructor = getFactory().wrap(ctConstructor);
+                ConstructorEntity constructor = getFactory().wrap(ctConstructor);
                 constructor.setParent(this);
                 constructors.add(constructor);
             }
@@ -103,7 +103,7 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
             Constructor[] actualConstructors = getReference().getActualClass().getDeclaredConstructors();
             for (Constructor actualConstructor : actualConstructors) {
                 CtExecutableReference<?> reference = ReflectionFactory.getInstance().createConstructor(actualConstructor);
-                ConstructorWrapper constructor = (ConstructorWrapper) getFactory().wrap(reference);
+                ConstructorEntity constructor = (ConstructorEntity) getFactory().wrap(reference);
                 constructor.setParent(this);
                 constructors.add(constructor);
             }
@@ -115,14 +115,14 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
     public void tagNestedTypes() {
         Set<CtType<?>> nestedTypes = getElement().getNestedTypes();
         for (CtType<?> type : nestedTypes) {
-            Wrapper wrapper = getFactory().wrap(type);
-            getLogger().addTriple(wrapper, Ontology.NESTED_IN_PROPERTY, this);
-            wrapper.extract();
+            Entity entity = getFactory().wrap(type);
+            getLogger().addTriple(entity, Ontology.NESTED_IN_PROPERTY, this);
+            entity.extract();
         }
     }
 
     @Override
-    public List<TypeVariableWrapper> getFormalTypeParameters() {
+    public List<TypeVariableEntity> getFormalTypeParameters() {
         return FormalTypeParametersTagger.formalTypeParametersOf(this);
     }
 

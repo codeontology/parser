@@ -8,9 +8,9 @@ import spoon.reflect.reference.CtTypeReference;
 
 import java.util.List;
 
-public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> implements GenericDeclarationWrapper<CtInterface<?>> {
+public class InterfaceEntity extends TypeEntity<CtInterface<?>> implements GenericDeclarationEntity<CtInterface<?>> {
 
-    public InterfaceWrapper(CtTypeReference<?> reference) {
+    public InterfaceEntity(CtTypeReference<?> reference) {
         super(reference);
     }
 
@@ -42,7 +42,7 @@ public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> implements Gen
     }
 
     @Override
-    public List<TypeVariableWrapper> getFormalTypeParameters() {
+    public List<TypeVariableEntity> getFormalTypeParameters() {
         return FormalTypeParametersTagger.formalTypeParametersOf(this);
     }
 

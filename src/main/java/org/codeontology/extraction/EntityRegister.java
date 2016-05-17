@@ -3,28 +3,28 @@ package org.codeontology.extraction;
 import java.util.HashSet;
 import java.util.Set;
 
-public class WrapperRegister {
-    private static WrapperRegister instance;
+public class EntityRegister {
+    private static EntityRegister instance;
     private Set<String> register;
     private int size;
     private static final int SIZE = 2048;
     private static final int LOAD = SIZE / 2;
 
-    private WrapperRegister() {
+    private EntityRegister() {
         register = new HashSet<>(SIZE);
     }
 
-    public static WrapperRegister getInstance() {
+    public static EntityRegister getInstance() {
         if (instance == null) {
-            instance = new WrapperRegister();
+            instance = new EntityRegister();
         }
 
         return instance;
     }
 
-    public boolean add(Wrapper<?> wrapper) {
+    public boolean add(Entity<?> entity) {
         handleSize();
-        return register.add(wrapper.getRelativeURI());
+        return register.add(entity.getRelativeURI());
     }
 
     private void handleSize() {

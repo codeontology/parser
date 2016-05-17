@@ -6,15 +6,15 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtNamedElement;
 import spoon.reflect.reference.CtReference;
 
-public abstract class NamedElementWrapper<E extends CtNamedElement> extends AbstractWrapper<E> {
+public abstract class NamedElementEntity<E extends CtNamedElement> extends AbstractEntity<E> {
 
     private CtReference reference;
 
-    NamedElementWrapper(E element) {
+    NamedElementEntity(E element) {
         setElement(element);
     }
 
-    NamedElementWrapper(CtReference reference) {
+    NamedElementEntity(CtReference reference) {
         setReference(reference);
     }
 
@@ -58,7 +58,7 @@ public abstract class NamedElementWrapper<E extends CtNamedElement> extends Abst
     @Override
     public void follow() {
         if (!isDeclarationAvailable() && !CodeOntology.isJarExplorationEnabled()
-                && WrapperRegister.getInstance().add(this)) {
+                && EntityRegister.getInstance().add(this)) {
             extract();
         }
     }

@@ -5,9 +5,9 @@ import org.codeontology.Ontology;
 import spoon.reflect.code.CtLocalVariable;
 import spoon.reflect.reference.CtTypeReference;
 
-public class LocalVariableWrapper extends NamedElementWrapper<CtLocalVariable<?>> implements MemberWrapper<CtLocalVariable<?>>, TypedElementWrapper<CtLocalVariable<?>> {
+public class LocalVariableEntity extends NamedElementEntity<CtLocalVariable<?>> implements MemberEntity<CtLocalVariable<?>>, TypedElementEntity<CtLocalVariable<?>> {
 
-    public LocalVariableWrapper(CtLocalVariable<?> variable) {
+    public LocalVariableEntity(CtLocalVariable<?> variable) {
         super(variable);
     }
 
@@ -30,7 +30,7 @@ public class LocalVariableWrapper extends NamedElementWrapper<CtLocalVariable<?>
     }
 
     @Override
-    public Wrapper<?> getDeclaringElement() {
+    public Entity<?> getDeclaringElement() {
         return getParent();
     }
 
@@ -39,7 +39,7 @@ public class LocalVariableWrapper extends NamedElementWrapper<CtLocalVariable<?>
     }
 
     @Override
-    public TypeWrapper<?> getJavaType() {
+    public TypeEntity<?> getJavaType() {
         CtTypeReference<?> type = getElement().getType();
         return getFactory().wrap(type);
     }

@@ -7,6 +7,6 @@ public class SourceProcessor extends AbstractProcessor<CtPackage> {
     @Override
     public void process(CtPackage pack) {
         ReflectionFactory.getInstance().setParent(pack.getFactory());
-        WrapperFactory.getInstance().wrap(pack).extract();
+        EntityFactory.getInstance().wrap(pack).extract();
     }
 }

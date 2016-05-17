@@ -12,15 +12,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public class PackageWrapper extends NamedElementWrapper<CtPackage> {
+public class PackageEntity extends NamedElementEntity<CtPackage> {
 
-    private Set<TypeWrapper<?>> types;
+    private Set<TypeEntity<?>> types;
 
-    public PackageWrapper(CtPackage pack) {
+    public PackageEntity(CtPackage pack) {
         super(pack);
     }
 
-    public PackageWrapper(CtPackageReference pack) {
+    public PackageEntity(CtPackageReference pack) {
         super(pack);
     }
 
@@ -37,7 +37,7 @@ public class PackageWrapper extends NamedElementWrapper<CtPackage> {
 
     @Override
     public void extract() {
-        Set<TypeWrapper<?>> types = getTypes();
+        Set<TypeEntity<?>> types = getTypes();
 
         if (types.isEmpty()) {
             return;
@@ -53,7 +53,7 @@ public class PackageWrapper extends NamedElementWrapper<CtPackage> {
     }
 
     public void tagPackageOf() {
-        for (TypeWrapper type : types) {
+        for (TypeEntity type : types) {
             getLogger().addTriple(this, Ontology.PACKAGE_OF_PROPERTY, type);
             if (CodeOntology.verboseMode()) {
                 System.out.println("Running on " + type.getReference().getQualifiedName());
@@ -62,7 +62,7 @@ public class PackageWrapper extends NamedElementWrapper<CtPackage> {
         }
     }
 
-    public Set<TypeWrapper<?>> getTypes() {
+    public Set<TypeEntity<?>> getTypes() {
         if (types == null) {
             setTypes();
         }
