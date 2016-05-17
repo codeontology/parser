@@ -73,15 +73,18 @@ public class ParameterEntity extends NamedElementEntity<CtParameter<?>> implemen
 
     @Override
     public TypeEntity<?> getJavaType() {
+        TypeEntity<?> type;
         if (isDeclarationAvailable()) {
-            return getFactory().wrap(getElement().getType());
+            type = getFactory().wrap(getElement().getType());
         } else {
-            return getFactory().wrap((CtTypeReference<?>) getReference());
+            type = getFactory().wrap((CtTypeReference<?>) getReference());
         }
+        type.setParent(parent);
+        return type;
     }
 
     public void tagJavaType() {
-        new JavaTypeTagger(this).tagJavaType(parent);
+        new JavaTypeTagger(this).tagJavaType();
     }
 
     @Override

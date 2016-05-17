@@ -11,6 +11,7 @@ import spoon.support.reflect.reference.CtExecutableReferenceImpl;
 import spoon.support.reflect.reference.CtFieldReferenceImpl;
 import spoon.support.reflect.reference.CtLocalVariableReferenceImpl;
 
+import java.beans.Statement;
 import java.lang.reflect.Executable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember & CtGenericElement>
-        extends NamedElementEntity<E> implements ModifiableEntity<E>, MemberEntity<E> {
+        extends NamedElementEntity<E> implements ModifiableEntity<E>, MemberEntity<E>, BodyHolderEntity<E> {
 
     private Set<ExecutableEntity<?>> executables;
     private Set<TypeEntity<?>> requestedTypes;
@@ -366,16 +367,21 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
         getLogger().addTriple(this, Ontology.VAR_ARGS_PROPERTY, getModel().createTypedLiteral(value));
     }
 
+    public StatementEntity<?> getBody() {
+        CtExecutable executable = getElement();
+        CtBlock<?> body = executable.getBody();
+        if (body != null) {
+            StatementEntity<?> bodyEntity = getFactory().wrap(body);
+            bodyEntity.setParent(this);
+            return bodyEntity;
+        }
+
+        return null;
+    }
+
     public void tagBody() {
         if (CodeOntology.processStatements()) {
-            CtExecutable executable = getElement();
-            CtBlock<?> body = executable.getBody();
-            if (body != null) {
-                StatementEntity<?> bodyEntity = getFactory().wrap(body);
-                bodyEntity.setParent(this);
-                getLogger().addTriple(this, Ontology.BODY_PROPERTY, bodyEntity);
-                bodyEntity.extract();
-            }
+            new BodyTagger(this).tagBody();
         }
     }
 }

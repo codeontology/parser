@@ -101,7 +101,7 @@ public class FieldEntity extends NamedElementEntity<CtField<?>> implements Modif
     }
 
     public void tagJavaType() {
-        new JavaTypeTagger(this).tagJavaType(getDeclaringElement());
+        new JavaTypeTagger(this).tagJavaType();
     }
 
     @Override

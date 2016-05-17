@@ -41,10 +41,12 @@ public class LocalVariableEntity extends NamedElementEntity<CtLocalVariable<?>> 
     @Override
     public TypeEntity<?> getJavaType() {
         CtTypeReference<?> type = getElement().getType();
-        return getFactory().wrap(type);
+        TypeEntity<?> entity = getFactory().wrap(type);
+        entity.setParent(this.getParent());
+        return entity;
     }
 
     public void tagJavaType() {
-        new JavaTypeTagger(this).tagJavaType(this.getParent());
+        new JavaTypeTagger(this).tagJavaType();
     }
 }

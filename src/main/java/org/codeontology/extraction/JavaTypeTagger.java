@@ -12,13 +12,8 @@ public class JavaTypeTagger {
         this.type = typedElement.getJavaType();
     }
 
-    private void tagJavaType() {
+    public void tagJavaType() {
         RDFLogger.getInstance().addTriple(typedElement, Ontology.JAVA_TYPE_PROPERTY, type);
         type.follow();
-    }
-
-    public void tagJavaType(Entity<?> parent) {
-        type.setParent(parent);
-        tagJavaType();
     }
 }

@@ -2,11 +2,10 @@ package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
-import spoon.reflect.code.CtExpression;
 import spoon.reflect.code.CtIf;
 import spoon.reflect.code.CtStatement;
 
-public class IfThenElseEntity extends StatementEntity<CtIf> {
+public class IfThenElseEntity extends StatementEntity<CtIf> implements ConditionHolderEntity<CtIf> {
 
     public IfThenElseEntity(CtIf element) {
         super(element);
@@ -25,12 +24,16 @@ public class IfThenElseEntity extends StatementEntity<CtIf> {
         tagElseStatement();
     }
 
+    @Override
+    public ExpressionEntity getCondition() {
+        ExpressionEntity condition = getFactory().wrap(getElement().getCondition());
+        condition.setParent(this);
+        return condition;
+    }
+
+    @Override
     public void tagCondition() {
-        CtExpression<Boolean> condition = getElement().getCondition();
-        ExpressionEntity conditionEntity = getFactory().wrap(condition);
-        conditionEntity.setParent(this);
-        getLogger().addTriple(this, Ontology.CONDITION_PROPERTY, conditionEntity);
-        conditionEntity.extract();
+        new ConditionTagger(this).tagCondition();
     }
 
     public void tagThenStatement() {

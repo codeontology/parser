@@ -16,6 +16,9 @@ public class StatementEntity<E extends CtStatement> extends AbstractEntity<E> {
     @Override
     public String buildRelativeURI() {
         if (!(getParent() instanceof StatementEntity)) {
+            if (getParent() == null) {
+                System.out.println("breakpoint ***********************************************************");
+            }
             return getParent().getRelativeURI() + SEPARATOR + TAG + SEPARATOR + position;
         } else {
             return getParent().getRelativeURI() + SEPARATOR + position;
