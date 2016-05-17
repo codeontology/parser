@@ -38,7 +38,7 @@ public class BlockEntity extends StatementEntity<CtBlock> {
         for (int i = 0; i < size; i++) {
             StatementEntity<?> statement = getFactory().wrap(statements.get(i));
             statement.setPosition(i);
-            statement.setParent(this.getParent());
+            statement.setParent(this);
             getLogger().addTriple(this, Ontology.STATEMENT_PROPERTY, statement);
             statement.extract();
         }
