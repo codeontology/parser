@@ -56,7 +56,7 @@ public class EntityFactory {
             return null;
         }
 
-        TypeKind kind = TypeKind.getKind(reference);
+        TypeKind kind = TypeKind.getKindOf(reference);
         if (kind == null) {
             return null;
         }
@@ -155,8 +155,13 @@ public class EntityFactory {
 
     public StatementEntity<?> wrap(CtStatement statement) {
 
-        if (statement instanceof CtIf) {
-            return new IfThenElseEntity((CtIf) statement);
+        switch (StatementKind.getKindOf(statement)) {
+            case BLOCK:
+                return new BlockEntity((CtBlock) statement);
+            case IF_THEN_ELSE:
+                return new IfThenElseEntity((CtIf) statement);
+            case WHILE:
+                return new WhileEntity((CtWhile) statement);
         }
 
         return new StatementEntity<>(statement);

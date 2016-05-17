@@ -38,23 +38,13 @@ public class StatementEntity<E extends CtStatement> extends AbstractEntity<E> {
     @Override
     public void extract() {
         tagType();
-        tagParent();
         tagPosition();
         tagLine();
         tagSourceCode();
     }
 
-    private void tagParent() {
-        getLogger().addTriple(getParent(), Ontology.STATEMENT_PROPERTY, this);
-    }
-
-    public int getLine() {
-        return getElement().getPosition().getLine();
-    }
-
     public void tagLine() {
-        Literal line = getModel().createTypedLiteral(getLine());
-        RDFLogger.getInstance().addTriple(this, Ontology.LINE_PROPERTY, line);
+        new LineTagger(this).tagLine();
     }
 
     public void tagPosition() {

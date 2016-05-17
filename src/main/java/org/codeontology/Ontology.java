@@ -76,7 +76,11 @@ public class Ontology {
 
     public static final Resource STATEMENT_ENTITY = model.getResource(WOC + "Statement");
 
+    public static final Resource BLOCK_ENTITY = model.getResource(WOC + "Block");
+
     public static final Resource IF_THEN_ELSE_ENTITY = model.getResource(WOC + "IfThenElse");
+
+    public static final Resource WHILE_ENTITY = model.getResource(WOC + "While");
 
     public static final Resource EXPRESSION_ENTITY = model.getResource(WOC + "Expression");
 
@@ -148,6 +152,10 @@ public class Ontology {
     public static final Property THEN_PROPERTY = model.getProperty(WOC + "thenStatement");
 
     public static final Property ELSE_PROPERTY = model.getProperty(WOC + "elseStatement");
+
+    public static final Property BODY_PROPERTY = model.getProperty(WOC + "body");
+
+    public static final Property END_LINE_PROPERTY = model.getProperty(WOC + "endLine");
 
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");

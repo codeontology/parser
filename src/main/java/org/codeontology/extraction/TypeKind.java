@@ -19,7 +19,7 @@ public enum TypeKind {
     TYPE_VARIABLE,
     PARAMETERIZED_TYPE;
 
-    public static TypeKind getKind(CtTypeReference<?> reference) {
+    public static TypeKind getKindOf(CtTypeReference<?> reference) {
 
         if (reference instanceof CtArrayTypeReference<?>) {
             return ARRAY;
@@ -35,7 +35,7 @@ public enum TypeKind {
 
         CtType<?> type = reference.getDeclaration();
         if (type != null) {
-            return getKind(type);
+            return getKindOf(type);
         }
 
         if (reference.isPrimitive()) {
@@ -59,7 +59,7 @@ public enum TypeKind {
 
     }
 
-    public static TypeKind getKind(CtType type) {
+    public static TypeKind getKindOf(CtType type) {
 
         if (type.getReference() instanceof CtArrayTypeReference) {
             return ARRAY;

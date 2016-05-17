@@ -74,6 +74,7 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
             tagComment();
             tagSourceCode();
             tagThrows();
+            tagBody();
         }
     }
 
@@ -161,9 +162,7 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
             return;
         }
 
-        int size = statements.size();
-        for (int i = 0; i < size; i++) {
-            CtStatement statement = statements.get(i);
+        for (CtStatement statement : statements) {
             if (createsAnonymousClass(statement) || statement instanceof CtClass) {
                 addAnonymousClasses(statement);
             } else {
@@ -175,13 +174,6 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
             }
             if (statement instanceof CtReturn<?>) {
                 tagReturnsVariable((CtReturn<?>) statement);
-            }
-
-            if (CodeOntology.processStatements()) {
-                StatementEntity<?> entity = getFactory().wrap(statement);
-                entity.setPosition(i);
-                entity.setParent(this);
-                entity.extract();
             }
         }
 
@@ -372,5 +364,18 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
             }
         }
         getLogger().addTriple(this, Ontology.VAR_ARGS_PROPERTY, getModel().createTypedLiteral(value));
+    }
+
+    public void tagBody() {
+        if (CodeOntology.processStatements()) {
+            CtExecutable executable = getElement();
+            CtBlock<?> body = executable.getBody();
+            if (body != null) {
+                StatementEntity<?> bodyEntity = getFactory().wrap(body);
+                bodyEntity.setParent(this);
+                getLogger().addTriple(this, Ontology.BODY_PROPERTY, bodyEntity);
+                bodyEntity.extract();
+            }
+        }
     }
 }

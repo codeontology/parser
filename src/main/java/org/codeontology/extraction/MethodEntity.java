@@ -91,7 +91,7 @@ public class MethodEntity extends ExecutableEntity<CtMethod<?>> implements Gener
 
     @Override
     public List<TypeVariableEntity> getFormalTypeParameters() {
-        return FormalTypeParametersTagger.formalTypeParametersOf(this);
+        return org.codeontology.extraction.FormalTypeParametersTagger.formalTypeParametersOf(this);
     }
 
     @Override

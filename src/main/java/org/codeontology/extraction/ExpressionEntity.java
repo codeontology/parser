@@ -29,5 +29,10 @@ public class ExpressionEntity extends AbstractEntity<CtExpression<?>> {
     public void extract() {
         tagType();
         tagSourceCode();
+        tagLine();
+    }
+
+    public void tagLine() {
+        new LineTagger(this).tagLine();
     }
 }
