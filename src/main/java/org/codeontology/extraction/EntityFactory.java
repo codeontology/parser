@@ -1,9 +1,7 @@
 package org.codeontology.extraction;
 
 import org.codeontology.exceptions.NullTypeException;
-import spoon.reflect.code.CtLambda;
-import spoon.reflect.code.CtLocalVariable;
-import spoon.reflect.code.CtStatement;
+import spoon.reflect.code.*;
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.*;
 
@@ -156,7 +154,16 @@ public class EntityFactory {
      ************************************************************/
 
     public StatementEntity<?> wrap(CtStatement statement) {
+
+        if (statement instanceof CtIf) {
+            return new IfThenElseEntity((CtIf) statement);
+        }
+
         return new StatementEntity<>(statement);
+    }
+
+    public ExpressionEntity wrap(CtExpression<?> expression) {
+        return new ExpressionEntity(expression);
     }
 
 }

@@ -15,7 +15,11 @@ public class StatementEntity<E extends CtStatement> extends AbstractEntity<E> {
 
     @Override
     public String buildRelativeURI() {
-        return getParent().getRelativeURI() + SEPARATOR + TAG + SEPARATOR + position;
+        if (!(getParent() instanceof StatementEntity)) {
+            return getParent().getRelativeURI() + SEPARATOR + TAG + SEPARATOR + position;
+        } else {
+            return getParent().getRelativeURI() + SEPARATOR + position;
+        }
     }
 
     public void setPosition(int position) {
