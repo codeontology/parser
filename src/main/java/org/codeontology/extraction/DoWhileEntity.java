@@ -1,18 +1,19 @@
 package org.codeontology.extraction;
 
+
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
-import spoon.reflect.code.CtWhile;
+import spoon.reflect.code.CtDo;
 
-public class WhileEntity extends LoopEntity<CtWhile> implements ConditionHolderEntity<CtWhile> {
+public class DoWhileEntity extends LoopEntity<CtDo> implements ConditionHolderEntity<CtDo> {
 
-    public WhileEntity(CtWhile element) {
-        super(element);
+    public DoWhileEntity(CtDo doStatement) {
+        super(doStatement);
     }
 
     @Override
     protected RDFNode getType() {
-        return Ontology.WHILE_ENTITY;
+        return Ontology.DO_WHILE_ENTITY;
     }
 
     @Override
@@ -32,4 +33,5 @@ public class WhileEntity extends LoopEntity<CtWhile> implements ConditionHolderE
     public void tagCondition() {
         new ConditionTagger(this).tagCondition();
     }
+
 }

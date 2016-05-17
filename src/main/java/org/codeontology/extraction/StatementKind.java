@@ -1,14 +1,12 @@
 package org.codeontology.extraction;
 
-import spoon.reflect.code.CtBlock;
-import spoon.reflect.code.CtIf;
-import spoon.reflect.code.CtStatement;
-import spoon.reflect.code.CtWhile;
+import spoon.reflect.code.*;
 
 public enum StatementKind {
     BLOCK,
     IF_THEN_ELSE,
     WHILE,
+    DO,
     STATEMENT;
 
     public static StatementKind getKindOf(CtStatement statement) {
@@ -18,6 +16,8 @@ public enum StatementKind {
             return IF_THEN_ELSE;
         } else if (statement instanceof CtWhile) {
             return WHILE;
+        } else if (statement instanceof CtDo) {
+            return DO;
         }
 
         return STATEMENT;

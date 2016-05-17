@@ -82,6 +82,8 @@ public class Ontology {
 
     public static final Resource WHILE_ENTITY = model.getResource(WOC + "While");
 
+    public static final Resource DO_WHILE_ENTITY = model.getResource(WOC + "DoWhile");
+
     public static final Resource EXPRESSION_ENTITY = model.getResource(WOC + "Expression");
 
 

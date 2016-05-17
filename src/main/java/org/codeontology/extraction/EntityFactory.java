@@ -162,6 +162,8 @@ public class EntityFactory {
                 return new IfThenElseEntity((CtIf) statement);
             case WHILE:
                 return new WhileEntity((CtWhile) statement);
+            case DO:
+                return new DoWhileEntity((CtDo) statement);
         }
 
         return new StatementEntity<>(statement);
