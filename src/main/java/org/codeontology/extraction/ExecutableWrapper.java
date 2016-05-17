@@ -1,5 +1,6 @@
 package org.codeontology.extraction;
 
+import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.*;
@@ -160,7 +161,9 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
             return;
         }
 
-        for (CtStatement statement : statements) {
+        int size = statements.size();
+        for (int i = 0; i < size; i++) {
+            CtStatement statement = statements.get(i);
             if (createsAnonymousClass(statement) || statement instanceof CtClass) {
                 addAnonymousClasses(statement);
             } else {
@@ -172,6 +175,13 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
             }
             if (statement instanceof CtReturn<?>) {
                 tagReturnsVariable((CtReturn<?>) statement);
+            }
+
+            if (CodeOntology.processStatements()) {
+                StatementWrapper<?> wrapper = getFactory().wrap(statement);
+                wrapper.setPosition(i);
+                wrapper.setParent(this);
+                wrapper.extract();
             }
         }
 

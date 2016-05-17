@@ -266,4 +266,8 @@ public class CodeOntology {
         System.out.println("[WARNING] " + message);
     }
 
+    public static boolean processStatements() {
+        return getInstance().getArguments().processStatements();
+    }
+
 }

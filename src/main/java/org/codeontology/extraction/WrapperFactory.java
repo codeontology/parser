@@ -3,6 +3,7 @@ package org.codeontology.extraction;
 import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.code.CtLambda;
 import spoon.reflect.code.CtLocalVariable;
+import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.*;
 
@@ -144,6 +145,18 @@ public class WrapperFactory {
 
     private ReflectionFactory reflectionFactory() {
         return ReflectionFactory.getInstance();
+    }
+
+
+
+    /************************************************************
+     *                                                          *
+     *              STATEMENTS AND EXPRESSIONS                  *
+     *                                                          *
+     ************************************************************/
+
+    public StatementWrapper<?> wrap(CtStatement statement) {
+        return new StatementWrapper<>(statement);
     }
 
 }
