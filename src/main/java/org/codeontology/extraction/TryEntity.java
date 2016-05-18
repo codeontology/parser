@@ -3,9 +3,7 @@ package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
-import spoon.reflect.code.CtBlock;
-import spoon.reflect.code.CtCatch;
-import spoon.reflect.code.CtTry;
+import spoon.reflect.code.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +44,6 @@ public class TryEntity extends StatementEntity<CtTry> implements BodyHolderEntit
         }
     }
 
-    public void tagResources() {
-
-    }
-
     private List<CatchEntity> getCatches() {
         List<CatchEntity> catches = new ArrayList<>();
         List<CtCatch> catchers = getElement().getCatchers();
@@ -63,6 +57,30 @@ public class TryEntity extends StatementEntity<CtTry> implements BodyHolderEntit
         }
 
         return catches;
+    }
+
+    public void tagResources() {
+        List<LocalVariableEntity> resources = getResources();
+        for (LocalVariableEntity resource : resources) {
+            getLogger().addTriple(this, Ontology.RESOURCE_PROPERTY, resource);
+            resource.extract();
+        }
+    }
+
+    public List<LocalVariableEntity> getResources() {
+        List<LocalVariableEntity> result = new ArrayList<>();
+
+        if (getElement() instanceof CtTryWithResource) {
+            CtTryWithResource tryWithResources = (CtTryWithResource) getElement();
+            List<CtLocalVariable<?>> resources = tryWithResources.getResources();
+
+            for (CtLocalVariable<?> variable : resources) {
+                result.add(getFactory().wrap(variable));
+            }
+
+        }
+
+        return result;
     }
 
     public FinallyEntity getFinally() {

@@ -181,6 +181,8 @@ public class Ontology {
 
     public static final Property FINALLY_CLAUSE_PROPERTY = model.getProperty(WOC + "finally");
 
+    public static final Property RESOURCE_PROPERTY = model.getProperty(WOC + "resource");
+
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");
 
