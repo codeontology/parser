@@ -3,6 +3,7 @@ package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
+import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtCatch;
 import spoon.reflect.code.CtTry;
 
@@ -38,7 +39,11 @@ public class TryEntity extends StatementEntity<CtTry> implements BodyHolderEntit
     }
 
     public void tagFinally() {
-
+        FinallyEntity finallyBlock = getFinally();
+        if (finallyBlock != null) {
+            getLogger().addTriple(this, Ontology.FINALLY_CLAUSE_PROPERTY, finallyBlock);
+            finallyBlock.extract();
+        }
     }
 
     public void tagResources() {
@@ -58,6 +63,17 @@ public class TryEntity extends StatementEntity<CtTry> implements BodyHolderEntit
         }
 
         return catches;
+    }
+
+    public FinallyEntity getFinally() {
+        CtBlock<?> block = getElement().getFinalizer();
+        if (block != null) {
+            FinallyEntity finallyBlock = new FinallyEntity(block);
+            finallyBlock.setParent(this);
+            return finallyBlock;
+        }
+
+        return null;
     }
 
     @Override

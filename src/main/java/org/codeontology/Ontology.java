@@ -78,19 +78,17 @@ public class Ontology {
 
     public static final Resource BLOCK_ENTITY = model.getResource(WOC + "Block");
 
-    public static final Resource IF_THEN_ELSE_ENTITY = model.getResource(WOC + "IfThenElse");
+    public static final Resource IF_THEN_ELSE_ENTITY = model.getResource(WOC + "IfThenElseStatement");
 
-    public static final Resource WHILE_ENTITY = model.getResource(WOC + "While");
+    public static final Resource WHILE_ENTITY = model.getResource(WOC + "WhileStatement");
 
-    public static final Resource DO_WHILE_ENTITY = model.getResource(WOC + "DoWhile");
+    public static final Resource DO_WHILE_ENTITY = model.getResource(WOC + "DoStatement");
 
-    public static final Resource FOR_ENTITY = model.getResource(WOC + "For");
+    public static final Resource FOR_ENTITY = model.getResource(WOC + "ForStatement");
 
-    public static final Resource FOR_EACH_ENTITY = model.getResource(WOC + "ForEach");
+    public static final Resource FOR_EACH_ENTITY = model.getResource(WOC + "ForEachStatement");
 
-    public static final Resource TRY_ENTITY = model.getResource(WOC + "Try");
-
-    public static final Resource CATCH_ENTITY = model.getResource(WOC + "Catch");
+    public static final Resource TRY_ENTITY = model.getResource(WOC + "TryStatement");
 
     public static final Resource STATEMENT_EXPRESSION_LIST_ENTITY = model.getResource(WOC + "StatementExpressionList");
 

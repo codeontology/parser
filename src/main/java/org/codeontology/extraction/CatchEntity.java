@@ -1,6 +1,5 @@
 package org.codeontology.extraction;
 
-
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.code.CtCatch;
@@ -25,12 +24,11 @@ public class CatchEntity extends CodeElementEntity<CtCatch> implements BodyHolde
 
     @Override
     protected RDFNode getType() {
-        return Ontology.CATCH_ENTITY;
+        return null;
     }
 
     @Override
     public void extract() {
-        tagType();
         tagBody();
         tagSourceCode();
         tagLine();
