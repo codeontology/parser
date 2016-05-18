@@ -11,7 +11,6 @@ import spoon.support.reflect.reference.CtExecutableReferenceImpl;
 import spoon.support.reflect.reference.CtFieldReferenceImpl;
 import spoon.support.reflect.reference.CtLocalVariableReferenceImpl;
 
-import java.beans.Statement;
 import java.lang.reflect.Executable;
 import java.util.ArrayList;
 import java.util.HashSet;

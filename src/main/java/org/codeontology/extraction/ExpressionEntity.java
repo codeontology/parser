@@ -4,7 +4,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.code.CtExpression;
 
-public class ExpressionEntity extends AbstractEntity<CtExpression<?>> {
+public class ExpressionEntity extends CodeElementEntity<CtExpression<?>> {
 
     public ExpressionEntity(CtExpression<?> expression) {
         super(expression);

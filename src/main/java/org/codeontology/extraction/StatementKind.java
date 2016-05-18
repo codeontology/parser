@@ -7,6 +7,8 @@ public enum StatementKind {
     IF_THEN_ELSE,
     WHILE,
     DO,
+    FOR,
+    FOREACH,
     STATEMENT;
 
     public static StatementKind getKindOf(CtStatement statement) {
@@ -18,6 +20,10 @@ public enum StatementKind {
             return WHILE;
         } else if (statement instanceof CtDo) {
             return DO;
+        } else if (statement instanceof CtFor) {
+            return FOR;
+        } else if (statement instanceof CtForEach) {
+            return FOREACH;
         }
 
         return STATEMENT;

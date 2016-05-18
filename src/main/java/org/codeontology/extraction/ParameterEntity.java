@@ -8,6 +8,7 @@ import org.codeontology.commentparser.DocCommentParser;
 import org.codeontology.commentparser.ParamTag;
 import org.codeontology.commentparser.Tag;
 import org.codeontology.exceptions.NullTypeException;
+import spoon.reflect.declaration.CtExecutable;
 import spoon.reflect.declaration.CtParameter;
 import spoon.reflect.reference.CtTypeReference;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class ParameterEntity extends NamedElementEntity<CtParameter<?>> implements TypedElementEntity<CtParameter<?>> {
 
     private int position;
-    private ExecutableEntity parent;
+    private ExecutableEntity<? extends CtExecutable> parent;
     private boolean parameterAvailable = true;
     private static final String TAG = "parameter";
 

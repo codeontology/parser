@@ -4,9 +4,9 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import org.codeontology.Ontology;
 
 public class LineTagger {
-    Entity<?> entity;
+    CodeElementEntity<?> entity;
 
-    public LineTagger(Entity<?> entity) {
+    public LineTagger(CodeElementEntity<?> entity) {
         this.entity = entity;
     }
 

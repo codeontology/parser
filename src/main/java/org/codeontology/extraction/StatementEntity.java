@@ -5,7 +5,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.code.CtStatement;
 
-public class StatementEntity<E extends CtStatement> extends AbstractEntity<E> {
+public class StatementEntity<E extends CtStatement> extends CodeElementEntity<E> {
     private static final String TAG = "statement";
     private int position;
 

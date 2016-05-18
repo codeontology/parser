@@ -9,6 +9,8 @@ import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EntityFactory {
 
@@ -164,9 +166,20 @@ public class EntityFactory {
                 return new WhileEntity((CtWhile) statement);
             case DO:
                 return new DoWhileEntity((CtDo) statement);
+            case FOR:
+                return new ForEntity((CtFor) statement);
         }
 
         return new StatementEntity<>(statement);
+    }
+
+    public StatementExpressionListEntity wrap(List<CtStatement> list) {
+        List<StatementEntity<?>> element = new ArrayList<>(list.size());
+        for (CtStatement statement : list) {
+            element.add(wrap(statement));
+        }
+
+        return new StatementExpressionListEntity(element);
     }
 
     public ExpressionEntity wrap(CtExpression<?> expression) {
