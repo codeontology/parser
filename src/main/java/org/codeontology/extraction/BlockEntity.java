@@ -6,9 +6,10 @@ import org.codeontology.Ontology;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtStatement;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class BlockEntity extends StatementEntity<CtBlock> {
+public class BlockEntity extends StatementEntity<CtBlock<?>> implements StatementsHolderEntity<CtBlock<?>>{
 
     public BlockEntity(CtBlock element) {
         super(element);
@@ -32,15 +33,23 @@ public class BlockEntity extends StatementEntity<CtBlock> {
         getLogger().addTriple(this, Ontology.END_LINE_PROPERTY, literal);
     }
 
-    public void tagStatements() {
+    @Override
+    public List<StatementEntity<?>> getStatements() {
         List<CtStatement> statements = getElement().getStatements();
+        List<StatementEntity<?>> result = new ArrayList<>();
         int size = statements.size();
+
         for (int i = 0; i < size; i++) {
             StatementEntity<?> statement = getFactory().wrap(statements.get(i));
             statement.setPosition(i);
             statement.setParent(this);
-            getLogger().addTriple(this, Ontology.STATEMENT_PROPERTY, statement);
-            statement.extract();
         }
+
+        return result;
+    }
+
+    @Override
+    public void tagStatements() {
+        new StatementsTagger(this).tagStatements();
     }
 }

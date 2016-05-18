@@ -1,13 +1,13 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import org.codeontology.Ontology;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtStatement;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class FinallyEntity extends CodeElementEntity<CtBlock<?>> {
+public class FinallyEntity extends CodeElementEntity<CtBlock<?>> implements StatementsHolderEntity<CtBlock<?>> {
 
     private static final String TAG = "finally";
 
@@ -27,7 +27,6 @@ public class FinallyEntity extends CodeElementEntity<CtBlock<?>> {
 
     @Override
     public void extract() {
-        tagType();
         tagStatements();
         tagSourceCode();
         tagLine();
@@ -37,15 +36,23 @@ public class FinallyEntity extends CodeElementEntity<CtBlock<?>> {
         new LineTagger(this).tagLine();
     }
 
-    public void tagStatements() {
+    @Override
+    public List<StatementEntity<?>> getStatements() {
         List<CtStatement> statements = getElement().getStatements();
+        List<StatementEntity<?>> result = new ArrayList<>();
         int size = statements.size();
+
         for (int i = 0; i < size; i++) {
             StatementEntity<?> statement = getFactory().wrap(statements.get(i));
             statement.setPosition(i);
             statement.setParent(this);
-            getLogger().addTriple(this, Ontology.STATEMENT_PROPERTY, statement);
-            statement.extract();
         }
+
+        return result;
+    }
+
+    @Override
+    public void tagStatements() {
+        new StatementsTagger(this).tagStatements();
     }
 }

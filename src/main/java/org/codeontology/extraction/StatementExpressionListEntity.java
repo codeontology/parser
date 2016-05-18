@@ -5,7 +5,8 @@ import org.codeontology.Ontology;
 
 import java.util.List;
 
-public class StatementExpressionListEntity extends AbstractEntity<List<StatementEntity<?>>> {
+public class StatementExpressionListEntity extends AbstractEntity<List<StatementEntity<?>>>
+        implements StatementsHolderEntity<List<StatementEntity<?>>> {
 
     private int position;
 
@@ -38,15 +39,13 @@ public class StatementExpressionListEntity extends AbstractEntity<List<Statement
         tagStatements();
     }
 
-    private void tagStatements() {
-        int size = getElement().size();
-        for (int i = 0; i < size; i++) {
-            StatementEntity<?> statement = getElement().get(i);
-            statement.setPosition(i);
-            statement.setParent(this);
-            getLogger().addTriple(this, Ontology.STATEMENT_PROPERTY, statement);
-            statement.extract();
-        }
+    @Override
+    public List<StatementEntity<?>> getStatements() {
+        return getElement();
+    }
+
+    public void tagStatements() {
+        new StatementsTagger(this).tagStatements();
     }
 
     @Override
