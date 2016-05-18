@@ -168,6 +168,8 @@ public class EntityFactory {
                 return new DoWhileEntity((CtDo) statement);
             case FOR:
                 return new ForEntity((CtFor) statement);
+            case FOREACH:
+                return new ForEachEntity((CtForEach) statement);
         }
 
         return new StatementEntity<>(statement);

@@ -43,7 +43,7 @@ public class MethodEntity extends ExecutableEntity<CtMethod<?>> implements Gener
             }
         } catch (Exception | Error e) {
             // could not get overriding executable
-            // we just skip this method
+            // we can do nothing but skipping this method
         }
     }
 

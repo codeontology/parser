@@ -86,6 +86,8 @@ public class Ontology {
 
     public static final Resource FOR_ENTITY = model.getResource(WOC + "For");
 
+    public static final Resource FOR_EACH_ENTITY = model.getResource(WOC + "ForEach");
+
     public static final Resource STATEMENT_EXPRESSION_LIST_ENTITY = model.getResource(WOC + "StatementExpressionList");
 
     public static final Resource EXPRESSION_ENTITY = model.getResource(WOC + "Expression");
@@ -166,6 +168,10 @@ public class Ontology {
     public static final Property FOR_INIT_PROPERTY = model.getProperty(WOC + "forInit");
 
     public static final Property FOR_UPDATE_PROPERTY = model.getProperty(WOC + "forUpdate");
+
+    public static final Property EXPRESSION_PROPERTY = model.getProperty(WOC + "expression");
+
+    public static final Property VARIABLE_PROPERTY = model.getProperty(WOC + "variable");
 
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");
