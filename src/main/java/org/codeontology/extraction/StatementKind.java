@@ -9,6 +9,7 @@ public enum StatementKind {
     DO,
     FOR,
     FOREACH,
+    TRY,
     STATEMENT;
 
     public static StatementKind getKindOf(CtStatement statement) {
@@ -24,6 +25,8 @@ public enum StatementKind {
             return FOR;
         } else if (statement instanceof CtForEach) {
             return FOREACH;
+        } else if (statement instanceof CtTry) {
+            return TRY;
         }
 
         return STATEMENT;

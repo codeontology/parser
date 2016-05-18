@@ -42,17 +42,8 @@ public class LocalVariableEntity extends NamedElementEntity<CtLocalVariable<?>> 
     public TypeEntity<?> getJavaType() {
         CtTypeReference<?> type = getElement().getType();
         TypeEntity<?> entity = getFactory().wrap(type);
-        entity.setParent(getExecutableParent());
+        entity.setParent(getParent(ExecutableEntity.class));
         return entity;
-    }
-
-    private Entity<?> getExecutableParent() {
-        Entity<?> parent = getParent();
-        while (parent != null && !(parent instanceof ExecutableEntity<?>)) {
-            parent = parent.getParent();
-        }
-
-        return parent;
     }
 
     public void tagJavaType() {

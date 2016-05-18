@@ -103,4 +103,13 @@ public abstract class AbstractEntity<E> implements Entity<E> {
     public int hashCode() {
         return getRelativeURI().hashCode();
     }
+
+    public Entity<?> getParent(Class<?> clazz) {
+        Entity<?> parent = getParent();
+        while (parent != null && !(clazz.isAssignableFrom(parent.getClass()))) {
+            parent = parent.getParent();
+        }
+
+        return parent;
+    }
 }

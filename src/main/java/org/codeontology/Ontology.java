@@ -88,6 +88,10 @@ public class Ontology {
 
     public static final Resource FOR_EACH_ENTITY = model.getResource(WOC + "ForEach");
 
+    public static final Resource TRY_ENTITY = model.getResource(WOC + "Try");
+
+    public static final Resource CATCH_ENTITY = model.getResource(WOC + "Catch");
+
     public static final Resource STATEMENT_EXPRESSION_LIST_ENTITY = model.getResource(WOC + "StatementExpressionList");
 
     public static final Resource EXPRESSION_ENTITY = model.getResource(WOC + "Expression");
@@ -172,6 +176,12 @@ public class Ontology {
     public static final Property EXPRESSION_PROPERTY = model.getProperty(WOC + "expression");
 
     public static final Property VARIABLE_PROPERTY = model.getProperty(WOC + "variable");
+
+    public static final Property CATCH_CLAUSE_PROPERTY = model.getProperty(WOC + "catch");
+
+    public static final Property CATCH_FORMAL_PARAMETER_PROPERTY = model.getProperty(WOC + "catchFormalParameter");
+
+    public static final Property FINALLY_CLAUSE_PROPERTY = model.getProperty(WOC + "finally");
 
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");

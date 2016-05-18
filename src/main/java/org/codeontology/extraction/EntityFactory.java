@@ -170,6 +170,8 @@ public class EntityFactory {
                 return new ForEntity((CtFor) statement);
             case FOREACH:
                 return new ForEachEntity((CtForEach) statement);
+            case TRY:
+                return new TryEntity((CtTry) statement);
         }
 
         return new StatementEntity<>(statement);
@@ -182,6 +184,10 @@ public class EntityFactory {
         }
 
         return new StatementExpressionListEntity(element);
+    }
+
+    public CatchEntity wrap(CtCatch catcher) {
+        return new CatchEntity(catcher);
     }
 
     public ExpressionEntity wrap(CtExpression<?> expression) {
