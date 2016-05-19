@@ -20,6 +20,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 public class CodeOntology {
@@ -44,14 +46,17 @@ public class CodeOntology {
             downloadDependencies = arguments.downloadDependencies();
             formatter = new PeriodFormatterBuilder()
                     .appendHours()
-                    .appendSuffix(" hours, ")
+                    .appendSuffix(" h ")
                     .appendMinutes()
-                    .appendSuffix(" minutes, ")
+                    .appendSuffix(" min ")
                     .appendSeconds()
-                    .appendSuffix(" seconds, ")
+                    .appendSuffix(" s ")
                     .appendMillis()
-                    .appendSuffix(" millis")
+                    .appendSuffix(" ms")
                     .toFormatter();
+
+            setUncaughtExceptionHandler();
+
         } catch (JSAPException e) {
             System.out.println("Could not process arguments");
         }
@@ -66,7 +71,7 @@ public class CodeOntology {
         } catch (Exception | Error e) {
             codeOntology.handleFailure(e);
         }
-        System.exit(status);
+        exit(status);
     }
 
     private void processSources() {
@@ -78,7 +83,6 @@ public class CodeOntology {
                     codeOntology.spoon();
                     codeOntology.extractAllTriples();
                 }
-
             }
         } catch (Exception e) {
             handleFailure(e);
@@ -266,8 +270,34 @@ public class CodeOntology {
         System.out.println("[WARNING] " + message);
     }
 
-    public static boolean processStatements() {
-        return getInstance().getArguments().processStatements();
+    private void setUncaughtExceptionHandler() {
+        Thread.currentThread().setUncaughtExceptionHandler((t, e) ->  exit(-1));
+    }
+
+    private static void exit(final int status) {
+        try {
+            // setup a timer, so if nice exit fails, the nasty exit happens
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Runtime.getRuntime().halt(status);
+                }
+            }, 30000);
+
+            // try to exit nicely
+            System.exit(status);
+
+        } catch (Throwable t) {
+            try {
+                Thread.sleep(30000);
+                Runtime.getRuntime().halt(status);
+            } catch (Exception | Error e) {
+                Runtime.getRuntime().halt(status);
+            }
+        }
+
+        Runtime.getRuntime().halt(status);
     }
 
 }
