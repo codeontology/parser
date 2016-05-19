@@ -46,6 +46,7 @@ public class FinallyEntity extends CodeElementEntity<CtBlock<?>> implements Stat
             StatementEntity<?> statement = getFactory().wrap(statements.get(i));
             statement.setPosition(i);
             statement.setParent(this);
+            result.add(statement);
         }
 
         return result;

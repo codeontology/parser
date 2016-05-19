@@ -5,6 +5,7 @@ import spoon.reflect.code.*;
 public enum StatementKind {
     BLOCK,
     IF_THEN_ELSE,
+    SWITCH,
     WHILE,
     DO,
     FOR,
@@ -15,8 +16,10 @@ public enum StatementKind {
     public static StatementKind getKindOf(CtStatement statement) {
         if (statement instanceof CtBlock) {
             return BLOCK;
-        } else if (statement instanceof CtIf){
+        } else if (statement instanceof CtIf) {
             return IF_THEN_ELSE;
+        } else if (statement instanceof CtSwitch) {
+            return SWITCH;
         } else if (statement instanceof CtWhile) {
             return WHILE;
         } else if (statement instanceof CtDo) {

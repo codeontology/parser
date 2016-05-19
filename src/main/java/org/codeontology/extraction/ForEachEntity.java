@@ -4,7 +4,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.code.CtForEach;
 
-public class ForEachEntity extends LoopEntity<CtForEach> {
+public class ForEachEntity extends LoopEntity<CtForEach> implements ExpressionHolderEntity<CtForEach> {
 
     public ForEachEntity(CtForEach element) {
         super(element);
@@ -22,16 +22,14 @@ public class ForEachEntity extends LoopEntity<CtForEach> {
         tagVariable();
     }
 
-    private ExpressionEntity getExpression() {
+    public ExpressionEntity getExpression() {
         ExpressionEntity expression = getFactory().wrap(getElement().getExpression());
         expression.setParent(this);
         return expression;
     }
 
     public void tagExpression() {
-        ExpressionEntity expression = getExpression();
-        getLogger().addTriple(this, Ontology.EXPRESSION_PROPERTY, expression);
-        expression.extract();
+        new ExpressionTagger(this).tagExpression();
     }
 
     private LocalVariableEntity getVariable() {

@@ -147,8 +147,6 @@ public class EntityFactory {
         return ReflectionFactory.getInstance();
     }
 
-
-
     /************************************************************
      *                                                          *
      *              STATEMENTS AND EXPRESSIONS                  *
@@ -162,6 +160,8 @@ public class EntityFactory {
                 return new BlockEntity((CtBlock) statement);
             case IF_THEN_ELSE:
                 return new IfThenElseEntity((CtIf) statement);
+            case SWITCH:
+                return new SwitchEntity((CtSwitch) statement);
             case WHILE:
                 return new WhileEntity((CtWhile) statement);
             case DO:

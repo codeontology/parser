@@ -43,6 +43,7 @@ public class BlockEntity extends StatementEntity<CtBlock<?>> implements Statemen
             StatementEntity<?> statement = getFactory().wrap(statements.get(i));
             statement.setPosition(i);
             statement.setParent(this);
+            result.add(statement);
         }
 
         return result;

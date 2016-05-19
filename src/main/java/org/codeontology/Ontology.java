@@ -80,6 +80,8 @@ public class Ontology {
 
     public static final Resource IF_THEN_ELSE_ENTITY = model.getResource(WOC + "IfThenElseStatement");
 
+    public static final Resource SWITCH_ENTITY = model.getResource(WOC + "SwitchStatement");
+
     public static final Resource WHILE_ENTITY = model.getResource(WOC + "WhileStatement");
 
     public static final Resource DO_WHILE_ENTITY = model.getResource(WOC + "DoStatement");
