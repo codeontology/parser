@@ -20,6 +20,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 public class CodeOntology {
@@ -52,6 +54,9 @@ public class CodeOntology {
                     .appendMillis()
                     .appendSuffix(" millis")
                     .toFormatter();
+
+            setUncaughtExceptionHandler();
+
         } catch (JSAPException e) {
             System.out.println("Could not process arguments");
         }
@@ -66,7 +71,7 @@ public class CodeOntology {
         } catch (Exception | Error e) {
             codeOntology.handleFailure(e);
         }
-        System.exit(status);
+        exit(status);
     }
 
     private void processSources() {
@@ -264,6 +269,39 @@ public class CodeOntology {
 
     public static void showWarning(String message) {
         System.out.println("[WARNING] " + message);
+    }
+
+    private void setUncaughtExceptionHandler() {
+        Thread.currentThread().setUncaughtExceptionHandler((t, e) -> {
+            System.out.println("exiting...");
+            exit(-1);
+        });
+    }
+
+    private static void exit(final int status) {
+        try {
+            // setup a timer, so if nice exit fails, the nasty exit happens
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Runtime.getRuntime().halt(status);
+                }
+            }, 30000);
+
+            // try to exit nicely
+            System.exit(status);
+
+        } catch (Throwable t) {
+            t.printStackTrace();
+            try {
+                Thread.sleep(10000);
+                Runtime.getRuntime().halt(status);
+            } catch (Exception | Error e) {
+                e.printStackTrace();
+                Runtime.getRuntime().halt(status);
+            }
+        }
     }
 
 }
