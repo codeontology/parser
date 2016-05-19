@@ -46,13 +46,13 @@ public class CodeOntology {
             downloadDependencies = arguments.downloadDependencies();
             formatter = new PeriodFormatterBuilder()
                     .appendHours()
-                    .appendSuffix(" hours, ")
+                    .appendSuffix(" h ")
                     .appendMinutes()
-                    .appendSuffix(" minutes, ")
+                    .appendSuffix(" min ")
                     .appendSeconds()
-                    .appendSuffix(" seconds, ")
+                    .appendSuffix(" s ")
                     .appendMillis()
-                    .appendSuffix(" millis")
+                    .appendSuffix(" ms")
                     .toFormatter();
 
             setUncaughtExceptionHandler();
@@ -83,7 +83,6 @@ public class CodeOntology {
                     codeOntology.spoon();
                     codeOntology.extractAllTriples();
                 }
-
             }
         } catch (Exception e) {
             handleFailure(e);
@@ -272,10 +271,7 @@ public class CodeOntology {
     }
 
     private void setUncaughtExceptionHandler() {
-        Thread.currentThread().setUncaughtExceptionHandler((t, e) -> {
-            System.out.println("exiting...");
-            exit(-1);
-        });
+        Thread.currentThread().setUncaughtExceptionHandler((t, e) ->  exit(-1));
     }
 
     private static void exit(final int status) {
@@ -293,15 +289,15 @@ public class CodeOntology {
             System.exit(status);
 
         } catch (Throwable t) {
-            t.printStackTrace();
             try {
-                Thread.sleep(10000);
+                Thread.sleep(30000);
                 Runtime.getRuntime().halt(status);
             } catch (Exception | Error e) {
-                e.printStackTrace();
                 Runtime.getRuntime().halt(status);
             }
         }
+
+        Runtime.getRuntime().halt(status);
     }
 
 }
