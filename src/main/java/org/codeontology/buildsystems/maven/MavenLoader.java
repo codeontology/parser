@@ -3,6 +3,7 @@ package org.codeontology.buildsystems.maven;
 import org.codeontology.CodeOntology;
 import org.codeontology.buildsystems.ClasspathLoader;
 import org.codeontology.buildsystems.DependenciesLoader;
+import org.codeontology.buildsystems.DefaultProject;
 import org.codeontology.buildsystems.Project;
 
 import java.io.File;

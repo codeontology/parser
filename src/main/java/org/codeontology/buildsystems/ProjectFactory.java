@@ -37,6 +37,6 @@ public class ProjectFactory {
                 }
         }
 
-        return new Project(project);
+        return new DefaultProject(project);
     }
 }

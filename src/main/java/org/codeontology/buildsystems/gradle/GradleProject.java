@@ -3,6 +3,7 @@ package org.codeontology.buildsystems.gradle;
 import org.codeontology.buildsystems.BuildFiles;
 import org.codeontology.buildsystems.DependenciesLoader;
 import org.codeontology.buildsystems.Project;
+import org.codeontology.extraction.ProjectVisitor;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -72,12 +73,17 @@ public class GradleProject extends Project {
     }
 
     @Override
-    public DependenciesLoader<? extends Project> getLoader() {
+    public DependenciesLoader<? extends GradleProject> getLoader() {
         return loader;
     }
 
     @Override
     public File getBuildFile() {
         return buildFile;
+    }
+
+    @Override
+    public void accept(ProjectVisitor visitor) {
+        visitor.visit(this);
     }
 }

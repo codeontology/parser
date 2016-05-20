@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.codeontology.CodeOntology;
+import org.codeontology.buildsystems.DefaultProject;
 import org.codeontology.buildsystems.DependenciesLoader;
 import org.codeontology.buildsystems.Project;
 

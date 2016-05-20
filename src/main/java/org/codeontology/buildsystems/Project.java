@@ -1,5 +1,7 @@
 package org.codeontology.buildsystems;
 
+import org.codeontology.extraction.ProjectVisitor;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -7,24 +9,18 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
-public class Project {
-
-    private File projectDirectory;
-    private Collection<Project> subProjects;
-    private File root;
+public abstract class Project {
+    protected File projectDirectory;
+    protected Collection<Project> subProjects;
+    protected File root;
 
     public Project(File projectDirectory) {
-        if (projectDirectory == null) {
-            throw new IllegalArgumentException();
-        }
         this.projectDirectory = projectDirectory;
         this.root = projectDirectory;
         subProjects = findSubProjects();
     }
 
-    protected Collection<Project> findSubProjects() {
-       return new ArrayList<>();
-    }
+    protected abstract Collection<Project> findSubProjects();
 
     public File getProjectDirectory() {
         return projectDirectory;
@@ -56,17 +52,13 @@ public class Project {
         return "";
     }
 
-    public File getBuildFile() {
-        return null;
-    }
+    public abstract File getBuildFile();
 
     public String getPath() {
         return getProjectDirectory().getPath();
     }
 
-    public DependenciesLoader<? extends Project> getLoader() {
-        return new DefaultLoader(this);
-    }
+    public abstract DependenciesLoader<? extends Project> getLoader();
 
     public File getRoot() {
         return root;
@@ -87,4 +79,9 @@ public class Project {
         return result;
     }
 
+    public String getName() {
+        return getProjectDirectory().getName();
+    }
+
+    public abstract void accept(ProjectVisitor visitor);
 }

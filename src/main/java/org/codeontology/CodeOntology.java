@@ -3,6 +3,7 @@ package org.codeontology;
 import com.martiansoftware.jsap.JSAPException;
 import org.apache.commons.io.FileUtils;
 import org.codeontology.buildsystems.DependenciesLoader;
+import org.codeontology.buildsystems.DefaultProject;
 import org.codeontology.buildsystems.Project;
 import org.codeontology.buildsystems.ProjectFactory;
 import org.codeontology.extraction.JarProcessor;
@@ -300,9 +301,4 @@ public class CodeOntology {
 
         Runtime.getRuntime().halt(status);
     }
-
-    public static boolean processStatements() {
-        return getInstance().getArguments().processStatements();
-    }
-
 }

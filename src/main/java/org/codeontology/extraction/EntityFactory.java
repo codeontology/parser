@@ -1,5 +1,9 @@
 package org.codeontology.extraction;
 
+import org.codeontology.buildsystems.DefaultProject;
+import org.codeontology.buildsystems.gradle.AndroidProject;
+import org.codeontology.buildsystems.gradle.GradleProject;
+import org.codeontology.buildsystems.maven.MavenProject;
 import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.code.CtLambda;
 import spoon.reflect.code.CtLocalVariable;
@@ -142,8 +146,26 @@ public class EntityFactory {
         return wrap(reflectionFactory().createTypeReference(type));
     }
 
+    public DefaultProjectEntity wrap(DefaultProject project) {
+        return new DefaultProjectEntity(project);
+    }
+
+    public GradleProjectEntity wrap(GradleProject project) {
+        return new GradleProjectEntity(project);
+    }
+
+    public MavenProjectEntity wrap(MavenProject project) {
+        return new MavenProjectEntity(project);
+    }
+
+    public AndroidGradleProjectEntity wrap(AndroidProject project) {
+        return new AndroidGradleProjectEntity(project);
+    }
+
     private ReflectionFactory reflectionFactory() {
         return ReflectionFactory.getInstance();
     }
+
+
 
 }

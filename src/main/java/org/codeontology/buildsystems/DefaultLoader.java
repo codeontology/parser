@@ -1,10 +1,10 @@
 package org.codeontology.buildsystems;
 
-public class DefaultLoader extends DependenciesLoader<Project> {
+public class DefaultLoader extends DependenciesLoader<DefaultProject> {
 
-    private Project project;
+    private DefaultProject project;
 
-    public DefaultLoader(Project project) {
+    public DefaultLoader(DefaultProject project) {
         super(project);
         this.project = project;
     }

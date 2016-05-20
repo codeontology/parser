@@ -76,6 +76,14 @@ public class Ontology {
 
     public static final Resource STATEMENT_ENTITY = model.getResource(WOC + "Statement");
 
+    public static final Resource PROJECT_ENTITY = model.getResource(WOC + "Project");
+
+    public static final Resource MAVEN_PROJECT_ENTITY = model.getResource(WOC + "MavenProject");
+
+    public static final Resource GRADLE_PROJECT_ENTITY = model.getResource(WOC + "GradleProject");
+
+    public static final Resource ANDROID_GRADLE_PROJECT_ENTITY = model.getResource(WOC + "AndroidGradleProject");
+
 
     public static final Property RDF_TYPE_PROPERTY = model.getProperty(RDF + "type");
 
@@ -138,6 +146,12 @@ public class Ontology {
     public static final Property LINE_PROPERTY = model.getProperty(WOC + "line");
 
     public static final Property STATEMENT_PROPERTY = model.getProperty(WOC + "statement");
+
+    public static final Property PROJECT_PROPERTY = model.getProperty(WOC + "project");
+
+    public static final Property SUBPROJECT_PROPERTY = model.getProperty(WOC + "subProject");
+
+    public static final Property BUILD_FILE_PROPERTY = model.getProperty(WOC + "buildFile");
 
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");
