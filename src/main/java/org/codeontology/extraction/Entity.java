@@ -2,9 +2,8 @@ package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
-import spoon.reflect.declaration.CtElement;
 
-public interface Entity<E extends CtElement> {
+public interface Entity<E> {
 
     String SEPARATOR = "-";
 

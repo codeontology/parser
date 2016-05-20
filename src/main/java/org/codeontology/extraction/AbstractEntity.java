@@ -1,15 +1,12 @@
 package org.codeontology.extraction;
 
+
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.codeontology.Ontology;
-import spoon.reflect.declaration.CtAnnotation;
-import spoon.reflect.declaration.CtElement;
 
-import java.util.List;
-
-public abstract class AbstractEntity<E extends CtElement> implements Entity<E> {
+public abstract class AbstractEntity<E> implements Entity<E> {
 
     private E element;
     private static Model model = RDFLogger.getInstance().getModel();
@@ -43,26 +40,14 @@ public abstract class AbstractEntity<E extends CtElement> implements Entity<E> {
         getLogger().addTriple(this, Ontology.RDF_TYPE_PROPERTY, getType());
     }
 
-    public void tagComment() {
-        String comment = getElement().getDocComment();
-        if (comment != null) {
-            getLogger().addTriple(this, Ontology.COMMENT_PROPERTY, model.createLiteral(comment));
-        }
-    }
-
-    public void tagAnnotations() {
-        List<CtAnnotation<?>> annotations = getElement().getAnnotations();
-        for (CtAnnotation annotation : annotations) {
-            TypeEntity annotationType = getFactory().wrap(annotation.getAnnotationType());
-            getLogger().addTriple(this, Ontology.ANNOTATION_PROPERTY, annotationType);
-            annotationType.follow();
-        }
-    }
-
     protected abstract RDFNode getType();
 
     public void tagSourceCode() {
-        getLogger().addTriple(this, Ontology.SOURCE_CODE_PROPERTY, model.createLiteral(getElement().toString()));
+        getLogger().addTriple(this, Ontology.SOURCE_CODE_PROPERTY, model.createLiteral(getSourceCode()));
+    }
+
+    public String getSourceCode() {
+        return getElement().toString();
     }
 
     @Override
@@ -118,4 +103,15 @@ public abstract class AbstractEntity<E extends CtElement> implements Entity<E> {
     public int hashCode() {
         return getRelativeURI().hashCode();
     }
+
+    public Entity<?> getParent(Class<?> clazz) {
+        Entity<?> parent = getParent();
+        while (parent != null && !(clazz.isAssignableFrom(parent.getClass()))) {
+            parent = parent.getParent();
+        }
+
+        return parent;
+    }
 }
+
+

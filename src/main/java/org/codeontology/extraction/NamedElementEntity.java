@@ -6,7 +6,7 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtNamedElement;
 import spoon.reflect.reference.CtReference;
 
-public abstract class NamedElementEntity<E extends CtNamedElement> extends AbstractEntity<E> {
+public abstract class NamedElementEntity<E extends CtNamedElement> extends CodeElementEntity<E> {
 
     private CtReference reference;
 
@@ -67,4 +67,3 @@ public abstract class NamedElementEntity<E extends CtNamedElement> extends Abstr
         return getElement() != null;
     }
 }
-
