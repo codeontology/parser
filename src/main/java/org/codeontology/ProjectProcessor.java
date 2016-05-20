@@ -9,9 +9,11 @@ public class ProjectProcessor {
     private ProjectEntity<?> project;
 
     public ProjectProcessor(Project project) {
-        ProjectVisitor visitor = new ProjectVisitor();
-        project.accept(visitor);
-        this.project = visitor.getLastEntity();
+        if (project != null) {
+            ProjectVisitor visitor = new ProjectVisitor();
+            project.accept(visitor);
+            this.project = visitor.getLastEntity();
+        }
     }
 
     public void process() {
@@ -20,7 +22,7 @@ public class ProjectProcessor {
         }
     }
 
-    public ProjectEntity<?> getProject() {
+    public ProjectEntity<?> getProjectEntity() {
         return project;
     }
 }

@@ -14,6 +14,7 @@ import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.util.jar.JarFile;
 
 public class EntityFactory {
 
@@ -160,6 +161,10 @@ public class EntityFactory {
 
     public AndroidGradleProjectEntity wrap(AndroidProject project) {
         return new AndroidGradleProjectEntity(project);
+    }
+
+    public JarFileEntity wrap(JarFile jarFile) {
+        return new JarFileEntity(jarFile);
     }
 
     private ReflectionFactory reflectionFactory() {

@@ -11,6 +11,6 @@ public class AndroidGradleProjectEntity extends GradleProjectEntity {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.ANDROID_GRADLE_PROJECT_ENTITY;
+        return Ontology.ANDROID_PROJECT_ENTITY;
     }
 }

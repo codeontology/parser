@@ -24,7 +24,15 @@ public abstract class ProjectEntity<T extends Project> extends AbstractEntity<T>
         tagType();
         tagBuildFile();
         tagSubProjects();
+        tagName();
     }
+
+    public void tagName() {
+        String name = getElement().getName();
+        Literal label = getModel().createTypedLiteral(name);
+        getLogger().addTriple(this, Ontology.RDFS_LABEL_PROPERTY, label);
+    }
+
 
     public void tagSubProjects() {
         Collection<Project> subProjects = getElement().getSubProjects();
@@ -38,8 +46,10 @@ public abstract class ProjectEntity<T extends Project> extends AbstractEntity<T>
     }
 
     public void tagBuildFile() {
-        String buildFileContent = getElement().getBuildFileContent();
-        Literal buildFileLiteral = getModel().createTypedLiteral(buildFileContent);
-        getLogger().addTriple(this, Ontology.BUILD_FILE_PROPERTY, buildFileLiteral);
+        if (getElement().getBuildFile() != null) {
+            String buildFileContent = getElement().getBuildFileContent();
+            Literal buildFileLiteral = getModel().createTypedLiteral(buildFileContent);
+            getLogger().addTriple(this, Ontology.BUILD_FILE_PROPERTY, buildFileLiteral);
+        }
     }
 }
