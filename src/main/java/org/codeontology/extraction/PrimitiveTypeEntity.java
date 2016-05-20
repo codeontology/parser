@@ -5,9 +5,9 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtTypeReference;
 
-public class PrimitiveTypeWrapper extends TypeWrapper<CtType<?>> {
+public class PrimitiveTypeEntity extends TypeEntity<CtType<?>> {
 
-    public PrimitiveTypeWrapper(CtTypeReference<?> reference) {
+    public PrimitiveTypeEntity(CtTypeReference<?> reference) {
         super(reference);
     }
 

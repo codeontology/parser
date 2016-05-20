@@ -2,9 +2,9 @@ package org.codeontology.extraction;
 
 import spoon.reflect.declaration.CtNamedElement;
 
-public interface MemberWrapper<T extends CtNamedElement> extends Wrapper<T> {
+public interface MemberEntity<T extends CtNamedElement> extends Entity<T> {
 
-    Wrapper<?> getDeclaringElement();
+    Entity<?> getDeclaringElement();
 
     void tagDeclaringElement();
 }

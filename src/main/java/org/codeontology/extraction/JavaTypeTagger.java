@@ -4,10 +4,10 @@ import org.codeontology.Ontology;
 
 public class JavaTypeTagger {
 
-    private TypedElementWrapper<?> typedElement;
-    private TypeWrapper<?> type;
+    private TypedElementEntity<?> typedElement;
+    private TypeEntity<?> type;
 
-    public JavaTypeTagger(TypedElementWrapper<?> typedElement) {
+    public JavaTypeTagger(TypedElementEntity<?> typedElement) {
         this.typedElement = typedElement;
         this.type = typedElement.getJavaType();
     }
@@ -17,7 +17,7 @@ public class JavaTypeTagger {
         type.follow();
     }
 
-    public void tagJavaType(Wrapper<?> parent) {
+    public void tagJavaType(Entity<?> parent) {
         type.setParent(parent);
         tagJavaType();
     }

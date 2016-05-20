@@ -9,12 +9,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class AnonymousClassWrapper<T> extends ClassWrapper<T> {
+public class AnonymousClassEntity<T> extends ClassEntity<T> {
 
     public static final String TAG = "anonymous-class";
-    private Set<Wrapper<?>> requestedResources;
+    private Set<Entity<?>> requestedResources;
 
-    public AnonymousClassWrapper(CtClass<T> anonymousClass) {
+    public AnonymousClassEntity(CtClass<T> anonymousClass) {
         super(anonymousClass);
         requestedResources = new HashSet<>();
     }
@@ -48,20 +48,20 @@ public class AnonymousClassWrapper<T> extends ClassWrapper<T> {
         } else {
             superTypeReference = (CtTypeReference<?>) references.toArray()[0];
         }
-        TypeWrapper<?> superType = getFactory().wrap(superTypeReference);
+        TypeEntity<?> superType = getFactory().wrap(superTypeReference);
         superType.setParent(getParent());
         getLogger().addTriple(this, Ontology.IMPLEMENTS_PROPERTY, superType);
         requestedResources.add(superType);
     }
 
-    public Set<Wrapper<?>> getRequestedResources() {
+    public Set<Entity<?>> getRequestedResources() {
         return requestedResources;
     }
 
     @Override
     public void tagMethods() {
-        List<MethodWrapper> methods = getMethods();
-        for (MethodWrapper method : methods) {
+        List<MethodEntity> methods = getMethods();
+        for (MethodEntity method : methods) {
             method.extract();
             requestedResources.addAll(method.getRequestedResources());
         }
@@ -69,8 +69,8 @@ public class AnonymousClassWrapper<T> extends ClassWrapper<T> {
 
     @Override
     public void tagFields() {
-        List<FieldWrapper> fields = getFields();
-        for (FieldWrapper field : fields) {
+        List<FieldEntity> fields = getFields();
+        for (FieldEntity field : fields) {
             field.extract();
             requestedResources.add(field.getJavaType());
         }

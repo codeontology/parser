@@ -13,19 +13,19 @@ import spoon.reflect.reference.CtTypeReference;
 
 import java.util.List;
 
-public class ParameterWrapper extends AbstractWrapper<CtParameter<?>> implements TypedElementWrapper<CtParameter<?>> {
+public class ParameterEntity extends NamedElementEntity<CtParameter<?>> implements TypedElementEntity<CtParameter<?>> {
 
     private int position;
-    private ExecutableWrapper parent;
+    private ExecutableEntity parent;
     private boolean parameterAvailable = true;
     private static final String TAG = "parameter";
 
-    public ParameterWrapper(CtParameter<?> parameter) {
+    public ParameterEntity(CtParameter<?> parameter) {
         super(parameter);
         parameterAvailable = true;
     }
 
-    public ParameterWrapper(CtTypeReference<?> reference) {
+    public ParameterEntity(CtTypeReference<?> reference) {
         super(reference);
         parameterAvailable = false;
         if (reference.getQualifiedName().equals(CtTypeReference.NULL_TYPE_NAME)) {
@@ -58,11 +58,11 @@ public class ParameterWrapper extends AbstractWrapper<CtParameter<?>> implements
         this.position = position;
     }
 
-    public void setParent(ExecutableWrapper<?> parent) {
+    public void setParent(ExecutableEntity<?> parent) {
         this.parent = parent;
     }
 
-    public ExecutableWrapper<?> getParent() {
+    public ExecutableEntity<?> getParent() {
         return this.parent;
     }
 
@@ -72,7 +72,7 @@ public class ParameterWrapper extends AbstractWrapper<CtParameter<?>> implements
     }
 
     @Override
-    public TypeWrapper<?> getJavaType() {
+    public TypeEntity<?> getJavaType() {
         if (isDeclarationAvailable()) {
             return getFactory().wrap(getElement().getType());
         } else {

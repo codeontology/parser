@@ -10,13 +10,13 @@ import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldWrapper extends AbstractWrapper<CtField<?>> implements ModifiableWrapper<CtField<?>>, MemberWrapper<CtField<?>>, TypedElementWrapper<CtField<?>> {
+public class FieldEntity extends NamedElementEntity<CtField<?>> implements ModifiableEntity<CtField<?>>, MemberEntity<CtField<?>>, TypedElementEntity<CtField<?>> {
 
-    public FieldWrapper(CtField<?> field) {
+    public FieldEntity(CtField<?> field) {
         super(field);
     }
 
-    public FieldWrapper(CtFieldReference<?> field) {
+    public FieldEntity(CtFieldReference<?> field) {
         super(field);
     }
 
@@ -61,8 +61,8 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
     }
 
     @Override
-    public TypeWrapper<?> getJavaType() {
-        TypeWrapper<?> type;
+    public TypeEntity<?> getJavaType() {
+        TypeEntity<?> type;
         if (isDeclarationAvailable()) {
             type = getFactory().wrap(getElement().getType());
         } else {
@@ -77,8 +77,8 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
         return type;
     }
 
-    private TypeWrapper<?> getGenericType() {
-        TypeWrapper<?> result = null;
+    private TypeEntity<?> getGenericType() {
+        TypeEntity<?> result = null;
         if (!isDeclarationAvailable()) {
             try {
                 CtFieldReference<?> reference = ((CtFieldReference<?>) getReference());
@@ -105,7 +105,7 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
     }
 
     @Override
-    public Wrapper<?> getDeclaringElement() {
+    public Entity<?> getDeclaringElement() {
         if (isDeclarationAvailable()) {
             return getFactory().wrap(getElement().getDeclaringType());
         } else {

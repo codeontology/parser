@@ -4,11 +4,11 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.code.CtLambda;
 
-public class LambdaWrapper extends AbstractWrapper<CtLambda<?>> {
+public class LambdaEntity extends NamedElementEntity<CtLambda<?>> {
 
     public static final String TAG = "lambda";
 
-    public LambdaWrapper(CtLambda<?> lambda) {
+    public LambdaEntity(CtLambda<?> lambda) {
         super(lambda);
     }
 
@@ -20,7 +20,7 @@ public class LambdaWrapper extends AbstractWrapper<CtLambda<?>> {
     }
 
     private void tagFunctionalImplements() {
-        Wrapper<?> implementedType = getFactory().wrap(getElement().getType());
+        Entity<?> implementedType = getFactory().wrap(getElement().getType());
         implementedType.setParent(this.getParent());
         getLogger().addTriple(this, Ontology.IMPLEMENTS_PROPERTY, implementedType);
         implementedType.follow();

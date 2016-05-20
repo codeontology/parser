@@ -6,10 +6,10 @@ import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtArrayTypeReference;
 import spoon.reflect.reference.CtTypeReference;
 
-public class ArrayWrapper extends TypeWrapper<CtType<?>> {
-    private TypeWrapper<?> componentType;
+public class ArrayEntity extends TypeEntity<CtType<?>> {
+    private TypeEntity<?> componentType;
 
-    public ArrayWrapper(CtTypeReference<?> reference) {
+    public ArrayEntity(CtTypeReference<?> reference) {
         super(reference);
         CtTypeReference<?> componentReference = ((CtArrayTypeReference<?>) getReference()).getComponentType();
         componentType = getFactory().wrap(componentReference);
@@ -44,7 +44,7 @@ public class ArrayWrapper extends TypeWrapper<CtType<?>> {
     }
 
     @Override
-    public void setParent(Wrapper<?> parent) {
+    public void setParent(Entity<?> parent) {
         super.setParent(parent);
         componentType.setParent(parent);
     }

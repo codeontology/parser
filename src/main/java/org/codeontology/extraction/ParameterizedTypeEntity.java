@@ -8,10 +8,10 @@ import spoon.reflect.reference.CtTypeReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
+public class ParameterizedTypeEntity extends TypeEntity<CtType<?>> {
     private List<CtTypeReference<?>> arguments;
 
-    public ParameterizedTypeWrapper(CtTypeReference reference) {
+    public ParameterizedTypeEntity(CtTypeReference reference) {
         super(reference);
         arguments = getReference().getActualTypeArguments();
     }
@@ -21,15 +21,15 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         arguments = getReference().getActualTypeArguments();
         String uri = getReference().getQualifiedName();
         String argumentsString = "";
-        Wrapper<?> parent = getParent();
+        Entity<?> parent = getParent();
 
         for (CtTypeReference<?> argument : arguments) {
-            TypeWrapper<?> argumentWrapper = getFactory().wrap(argument);
-            argumentWrapper.setParent(parent);
+            TypeEntity<?> argumentEntity = getFactory().wrap(argument);
+            argumentEntity.setParent(parent);
             if (argumentsString.equals("")) {
-                argumentsString = argumentWrapper.getRelativeURI();
+                argumentsString = argumentEntity.getRelativeURI();
             } else {
-                argumentsString = argumentsString + SEPARATOR + argumentWrapper.getRelativeURI();
+                argumentsString = argumentsString + SEPARATOR + argumentEntity.getRelativeURI();
             }
         }
 
@@ -54,13 +54,13 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
     public void tagRawType() {
         CtTypeReference<?> cloneReference = ReflectionFactory.getInstance().clone(getReference());
         cloneReference.setActualTypeArguments(new ArrayList<>());
-        TypeWrapper rawType = getFactory().wrap(cloneReference);
+        TypeEntity rawType = getFactory().wrap(cloneReference);
         getLogger().addTriple(this, Ontology.RAW_TYPE_PROPERTY, rawType);
     }
 
     public void tagActualTypeArguments() {
         for (int i = 0; i < arguments.size(); i++) {
-            TypeArgumentWrapper typeArgument = new TypeArgumentWrapper(arguments.get(i));
+            TypeArgumentEntity typeArgument = new TypeArgumentEntity(arguments.get(i));
             typeArgument.setPosition(i);
             getLogger().addTriple(this, Ontology.ACTUAL_TYPE_ARGUMENT_PROPERTY, typeArgument);
             typeArgument.extract();
@@ -69,20 +69,20 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
 
     @Override
     public void follow() {
-        if (WrapperRegister.getInstance().add(this))  {
+        if (EntityRegister.getInstance().add(this))  {
             extract();
         }
     }
 
-    class TypeArgumentWrapper extends TypeWrapper<CtType<?>> {
+    class TypeArgumentEntity extends TypeEntity<CtType<?>> {
 
         private int position = 0;
-        private TypeWrapper<?> argument;
+        private TypeEntity<?> argument;
 
-        public TypeArgumentWrapper(CtTypeReference reference) {
+        public TypeArgumentEntity(CtTypeReference reference) {
             super(reference);
             argument = getFactory().wrap(getReference());
-            setParent(ParameterizedTypeWrapper.this.getParent());
+            setParent(ParameterizedTypeEntity.this.getParent());
         }
 
         @Override
@@ -98,12 +98,12 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         }
 
         private void tagPosition() {
-            getLogger().addTriple(TypeArgumentWrapper.this, Ontology.POSITION_PROPERTY, getModel().createTypedLiteral(position));
+            getLogger().addTriple(TypeArgumentEntity.this, Ontology.POSITION_PROPERTY, getModel().createTypedLiteral(position));
         }
 
         @Override
         public String buildRelativeURI() {
-            return ParameterizedTypeWrapper.this.getRelativeURI() + SEPARATOR + position;
+            return ParameterizedTypeEntity.this.getRelativeURI() + SEPARATOR + position;
         }
 
         @Override
@@ -116,7 +116,7 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         }
 
         @Override
-        public void setParent(Wrapper<?> parent) {
+        public void setParent(Entity<?> parent) {
             super.setParent(parent);
             argument.setParent(parent);
         }

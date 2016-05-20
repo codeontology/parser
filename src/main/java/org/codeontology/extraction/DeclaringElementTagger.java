@@ -4,9 +4,9 @@ import org.codeontology.Ontology;
 
 public class DeclaringElementTagger {
 
-    private MemberWrapper<?> member;
+    private MemberEntity<?> member;
 
-    public DeclaringElementTagger(MemberWrapper<?> member) {
+    public DeclaringElementTagger(MemberEntity<?> member) {
         this.member = member;
     }
 

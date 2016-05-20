@@ -1,5 +1,6 @@
 package org.codeontology.extraction;
 
+import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.*;
@@ -16,23 +17,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember & CtGenericElement>
-        extends AbstractWrapper<E> implements ModifiableWrapper<E>, MemberWrapper<E> {
+public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember & CtGenericElement>
+        extends NamedElementEntity<E> implements ModifiableEntity<E>, MemberEntity<E> {
 
-    private Set<ExecutableWrapper<?>> executables;
-    private Set<TypeWrapper<?>> requestedTypes;
-    private Set<LambdaWrapper> lambdas;
-    private Set<AnonymousClassWrapper> anonymousClasses;
-    private Set<LocalVariableWrapper> localVariables;
-    private Set<FieldWrapper> fields;
-    private List<ParameterWrapper> parameters;
+    private Set<ExecutableEntity<?>> executables;
+    private Set<TypeEntity<?>> requestedTypes;
+    private Set<LambdaEntity> lambdas;
+    private Set<AnonymousClassEntity> anonymousClasses;
+    private Set<LocalVariableEntity> localVariables;
+    private Set<FieldEntity> fields;
+    private List<ParameterEntity> parameters;
 
-    public ExecutableWrapper(E executable) {
+    public ExecutableEntity(E executable) {
         super(executable);
         initSets();
     }
 
-    public ExecutableWrapper(CtExecutableReference<?> reference) {
+    public ExecutableEntity(CtExecutableReference<?> reference) {
         super(reference);
         initSets();
     }
@@ -76,7 +77,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    public Wrapper<?> getDeclaringElement() {
+    public Entity<?> getDeclaringElement() {
         CtExecutableReference<?> reference = (CtExecutableReference<?>) getReference();
         return getFactory().wrap(reference.getDeclaringType());
     }
@@ -104,10 +105,10 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     }
 
     public void tagParameters() {
-        List<ParameterWrapper> parameters = getParameters();
+        List<ParameterEntity> parameters = getParameters();
         int size = parameters.size();
         for (int i = 0; i < size; i++) {
-            ParameterWrapper parameter = parameters.get(i);
+            ParameterEntity parameter = parameters.get(i);
             parameter.setParent(this);
             parameter.setPosition(i);
             getLogger().addTriple(this, Ontology.PARAMETER_PROPERTY, parameter);
@@ -115,7 +116,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         }
     }
 
-    public List<ParameterWrapper> getParameters() {
+    public List<ParameterEntity> getParameters() {
         if (parameters == null) {
             setParameters();
         }
@@ -141,7 +142,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     public void tagThrows() {
         Set<CtTypeReference<? extends Throwable>> thrownTypes = getElement().getThrownTypes();
         for (CtTypeReference<? extends Throwable> current : thrownTypes) {
-            TypeWrapper<?> thrownType = getFactory().wrap(current);
+            TypeEntity<?> thrownType = getFactory().wrap(current);
             thrownType.setParent(this);
             getLogger().addTriple(this, Ontology.THROWS_PROPERTY, thrownType);
         }
@@ -160,7 +161,9 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
             return;
         }
 
-        for (CtStatement statement : statements) {
+        int size = statements.size();
+        for (int i = 0; i < size; i++) {
+            CtStatement statement = statements.get(i);
             if (createsAnonymousClass(statement) || statement instanceof CtClass) {
                 addAnonymousClasses(statement);
             } else {
@@ -173,6 +176,13 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
             if (statement instanceof CtReturn<?>) {
                 tagReturnsVariable((CtReturn<?>) statement);
             }
+
+            if (CodeOntology.processStatements()) {
+                StatementEntity<?> entity = getFactory().wrap(statement);
+                entity.setPosition(i);
+                entity.setParent(this);
+                entity.extract();
+            }
         }
 
     }
@@ -180,18 +190,18 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     public void addAnonymousClasses(CtStatement statement) {
         List<CtNewClass<?>> newClasses = statement.getElements(element -> element != null);
         for (CtNewClass<?> newClass : newClasses) {
-            AnonymousClassWrapper<?> anonymousClass = new AnonymousClassWrapper<>(newClass.getAnonymousClass());
+            AnonymousClassEntity<?> anonymousClass = new AnonymousClassEntity<>(newClass.getAnonymousClass());
             anonymousClass.setParent(this);
             anonymousClasses.add(anonymousClass);
         }
     }
 
     public void tagAnonymousClasses() {
-        for (AnonymousClassWrapper<?> anonymousClass : anonymousClasses) {
+        for (AnonymousClassEntity<?> anonymousClass : anonymousClasses) {
             getLogger().addTriple(this, Ontology.CONSTRUCTS_PROPERTY, anonymousClass);
             anonymousClass.extract();
-            Set<Wrapper<?>> requestedResources = anonymousClass.getRequestedResources();
-            for (Wrapper<?> resource : requestedResources) {
+            Set<Entity<?>> requestedResources = anonymousClass.getRequestedResources();
+            for (Entity<?> resource : requestedResources) {
                 tagRequests(resource);
             }
         }
@@ -203,7 +213,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         for (CtExecutableReference<?> reference : references) {
             CtExecutable<?> executable = reference.getDeclaration();
             if (executable instanceof CtLambda<?>) {
-                LambdaWrapper lambda = getFactory().wrap((CtLambda<?>) executable);
+                LambdaEntity lambda = getFactory().wrap((CtLambda<?>) executable);
                 lambda.setParent(this);
                 lambdas.add(lambda);
             } else if (!(reference.getParent() instanceof CtExecutableReferenceExpression<?, ?>)) {
@@ -213,7 +223,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     }
 
     public void tagLambdas() {
-        for (LambdaWrapper lambda : lambdas) {
+        for (LambdaEntity lambda : lambdas) {
             tagRequests(lambda);
             lambda.extract();
         }
@@ -222,9 +232,9 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     public void addLambdas(CtStatement statement) {
         List<CtLambda<?>> lambdas = statement.getElements(element -> element != null);
         for (CtLambda<?> lambda : lambdas) {
-            LambdaWrapper lambdaWrapper =  getFactory().wrap(lambda);
-            lambdaWrapper.setParent(this);
-            this.lambdas.add(lambdaWrapper);
+            LambdaEntity lambdaEntity =  getFactory().wrap(lambda);
+            lambdaEntity.setParent(this);
+            this.lambdas.add(lambdaEntity);
         }
     }
 
@@ -237,7 +247,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     }
 
     public void tagRequestedFields() {
-        for (FieldWrapper field : fields) {
+        for (FieldEntity field : fields) {
             tagRequests(field);
             field.follow();
         }
@@ -246,7 +256,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     public void addRequestedTypes(Set<CtTypeReference<?>> types) {
         for (CtTypeReference<?> reference : types) {
             if (!(reference instanceof CtImplicitTypeReference<?>)) {
-                TypeWrapper<?> type = getFactory().wrap(reference);
+                TypeEntity<?> type = getFactory().wrap(reference);
                 if (type != null) {
                     type.setParent(this);
                     requestedTypes.add(type);
@@ -256,7 +266,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     }
 
     public void tagRequestedTypes() {
-        for (TypeWrapper<?> type : requestedTypes) {
+        for (TypeEntity<?> type : requestedTypes) {
             tagRequests(type);
             type.follow();
         }
@@ -274,7 +284,7 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
         for (CtLocalVariableReference<?> reference : references) {
             CtLocalVariable variable = reference.getDeclaration();
             if (variable != null) {
-                LocalVariableWrapper localVariable = getFactory().wrap(variable);
+                LocalVariableEntity localVariable = getFactory().wrap(variable);
                 localVariable.setParent(this);
                 localVariables.add(localVariable);
             }
@@ -282,29 +292,29 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     }
 
     public void tagLocalVariables() {
-        for (LocalVariableWrapper variable : localVariables) {
+        for (LocalVariableEntity variable : localVariables) {
             tagRequests(variable);
             variable.extract();
         }
     }
 
     public void tagExecutables() {
-        for (ExecutableWrapper<?> executable : executables) {
+        for (ExecutableEntity<?> executable : executables) {
             tagRequests(executable);
-            if (executable instanceof ConstructorWrapper) {
+            if (executable instanceof ConstructorEntity) {
                 tagConstructs(executable);
             }
             executable.follow();
         }
     }
 
-    public void tagConstructs(ExecutableWrapper<?> executable) {
-        Wrapper<?> declaringType = executable.getDeclaringElement();
+    public void tagConstructs(ExecutableEntity<?> executable) {
+        Entity<?> declaringType = executable.getDeclaringElement();
         getLogger().addTriple(this, Ontology.CONSTRUCTS_PROPERTY, declaringType);
         declaringType.follow();
     }
 
-    public void tagRequests(Wrapper<?> requested) {
+    public void tagRequests(Entity<?> requested) {
         getLogger().addTriple(this, Ontology.REQUESTS_PROPERTY, requested);
     }
 
@@ -323,20 +333,20 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     }
 
     public void tagReturnsLocalVariable(CtLocalVariable<?> variable) {
-        LocalVariableWrapper wrapper = getFactory().wrap(variable);
-        wrapper.setParent(this);
-        getLogger().addTriple(this, Ontology.RETURNS_VAR_PROPERTY, wrapper);
+        LocalVariableEntity entity = getFactory().wrap(variable);
+        entity.setParent(this);
+        getLogger().addTriple(this, Ontology.RETURNS_VAR_PROPERTY, entity);
     }
 
     public void tagReturnsField(CtField<?> field) {
         if (field != null) {
-            Wrapper wrapper =  getFactory().wrap(field);
-            getLogger().addTriple(this, Ontology.RETURNS_FIELD_PROPERTY, wrapper);
+            Entity entity =  getFactory().wrap(field);
+            getLogger().addTriple(this, Ontology.RETURNS_FIELD_PROPERTY, entity);
         }
     }
 
-    public List<Wrapper<?>> getRequestedResources() {
-        List<Wrapper<?>> requestedResources = new ArrayList<>();
+    public List<Entity<?>> getRequestedResources() {
+        List<Entity<?>> requestedResources = new ArrayList<>();
 
         requestedResources.addAll(executables);
         requestedResources.addAll(fields);
@@ -346,11 +356,11 @@ public abstract class ExecutableWrapper<E extends CtExecutable<?> & CtTypeMember
     }
 
     public void tagVarArgs() {
-        List<ParameterWrapper> parameters = getParameters();
+        List<ParameterEntity> parameters = getParameters();
         int size = parameters.size();
         boolean value = false;
         if (size != 0) {
-            ParameterWrapper last = parameters.get(size - 1);
+            ParameterEntity last = parameters.get(size - 1);
             if (last.isDeclarationAvailable()) {
                 value = last.getElement().isVarArgs();
             } else {

@@ -301,4 +301,8 @@ public class CodeOntology {
         Runtime.getRuntime().halt(status);
     }
 
+    public static boolean processStatements() {
+        return getInstance().getArguments().processStatements();
+    }
+
 }

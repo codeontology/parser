@@ -3,40 +3,25 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
-import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtAnnotation;
-import spoon.reflect.declaration.CtNamedElement;
-import spoon.reflect.reference.CtReference;
+import spoon.reflect.declaration.CtElement;
 
 import java.util.List;
 
-
-public abstract class AbstractWrapper<E extends CtNamedElement> implements Wrapper<E> {
+public abstract class AbstractEntity<E extends CtElement> implements Entity<E> {
 
     private E element;
-    private CtReference reference;
-    public static Model model = RDFLogger.getInstance().getModel();
-    private Wrapper<?> parent;
+    private static Model model = RDFLogger.getInstance().getModel();
+    private Entity<?> parent;
     private String uri;
 
-    public AbstractWrapper(E element) {
+    AbstractEntity() {
+
+    }
+
+    AbstractEntity(E element) {
         setElement(element);
-    }
-
-    public AbstractWrapper(CtReference reference) {
-        setReference(reference);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public void setReference(CtReference reference) {
-        if (reference == null) {
-            throw new IllegalArgumentException();
-        }
-
-        this.reference = reference;
-        this.element = (E) reference.getDeclaration();
     }
 
     @Override
@@ -44,17 +29,8 @@ public abstract class AbstractWrapper<E extends CtNamedElement> implements Wrapp
         return element;
     }
 
-    @Override
-    public void setElement(E element) {
-        if (element == null) {
-            throw new IllegalArgumentException();
-        }
+    protected void setElement(E element) {
         this.element = element;
-        try {
-            this.reference = element.getReference();
-        } catch (ClassCastException e) {
-            this.reference = null;
-        }
     }
 
     public Resource getResource() {
@@ -63,16 +39,8 @@ public abstract class AbstractWrapper<E extends CtNamedElement> implements Wrapp
 
     protected abstract String buildRelativeURI();
 
-    private RDFNode getName() {
-        return model.createLiteral(getReference().getSimpleName());
-    }
-
     public void tagType() {
         getLogger().addTriple(this, Ontology.RDF_TYPE_PROPERTY, getType());
-    }
-
-    public void tagName() {
-        getLogger().addTriple(this, Ontology.NAME_PROPERTY, getName());
     }
 
     public void tagComment() {
@@ -85,7 +53,7 @@ public abstract class AbstractWrapper<E extends CtNamedElement> implements Wrapp
     public void tagAnnotations() {
         List<CtAnnotation<?>> annotations = getElement().getAnnotations();
         for (CtAnnotation annotation : annotations) {
-            TypeWrapper annotationType = getFactory().wrap(annotation.getAnnotationType());
+            TypeEntity annotationType = getFactory().wrap(annotation.getAnnotationType());
             getLogger().addTriple(this, Ontology.ANNOTATION_PROPERTY, annotationType);
             annotationType.follow();
         }
@@ -103,18 +71,8 @@ public abstract class AbstractWrapper<E extends CtNamedElement> implements Wrapp
     }
 
     @Override
-    public WrapperFactory getFactory() {
-        return WrapperFactory.getInstance();
-    }
-
-    @Override
-    public CtReference getReference() {
-        return reference;
-    }
-
-    @Override
-    public boolean isDeclarationAvailable() {
-        return getElement() != null;
+    public EntityFactory getFactory() {
+        return EntityFactory.getInstance();
     }
 
     @Override
@@ -123,21 +81,18 @@ public abstract class AbstractWrapper<E extends CtNamedElement> implements Wrapp
     }
 
     @Override
-    public Wrapper<?> getParent() {
+    public Entity<?> getParent() {
         return parent;
     }
 
     @Override
-    public void setParent(Wrapper<?> parent) {
+    public void setParent(Entity<?> parent) {
         this.parent = parent;
     }
 
     @Override
     public void follow() {
-        if (!isDeclarationAvailable() && !CodeOntology.isJarExplorationEnabled()
-                && WrapperRegister.getInstance().add(this)) {
-            extract();
-        }
+        extract();
     }
 
     @Override
@@ -151,11 +106,11 @@ public abstract class AbstractWrapper<E extends CtNamedElement> implements Wrapp
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Wrapper<?>)) {
+        if (!(object instanceof Entity<?>)) {
             return false;
         }
 
-        Wrapper<?> other = (Wrapper<?>) object;
+        Entity<?> other = (Entity<?>) object;
         return other.getRelativeURI().equals(this.getRelativeURI());
     }
 
@@ -164,4 +119,3 @@ public abstract class AbstractWrapper<E extends CtNamedElement> implements Wrapp
         return getRelativeURI().hashCode();
     }
 }
-

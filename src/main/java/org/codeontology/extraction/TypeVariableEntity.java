@@ -16,12 +16,12 @@ import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
+public class TypeVariableEntity extends TypeEntity<CtType<?>> {
 
     private int position;
     private List<CtTypeReference<?>> bounds;
 
-    public TypeVariableWrapper(CtTypeReference<?> reference) {
+    public TypeVariableEntity(CtTypeReference<?> reference) {
         super(reference);
         setBounds();
     }
@@ -55,7 +55,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     }
 
     private void tagBound(CtTypeReference boundReference) {
-        TypeWrapper<?> bound = getFactory().wrap(boundReference);
+        TypeEntity<?> bound = getFactory().wrap(boundReference);
         bound.setParent(this.getParent());
         if (((CtTypeParameterReference) getReference()).isUpper()) {
             getLogger().addTriple(this, Ontology.EXTENDS_PROPERTY, bound);
@@ -94,9 +94,9 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         }
 
         for (CtTypeReference bound : bounds) {
-            TypeWrapper<?> wrapper = getFactory().wrap(bound);
-            wrapper.setParent(getParent());
-            uri = uri + separator + wrapper.getRelativeURI();
+            TypeEntity<?> entity = getFactory().wrap(bound);
+            entity.setParent(getParent());
+            uri = uri + separator + entity.getRelativeURI();
         }
 
         return uri;
@@ -115,7 +115,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         this.position = position;
     }
 
-    private Wrapper<?> findParent(ExecutableWrapper<?> executable) {
+    private Entity<?> findParent(ExecutableEntity<?> executable) {
         CtExecutableReference<?> executableReference = (CtExecutableReference<?>) executable.getReference();
 
         if (executable.isDeclarationAvailable()) {
@@ -130,7 +130,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         }
     }
 
-    private Wrapper<?> findParent(CtExecutableReference<?> executableReference) {
+    private Entity<?> findParent(CtExecutableReference<?> executableReference) {
         if (executableReference.getDeclaration() != null) {
             return findParent(getFactory().wrap(executableReference));
         } else if (isWildcard()) {
@@ -154,7 +154,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     }
 
 
-    private Wrapper<?> findParent(Class<?> clazz) {
+    private Entity<?> findParent(Class<?> clazz) {
         if (clazz != null) {
             TypeVariable<?>[] typeParameters = clazz.getTypeParameters();
 
@@ -180,7 +180,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         return null;
     }
 
-    private Wrapper<?> findParent(CtTypeReference<?> reference) {
+    private Entity<?> findParent(CtTypeReference<?> reference) {
         if (reference != null) {
             if (isWildcard()) {
                 return getFactory().wrap(reference);
@@ -194,7 +194,7 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
         return null;
     }
 
-    private Wrapper<?> findParent(CtType type) {
+    private Entity<?> findParent(CtType type) {
         if (type != null) {
             List<CtTypeReference<?>> formalTypes = new TypeVariableList(type.getFormalTypeParameters());
             if (formalTypes.contains(getReference())) {
@@ -219,11 +219,11 @@ public class TypeVariableWrapper extends TypeWrapper<CtType<?>> {
     }
 
     @Override
-    public void setParent(Wrapper<?> context) {
-        CtReference reference = context.getReference();
+    public void setParent(Entity<?> context) {
+        CtReference reference = ((NamedElementEntity) context).getReference();
         String simpleName = getReference().getSimpleName();
 
-        Wrapper<?> parent = TypeVariableCache.getInstance().getParent(simpleName, context);
+        Entity<?> parent = TypeVariableCache.getInstance().getParent(simpleName, context);
         if (parent == null) {
             if (reference instanceof CtTypeReference<?>) {
                 parent = findParent((CtTypeReference) reference);
@@ -274,7 +274,7 @@ class TypeVariableList extends ArrayList<CtTypeReference<?>> {
 class TypeVariableCache {
 
     private static TypeVariableCache instance;
-    private Table<String, Wrapper<?>, Wrapper<?>> table;
+    private Table<String, Entity<?>, Entity<?>> table;
     private int size;
     private static final int ROWS = 16;
     private static final int COLS = 48;
@@ -292,11 +292,11 @@ class TypeVariableCache {
         return instance;
     }
 
-    public Wrapper<?> getParent(String name, Wrapper<?> context) {
+    public Entity<?> getParent(String name, Entity<?> context) {
         return table.get(name, context);
     }
 
-    public void putParent(String name, Wrapper<?> context, Wrapper<?> parent) {
+    public void putParent(String name, Entity<?> context, Entity<?> parent) {
         handleSize();
         table.put(name, context, parent);
     }
