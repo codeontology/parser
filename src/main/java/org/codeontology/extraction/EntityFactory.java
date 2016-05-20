@@ -3,7 +3,6 @@ package org.codeontology.extraction;
 import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.code.CtLambda;
 import spoon.reflect.code.CtLocalVariable;
-import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.*;
 
@@ -145,18 +144,6 @@ public class EntityFactory {
 
     private ReflectionFactory reflectionFactory() {
         return ReflectionFactory.getInstance();
-    }
-
-
-
-    /************************************************************
-     *                                                          *
-     *              STATEMENTS AND EXPRESSIONS                  *
-     *                                                          *
-     ************************************************************/
-
-    public StatementEntity<?> wrap(CtStatement statement) {
-        return new StatementEntity<>(statement);
     }
 
 }

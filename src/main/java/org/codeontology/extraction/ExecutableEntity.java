@@ -1,6 +1,5 @@
 package org.codeontology.extraction;
 
-import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.*;
@@ -161,9 +160,7 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
             return;
         }
 
-        int size = statements.size();
-        for (int i = 0; i < size; i++) {
-            CtStatement statement = statements.get(i);
+        for (CtStatement statement : statements) {
             if (createsAnonymousClass(statement) || statement instanceof CtClass) {
                 addAnonymousClasses(statement);
             } else {
@@ -175,13 +172,6 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
             }
             if (statement instanceof CtReturn<?>) {
                 tagReturnsVariable((CtReturn<?>) statement);
-            }
-
-            if (CodeOntology.processStatements()) {
-                StatementEntity<?> entity = getFactory().wrap(statement);
-                entity.setPosition(i);
-                entity.setParent(this);
-                entity.extract();
             }
         }
 
