@@ -74,8 +74,6 @@ public class Ontology {
 
     public static final Resource WILDCARD_ENTITY = model.getResource(WOC + "Wildcard");
 
-    public static final Resource STATEMENT_ENTITY = model.getResource(WOC + "Statement");
-
     public static final Resource PROJECT_ENTITY = model.getResource(WOC + "Project");
 
     public static final Resource MAVEN_PROJECT_ENTITY = model.getResource(WOC + "MavenProject");
@@ -146,10 +144,6 @@ public class Ontology {
     public static final Property OVERRIDES_PROPERTY = model.getProperty(WOC + "overrides");
 
     public static final Property VAR_ARGS_PROPERTY = model.getProperty(WOC + "isVarArgs");
-
-    public static final Property LINE_PROPERTY = model.getProperty(WOC + "line");
-
-    public static final Property STATEMENT_PROPERTY = model.getProperty(WOC + "statement");
 
     public static final Property SUBPROJECT_PROPERTY = model.getProperty(WOC + "subProject");
 
