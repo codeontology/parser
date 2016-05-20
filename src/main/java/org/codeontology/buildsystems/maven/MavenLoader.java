@@ -1,48 +1,44 @@
 package org.codeontology.buildsystems.maven;
 
-import org.apache.maven.project.MavenProject;
 import org.codeontology.CodeOntology;
 import org.codeontology.buildsystems.ClasspathLoader;
 import org.codeontology.buildsystems.DependenciesLoader;
+import org.codeontology.buildsystems.Project;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Scanner;
-import java.util.Set;
 
-public class MavenLoader extends DependenciesLoader {
+public class MavenLoader extends DependenciesLoader<MavenProject> {
     private static final String PATH_TO_DEPENDENCIES = "/target/dependency/";
     private final File output;
     private final File error;
-    private MavenProject project;
     private static boolean m2Loaded = false;
 
-    public MavenLoader(File root) {
-        project = new MavenProject();
-        File pom = new File(root.getAbsolutePath() + "/pom.xml");
-        project.setFile(pom);
-        error = new File(project.getBasedir() + "/error");
-        output = new File(project.getBasedir() + "/output");
+    public MavenLoader(MavenProject project) {
+        super(project);
+        error = new File(project.getPath() + "/error");
+        output = new File(project.getPath() + "/output");
     }
 
     @Override
     public void loadDependencies() {
         System.out.println("Loading dependencies with Maven");
         try {
-            MavenModulesHandler modulesHandler = new MavenModulesHandler(project.getBasedir());
             if (CodeOntology.downloadDependencies()) {
-                modulesHandler.setUp();
                 downloadDependencies();
+                jarModules();
             }
 
             ProcessBuilder builder = new ProcessBuilder("mvn", "dependency:build-classpath", "-Dmdep.outputFile=.cp");
-            builder.directory(project.getBasedir());
+            builder.directory(getProject().getProjectDirectory());
             builder.redirectError(error);
             builder.redirectOutput(output);
             int exitStatus = builder.start().waitFor();
 
             if (exitStatus == 0) {
-                File classpath = new File(project.getBasedir() + "/.cp");
+                File classpath = new File(getProject().getPath() + "/.cp");
                 Scanner reader = new Scanner(classpath);
                 reader.useDelimiter("\\Z");
                 if (reader.hasNext()) {
@@ -51,7 +47,7 @@ public class MavenLoader extends DependenciesLoader {
                 reader.close();
                 classpath.deleteOnExit();
             } else {
-                getLoader().loadAllJars(project.getBasedir());
+                getLoader().loadAllJars(getProject().getProjectDirectory());
                 if (!m2Loaded) {
                     ClasspathLoader loader = getLoader();
                     loader.lock();
@@ -62,10 +58,10 @@ public class MavenLoader extends DependenciesLoader {
             }
 
 
-            Set<File> modules = modulesHandler.findModules();
-            for (File module : modules) {
+            Collection<Project> modules = getProject().getSubProjects();
+            for (Project module : modules) {
                 System.out.println("Running on module " + module.getPath());
-                getFactory().getLoader(module).loadDependencies();
+                module.getLoader().loadDependencies();
             }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -79,7 +75,7 @@ public class MavenLoader extends DependenciesLoader {
      */
     public void downloadDependencies() {
         try {
-            File downloadDirectory = new File(project.getBasedir() + PATH_TO_DEPENDENCIES);
+            File downloadDirectory = new File(getProject().getPath() + PATH_TO_DEPENDENCIES);
 
             if (!downloadDirectory.exists()) {
                 if (!downloadDirectory.mkdirs()) {
@@ -89,7 +85,7 @@ public class MavenLoader extends DependenciesLoader {
 
             System.out.println("Downloading dependencies...");
             ProcessBuilder builder = new ProcessBuilder("mvn", "dependency:copy-dependencies");
-            builder.directory(project.getBasedir());
+            builder.directory(getProject().getProjectDirectory());
             builder.redirectError(error);
             builder.redirectOutput(output);
 
@@ -97,5 +93,30 @@ public class MavenLoader extends DependenciesLoader {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Create jars for every dependency in {@code projectRoot}.
+     * Output folder is the project root, name goes as:
+     * {@code dependencyName.jar}.
+     */
+    public void jarModules() {
+        getProject().getSubProjects().forEach(module -> {
+            if (!module.getProjectDirectory().toPath().equals(getProject().getProjectDirectory().toPath())) {
+                System.out.println("Preparing module " + module.getPath());
+                try {
+                    ProcessBuilder builder = new ProcessBuilder("mvn", "jar:jar");
+                    builder.directory(module.getProjectDirectory());
+                    builder.redirectError(error);
+                    builder.redirectOutput(output);
+
+                    builder.start().waitFor();
+
+                    //Runtime.getRuntime().exec("mvn jar:jar", new String[]{}, module).waitFor();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 }

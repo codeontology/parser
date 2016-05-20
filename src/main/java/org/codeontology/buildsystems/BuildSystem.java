@@ -16,10 +16,10 @@ public enum BuildSystem {
         }
 
         int gradleBuild = FileUtils.listFiles(project,
-                FileFilterUtils.nameFileFilter(Files.GRADLE_FILE.getName()),
+                FileFilterUtils.nameFileFilter(BuildFiles.GRADLE_FILE.getName()),
                 null).size();
         int mavenBuild = FileUtils.listFiles(project,
-                FileFilterUtils.nameFileFilter(Files.MAVEN_FILE.getName()),
+                FileFilterUtils.nameFileFilter(BuildFiles.MAVEN_FILE.getName()),
                 null).size();
 
         if (mavenBuild != 0) {
@@ -31,9 +31,4 @@ public enum BuildSystem {
 
         return UNKNOWN;
     }
-}
-
-class Files {
-    public static final File MAVEN_FILE = new File("pom.xml");
-    public static final File GRADLE_FILE = new File("build.gradle");
 }

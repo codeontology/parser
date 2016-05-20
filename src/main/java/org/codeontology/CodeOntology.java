@@ -3,7 +3,8 @@ package org.codeontology;
 import com.martiansoftware.jsap.JSAPException;
 import org.apache.commons.io.FileUtils;
 import org.codeontology.buildsystems.DependenciesLoader;
-import org.codeontology.buildsystems.LoaderFactory;
+import org.codeontology.buildsystems.Project;
+import org.codeontology.buildsystems.ProjectFactory;
 import org.codeontology.extraction.JarProcessor;
 import org.codeontology.extraction.RDFLogger;
 import org.codeontology.extraction.ReflectionFactory;
@@ -31,7 +32,7 @@ public class CodeOntology {
     private CodeOntologyArguments arguments;
     private Launcher spoon;
     private boolean exploreJarsFlag;
-    private DependenciesLoader loader;
+    private DependenciesLoader<? extends Project> loader;
     private PeriodFormatter formatter;
     private int tries;
     private String[] directories = {"test", "examples", "debug", "androidTest", "samples", "sample", "example", "demo", ".*test.*", ".*demo.*", ".*sample.*", ".*example.*"};
@@ -133,8 +134,8 @@ public class CodeOntology {
 
     private void loadDependencies() {
         long start = System.currentTimeMillis();
-        LoaderFactory factory = LoaderFactory.getInstance();
-        loader = factory.getLoader(getArguments().getInput());
+        Project project = ProjectFactory.getInstance().getProject(getArguments().getInput());
+        loader = project.getLoader();
         loader.loadDependencies();
 
         String classpath = getArguments().getClasspath();

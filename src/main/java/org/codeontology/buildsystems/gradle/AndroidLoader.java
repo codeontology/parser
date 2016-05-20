@@ -2,15 +2,17 @@ package org.codeontology.buildsystems.gradle;
 
 import org.codeontology.CodeOntology;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AndroidLoader extends GradleLoader {
 
-    public AndroidLoader(File root) {
-        super(root);
+    public AndroidLoader(AndroidProject project) {
+        super(project);
     }
 
     @Override
@@ -26,7 +28,7 @@ public class AndroidLoader extends GradleLoader {
 
     private void build() {
         try {
-            getBuilder("build").start().waitFor();
+            getProcessBuilder("build").start().waitFor();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -56,7 +58,7 @@ public class AndroidLoader extends GradleLoader {
         if (androidHome == null) {
             CodeOntology.showWarning("ANDROID_HOME environment variable is not set.");
         }
-        File appBuild = new File(getProjectDirectory().getPath() + "/build.gradle");
+        File appBuild = new File(getProject().getPath() + "/build.gradle");
 
         String build = "";
 

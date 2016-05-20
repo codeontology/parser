@@ -3,7 +3,13 @@ package org.codeontology.buildsystems;
 import java.io.File;
 import java.util.Set;
 
-public abstract class DependenciesLoader {
+public abstract class DependenciesLoader<T extends Project> {
+
+    private T project;
+
+    public DependenciesLoader(T project) {
+        this.project = project;
+    }
 
     private ClasspathLoader loader = ClasspathLoader.getInstance();
 
@@ -21,7 +27,9 @@ public abstract class DependenciesLoader {
         return loader;
     }
 
-    public LoaderFactory getFactory() {
-        return LoaderFactory.getInstance();
+    public T getProject() {
+        return project;
     }
+
+
 }

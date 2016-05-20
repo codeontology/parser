@@ -1,19 +1,16 @@
 package org.codeontology.buildsystems;
 
-import java.io.File;
+public class DefaultLoader extends DependenciesLoader<Project> {
 
-public class DefaultLoader extends DependenciesLoader {
+    private Project project;
 
-    private File root;
-
-    public DefaultLoader(File root) {
-        this.root = root;
+    public DefaultLoader(Project project) {
+        super(project);
+        this.project = project;
     }
 
     @Override
     public void loadDependencies() {
-        if (root.isDirectory()) {
-            getLoader().loadAllJars(root);
-        }
+        getLoader().loadAllJars(project.getRoot());
     }
 }
