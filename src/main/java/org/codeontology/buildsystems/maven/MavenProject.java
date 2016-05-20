@@ -81,6 +81,9 @@ public class MavenProject extends Project {
 
     @Override
     public File getProjectDirectory() {
+        if (!setUp) {
+            return super.getProjectDirectory();
+        }
         return mavenProject.getBasedir();
     }
 }

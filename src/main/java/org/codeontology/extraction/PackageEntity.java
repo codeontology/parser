@@ -3,6 +3,8 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
+import org.codeontology.ProjectProcessor;
+import org.codeontology.buildsystems.Project;
 import spoon.reflect.declaration.CtPackage;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtPackageReference;
@@ -10,7 +12,6 @@ import spoon.reflect.reference.CtTypeReference;
 
 import java.util.HashSet;
 import java.util.Set;
-
 
 public class PackageEntity extends NamedElementEntity<CtPackage> {
 
@@ -46,9 +47,18 @@ public class PackageEntity extends NamedElementEntity<CtPackage> {
         tagType();
         tagName();
         tagPackageOf();
+        tagProject();
 
         if (isDeclarationAvailable()) {
             tagComment();
+        }
+    }
+
+    public void tagProject() {
+        if (CodeOntology.extractProjectStructure()) {
+            Project project = CodeOntology.getProject();
+            ProjectEntity<?> projectEntity = new ProjectProcessor(project).getProject();
+            getLogger().addTriple(this, Ontology.PROJECT_PROPERTY, projectEntity);
         }
     }
 

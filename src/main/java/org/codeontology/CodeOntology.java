@@ -3,7 +3,6 @@ package org.codeontology;
 import com.martiansoftware.jsap.JSAPException;
 import org.apache.commons.io.FileUtils;
 import org.codeontology.buildsystems.DependenciesLoader;
-import org.codeontology.buildsystems.DefaultProject;
 import org.codeontology.buildsystems.Project;
 import org.codeontology.buildsystems.ProjectFactory;
 import org.codeontology.extraction.JarProcessor;
@@ -33,6 +32,7 @@ public class CodeOntology {
     private CodeOntologyArguments arguments;
     private Launcher spoon;
     private boolean exploreJarsFlag;
+    private Project project;
     private DependenciesLoader<? extends Project> loader;
     private PeriodFormatter formatter;
     private int tries;
@@ -78,12 +78,18 @@ public class CodeOntology {
 
     private void processSources() {
         try {
-            if (codeOntology.isInputSet()) {
-                System.out.println("Running on " + codeOntology.getArguments().getInput());
-                codeOntology.loadDependencies();
-                if (!codeOntology.getArguments().doNotExtractTriples()) {
-                    codeOntology.spoon();
-                    codeOntology.extractAllTriples();
+            if (isInputSet()) {
+                System.out.println("Running on " + getArguments().getInput());
+
+                loadDependencies();
+
+                if (getArguments().extractProjectStructure() && project != null) {
+                    new ProjectProcessor(project).process();
+                }
+
+                if (!getArguments().doNotExtractTriples()) {
+                    spoon();
+                    extractAllTriples();
                 }
             }
         } catch (Exception e) {
@@ -97,7 +103,7 @@ public class CodeOntology {
             if (t.getMessage() != null) {
                 System.out.println(t.getMessage());
             }
-            if (codeOntology.getArguments().stackTraceMode()) {
+            if (getArguments().stackTraceMode()) {
                 t.printStackTrace();
             }
         }
@@ -135,7 +141,7 @@ public class CodeOntology {
 
     private void loadDependencies() {
         long start = System.currentTimeMillis();
-        Project project = ProjectFactory.getInstance().getProject(getArguments().getInput());
+        project = ProjectFactory.getInstance().getProject(getArguments().getInput());
         loader = project.getLoader();
         loader.loadDependencies();
 
@@ -300,5 +306,13 @@ public class CodeOntology {
         }
 
         Runtime.getRuntime().halt(status);
+    }
+
+    public static Project getProject() {
+        return codeOntology.project;
+    }
+
+    public static boolean extractProjectStructure() {
+        return codeOntology.getArguments().extractProjectStructure();
     }
 }
