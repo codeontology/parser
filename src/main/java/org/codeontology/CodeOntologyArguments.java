@@ -14,7 +14,7 @@ public class CodeOntologyArguments {
 
     public static final String CLASSPATH_LONG = "classpath";
 
-    public static final String ND = "nd";
+    public static final String DO_NOT_DOWNLOAD_LONG = "do-not-download";
 
     public static final String VERBOSE_LONG = "verbose";
     public static final char VERBOSE_SHORT = 'v';
@@ -35,8 +35,8 @@ public class CodeOntologyArguments {
 
     public static final String CLEAN_LONG = "clean";
 
-    public static final String STATEMENTS_LONG = "process-statements";
-    public static final String STATEMENTS_SHORT = "s";
+    public static final String PROJECT_STRUCTURE_LONG = "project";
+    public static final char PROJECT_STRUCTURE_SHORT = 'p';
 
     private JSAP jsap;
     private JSAPResult result;
@@ -82,8 +82,8 @@ public class CodeOntologyArguments {
         option.setHelp("Specifies a list of directories and JAR files separated by colons (:) to search for class files.");
         jsap.registerParameter(option);
 
-        flag = new Switch(ND);
-        flag.setLongFlag(ND);
+        flag = new Switch(DO_NOT_DOWNLOAD_LONG);
+        flag.setLongFlag(DO_NOT_DOWNLOAD_LONG);
         flag.setDefault("false");
         flag.setHelp("Do not download dependencies.");
         jsap.registerParameter(flag);
@@ -133,11 +133,11 @@ public class CodeOntologyArguments {
         flag.setHelp("Remove files that prevent the model from being built.");
         jsap.registerParameter(flag);
 
-        flag = new Switch(STATEMENTS_LONG);
-        flag.setLongFlag(STATEMENTS_LONG);
-        flag.setShortFlag('s');
+        flag = new Switch(PROJECT_STRUCTURE_LONG);
+        flag.setLongFlag(PROJECT_STRUCTURE_LONG);
+        flag.setShortFlag(PROJECT_STRUCTURE_SHORT);
         flag.setDefault("false");
-        flag.setHelp("Process all statements and expressions");
+        flag.setHelp("Extract project structure");
         jsap.registerParameter(flag);
 
     }
@@ -189,7 +189,7 @@ public class CodeOntologyArguments {
     }
 
     public boolean downloadDependencies() {
-        return !result.getBoolean(ND);
+        return !result.getBoolean(DO_NOT_DOWNLOAD_LONG);
     }
 
     public boolean verboseMode() {
@@ -245,7 +245,7 @@ public class CodeOntologyArguments {
         return result.getBoolean(CLEAN_LONG);
     }
 
-    public boolean processStatements() {
-        return result.getBoolean(STATEMENTS_LONG);
+    public boolean extractProjectStructure() {
+        return result.getBoolean(PROJECT_STRUCTURE_LONG);
     }
 }

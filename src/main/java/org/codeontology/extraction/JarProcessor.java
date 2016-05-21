@@ -1,20 +1,16 @@
 package org.codeontology.extraction;
 
 import org.codeontology.CodeOntology;
-import org.codeontology.buildsystems.ClasspathLoader;
-import spoon.reflect.reference.CtPackageReference;
+import org.codeontology.projects.ClasspathLoader;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.*;
-import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class JarProcessor {
     private JarFile jarFile;
-    private Map<Package, Set<Class<?>>> map;
     private PrintStream systemErr;
 
     public JarProcessor(String path) {
@@ -35,8 +31,7 @@ public class JarProcessor {
         try {
             try {
                 hideMessages();
-                buildMap();
-                extractAllTriples();
+                EntityFactory.getInstance().wrap(jarFile).extract();
             } finally {
                 System.setErr(systemErr);
             }
@@ -45,56 +40,13 @@ public class JarProcessor {
         }
     }
 
-    private void buildMap() {
-        System.out.println("Analyzing file " + jarFile.getName());
-        Enumeration entries = jarFile.entries();
-        map = new HashMap<>();
-        while (entries.hasMoreElements()) {
-            JarEntry entry = (JarEntry) entries.nextElement();
-            String entryPath = entry.getName();
-            if (entryPath.endsWith(".class")) {
-                String typeName = entry.getName().replace("/", ".").substring(0, entryPath.length() - 6);
-                try {
-                    Class<?> clazz = Class.forName(typeName);
-                    Package pack = clazz.getPackage();
-                    Set<Class<?>> types = map.get(pack);
-                    if (pack != null) {
-                        if (types == null) {
-                            types = new HashSet<>();
-                        }
-                        types.add(clazz);
-                        map.put(pack, types);
-                    }
-                } catch (Throwable e) {
-                    // Cannot get a class object from this jar entry
-                    // we just skip this entry
-                }
-            }
-        }
-    }
-
     private void hideMessages() {
         PrintStream tmpErr = new PrintStream(new OutputStream() {
             @Override
-            public void write(int b) throws IOException {
+            public void write(int i) throws IOException {
 
             }
         });
         System.setErr(tmpErr);
-    }
-
-
-    private void extractAllTriples() {
-        System.out.println("Running on " + jarFile.getName());
-        Set<Package> packages = map.keySet();
-        for (Package pack : packages) {
-            CtPackageReference packageReference = ReflectionFactory.getInstance().createPackageReference(pack);
-            PackageEntity entity = EntityFactory.getInstance().wrap(packageReference);
-            entity.setTypes(map.get(pack));
-            entity.extract();
-        }
-        RDFLogger.getInstance().writeRDF();
-        System.out.println("Triples extracted successfully.");
-    
     }
 }

@@ -1,6 +1,12 @@
 package org.codeontology.extraction;
 
 import org.codeontology.exceptions.NullTypeException;
+import org.codeontology.projects.DefaultProject;
+import org.codeontology.projects.gradle.AndroidProject;
+import org.codeontology.projects.gradle.GradleProject;
+import org.codeontology.projects.maven.MavenProject;
+import spoon.reflect.code.CtLambda;
+import spoon.reflect.code.CtLocalVariable;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.*;
@@ -11,6 +17,7 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.JarFile;
 
 public class EntityFactory {
 
@@ -143,6 +150,26 @@ public class EntityFactory {
         return wrap(reflectionFactory().createTypeReference(type));
     }
 
+    public DefaultProjectEntity wrap(DefaultProject project) {
+        return new DefaultProjectEntity(project);
+    }
+
+    public GradleProjectEntity wrap(GradleProject project) {
+        return new GradleProjectEntity(project);
+    }
+
+    public MavenProjectEntity wrap(MavenProject project) {
+        return new MavenProjectEntity(project);
+    }
+
+    public AndroidGradleProjectEntity wrap(AndroidProject project) {
+        return new AndroidGradleProjectEntity(project);
+    }
+
+    public JarFileEntity wrap(JarFile jarFile) {
+        return new JarFileEntity(jarFile);
+    }
+
     private ReflectionFactory reflectionFactory() {
         return ReflectionFactory.getInstance();
     }
@@ -193,5 +220,7 @@ public class EntityFactory {
     public ExpressionEntity wrap(CtExpression<?> expression) {
         return new ExpressionEntity(expression);
     }
+
+
 
 }

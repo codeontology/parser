@@ -2,12 +2,10 @@ package org.codeontology;
 
 import com.martiansoftware.jsap.JSAPException;
 import org.apache.commons.io.FileUtils;
-import org.codeontology.buildsystems.DependenciesLoader;
-import org.codeontology.buildsystems.LoaderFactory;
-import org.codeontology.extraction.JarProcessor;
-import org.codeontology.extraction.RDFLogger;
-import org.codeontology.extraction.ReflectionFactory;
-import org.codeontology.extraction.SourceProcessor;
+import org.codeontology.extraction.*;
+import org.codeontology.projects.DependenciesLoader;
+import org.codeontology.projects.Project;
+import org.codeontology.projects.ProjectFactory;
 import org.joda.time.Period;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
@@ -31,7 +29,9 @@ public class CodeOntology {
     private CodeOntologyArguments arguments;
     private Launcher spoon;
     private boolean exploreJarsFlag;
-    private DependenciesLoader loader;
+    private Project project;
+    private ProjectEntity<?> projectEntity;
+    private DependenciesLoader<? extends Project> loader;
     private PeriodFormatter formatter;
     private int tries;
     private String[] directories = {"test", "examples", "debug", "androidTest", "samples", "sample", "example", "demo", ".*test.*", ".*demo.*", ".*sample.*", ".*example.*"};
@@ -66,6 +66,7 @@ public class CodeOntology {
         codeOntology = new CodeOntology(args);
         try {
             codeOntology.processSources();
+            codeOntology.processProjectStructure();
             codeOntology.processJars();
             codeOntology.postCompletionTasks();
         } catch (Exception | Error e) {
@@ -76,16 +77,27 @@ public class CodeOntology {
 
     private void processSources() {
         try {
-            if (codeOntology.isInputSet()) {
-                System.out.println("Running on " + codeOntology.getArguments().getInput());
-                codeOntology.loadDependencies();
-                if (!codeOntology.getArguments().doNotExtractTriples()) {
-                    codeOntology.spoon();
-                    codeOntology.extractAllTriples();
+            if (isInputSet()) {
+                System.out.println("Running on " + getArguments().getInput());
+
+                project = ProjectFactory.getInstance().getProject(getArguments().getInput());
+
+                loadDependencies();
+
+                if (!getArguments().doNotExtractTriples()) {
+                    spoon();
+                    extractAllTriples();
                 }
             }
         } catch (Exception e) {
             handleFailure(e);
+        }
+    }
+
+    private void processProjectStructure() {
+        if (getArguments().extractProjectStructure() && project != null) {
+            getProjectEntity().extract();
+            RDFLogger.getInstance().writeRDF();
         }
     }
 
@@ -95,7 +107,7 @@ public class CodeOntology {
             if (t.getMessage() != null) {
                 System.out.println(t.getMessage());
             }
-            if (codeOntology.getArguments().stackTraceMode()) {
+            if (getArguments().stackTraceMode()) {
                 t.printStackTrace();
             }
         }
@@ -133,8 +145,7 @@ public class CodeOntology {
 
     private void loadDependencies() {
         long start = System.currentTimeMillis();
-        LoaderFactory factory = LoaderFactory.getInstance();
-        loader = factory.getLoader(getArguments().getInput());
+        loader = project.getLoader();
         loader.loadDependencies();
 
         String classpath = getArguments().getClasspath();
@@ -300,4 +311,21 @@ public class CodeOntology {
         Runtime.getRuntime().halt(status);
     }
 
+    public static ProjectEntity<?> getProject() {
+        return codeOntology.getProjectEntity();
+    }
+
+    public static boolean extractProjectStructure() {
+        return codeOntology.getArguments().extractProjectStructure();
+    }
+
+    public ProjectEntity<?> getProjectEntity() {
+        if (projectEntity == null) {
+            ProjectVisitor visitor = new ProjectVisitor();
+            project.accept(visitor);
+            projectEntity = visitor.getLastEntity();
+        }
+
+        return projectEntity;
+    }
 }

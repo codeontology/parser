@@ -67,4 +67,3 @@ public abstract class NamedElementEntity<E extends CtNamedElement> extends CodeE
         return getElement() != null;
     }
 }
-

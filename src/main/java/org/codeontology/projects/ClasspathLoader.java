@@ -1,4 +1,4 @@
-package org.codeontology.buildsystems;
+package org.codeontology.projects;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -66,14 +66,16 @@ public class ClasspathLoader {
     }
 
     public void loadAllJars(File root) {
-        Set<File> jars = new HashSet<>();
+        if (root.isDirectory()) {
+            Set<File> jars = new HashSet<>();
 
-        jars.addAll(FileUtils.listFiles(root,
-                FileFilterUtils.suffixFileFilter(".jar"),
-                TrueFileFilter.INSTANCE));
+            jars.addAll(FileUtils.listFiles(root,
+                    FileFilterUtils.suffixFileFilter(".jar"),
+                    TrueFileFilter.INSTANCE));
 
-        for (File jar : jars) {
-            load(jar);
+            for (File jar : jars) {
+                load(jar);
+            }
         }
     }
 

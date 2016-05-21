@@ -8,13 +8,14 @@ import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtPackageReference;
 import spoon.reflect.reference.CtTypeReference;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
-
 
 public class PackageEntity extends NamedElementEntity<CtPackage> {
 
-    private Set<TypeEntity<?>> types;
+    private Collection<TypeEntity<?>> types;
 
     public PackageEntity(CtPackage pack) {
         super(pack);
@@ -37,7 +38,7 @@ public class PackageEntity extends NamedElementEntity<CtPackage> {
 
     @Override
     public void extract() {
-        Set<TypeEntity<?>> types = getTypes();
+        Collection<TypeEntity<?>> types = getTypes();
 
         if (types.isEmpty()) {
             return;
@@ -46,9 +47,16 @@ public class PackageEntity extends NamedElementEntity<CtPackage> {
         tagType();
         tagName();
         tagPackageOf();
+        tagParent();
 
         if (isDeclarationAvailable()) {
             tagComment();
+        }
+    }
+
+    public void tagParent() {
+        if (CodeOntology.extractProjectStructure()) {
+            getLogger().addTriple(this, Ontology.DECLARED_BY_PROPERTY, getParent());
         }
     }
 
@@ -62,7 +70,7 @@ public class PackageEntity extends NamedElementEntity<CtPackage> {
         }
     }
 
-    public Set<TypeEntity<?>> getTypes() {
+    public Collection<TypeEntity<?>> getTypes() {
         if (types == null) {
             setTypes();
         }
@@ -70,7 +78,7 @@ public class PackageEntity extends NamedElementEntity<CtPackage> {
     }
 
      private void setTypes() {
-         types = new HashSet<>();
+         types = new ArrayList<>();
          if (isDeclarationAvailable()) {
              Set<CtType<?>> ctTypes = getElement().getTypes();
              for (CtType current : ctTypes) {
@@ -79,8 +87,8 @@ public class PackageEntity extends NamedElementEntity<CtPackage> {
          }
      }
 
-    public void setTypes(Set<Class<?>> types) {
-        this.types = new HashSet<>();
+    public void setTypes(List<Class<?>> types) {
+        this.types = new ArrayList<>();
         for (Class<?> type : types) {
             CtTypeReference<?> reference = ReflectionFactory.getInstance().createTypeReference(type);
             this.types.add(getFactory().wrap(reference));

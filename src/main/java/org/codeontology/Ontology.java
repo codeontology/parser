@@ -74,7 +74,15 @@ public class Ontology {
 
     public static final Resource WILDCARD_ENTITY = model.getResource(WOC + "Wildcard");
 
-    public static final Resource STATEMENT_ENTITY = model.getResource(WOC + "Statement");
+    public static final Resource PROJECT_ENTITY = model.getResource(WOC + "Project");
+
+    public static final Resource MAVEN_PROJECT_ENTITY = model.getResource(WOC + "MavenProject");
+
+    public static final Resource GRADLE_PROJECT_ENTITY = model.getResource(WOC + "GradleProject");
+
+    public static final Resource ANDROID_PROJECT_ENTITY = model.getResource(WOC + "AndroidProject");
+
+    public static final Resource JAR_FILE_ENTITY = model.getResource(WOC + "JarFile");
 
     public static final Resource BLOCK_ENTITY = model.getResource(WOC + "Block");
 
@@ -98,6 +106,8 @@ public class Ontology {
 
 
     public static final Property RDF_TYPE_PROPERTY = model.getProperty(RDF + "type");
+
+    public static final Property RDFS_LABEL_PROPERTY = model.getProperty(RDFS + "label");
 
     public static final Property JAVA_TYPE_PROPERTY = model.getProperty(WOC + "type");
 
@@ -155,9 +165,11 @@ public class Ontology {
 
     public static final Property VAR_ARGS_PROPERTY = model.getProperty(WOC + "isVarArgs");
 
-    public static final Property LINE_PROPERTY = model.getProperty(WOC + "line");
+    public static final Property SUBPROJECT_PROPERTY = model.getProperty(WOC + "subProject");
 
-    public static final Property STATEMENT_PROPERTY = model.getProperty(WOC + "statement");
+    public static final Property BUILD_FILE_PROPERTY = model.getProperty(WOC + "buildFile");
+
+    public static final Property DEPENDENCY_PROPERTY = model.getProperty(WOC + "dependency");
 
     public static final Property CONDITION_PROPERTY = model.getProperty(WOC + "condition");
 
