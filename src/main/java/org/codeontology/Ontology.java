@@ -112,6 +112,8 @@ public class Ontology {
 
     public static final Resource ASSERT_ENTITY = model.getResource(WOC + "AssertStatement");
 
+    public static final Resource SYNCHRONIZED_ENTITY = model.getResource(WOC + "SynchronizedStatement");
+
     public static final Resource EXPRESSION_STATEMENT_ENTITY = model.getResource(WOC + "ExpressionStatement");
 
     public static final Resource STATEMENT_EXPRESSION_LIST_ENTITY = model.getResource(WOC + "StatementExpressionList");

@@ -16,6 +16,7 @@ public enum StatementKind {
     BREAK,
     CONTINUE,
     ASSERT,
+    SYNCHRONIZED,
     EXPRESSION_STATEMENT,
     STATEMENT;
 
@@ -46,6 +47,8 @@ public enum StatementKind {
             return CONTINUE;
         } else if (statement instanceof CtAssert) {
             return ASSERT;
+        } else if (statement instanceof CtSynchronized) {
+            return SYNCHRONIZED;
         } else if (statement instanceof CtExpression<?>) {
             return EXPRESSION_STATEMENT;
         }

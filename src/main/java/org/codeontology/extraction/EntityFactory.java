@@ -211,6 +211,8 @@ public class EntityFactory {
                 return new ContinueEntity((CtContinue) statement);
             case ASSERT:
                 return new AssertEntity((CtAssert<?>) statement);
+            case SYNCHRONIZED:
+                return new SynchronizedEntity((CtSynchronized) statement);
             case EXPRESSION_STATEMENT:
                 return new ExpressionStatementEntity(statement);
         }
