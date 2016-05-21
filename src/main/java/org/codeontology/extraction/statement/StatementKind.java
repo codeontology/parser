@@ -13,6 +13,8 @@ public enum StatementKind {
     TRY,
     RETURN,
     THROW,
+    BREAK,
+    CONTINUE,
     STATEMENT;
 
     public static StatementKind getKindOf(CtStatement statement) {
@@ -36,6 +38,10 @@ public enum StatementKind {
             return RETURN;
         } else if (statement instanceof CtThrow) {
             return THROW;
+        } else if (statement instanceof CtBreak) {
+            return BREAK;
+        } else if (statement instanceof CtContinue) {
+            return CONTINUE;
         }
 
         return STATEMENT;

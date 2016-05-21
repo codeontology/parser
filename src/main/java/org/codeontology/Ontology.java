@@ -106,6 +106,10 @@ public class Ontology {
 
     public static final Resource THROW_ENTITY = model.getResource(WOC + "ThrowSatement");
 
+    public static final Resource BREAK_ENTITY = model.getResource(WOC + "BreakStatement");
+
+    public static final Resource CONTINUE_ENTITY = model.getResource(WOC + "ContinueStatement");
+
     public static final Resource STATEMENT_EXPRESSION_LIST_ENTITY = model.getResource(WOC + "StatementExpressionList");
 
     public static final Resource EXPRESSION_ENTITY = model.getResource(WOC + "Expression");
@@ -206,6 +210,10 @@ public class Ontology {
     public static final Property FINALLY_CLAUSE_PROPERTY = model.getProperty(WOC + "finally");
 
     public static final Property RESOURCE_PROPERTY = model.getProperty(WOC + "resource");
+
+    public static final Property TARGETED_LABEL_PROPERTY = model.getProperty(WOC + "targetedLabel");
+
+    public static final Property WOC_LABEL_PROPERTY = model.getProperty(WOC + "label");
 
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");

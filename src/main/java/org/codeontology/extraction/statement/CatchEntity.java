@@ -17,15 +17,9 @@ import java.util.List;
 public class CatchEntity extends CodeElementEntity<CtCatch> implements BodyHolderEntity<CtCatch> {
 
     private int position;
-    private static final String TAG = "catch";
 
     public CatchEntity(CtCatch catcher) {
         super(catcher);
-    }
-
-    @Override
-    protected String buildRelativeURI() {
-        return getParent().getRelativeURI() + SEPARATOR + TAG + SEPARATOR + position;
     }
 
     @Override

@@ -13,15 +13,8 @@ import java.util.List;
 
 public class FinallyEntity extends CodeElementEntity<CtBlock<?>> implements StatementsHolderEntity<CtBlock<?>> {
 
-    private static final String TAG = "finally";
-
     public FinallyEntity(CtBlock<?> block) {
         super(block);
-    }
-
-    @Override
-    protected String buildRelativeURI() {
-        return getParent().getRelativeURI() + SEPARATOR + TAG;
     }
 
     @Override

@@ -205,6 +205,10 @@ public class EntityFactory {
                 return new ReturnEntity((CtReturn<?>) statement);
             case THROW:
                 return new ThrowEntity((CtThrow) statement);
+            case BREAK:
+                return new BreakEntity((CtBreak) statement);
+            case CONTINUE:
+                return new ContinueEntity((CtContinue) statement);
         }
 
         return new StatementEntity<>(statement);

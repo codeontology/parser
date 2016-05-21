@@ -1,9 +1,8 @@
-package org.codeontology.extraction;
+package org.codeontology.extraction.statement;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import org.codeontology.extraction.expression.ExpressionEntity;
-import org.codeontology.extraction.statement.StatementEntity;
 import org.codeontology.extraction.support.ExpressionHolderEntity;
 import org.codeontology.extraction.support.ExpressionTagger;
 import spoon.reflect.code.CtExpression;

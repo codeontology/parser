@@ -9,20 +9,10 @@ import org.codeontology.extraction.support.LineTagger;
 import spoon.reflect.code.CtStatement;
 
 public class StatementEntity<E extends CtStatement> extends CodeElementEntity<E> {
-    private static final String TAG = "statement";
     private int position;
 
     public StatementEntity(E element) {
         super(element);
-    }
-
-    @Override
-    public String buildRelativeURI() {
-        if (!(getParent() instanceof StatementEntity)) {
-            return getParent().getRelativeURI() + SEPARATOR + TAG + SEPARATOR + position;
-        } else {
-            return getParent().getRelativeURI() + SEPARATOR + position;
-        }
     }
 
     public void setPosition(int position) {
@@ -44,6 +34,15 @@ public class StatementEntity<E extends CtStatement> extends CodeElementEntity<E>
         tagPosition();
         tagLine();
         tagSourceCode();
+        tagLabel();
+    }
+
+    public void tagLabel() {
+        String labelString = getElement().getLabel();
+        if (labelString != null) {
+            Literal label = getModel().createTypedLiteral(labelString);
+            getLogger().addTriple(this, Ontology.WOC_LABEL_PROPERTY, label);
+        }
     }
 
     public void tagLine() {

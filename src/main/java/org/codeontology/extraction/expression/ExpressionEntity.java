@@ -12,16 +12,6 @@ public class ExpressionEntity extends CodeElementEntity<CtExpression<?>> {
         super(expression);
     }
 
-    public static final String TAG = "expression";
-
-    @Override
-    protected String buildRelativeURI() {
-        int line = getElement().getPosition().getLine();
-        int column = getElement().getPosition().getColumn();
-
-        return getParent().getRelativeURI() + SEPARATOR + TAG + SEPARATOR + line + SEPARATOR + column;
-    }
-
     @Override
     protected RDFNode getType() {
         return Ontology.EXPRESSION_ENTITY;
