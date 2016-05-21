@@ -1,15 +1,12 @@
 package org.codeontology.extraction;
 
 import org.codeontology.CodeOntology;
-import org.codeontology.buildsystems.ClasspathLoader;
-import spoon.reflect.reference.CtPackageReference;
+import org.codeontology.projects.ClasspathLoader;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.*;
-import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class JarProcessor {

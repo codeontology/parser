@@ -1,9 +1,9 @@
 package org.codeontology.extraction;
 
-import org.codeontology.buildsystems.DefaultProject;
-import org.codeontology.buildsystems.gradle.AndroidProject;
-import org.codeontology.buildsystems.gradle.GradleProject;
-import org.codeontology.buildsystems.maven.MavenProject;
+import org.codeontology.projects.DefaultProject;
+import org.codeontology.projects.gradle.AndroidProject;
+import org.codeontology.projects.gradle.GradleProject;
+import org.codeontology.projects.maven.MavenProject;
 
 public class ProjectVisitor {
 

@@ -2,7 +2,7 @@ package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
-import org.codeontology.buildsystems.maven.MavenProject;
+import org.codeontology.projects.maven.MavenProject;
 
 public class MavenProjectEntity extends ProjectEntity<MavenProject> {
 

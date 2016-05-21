@@ -4,7 +4,6 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
-import org.codeontology.ProjectProcessor;
 import spoon.reflect.reference.CtPackageReference;
 
 import java.io.File;
@@ -49,7 +48,7 @@ public class JarFileEntity extends AbstractEntity<JarFile> {
     }
 
     public void tagDependency() {
-        ProjectEntity<?> mainProject = new ProjectProcessor(CodeOntology.getProject()).getProjectEntity();
+        ProjectEntity<?> mainProject = CodeOntology.getProject();
         if (mainProject != null) {
             getLogger().addTriple(mainProject, Ontology.DEPENDENCY_PROPERTY, this);
         }

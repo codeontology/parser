@@ -3,14 +3,15 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
-import org.codeontology.ProjectProcessor;
-import org.codeontology.buildsystems.Project;
 import spoon.reflect.declaration.CtPackage;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtPackageReference;
 import spoon.reflect.reference.CtTypeReference;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 public class PackageEntity extends NamedElementEntity<CtPackage> {
 

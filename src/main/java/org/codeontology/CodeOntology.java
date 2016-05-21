@@ -2,13 +2,10 @@ package org.codeontology;
 
 import com.martiansoftware.jsap.JSAPException;
 import org.apache.commons.io.FileUtils;
-import org.codeontology.buildsystems.DependenciesLoader;
-import org.codeontology.buildsystems.Project;
-import org.codeontology.buildsystems.ProjectFactory;
-import org.codeontology.extraction.JarProcessor;
-import org.codeontology.extraction.RDFLogger;
-import org.codeontology.extraction.ReflectionFactory;
-import org.codeontology.extraction.SourceProcessor;
+import org.codeontology.extraction.*;
+import org.codeontology.projects.DependenciesLoader;
+import org.codeontology.projects.Project;
+import org.codeontology.projects.ProjectFactory;
 import org.joda.time.Period;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
@@ -33,6 +30,7 @@ public class CodeOntology {
     private Launcher spoon;
     private boolean exploreJarsFlag;
     private Project project;
+    private ProjectEntity<?> projectEntity;
     private DependenciesLoader<? extends Project> loader;
     private PeriodFormatter formatter;
     private int tries;
@@ -68,6 +66,7 @@ public class CodeOntology {
         codeOntology = new CodeOntology(args);
         try {
             codeOntology.processSources();
+            codeOntology.processProjectStructure();
             codeOntology.processJars();
             codeOntology.postCompletionTasks();
         } catch (Exception | Error e) {
@@ -81,11 +80,9 @@ public class CodeOntology {
             if (isInputSet()) {
                 System.out.println("Running on " + getArguments().getInput());
 
-                loadDependencies();
+                project = ProjectFactory.getInstance().getProject(getArguments().getInput());
 
-                if (getArguments().extractProjectStructure() && project != null) {
-                    new ProjectProcessor(project).process();
-                }
+                loadDependencies();
 
                 if (!getArguments().doNotExtractTriples()) {
                     spoon();
@@ -94,6 +91,13 @@ public class CodeOntology {
             }
         } catch (Exception e) {
             handleFailure(e);
+        }
+    }
+
+    private void processProjectStructure() {
+        if (getArguments().extractProjectStructure() && project != null) {
+            getProjectEntity().extract();
+            RDFLogger.getInstance().writeRDF();
         }
     }
 
@@ -141,7 +145,6 @@ public class CodeOntology {
 
     private void loadDependencies() {
         long start = System.currentTimeMillis();
-        project = ProjectFactory.getInstance().getProject(getArguments().getInput());
         loader = project.getLoader();
         loader.loadDependencies();
 
@@ -308,11 +311,21 @@ public class CodeOntology {
         Runtime.getRuntime().halt(status);
     }
 
-    public static Project getProject() {
-        return codeOntology.project;
+    public static ProjectEntity<?> getProject() {
+        return codeOntology.getProjectEntity();
     }
 
     public static boolean extractProjectStructure() {
         return codeOntology.getArguments().extractProjectStructure();
+    }
+
+    public ProjectEntity<?> getProjectEntity() {
+        if (projectEntity == null) {
+            ProjectVisitor visitor = new ProjectVisitor();
+            project.accept(visitor);
+            projectEntity = visitor.getLastEntity();
+        }
+
+        return projectEntity;
     }
 }

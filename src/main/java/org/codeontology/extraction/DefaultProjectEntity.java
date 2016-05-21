@@ -2,7 +2,7 @@ package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
-import org.codeontology.buildsystems.DefaultProject;
+import org.codeontology.projects.DefaultProject;
 
 public class DefaultProjectEntity extends ProjectEntity<DefaultProject> {
 

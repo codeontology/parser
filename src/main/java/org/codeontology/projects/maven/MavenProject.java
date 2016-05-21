@@ -1,9 +1,9 @@
-package org.codeontology.buildsystems.maven;
+package org.codeontology.projects.maven;
 
 import org.apache.commons.lang3.StringUtils;
-import org.codeontology.buildsystems.DependenciesLoader;
-import org.codeontology.buildsystems.Project;
 import org.codeontology.extraction.ProjectVisitor;
+import org.codeontology.projects.DependenciesLoader;
+import org.codeontology.projects.Project;
 
 import java.io.File;
 import java.io.FileNotFoundException;

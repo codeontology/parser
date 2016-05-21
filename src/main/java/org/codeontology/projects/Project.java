@@ -1,4 +1,4 @@
-package org.codeontology.buildsystems;
+package org.codeontology.projects;
 
 import org.codeontology.extraction.ProjectVisitor;
 

@@ -1,10 +1,10 @@
 package org.codeontology.extraction;
 
-import org.codeontology.buildsystems.DefaultProject;
-import org.codeontology.buildsystems.gradle.AndroidProject;
-import org.codeontology.buildsystems.gradle.GradleProject;
-import org.codeontology.buildsystems.maven.MavenProject;
 import org.codeontology.exceptions.NullTypeException;
+import org.codeontology.projects.DefaultProject;
+import org.codeontology.projects.gradle.AndroidProject;
+import org.codeontology.projects.gradle.GradleProject;
+import org.codeontology.projects.maven.MavenProject;
 import spoon.reflect.code.CtLambda;
 import spoon.reflect.code.CtLocalVariable;
 import spoon.reflect.declaration.*;

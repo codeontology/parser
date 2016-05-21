@@ -2,7 +2,7 @@ package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
-import org.codeontology.buildsystems.gradle.AndroidProject;
+import org.codeontology.projects.gradle.AndroidProject;
 
 public class AndroidGradleProjectEntity extends GradleProjectEntity {
     public AndroidGradleProjectEntity(AndroidProject project) {

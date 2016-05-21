@@ -2,8 +2,12 @@ package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.Literal;
 import org.codeontology.Ontology;
-import org.codeontology.buildsystems.Project;
+import org.codeontology.projects.Project;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collection;
 
 public abstract class ProjectEntity<T extends Project> extends AbstractEntity<T> {
@@ -14,9 +18,26 @@ public abstract class ProjectEntity<T extends Project> extends AbstractEntity<T>
 
     @Override
     protected String buildRelativeURI() {
-        return getElement().getName() + SEPARATOR +
-                getElement().getSubProjects().hashCode() + SEPARATOR +
-                getElement().getBuildFileContent().hashCode();
+        String code;
+        if (getElement().getBuildFile() == null) {
+            try {
+                String[] names = Files.walk(Paths.get(getElement().getPath()))
+                        .filter(path -> path.toFile().getPath().endsWith(".java"))
+                        .map(path -> path.toFile().getName())
+                        .toArray(String[]::new);
+                        Arrays.sort(names);
+                code = String.valueOf(Arrays.hashCode(names));
+            } catch (IOException e) {
+                code = "0";
+            }
+        } else {
+            String[] subProjects = getElement().getSubProjects().stream().map(Project::getName).toArray(String[]::new);
+            Arrays.sort(subProjects);
+            int buildFileCode = getElement().getBuildFileContent().hashCode();
+            code = String.valueOf(Arrays.hashCode(subProjects)) + SEPARATOR + String.valueOf(buildFileCode);
+        }
+
+        return getPrefix() + getElement().getName() + SEPARATOR + code;
     }
 
     @Override
@@ -33,13 +54,13 @@ public abstract class ProjectEntity<T extends Project> extends AbstractEntity<T>
         getLogger().addTriple(this, Ontology.RDFS_LABEL_PROPERTY, label);
     }
 
-
     public void tagSubProjects() {
         Collection<Project> subProjects = getElement().getSubProjects();
         for (Project subProject : subProjects) {
             ProjectVisitor visitor = new ProjectVisitor();
             subProject.accept(visitor);
             ProjectEntity<?> entity = visitor.getLastEntity();
+            entity.setParent(this);
             getLogger().addTriple(this, Ontology.SUBPROJECT_PROPERTY, entity);
             entity.extract();
         }
@@ -51,5 +72,20 @@ public abstract class ProjectEntity<T extends Project> extends AbstractEntity<T>
             Literal buildFileLiteral = getModel().createTypedLiteral(buildFileContent);
             getLogger().addTriple(this, Ontology.BUILD_FILE_PROPERTY, buildFileLiteral);
         }
+    }
+
+    private String getPrefix() {
+        StringBuilder builder = new StringBuilder();
+        Entity<?> current = this;
+        while (current.getParent() != null) {
+            Entity<?> parent = current.getParent();
+            if (parent instanceof ProjectEntity<?>) {
+                builder.append(((ProjectEntity<?>) parent).getElement().getName());
+                builder.append(SEPARATOR);
+            }
+            current = parent;
+        }
+
+        return builder.toString();
     }
 }
