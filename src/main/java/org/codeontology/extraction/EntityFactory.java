@@ -201,6 +201,8 @@ public class EntityFactory {
                 return new ForEachEntity((CtForEach) statement);
             case TRY:
                 return new TryEntity((CtTry) statement);
+            case RETURN:
+                return new ReturnEntity((CtReturn<?>) statement);
         }
 
         return new StatementEntity<>(statement);

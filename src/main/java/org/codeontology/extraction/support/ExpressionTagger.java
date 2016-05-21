@@ -14,7 +14,9 @@ public class ExpressionTagger {
 
     public void tagExpression() {
         ExpressionEntity expression = entity.getExpression();
-        RDFLogger.getInstance().addTriple(entity, Ontology.EXPRESSION_PROPERTY, expression);
-        expression.extract();
+        if (expression != null) {
+            RDFLogger.getInstance().addTriple(entity, Ontology.EXPRESSION_PROPERTY, expression);
+            expression.extract();
+        }
     }
 }

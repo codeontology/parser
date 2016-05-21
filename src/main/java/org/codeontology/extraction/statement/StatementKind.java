@@ -11,6 +11,7 @@ public enum StatementKind {
     FOR,
     FOREACH,
     TRY,
+    RETURN,
     STATEMENT;
 
     public static StatementKind getKindOf(CtStatement statement) {
@@ -30,6 +31,8 @@ public enum StatementKind {
             return FOREACH;
         } else if (statement instanceof CtTry) {
             return TRY;
+        } else if (statement instanceof CtReturn<?>) {
+            return RETURN;
         }
 
         return STATEMENT;
