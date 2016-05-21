@@ -16,6 +16,7 @@ public enum StatementKind {
     BREAK,
     CONTINUE,
     ASSERT,
+    EXPRESSION_STATEMENT,
     STATEMENT;
 
     public static StatementKind getKindOf(CtStatement statement) {
@@ -45,6 +46,8 @@ public enum StatementKind {
             return CONTINUE;
         } else if (statement instanceof CtAssert) {
             return ASSERT;
+        } else if (statement instanceof CtExpression<?>) {
+            return EXPRESSION_STATEMENT;
         }
 
         return STATEMENT;

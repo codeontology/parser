@@ -66,7 +66,7 @@ public class Ontology {
 
     public static final Resource VARIABLE_ENTITY = model.getResource(WOC + "Variable");
 
-    public static final Resource LAMBDA_ENTITY = model.getResource(WOC + "Lambda");
+    public static final Resource LAMBDA_ENTITY = model.getResource(WOC + "LambdaExpression");
 
     public static final Resource ANONYMOUS_CLASS_ENTITY = model.getResource(WOC + "AnonymousClass");
 
@@ -111,6 +111,8 @@ public class Ontology {
     public static final Resource CONTINUE_ENTITY = model.getResource(WOC + "ContinueStatement");
 
     public static final Resource ASSERT_ENTITY = model.getResource(WOC + "AssertStatement");
+
+    public static final Resource EXPRESSION_STATEMENT_ENTITY = model.getResource(WOC + "ExpressionStatement");
 
     public static final Resource STATEMENT_EXPRESSION_LIST_ENTITY = model.getResource(WOC + "StatementExpressionList");
 
