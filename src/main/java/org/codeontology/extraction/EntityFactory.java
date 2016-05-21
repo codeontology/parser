@@ -203,6 +203,8 @@ public class EntityFactory {
                 return new TryEntity((CtTry) statement);
             case RETURN:
                 return new ReturnEntity((CtReturn<?>) statement);
+            case THROW:
+                return new ThrowEntity((CtThrow) statement);
         }
 
         return new StatementEntity<>(statement);

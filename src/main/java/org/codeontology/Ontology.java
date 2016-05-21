@@ -104,6 +104,8 @@ public class Ontology {
 
     public static final Resource RETURN_ENTITY = model.getResource(WOC + "ReturnStatement");
 
+    public static final Resource THROW_ENTITY = model.getResource(WOC + "ThrowSatement");
+
     public static final Resource STATEMENT_EXPRESSION_LIST_ENTITY = model.getResource(WOC + "StatementExpressionList");
 
     public static final Resource EXPRESSION_ENTITY = model.getResource(WOC + "Expression");
