@@ -14,7 +14,7 @@ public class CodeOntologyArguments {
 
     public static final String CLASSPATH_LONG = "classpath";
 
-    public static final String ND = "nd";
+    public static final String DO_NOT_DOWNLOAD_LONG = "do-not-download";
 
     public static final String VERBOSE_LONG = "verbose";
     public static final char VERBOSE_SHORT = 'v';
@@ -82,8 +82,8 @@ public class CodeOntologyArguments {
         option.setHelp("Specifies a list of directories and JAR files separated by colons (:) to search for class files.");
         jsap.registerParameter(option);
 
-        flag = new Switch(ND);
-        flag.setLongFlag(ND);
+        flag = new Switch(DO_NOT_DOWNLOAD_LONG);
+        flag.setLongFlag(DO_NOT_DOWNLOAD_LONG);
         flag.setDefault("false");
         flag.setHelp("Do not download dependencies.");
         jsap.registerParameter(flag);
@@ -189,7 +189,7 @@ public class CodeOntologyArguments {
     }
 
     public boolean downloadDependencies() {
-        return !result.getBoolean(ND);
+        return !result.getBoolean(DO_NOT_DOWNLOAD_LONG);
     }
 
     public boolean verboseMode() {
