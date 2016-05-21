@@ -38,6 +38,9 @@ public class CodeOntologyArguments {
     public static final String PROJECT_STRUCTURE_LONG = "project";
     public static final char PROJECT_STRUCTURE_SHORT = 'p';
 
+    public static final String STATEMENTS_LONG = "statements";
+    public static final char STATEMENTS_SHORT = 's';
+
     private JSAP jsap;
     private JSAPResult result;
 
@@ -138,6 +141,13 @@ public class CodeOntologyArguments {
         flag.setShortFlag(PROJECT_STRUCTURE_SHORT);
         flag.setDefault("false");
         flag.setHelp("Extract project structure");
+        jsap.registerParameter(flag);
+
+        flag = new Switch(STATEMENTS_LONG);
+        flag.setLongFlag(STATEMENTS_LONG);
+        flag.setShortFlag(STATEMENTS_SHORT);
+        flag.setDefault("false");
+        flag.setHelp("Process all statements and expressions");
         jsap.registerParameter(flag);
 
     }
@@ -247,5 +257,9 @@ public class CodeOntologyArguments {
 
     public boolean extractProjectStructure() {
         return result.getBoolean(PROJECT_STRUCTURE_LONG);
+    }
+
+    public boolean processStatements() {
+        return result.getBoolean(STACKTRACE_LONG);
     }
 }

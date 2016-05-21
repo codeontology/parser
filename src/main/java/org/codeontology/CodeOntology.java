@@ -328,4 +328,8 @@ public class CodeOntology {
 
         return projectEntity;
     }
+
+    public static boolean processStatements() {
+        return codeOntology.getArguments().processStatements();
+    }
 }

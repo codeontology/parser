@@ -84,6 +84,8 @@ public class Ontology {
 
     public static final Resource JAR_FILE_ENTITY = model.getResource(WOC + "JarFile");
 
+    public static final Resource STATEMENT_ENTITY = model.getResource(WOC + "Statement");
+
     public static final Resource BLOCK_ENTITY = model.getResource(WOC + "Block");
 
     public static final Resource IF_THEN_ELSE_ENTITY = model.getResource(WOC + "IfThenElseStatement");
@@ -171,7 +173,11 @@ public class Ontology {
 
     public static final Property DEPENDENCY_PROPERTY = model.getProperty(WOC + "dependency");
 
+    public static final Property LINE_PROPERTY = model.getProperty(WOC + "line");
+
     public static final Property CONDITION_PROPERTY = model.getProperty(WOC + "condition");
+
+    public static final Property STATEMENT_PROPERTY = model.getProperty(WOC + "statement");
 
     public static final Property THEN_PROPERTY = model.getProperty(WOC + "thenStatement");
 

@@ -1,5 +1,6 @@
 package org.codeontology.extraction;
 
+import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.*;
