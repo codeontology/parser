@@ -110,6 +110,8 @@ public class Ontology {
 
     public static final Resource CONTINUE_ENTITY = model.getResource(WOC + "ContinueStatement");
 
+    public static final Resource ASSERT_ENTITY = model.getResource(WOC + "AssertStatement");
+
     public static final Resource STATEMENT_EXPRESSION_LIST_ENTITY = model.getResource(WOC + "StatementExpressionList");
 
     public static final Resource EXPRESSION_ENTITY = model.getResource(WOC + "Expression");
@@ -200,6 +202,12 @@ public class Ontology {
     public static final Property FOR_UPDATE_PROPERTY = model.getProperty(WOC + "forUpdate");
 
     public static final Property EXPRESSION_PROPERTY = model.getProperty(WOC + "expression");
+
+    public static final Property RETURNED_EXPRESSION_PROPERTY = model.getProperty(WOC + "returnedExpression");
+
+    public static final Property THROWN_EXPRESSION_PROPERTY = model.getProperty(WOC + "thrownExpression");
+
+    public static final Property ASSERT_EXPRESSION_PROPERTY = model.getProperty(WOC + "assertExpression");
 
     public static final Property VARIABLE_PROPERTY = model.getProperty(WOC + "variable");
 

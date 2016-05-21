@@ -39,6 +39,6 @@ public class ReturnEntity extends StatementEntity<CtReturn<?>> implements Expres
 
     @Override
     public void tagExpression() {
-        new ExpressionTagger(this).tagExpression();
+        new ExpressionTagger(this).tagExpression(Ontology.RETURNED_EXPRESSION_PROPERTY);
     }
 }

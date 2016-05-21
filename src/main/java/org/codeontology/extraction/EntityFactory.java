@@ -209,6 +209,8 @@ public class EntityFactory {
                 return new BreakEntity((CtBreak) statement);
             case CONTINUE:
                 return new ContinueEntity((CtContinue) statement);
+            case ASSERT:
+                return new AssertEntity((CtAssert<?>) statement);
         }
 
         return new StatementEntity<>(statement);

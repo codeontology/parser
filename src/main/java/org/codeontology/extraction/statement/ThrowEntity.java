@@ -34,6 +34,6 @@ public class ThrowEntity extends StatementEntity<CtThrow> implements ExpressionH
 
     @Override
     public void tagExpression() {
-        new ExpressionTagger(this).tagExpression();
+        new ExpressionTagger(this).tagExpression(Ontology.THROWN_EXPRESSION_PROPERTY);
     }
 }
