@@ -18,15 +18,5 @@ public class SwitchEntity extends StatementEntity<CtSwitch<?>> {
     @Override
     public void extract() {
         super.extract();
-        tagCases();
-        tagExpression();
-    }
-
-    public void tagCases() {
-
-    }
-
-    public void tagExpression() {
-
     }
 }

@@ -185,9 +185,9 @@ public class CodeOntologyArguments {
     }
 
     private void printUsage() {
-        System.out.println("Usage:");
-        System.out.println("codeontology -i <input_folder> -o <output_file>");
-        System.out.println();
+        System.err.println("Usage:");
+        System.err.println("codeontology -i <input_folder> -o <output_file>");
+        System.err.println();
     }
 
     public String getInput() {

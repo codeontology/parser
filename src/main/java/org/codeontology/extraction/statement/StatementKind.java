@@ -18,6 +18,7 @@ public enum StatementKind {
     ASSERT,
     SYNCHRONIZED,
     EXPRESSION_STATEMENT,
+    LOCAL_VARIABLE_DECLARATION,
     STATEMENT;
 
     public static StatementKind getKindOf(CtStatement statement) {
@@ -51,6 +52,8 @@ public enum StatementKind {
             return SYNCHRONIZED;
         } else if (statement instanceof CtExpression<?>) {
             return EXPRESSION_STATEMENT;
+        } else if (statement instanceof CtLocalVariable<?>) {
+            return LOCAL_VARIABLE_DECLARATION;
         }
 
         return STATEMENT;

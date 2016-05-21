@@ -11,7 +11,8 @@ import org.codeontology.extraction.support.TypedElementEntity;
 import spoon.reflect.code.CtLocalVariable;
 import spoon.reflect.reference.CtTypeReference;
 
-public class LocalVariableEntity extends NamedElementEntity<CtLocalVariable<?>> implements MemberEntity<CtLocalVariable<?>>, TypedElementEntity<CtLocalVariable<?>> {
+public class LocalVariableEntity extends NamedElementEntity<CtLocalVariable<?>>
+        implements MemberEntity<CtLocalVariable<?>>, TypedElementEntity<CtLocalVariable<?>> {
 
     public LocalVariableEntity(CtLocalVariable<?> variable) {
         super(variable);
@@ -48,7 +49,7 @@ public class LocalVariableEntity extends NamedElementEntity<CtLocalVariable<?>> 
     public TypeEntity<?> getJavaType() {
         CtTypeReference<?> type = getElement().getType();
         TypeEntity<?> entity = getFactory().wrap(type);
-        entity.setParent(getParent(ExecutableEntity.class));
+        entity.setParent(getParent(ExecutableEntity.class, TypeEntity.class));
         return entity;
     }
 

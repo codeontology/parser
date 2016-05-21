@@ -213,6 +213,8 @@ public class EntityFactory {
                 return new AssertEntity((CtAssert<?>) statement);
             case SYNCHRONIZED:
                 return new SynchronizedEntity((CtSynchronized) statement);
+            case LOCAL_VARIABLE_DECLARATION:
+                return new LocalVariableDeclarationEntity((CtLocalVariable<?>) statement);
             case EXPRESSION_STATEMENT:
                 return new ExpressionStatementEntity(statement);
         }

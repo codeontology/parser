@@ -7,7 +7,6 @@ import org.codeontology.extraction.Entity;
 import org.codeontology.extraction.ReflectionFactory;
 import org.codeontology.extraction.support.FormalTypeParametersTagger;
 import org.codeontology.extraction.support.GenericDeclarationEntity;
-import org.codeontology.extraction.support.ModifiableEntity;
 import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtConstructor;
 import spoon.reflect.declaration.CtType;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ClassEntity<T> extends TypeEntity<CtClass<T>> implements ModifiableEntity<CtClass<T>>, GenericDeclarationEntity<CtClass<T>> {
+public class ClassEntity<T> extends TypeEntity<CtClass<T>> implements GenericDeclarationEntity<CtClass<T>> {
 
     private List<ConstructorEntity> constructors;
 

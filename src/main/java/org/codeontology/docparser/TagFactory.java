@@ -1,4 +1,4 @@
-package org.codeontology.commentparser;
+package org.codeontology.docparser;
 
 
 public class TagFactory {

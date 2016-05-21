@@ -114,6 +114,8 @@ public class Ontology {
 
     public static final Resource SYNCHRONIZED_ENTITY = model.getResource(WOC + "SynchronizedStatement");
 
+    public static final Resource LOCAL_VARIABLE_DECLARATION_ENTITY = model.getResource(WOC + "LocalVariableDeclarationStatement");
+
     public static final Resource EXPRESSION_STATEMENT_ENTITY = model.getResource(WOC + "ExpressionStatement");
 
     public static final Resource STATEMENT_EXPRESSION_LIST_ENTITY = model.getResource(WOC + "StatementExpressionList");
@@ -226,6 +228,8 @@ public class Ontology {
     public static final Property TARGETED_LABEL_PROPERTY = model.getProperty(WOC + "targetedLabel");
 
     public static final Property WOC_LABEL_PROPERTY = model.getProperty(WOC + "label");
+
+    public static final Property INITIALIZER_PROPERTY = model.getProperty(WOC + "initializer");
 
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");
