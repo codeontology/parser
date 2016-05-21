@@ -25,7 +25,7 @@ public abstract class ProjectEntity<T extends Project> extends AbstractEntity<T>
                         .filter(path -> path.toFile().getPath().endsWith(".java"))
                         .map(path -> path.toFile().getName())
                         .toArray(String[]::new);
-                        Arrays.sort(names);
+                Arrays.sort(names);
                 code = String.valueOf(Arrays.hashCode(names));
             } catch (IOException e) {
                 code = "0";

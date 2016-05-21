@@ -35,9 +35,6 @@ public class CodeOntologyArguments {
 
     public static final String CLEAN_LONG = "clean";
 
-    public static final String STATEMENTS_LONG = "process-statements";
-    public static final char STATEMENTS_SHORT = 's';
-
     public static final String PROJECT_STRUCTURE_LONG = "project";
     public static final char PROJECT_STRUCTURE_SHORT = 'p';
 
@@ -134,13 +131,6 @@ public class CodeOntologyArguments {
         flag.setLongFlag(CLEAN_LONG);
         flag.setDefault("false");
         flag.setHelp("Remove files that prevent the model from being built.");
-        jsap.registerParameter(flag);
-
-        flag = new Switch(STATEMENTS_LONG);
-        flag.setLongFlag(STATEMENTS_LONG);
-        flag.setShortFlag(STATEMENTS_SHORT);
-        flag.setDefault("false");
-        flag.setHelp("Process all statements and expressions");
         jsap.registerParameter(flag);
 
         flag = new Switch(PROJECT_STRUCTURE_LONG);
@@ -253,10 +243,6 @@ public class CodeOntologyArguments {
 
     public boolean removeTests() {
         return result.getBoolean(CLEAN_LONG);
-    }
-
-    public boolean processStatements() {
-        return result.getBoolean(STATEMENTS_LONG);
     }
 
     public boolean extractProjectStructure() {
