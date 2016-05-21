@@ -13,11 +13,11 @@ public abstract class AbstractEntity<E> implements Entity<E> {
     private Entity<?> parent;
     private String uri;
 
-    AbstractEntity() {
+    protected AbstractEntity() {
 
     }
 
-    AbstractEntity(E element) {
+    protected AbstractEntity(E element) {
         setElement(element);
     }
 

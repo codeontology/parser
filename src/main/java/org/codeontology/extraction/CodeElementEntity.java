@@ -1,6 +1,7 @@
 package org.codeontology.extraction;
 
 import org.codeontology.Ontology;
+import org.codeontology.extraction.declaration.TypeEntity;
 import spoon.reflect.declaration.CtAnnotation;
 import spoon.reflect.declaration.CtElement;
 
@@ -8,11 +9,11 @@ import java.util.List;
 
 public abstract class CodeElementEntity<E extends CtElement> extends AbstractEntity<E> {
 
-    CodeElementEntity() {
+    protected CodeElementEntity() {
 
     }
 
-    CodeElementEntity(E element) {
+    protected CodeElementEntity(E element) {
         super(element);
     }
 

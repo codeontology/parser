@@ -1,6 +1,6 @@
 package org.codeontology.projects;
 
-import org.codeontology.extraction.ProjectVisitor;
+import org.codeontology.extraction.project.ProjectVisitor;
 
 import java.io.File;
 import java.util.ArrayList;

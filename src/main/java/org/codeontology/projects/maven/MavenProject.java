@@ -1,7 +1,7 @@
 package org.codeontology.projects.maven;
 
 import org.apache.commons.lang3.StringUtils;
-import org.codeontology.extraction.ProjectVisitor;
+import org.codeontology.extraction.project.ProjectVisitor;
 import org.codeontology.projects.DependenciesLoader;
 import org.codeontology.projects.Project;
 

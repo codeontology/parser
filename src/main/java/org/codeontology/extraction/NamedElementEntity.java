@@ -10,11 +10,11 @@ public abstract class NamedElementEntity<E extends CtNamedElement> extends CodeE
 
     private CtReference reference;
 
-    NamedElementEntity(E element) {
+    protected NamedElementEntity(E element) {
         setElement(element);
     }
 
-    NamedElementEntity(CtReference reference) {
+    protected NamedElementEntity(CtReference reference) {
         setReference(reference);
     }
 

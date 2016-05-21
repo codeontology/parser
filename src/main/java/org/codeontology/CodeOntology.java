@@ -2,7 +2,12 @@ package org.codeontology;
 
 import com.martiansoftware.jsap.JSAPException;
 import org.apache.commons.io.FileUtils;
-import org.codeontology.extraction.*;
+import org.codeontology.extraction.JarProcessor;
+import org.codeontology.extraction.RDFLogger;
+import org.codeontology.extraction.ReflectionFactory;
+import org.codeontology.extraction.SourceProcessor;
+import org.codeontology.extraction.project.ProjectEntity;
+import org.codeontology.extraction.project.ProjectVisitor;
 import org.codeontology.projects.DependenciesLoader;
 import org.codeontology.projects.Project;
 import org.codeontology.projects.ProjectFactory;

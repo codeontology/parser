@@ -1,6 +1,6 @@
 package org.codeontology.projects.gradle;
 
-import org.codeontology.extraction.ProjectVisitor;
+import org.codeontology.extraction.project.ProjectVisitor;
 import org.codeontology.projects.BuildFiles;
 import org.codeontology.projects.DependenciesLoader;
 import org.codeontology.projects.Project;

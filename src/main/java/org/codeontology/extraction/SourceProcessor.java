@@ -1,6 +1,7 @@
 package org.codeontology.extraction;
 
 import org.codeontology.CodeOntology;
+import org.codeontology.extraction.declaration.PackageEntity;
 import spoon.processing.AbstractProcessor;
 import spoon.reflect.declaration.CtPackage;
 

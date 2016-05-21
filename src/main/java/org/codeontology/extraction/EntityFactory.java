@@ -1,12 +1,14 @@
 package org.codeontology.extraction;
 
 import org.codeontology.exceptions.NullTypeException;
+import org.codeontology.extraction.declaration.*;
+import org.codeontology.extraction.expression.ExpressionEntity;
+import org.codeontology.extraction.project.*;
+import org.codeontology.extraction.statement.*;
 import org.codeontology.projects.DefaultProject;
 import org.codeontology.projects.gradle.AndroidProject;
 import org.codeontology.projects.gradle.GradleProject;
 import org.codeontology.projects.maven.MavenProject;
-import spoon.reflect.code.CtLambda;
-import spoon.reflect.code.CtLocalVariable;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.*;
@@ -220,7 +222,5 @@ public class EntityFactory {
     public ExpressionEntity wrap(CtExpression<?> expression) {
         return new ExpressionEntity(expression);
     }
-
-
 
 }
