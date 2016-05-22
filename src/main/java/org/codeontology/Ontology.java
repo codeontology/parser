@@ -193,6 +193,8 @@ public class Ontology {
 
     public static final Property LINE_PROPERTY = model.getProperty(WOC + "line");
 
+    public static final Property NEXT_PROPERTY = model.getProperty(WOC + "next");
+
     public static final Property CONDITION_PROPERTY = model.getProperty(WOC + "condition");
 
     public static final Property STATEMENT_PROPERTY = model.getProperty(WOC + "statement");
