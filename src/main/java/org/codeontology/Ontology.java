@@ -231,6 +231,8 @@ public class Ontology {
 
     public static final Property INITIALIZER_PROPERTY = model.getProperty(WOC + "initializer");
 
+    public static final Property DECLARATION_PROPERTY = model.getProperty(WOC + "declaration");
+
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");
 

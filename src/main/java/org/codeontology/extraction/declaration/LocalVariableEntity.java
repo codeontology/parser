@@ -4,15 +4,14 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import org.codeontology.extraction.Entity;
 import org.codeontology.extraction.NamedElementEntity;
-import org.codeontology.extraction.support.DeclaringElementTagger;
-import org.codeontology.extraction.support.JavaTypeTagger;
-import org.codeontology.extraction.support.MemberEntity;
-import org.codeontology.extraction.support.TypedElementEntity;
+import org.codeontology.extraction.support.*;
 import spoon.reflect.code.CtLocalVariable;
 import spoon.reflect.reference.CtTypeReference;
 
+import java.util.List;
+
 public class LocalVariableEntity extends NamedElementEntity<CtLocalVariable<?>>
-        implements MemberEntity<CtLocalVariable<?>>, TypedElementEntity<CtLocalVariable<?>> {
+        implements MemberEntity<CtLocalVariable<?>>, TypedElementEntity<CtLocalVariable<?>>, ModifiableEntity<CtLocalVariable<?>> {
 
     public LocalVariableEntity(CtLocalVariable<?> variable) {
         super(variable);
@@ -23,7 +22,18 @@ public class LocalVariableEntity extends NamedElementEntity<CtLocalVariable<?>>
         tagType();
         tagName();
         tagJavaType();
+        tagModifiers();
         tagDeclaringElement();
+    }
+
+    @Override
+    public List<Modifier> getModifiers() {
+        return Modifier.asList(getElement().getModifiers());
+    }
+
+    @Override
+    public void tagModifiers() {
+        new ModifiableTagger(this).tagModifiers();
     }
 
     @Override
