@@ -116,6 +116,8 @@ public class Ontology {
 
     public static final Resource LOCAL_VARIABLE_DECLARATION_ENTITY = model.getResource(WOC + "LocalVariableDeclarationStatement");
 
+    public static final Resource CLASS_DECLARATION_ENTITY = model.getResource(WOC + "ClassDeclarationStatement");
+
     public static final Resource EXPRESSION_STATEMENT_ENTITY = model.getResource(WOC + "ExpressionStatement");
 
     public static final Resource STATEMENT_EXPRESSION_LIST_ENTITY = model.getResource(WOC + "StatementExpressionList");

@@ -1,6 +1,7 @@
 package org.codeontology.extraction.statement;
 
 import spoon.reflect.code.*;
+import spoon.reflect.declaration.CtClass;
 
 public enum StatementKind {
     BLOCK,
@@ -19,6 +20,7 @@ public enum StatementKind {
     SYNCHRONIZED,
     EXPRESSION_STATEMENT,
     LOCAL_VARIABLE_DECLARATION,
+    CLASS_DECLARATION,
     STATEMENT;
 
     public static StatementKind getKindOf(CtStatement statement) {
@@ -50,10 +52,12 @@ public enum StatementKind {
             return ASSERT;
         } else if (statement instanceof CtSynchronized) {
             return SYNCHRONIZED;
-        } else if (statement instanceof CtExpression<?>) {
-            return EXPRESSION_STATEMENT;
         } else if (statement instanceof CtLocalVariable<?>) {
             return LOCAL_VARIABLE_DECLARATION;
+        } else if (statement instanceof CtClass<?>) {
+            return CLASS_DECLARATION;
+        } else if (statement instanceof CtExpression<?>) {
+            return EXPRESSION_STATEMENT;
         }
 
         return STATEMENT;

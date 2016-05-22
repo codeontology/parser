@@ -30,13 +30,16 @@ public class FormalTypeParametersTagger {
     }
 
     public static List<TypeVariableEntity> formalTypeParametersOf(GenericDeclarationEntity<?> genericDeclaration) {
-        List<CtTypeReference<?>> parameters = genericDeclaration.getElement().getFormalTypeParameters();
         List<TypeVariableEntity> typeVariables = new ArrayList<>();
 
-        for (CtTypeReference parameter : parameters) {
-            Entity<?> entity = EntityFactory.getInstance().wrap(parameter);
-            if (entity instanceof TypeVariableEntity) {
-                typeVariables.add((TypeVariableEntity) entity);
+        if (genericDeclaration.getElement() != null) {
+            List<CtTypeReference<?>> parameters = genericDeclaration.getElement().getFormalTypeParameters();
+
+            for (CtTypeReference parameter : parameters) {
+                Entity<?> entity = EntityFactory.getInstance().wrap(parameter);
+                if (entity instanceof TypeVariableEntity) {
+                    typeVariables.add((TypeVariableEntity) entity);
+                }
             }
         }
 

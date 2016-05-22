@@ -77,8 +77,10 @@ public class TryEntity extends StatementEntity<CtTry> implements BodyHolderEntit
             CtTryWithResource tryWithResources = (CtTryWithResource) getElement();
             List<CtLocalVariable<?>> resources = tryWithResources.getResources();
 
-            for (CtLocalVariable<?> variable : resources) {
-                result.add(getFactory().wrap(variable));
+            for (CtLocalVariable<?> resource : resources) {
+                LocalVariableEntity variable = getFactory().wrap(resource);
+                variable.setParent(this);
+                result.add(variable);
             }
 
         }

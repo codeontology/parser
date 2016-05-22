@@ -1,6 +1,6 @@
 package org.codeontology.extraction;
 
-import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Literal;
 import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtNamedElement;
@@ -47,12 +47,13 @@ public abstract class NamedElementEntity<E extends CtNamedElement> extends CodeE
         return reference;
     }
 
-    private RDFNode getName() {
-        return getModel().createLiteral(getReference().getSimpleName());
+    public String getName() {
+        return getReference().getSimpleName();
     }
 
     public void tagName() {
-        getLogger().addTriple(this, Ontology.NAME_PROPERTY, getName());
+        Literal name = getModel().createTypedLiteral(getName());
+        getLogger().addTriple(this, Ontology.NAME_PROPERTY, name);
     }
 
     @Override

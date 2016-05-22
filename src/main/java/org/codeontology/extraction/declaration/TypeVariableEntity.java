@@ -7,7 +7,7 @@ import org.codeontology.Ontology;
 import org.codeontology.extraction.Entity;
 import org.codeontology.extraction.NamedElementEntity;
 import org.codeontology.extraction.ReflectionFactory;
-import spoon.reflect.code.CtNewClass;
+import org.codeontology.extraction.support.GenericDeclarationEntity;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtExecutable;
 import spoon.reflect.declaration.CtType;
@@ -70,14 +70,10 @@ public class TypeVariableEntity extends TypeEntity<CtType<?>> {
 
     @Override
     public String buildRelativeURI() {
-        if (isWildcard()) {
+        if (isWildcard() || getParent() == null) {
             return wildcardURI();
-        }
-
-        if (getParent() != null) {
-            return getReference().getQualifiedName() + ":" + getParent().getRelativeURI();
         } else {
-            return null;
+            return getReference().getQualifiedName() + ":" + getParent().getRelativeURI();
         }
     }
 
@@ -210,11 +206,16 @@ public class TypeVariableEntity extends TypeEntity<CtType<?>> {
                     parent = null;
                 }
 
-                if (parent instanceof CtNewClass<?>) {
-                    return findParent(parent.getParent(CtExecutable.class).getReference());
-                } else {
-                    return findParent(type.getDeclaringType());
+                if (parent != null) {
+                    CtExecutable<?> executable = parent.getParent(CtExecutable.class);
+                    if (executable != null) {
+                        Entity<?> result = findParent(executable.getReference());
+                        if (result != null) {
+                            return result;
+                        }
+                    }
                 }
+                return findParent(type.getDeclaringType());
             }
         }
 
@@ -223,24 +224,50 @@ public class TypeVariableEntity extends TypeEntity<CtType<?>> {
 
     @Override
     public void setParent(Entity<?> context) {
+
+        if (isWildcard()) {
+            super.setParent(context);
+            return;
+        }
+
         CtReference reference = ((NamedElementEntity) context).getReference();
         String simpleName = getReference().getSimpleName();
 
         Entity<?> parent = TypeVariableCache.getInstance().getParent(simpleName, context);
+
         if (parent == null) {
-            if (reference instanceof CtTypeReference<?>) {
-                parent = findParent((CtTypeReference) reference);
-            } else if (reference instanceof CtExecutableReference) {
-                parent = findParent((CtExecutableReference) reference);
+            if (context instanceof GenericDeclarationEntity) {
+                parent = findParent((GenericDeclarationEntity<?>) context);
             }
+
+            if (parent == null) {
+                if (reference instanceof CtTypeReference<?>) {
+                    parent = findParent((CtTypeReference) reference);
+                } else if (reference instanceof CtExecutableReference) {
+                    parent = findParent((CtExecutableReference) reference);
+                }
+            }
+
             if (parent != null) {
-                parent.setParent(context);
                 super.setParent(parent);
                 TypeVariableCache.getInstance().putParent(simpleName, context, parent);
             }
         } else {
             super.setParent(parent);
         }
+    }
+
+    private Entity<?> findParent(GenericDeclarationEntity<?> context) {
+        while (context != null) {
+            List<TypeVariableEntity> parameters = context.getFormalTypeParameters();
+            for (TypeVariableEntity typeVariable : parameters) {
+                if (typeVariable.getName().equals(this.getName())) {
+                    return context;
+                }
+            }
+            context = (GenericDeclarationEntity<?>) context.getParent(GenericDeclarationEntity.class);
+        }
+        return null;
     }
 
     public boolean isWildcard() {
@@ -275,14 +302,12 @@ class TypeVariableList extends ArrayList<CtTypeReference<?>> {
 }
 
 class TypeVariableCache {
-
     private static TypeVariableCache instance;
     private Table<String, Entity<?>, Entity<?>> table;
     private int size;
     private static final int ROWS = 16;
     private static final int COLS = 48;
     private static final int MAX_SIZE = (ROWS * COLS) / 2;
-
     private TypeVariableCache() {
         init();
     }
@@ -315,5 +340,4 @@ class TypeVariableCache {
         table = HashBasedTable.create(ROWS, COLS);
         size = 0;
     }
-
 }

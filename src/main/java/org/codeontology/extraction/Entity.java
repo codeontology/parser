@@ -19,6 +19,8 @@ public interface Entity<E> {
 
     Entity<?> getParent();
 
+    Entity<?> getParent(Class<?>... classes);
+
     void setParent(Entity<?> parent);
 
     void follow();

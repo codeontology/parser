@@ -215,6 +215,8 @@ public class EntityFactory {
                 return new SynchronizedEntity((CtSynchronized) statement);
             case LOCAL_VARIABLE_DECLARATION:
                 return new LocalVariableDeclarationEntity((CtLocalVariable<?>) statement);
+            case CLASS_DECLARATION:
+                return new ClassDeclarationStatement((CtClass<?>) statement);
             case EXPRESSION_STATEMENT:
                 return new ExpressionStatementEntity(statement);
         }
