@@ -260,6 +260,6 @@ public class CodeOntologyArguments {
     }
 
     public boolean processStatements() {
-        return result.getBoolean(STACKTRACE_LONG);
+        return result.getBoolean(STATEMENTS_LONG);
     }
 }
