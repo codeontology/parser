@@ -9,7 +9,10 @@ import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtTypeReference;
 
-import java.lang.reflect.*;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.List;
 
 public class MethodEntity extends ExecutableEntity<CtMethod<?>> implements GenericDeclarationEntity<CtMethod<?>> {
@@ -45,8 +48,7 @@ public class MethodEntity extends ExecutableEntity<CtMethod<?>> implements Gener
                 overridingMethod.follow();
             }
         } catch (Exception | Error e) {
-            // could not get overriding executable
-            // we can do nothing but skipping this method
+            // could not get an overriding executable
         }
     }
 
@@ -77,8 +79,7 @@ public class MethodEntity extends ExecutableEntity<CtMethod<?>> implements Gener
                 Type returnType = method.getGenericReturnType();
 
                 if (returnType instanceof GenericArrayType ||
-                    returnType instanceof TypeVariable<?>  ||
-                    returnType instanceof ParameterizedType) {
+                    returnType instanceof TypeVariable<?> ) {
 
                     result = getFactory().wrap(returnType);
                     result.setParent(this);

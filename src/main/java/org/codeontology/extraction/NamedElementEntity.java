@@ -25,7 +25,7 @@ public abstract class NamedElementEntity<E extends CtNamedElement> extends CodeE
         }
 
         this.reference = reference;
-        if (reference.getDeclaration() != null) {
+        if (reference.getDeclaration() != null && getElement() == null) {
             setElement((E) reference.getDeclaration());
         }
     }
@@ -36,10 +36,12 @@ public abstract class NamedElementEntity<E extends CtNamedElement> extends CodeE
             throw new IllegalArgumentException();
         }
         super.setElement(element);
-        try {
-            this.reference = element.getReference();
-        } catch (ClassCastException e) {
-            this.reference = null;
+        if (reference == null) {
+            try {
+                this.reference = element.getReference();
+            } catch (ClassCastException e) {
+                // leave reference null
+            }
         }
     }
 

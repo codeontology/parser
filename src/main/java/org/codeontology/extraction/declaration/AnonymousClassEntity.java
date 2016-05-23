@@ -53,6 +53,7 @@ public class AnonymousClassEntity<T> extends ClassEntity<T> {
         superType.setParent(getParent());
         getLogger().addTriple(this, Ontology.IMPLEMENTS_PROPERTY, superType);
         requestedResources.add(superType);
+        superType.follow();
     }
 
     public Set<Entity<?>> getRequestedResources() {

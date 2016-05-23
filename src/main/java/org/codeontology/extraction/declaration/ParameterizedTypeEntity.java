@@ -14,14 +14,13 @@ import java.util.List;
 public class ParameterizedTypeEntity extends TypeEntity<CtType<?>> {
     private List<CtTypeReference<?>> arguments;
 
-    public ParameterizedTypeEntity(CtTypeReference reference) {
+    public ParameterizedTypeEntity(CtTypeReference<?> reference) {
         super(reference);
         arguments = getReference().getActualTypeArguments();
     }
 
     @Override
     public String buildRelativeURI() {
-        arguments = getReference().getActualTypeArguments();
         String uri = getReference().getQualifiedName();
         String argumentsString = "";
         Entity<?> parent = getParent();

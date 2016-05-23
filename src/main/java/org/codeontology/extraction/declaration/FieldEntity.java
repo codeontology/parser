@@ -6,12 +6,14 @@ import org.codeontology.extraction.Entity;
 import org.codeontology.extraction.NamedElementEntity;
 import org.codeontology.extraction.ReflectionFactory;
 import org.codeontology.extraction.support.*;
-import org.codeontology.extraction.support.Modifier;
 import spoon.reflect.declaration.CtField;
 import spoon.reflect.reference.CtFieldReference;
 import spoon.reflect.reference.CtTypeReference;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,8 +93,7 @@ public class FieldEntity extends NamedElementEntity<CtField<?>> implements Modif
                 Type genericType = field.getGenericType();
 
                 if (genericType instanceof GenericArrayType ||
-                        genericType instanceof TypeVariable<?>  ||
-                        genericType instanceof ParameterizedType) {
+                        genericType instanceof TypeVariable<?>) {
 
                     result = getFactory().wrap(genericType);
                 }

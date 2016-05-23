@@ -29,7 +29,7 @@ public enum TypeKind {
             return TYPE_VARIABLE;
         }
 
-        if (reference.getActualTypeArguments().size() > 0) {
+        if (!reference.getActualTypeArguments().isEmpty()) {
             return PARAMETERIZED_TYPE;
         }
 

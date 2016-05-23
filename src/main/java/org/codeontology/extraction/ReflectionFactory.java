@@ -28,7 +28,6 @@ public class ReflectionFactory {
     }
 
     public CtTypeReference<?> createParameterizedTypeReference(ParameterizedType parameterizedType) {
-
         Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
         Type rawType = parameterizedType.getRawType();
         CtTypeReference<?> reference;

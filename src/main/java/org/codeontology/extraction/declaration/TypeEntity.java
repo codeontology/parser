@@ -164,7 +164,7 @@ public abstract class TypeEntity<T extends CtType<?>> extends NamedElementEntity
 
     protected void showMemberAccessWarning() {
         if (CodeOntology.verboseMode()) {
-            System.out.println("[WARNING] Cannot extract members of " + getReference().getQualifiedName());
+           CodeOntology.showWarning("Could not extract members of " + getReference().getQualifiedName());
         }
     }
 }
