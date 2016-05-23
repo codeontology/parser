@@ -124,6 +124,8 @@ public class Ontology {
 
     public static final Resource EXPRESSION_ENTITY = model.getResource(WOC + "Expression");
 
+    public static final Resource ASSIGNMENT_EXPRESSION_ENTITY = model.getResource(WOC + "AssignmentExpression");
+
 
     public static final Property RDF_TYPE_PROPERTY = model.getProperty(RDF + "type");
 
@@ -236,6 +238,8 @@ public class Ontology {
     public static final Property INITIALIZER_PROPERTY = model.getProperty(WOC + "initializer");
 
     public static final Property DECLARATION_PROPERTY = model.getProperty(WOC + "declaration");
+
+    public static final Property LEFT_HAND_SIDE_PROPERTY = model.getProperty(WOC + "leftHandSide");
 
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");

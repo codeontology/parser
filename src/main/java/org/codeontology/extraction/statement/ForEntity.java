@@ -5,6 +5,7 @@ import org.codeontology.Ontology;
 import org.codeontology.extraction.expression.ExpressionEntity;
 import org.codeontology.extraction.support.ConditionHolderEntity;
 import org.codeontology.extraction.support.ConditionTagger;
+import spoon.reflect.code.CtExpression;
 import spoon.reflect.code.CtFor;
 
 public class ForEntity extends LoopEntity<CtFor> implements ConditionHolderEntity<CtFor> {
@@ -27,10 +28,15 @@ public class ForEntity extends LoopEntity<CtFor> implements ConditionHolderEntit
     }
 
     @Override
-    public ExpressionEntity getCondition() {
-        ExpressionEntity condition = getFactory().wrap(getElement().getExpression());
-        condition.setParent(this);
-        return condition;
+    public ExpressionEntity<?> getCondition() {
+        CtExpression<?> expression = getElement().getExpression();
+        if (expression != null) {
+            ExpressionEntity<?> condition = getFactory().wrap(expression);
+            condition.setParent(this);
+            return condition;
+        }
+
+        return null;
     }
 
     @Override

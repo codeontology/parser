@@ -26,8 +26,8 @@ public class ForEachEntity extends LoopEntity<CtForEach> implements ExpressionHo
         tagVariable();
     }
 
-    public ExpressionEntity getExpression() {
-        ExpressionEntity expression = getFactory().wrap(getElement().getExpression());
+    public ExpressionEntity<?> getExpression() {
+        ExpressionEntity<?> expression = getFactory().wrap(getElement().getExpression());
         expression.setParent(this);
         return expression;
     }

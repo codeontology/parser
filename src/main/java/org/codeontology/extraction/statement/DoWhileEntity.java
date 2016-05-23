@@ -25,8 +25,8 @@ public class DoWhileEntity extends LoopEntity<CtDo> implements ConditionHolderEn
     }
 
     @Override
-    public ExpressionEntity getCondition() {
-        ExpressionEntity condition = getFactory().wrap(getElement().getLoopingExpression());
+    public ExpressionEntity<?> getCondition() {
+        ExpressionEntity<?> condition = getFactory().wrap(getElement().getLoopingExpression());
         condition.setParent(this);
         return condition;
     }

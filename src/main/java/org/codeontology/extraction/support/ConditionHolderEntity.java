@@ -6,7 +6,7 @@ import spoon.reflect.declaration.CtElement;
 
 public interface ConditionHolderEntity<E extends CtElement> extends Entity<E> {
 
-    ExpressionEntity getCondition();
+    ExpressionEntity<?> getCondition();
 
     void tagCondition();
 

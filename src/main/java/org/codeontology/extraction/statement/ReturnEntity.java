@@ -26,10 +26,10 @@ public class ReturnEntity extends StatementEntity<CtReturn<?>> implements Expres
     }
 
     @Override
-    public ExpressionEntity getExpression() {
+    public ExpressionEntity<?> getExpression() {
         CtExpression<?> returnedExpression = getElement().getReturnedExpression();
         if (returnedExpression != null) {
-            ExpressionEntity expression = getFactory().wrap(returnedExpression);
+            ExpressionEntity<?> expression = getFactory().wrap(returnedExpression);
             expression.setParent(this);
             return expression;
         }

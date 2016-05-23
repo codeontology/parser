@@ -26,24 +26,24 @@ public class AssertEntity extends StatementEntity<CtAssert<?>> implements Expres
         tagAssertExpression();
     }
 
-    public ExpressionEntity getAssertExpression() {
-        CtExpression<?> expression = getElement().getAssertExpression();
-        ExpressionEntity entity = getFactory().wrap(expression);
+    public ExpressionEntity<?> getAssertExpression() {
+        CtExpression<Boolean> expression = getElement().getAssertExpression();
+        ExpressionEntity<?> entity = getFactory().wrap(expression);
         entity.setParent(this);
         return entity;
     }
 
     public void tagAssertExpression() {
-        ExpressionEntity assertExpression = getAssertExpression();
+        ExpressionEntity<?> assertExpression = getAssertExpression();
         getLogger().addTriple(this, Ontology.ASSERT_EXPRESSION_PROPERTY, assertExpression);
         assertExpression.extract();
     }
 
     @Override
-    public ExpressionEntity getExpression() {
+    public ExpressionEntity<?> getExpression() {
         CtExpression<?> expression = getElement().getExpression();
         if (expression != null) {
-            ExpressionEntity entity = getFactory().wrap(expression);
+            ExpressionEntity<?> entity = getFactory().wrap(expression);
             entity.setParent(this);
             return entity;
         }

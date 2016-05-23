@@ -13,8 +13,10 @@ public class ConditionTagger {
     }
 
     public void tagCondition() {
-        ExpressionEntity condition = entity.getCondition();
-        RDFLogger.getInstance().addTriple(entity, Ontology.CONDITION_PROPERTY, condition);
-        condition.extract();
+        ExpressionEntity<?> condition = entity.getCondition();
+        if (condition != null) {
+            RDFLogger.getInstance().addTriple(entity, Ontology.CONDITION_PROPERTY, condition);
+            condition.extract();
+        }
     }
 }

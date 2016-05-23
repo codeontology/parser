@@ -28,8 +28,8 @@ public class IfThenElseEntity extends StatementEntity<CtIf> implements Condition
     }
 
     @Override
-    public ExpressionEntity getCondition() {
-        ExpressionEntity condition = getFactory().wrap(getElement().getCondition());
+    public ExpressionEntity<?> getCondition() {
+        ExpressionEntity<?> condition = getFactory().wrap(getElement().getCondition());
         condition.setParent(this);
         return condition;
     }

@@ -26,9 +26,9 @@ public class ExpressionStatementEntity extends StatementEntity<CtStatement> impl
     }
 
     @Override
-    public ExpressionEntity getExpression() {
+    public ExpressionEntity<?> getExpression() {
         if (getElement() instanceof CtExpression<?>) {
-            ExpressionEntity expression = getFactory().wrap((CtExpression<?>) getElement());
+            ExpressionEntity<?> expression = getFactory().wrap((CtExpression<?>) getElement());
             expression.setParent(this);
             return expression;
         }

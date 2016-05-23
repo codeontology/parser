@@ -44,10 +44,10 @@ public class LocalVariableDeclarationEntity extends StatementEntity<CtLocalVaria
     }
 
     @Override
-    public ExpressionEntity getExpression() {
+    public ExpressionEntity<?> getExpression() {
         CtExpression<?> defaultExpression = getElement().getDefaultExpression();
         if (defaultExpression != null) {
-            ExpressionEntity initializer = getFactory().wrap(defaultExpression);
+            ExpressionEntity<?> initializer = getFactory().wrap(defaultExpression);
             initializer.setParent(this);
             return initializer;
         }

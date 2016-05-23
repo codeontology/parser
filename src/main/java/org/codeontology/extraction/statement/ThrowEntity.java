@@ -25,9 +25,9 @@ public class ThrowEntity extends StatementEntity<CtThrow> implements ExpressionH
     }
 
     @Override
-    public ExpressionEntity getExpression() {
+    public ExpressionEntity<?> getExpression() {
         CtExpression<?> thrownExpression = getElement().getThrownExpression();
-        ExpressionEntity expression = getFactory().wrap(thrownExpression);
+        ExpressionEntity<?> expression = getFactory().wrap(thrownExpression);
         expression.setParent(this);
         return expression;
     }

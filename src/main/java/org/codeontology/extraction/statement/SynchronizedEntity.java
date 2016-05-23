@@ -42,10 +42,10 @@ public class SynchronizedEntity extends StatementEntity<CtSynchronized>
     }
 
     @Override
-    public ExpressionEntity getExpression() {
+    public ExpressionEntity<?> getExpression() {
         CtExpression<?> expression = getElement().getExpression();
         if (expression != null) {
-            ExpressionEntity entity = getFactory().wrap(expression);
+            ExpressionEntity<?> entity = getFactory().wrap(expression);
             entity.setParent(this);
             return entity;
         }

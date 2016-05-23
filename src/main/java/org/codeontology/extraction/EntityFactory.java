@@ -2,6 +2,7 @@ package org.codeontology.extraction;
 
 import org.codeontology.exceptions.NullTypeException;
 import org.codeontology.extraction.declaration.*;
+import org.codeontology.extraction.expression.AssignmentExpressionEntity;
 import org.codeontology.extraction.expression.ExpressionEntity;
 import org.codeontology.extraction.project.*;
 import org.codeontology.extraction.statement.*;
@@ -237,8 +238,12 @@ public class EntityFactory {
         return new CatchEntity(catcher);
     }
 
-    public ExpressionEntity wrap(CtExpression<?> expression) {
-        return new ExpressionEntity(expression);
+    public ExpressionEntity<?> wrap(CtExpression<?> expression) {
+        if (expression instanceof CtAssignment) {
+            return new AssignmentExpressionEntity((CtAssignment) expression);
+        }
+
+        return new ExpressionEntity<>(expression);
     }
 
 }
