@@ -1,4 +1,4 @@
-package org.codeontology.projects;
+package org.codeontology.build;
 
 import java.io.File;
 import java.util.Set;

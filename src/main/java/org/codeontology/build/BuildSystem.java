@@ -1,4 +1,4 @@
-package org.codeontology.projects;
+package org.codeontology.build;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;

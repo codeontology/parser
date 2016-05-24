@@ -1,9 +1,9 @@
-package org.codeontology.projects.gradle;
+package org.codeontology.build.gradle;
 
 import org.codeontology.extraction.project.ProjectVisitor;
-import org.codeontology.projects.BuildFiles;
-import org.codeontology.projects.DependenciesLoader;
-import org.codeontology.projects.Project;
+import org.codeontology.build.BuildFiles;
+import org.codeontology.build.DependenciesLoader;
+import org.codeontology.build.Project;
 
 import java.io.BufferedWriter;
 import java.io.File;

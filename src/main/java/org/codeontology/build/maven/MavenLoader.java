@@ -1,9 +1,9 @@
-package org.codeontology.projects.maven;
+package org.codeontology.build.maven;
 
 import org.codeontology.CodeOntology;
-import org.codeontology.projects.ClasspathLoader;
-import org.codeontology.projects.DependenciesLoader;
-import org.codeontology.projects.Project;
+import org.codeontology.build.ClasspathLoader;
+import org.codeontology.build.DependenciesLoader;
+import org.codeontology.build.Project;
 
 import java.io.File;
 import java.io.IOException;

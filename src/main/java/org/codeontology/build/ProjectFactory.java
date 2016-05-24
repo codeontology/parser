@@ -1,8 +1,8 @@
-package org.codeontology.projects;
+package org.codeontology.build;
 
-import org.codeontology.projects.gradle.AndroidProject;
-import org.codeontology.projects.gradle.GradleProject;
-import org.codeontology.projects.maven.MavenProject;
+import org.codeontology.build.gradle.AndroidProject;
+import org.codeontology.build.gradle.GradleProject;
+import org.codeontology.build.maven.MavenProject;
 
 import java.io.File;
 

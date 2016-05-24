@@ -1,11 +1,11 @@
-package org.codeontology.projects.gradle;
+package org.codeontology.build.gradle;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.codeontology.CodeOntology;
-import org.codeontology.projects.DependenciesLoader;
-import org.codeontology.projects.Project;
+import org.codeontology.build.DependenciesLoader;
+import org.codeontology.build.Project;
 
 import java.io.*;
 import java.util.Collection;

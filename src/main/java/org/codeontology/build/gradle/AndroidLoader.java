@@ -1,4 +1,4 @@
-package org.codeontology.projects.gradle;
+package org.codeontology.build.gradle;
 
 import org.codeontology.CodeOntology;
 

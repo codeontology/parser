@@ -1,4 +1,4 @@
-package org.codeontology.projects;
+package org.codeontology.build;
 
 public class DefaultLoader extends DependenciesLoader<DefaultProject> {
 
