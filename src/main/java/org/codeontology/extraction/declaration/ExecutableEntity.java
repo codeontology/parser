@@ -135,12 +135,12 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
         if (isDeclarationAvailable()) {
             List<CtParameter<?>> parameterList = getElement().getParameters();
             parameters = parameterList.stream()
-                    .map(current -> getFactory().wrap(current))
+                    .map(getFactory()::wrap)
                     .collect(Collectors.toCollection(ArrayList::new));
         } else {
             List<CtTypeReference<?>> references = ((CtExecutableReference<?>) getReference()).getParameters();
             parameters = references.stream()
-                    .map(reference -> getFactory().wrapByTypeReference(reference))
+                    .map(getFactory()::wrapByTypeReference)
                     .collect(Collectors.toCollection(ArrayList::new));
         }
     }
