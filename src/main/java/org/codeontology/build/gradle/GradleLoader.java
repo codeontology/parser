@@ -1,17 +1,13 @@
 package org.codeontology.build.gradle;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.codeontology.CodeOntology;
 import org.codeontology.build.DependenciesLoader;
 import org.codeontology.build.Project;
 
 import java.io.*;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 
@@ -206,9 +202,8 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
         return builder;
     }
 
-    public Set<File> jarProjects() {
+    public void jarProjects() {
         try {
-            Set<File> jars = new HashSet<>();
             File build = new File(getProject().getRoot().getPath() + "/build.gradle");
 
             Scanner scanner = new Scanner(build);
@@ -231,11 +226,6 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
 
             getProcessBuilder("jar").start().waitFor();
 
-            jars.addAll(FileUtils.listFiles(getProject().getRoot(),
-                    FileFilterUtils.suffixFileFilter(".jar"),
-                    TrueFileFilter.INSTANCE));
-
-            return jars;
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

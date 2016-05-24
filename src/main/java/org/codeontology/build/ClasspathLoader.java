@@ -73,9 +73,7 @@ public class ClasspathLoader {
                     FileFilterUtils.suffixFileFilter(".jar"),
                     TrueFileFilter.INSTANCE));
 
-            for (File jar : jars) {
-                load(jar);
-            }
+            jars.forEach(this::load);
         }
     }
 
