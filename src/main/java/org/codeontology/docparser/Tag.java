@@ -8,7 +8,7 @@ public class Tag {
 
     public Tag(String name, String text) {
         setName(name);
-        getText(text);
+        setText(text);
     }
 
     public String getName() {
@@ -23,11 +23,11 @@ public class Tag {
         return text;
     }
 
-    public void getText(String text) {
+    private void setText(String text) {
         this.text = text.trim().replaceAll("\\s+", " ");
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name.trim();
     }
 

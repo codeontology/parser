@@ -17,10 +17,13 @@ public class TagFactory {
     }
 
     public Tag createTag(String name, String text) {
-        if (name.equals("@param")) {
-            return new ParamTag(name, text);
-        } else {
-            return new Tag(name, text);
+        switch (name) {
+            case ParamTag.TAG:
+                return new ParamTag(text);
+            case ReturnTag.TAG:
+                return new ReturnTag(text);
+            default:
+                return new Tag(name, text);
         }
     }
 }

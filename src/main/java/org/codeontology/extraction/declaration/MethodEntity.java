@@ -1,7 +1,10 @@
 package org.codeontology.extraction.declaration;
 
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
+import org.codeontology.docparser.DocCommentParser;
+import org.codeontology.docparser.Tag;
 import org.codeontology.extraction.ReflectionFactory;
 import org.codeontology.extraction.support.FormalTypeParametersTagger;
 import org.codeontology.extraction.support.GenericDeclarationEntity;
@@ -36,6 +39,7 @@ public class MethodEntity extends ExecutableEntity<CtMethod<?>> implements Gener
         if (isDeclarationAvailable()) {
             tagOverrides();
             tagFormalTypeParameters();
+            tagReturnDescription();
         }
     }
 
@@ -71,26 +75,27 @@ public class MethodEntity extends ExecutableEntity<CtMethod<?>> implements Gener
     }
 
     private TypeEntity getGenericReturnType() {
-        TypeEntity<?> result = null;
         if (!isDeclarationAvailable()) {
-            try {
-                CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference());
-                Method method = (Method) ReflectionFactory.getInstance().createActualExecutable(reference);
-                Type returnType = method.getGenericReturnType();
-
-                if (returnType instanceof GenericArrayType ||
-                    returnType instanceof TypeVariable<?> ) {
-
-                    result = getFactory().wrap(returnType);
-                    result.setParent(this);
-                }
-
-            } catch (Throwable t) {
-                return null;
-            }
+            return null;
         }
+        try {
+            CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference());
+            Method method = (Method) ReflectionFactory.getInstance().createActualExecutable(reference);
+            Type returnType = method.getGenericReturnType();
 
-        return result;
+            if (returnType instanceof GenericArrayType ||
+                returnType instanceof TypeVariable<?> ) {
+
+                TypeEntity<?> result = getFactory().wrap(returnType);
+                result.setParent(this);
+                return result;
+            }
+
+            return null;
+
+        } catch (Throwable t) {
+            return null;
+        }
     }
 
     @Override
@@ -101,5 +106,28 @@ public class MethodEntity extends ExecutableEntity<CtMethod<?>> implements Gener
     @Override
     public void tagFormalTypeParameters() {
         new FormalTypeParametersTagger(this).tagFormalTypeParameters();
+    }
+
+    public String getReturnDescription() {
+        String comment = getElement().getDocComment();
+        if (comment == null) {
+            return null;
+        }
+
+        DocCommentParser parser = new DocCommentParser(comment);
+        List<Tag> tags = parser.getReturnTags();
+        if (tags.isEmpty()) {
+            return null;
+        }
+
+        return tags.get(0).getText();
+    }
+
+    public void tagReturnDescription() {
+        String description = getReturnDescription();
+        if (getReturnDescription() != null) {
+            Literal literal = getModel().createTypedLiteral(description);
+            getLogger().addTriple(this, Ontology.RETURN_DESCRIPTION_PROPERTY, literal);
+        }
     }
 }
