@@ -41,6 +41,9 @@ public class CodeOntologyArguments {
     public static final String STATEMENTS_LONG = "statements";
     public static final char STATEMENTS_SHORT = 's';
 
+    public static final String EXPRESSIONS_LONG = "expressions";
+    public static final char EXPRESSIONS_SHORT = 'e';
+
     private JSAP jsap;
     private JSAPResult result;
 
@@ -147,7 +150,14 @@ public class CodeOntologyArguments {
         flag.setLongFlag(STATEMENTS_LONG);
         flag.setShortFlag(STATEMENTS_SHORT);
         flag.setDefault("false");
-        flag.setHelp("Process all statements and expressions");
+        flag.setHelp("Process all statements");
+        jsap.registerParameter(flag);
+
+        flag = new Switch(EXPRESSIONS_LONG);
+        flag.setLongFlag(EXPRESSIONS_LONG);
+        flag.setShortFlag(EXPRESSIONS_SHORT);
+        flag.setDefault("false");
+        flag.setHelp("Process all expressions");
         jsap.registerParameter(flag);
 
     }
@@ -261,5 +271,9 @@ public class CodeOntologyArguments {
 
     public boolean processStatements() {
         return result.getBoolean(STATEMENTS_LONG);
+    }
+
+    public boolean processExpressions() {
+        return result.getBoolean(EXPRESSIONS_LONG);
     }
 }
