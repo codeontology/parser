@@ -147,6 +147,8 @@ public class Ontology {
 
     public static final Property RETURNS_FIELD_PROPERTY = model.getProperty(WOC + "returnsField");
 
+    public static final Property RETURN_DESCRIPTION_PROPERTY = model.getProperty(WOC + "returnDescription");
+
     public static final Property CONSTRUCTS_PROPERTY = model.getProperty(WOC + "constructs");
 
     public static final Property PARAMETER_PROPERTY = model.getProperty(WOC + "parameter");

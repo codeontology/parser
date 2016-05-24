@@ -101,7 +101,7 @@ public class ParameterEntity extends NamedElementEntity<CtParameter<?>> implemen
             String methodComment = parent.getElement().getDocComment();
             if (methodComment != null) {
                 DocCommentParser parser = new DocCommentParser(methodComment);
-                List<Tag> tags = parser.getTags("@param");
+                List<Tag> tags = parser.getParamTags();
                 for (Tag tag : tags) {
                     ParamTag paramTag = (ParamTag) tag;
                     if (paramTag.getParameterName().equals(getElement().getSimpleName())) {

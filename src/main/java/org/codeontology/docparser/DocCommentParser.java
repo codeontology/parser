@@ -58,6 +58,14 @@ public class DocCommentParser {
         return "";
     }
 
+    public List<Tag> getParamTags() {
+        return getTags(ParamTag.TAG);
+    }
+
+    public List<Tag> getReturnTags() {
+        return getTags(ReturnTag.TAG);
+    }
+
     public List<Tag> getTags(String name) {
         if (!parsed) {
             parse();
