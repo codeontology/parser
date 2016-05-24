@@ -43,7 +43,7 @@ public class LocalVariableEntity extends NamedElementEntity<CtLocalVariable<?>>
 
     @Override
     protected RDFNode getType() {
-        return Ontology.VARIABLE_ENTITY;
+        return Ontology.LOCAL_VARIABLE_ENTITY;
     }
 
     @Override

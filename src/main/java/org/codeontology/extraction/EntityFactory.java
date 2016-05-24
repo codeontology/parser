@@ -4,6 +4,7 @@ import org.codeontology.exceptions.NullTypeException;
 import org.codeontology.extraction.declaration.*;
 import org.codeontology.extraction.expression.AssignmentExpressionEntity;
 import org.codeontology.extraction.expression.ExpressionEntity;
+import org.codeontology.extraction.expression.MethodInvocationExpressionEntity;
 import org.codeontology.extraction.project.*;
 import org.codeontology.extraction.statement.*;
 import org.codeontology.projects.DefaultProject;
@@ -241,6 +242,8 @@ public class EntityFactory {
     public ExpressionEntity<?> wrap(CtExpression<?> expression) {
         if (expression instanceof CtAssignment) {
             return new AssignmentExpressionEntity((CtAssignment) expression);
+        } else if (expression instanceof CtInvocation) {
+            return new MethodInvocationExpressionEntity((CtInvocation<?>) expression);
         }
 
         return new ExpressionEntity<>(expression);

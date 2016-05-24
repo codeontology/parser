@@ -31,6 +31,7 @@ public class LocalVariableDeclarationEntity extends StatementEntity<CtLocalVaria
     public void tagVariable() {
         LocalVariableEntity variable = getVariable();
         getLogger().addTriple(variable, Ontology.DECLARATION_PROPERTY, this);
+        variable.extract();
     }
 
     public LocalVariableEntity getVariable() {
