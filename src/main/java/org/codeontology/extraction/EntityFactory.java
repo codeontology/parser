@@ -1,15 +1,13 @@
 package org.codeontology.extraction;
 
 import org.codeontology.extraction.declaration.*;
-import org.codeontology.extraction.expression.AssignmentExpressionEntity;
 import org.codeontology.extraction.expression.ExpressionEntity;
-import org.codeontology.extraction.expression.MethodInvocationExpressionEntity;
 import org.codeontology.extraction.project.*;
 import org.codeontology.extraction.statement.*;
-import org.codeontology.projects.DefaultProject;
-import org.codeontology.projects.gradle.AndroidProject;
-import org.codeontology.projects.gradle.GradleProject;
-import org.codeontology.projects.maven.MavenProject;
+import org.codeontology.build.DefaultProject;
+import org.codeontology.build.gradle.AndroidProject;
+import org.codeontology.build.gradle.GradleProject;
+import org.codeontology.build.maven.MavenProject;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.*;
@@ -21,6 +19,7 @@ import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 public class EntityFactory {
 
@@ -225,13 +224,11 @@ public class EntityFactory {
         return new StatementEntity<>(statement);
     }
 
-    public StatementExpressionListEntity wrap(List<CtStatement> list) {
-        List<StatementEntity<?>> element = new ArrayList<>(list.size());
-        for (CtStatement statement : list) {
-            element.add(wrap(statement));
-        }
-
-        return new StatementExpressionListEntity(element);
+    public StatementExpressionListEntity wrap(List<CtStatement> statements) {
+        List<StatementEntity<?>> list = statements.stream()
+                .map(this::wrap)
+                .collect(Collectors.toCollection(ArrayList::new));
+        return new StatementExpressionListEntity(list);
     }
 
     public CatchEntity wrap(CtCatch catcher) {
@@ -239,12 +236,6 @@ public class EntityFactory {
     }
 
     public ExpressionEntity<?> wrap(CtExpression<?> expression) {
-        if (expression instanceof CtAssignment) {
-            return new AssignmentExpressionEntity((CtAssignment) expression);
-        } else if (expression instanceof CtInvocation) {
-            return new MethodInvocationExpressionEntity((CtInvocation<?>) expression);
-        }
-
         return new ExpressionEntity<>(expression);
     }
 

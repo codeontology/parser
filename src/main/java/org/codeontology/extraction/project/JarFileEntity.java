@@ -59,9 +59,7 @@ public class JarFileEntity extends AbstractEntity<JarFile> {
     }
 
     public void tagPackages() {
-        for (PackageEntity pack : packs) {
-            pack.extract();
-        }
+        packs.forEach(PackageEntity::extract);
     }
 
     private void setPackages() {

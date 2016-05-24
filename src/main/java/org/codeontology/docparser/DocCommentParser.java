@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class DocCommentParser {
     String comment;
@@ -62,15 +63,10 @@ public class DocCommentParser {
             parse();
         }
 
-        List<Tag> result = new ArrayList<>();
+        return tags.stream()
+                .filter(tag -> tag.getName().equals(name))
+                .collect(Collectors.toCollection(ArrayList::new));
 
-        for (Tag tag : tags) {
-            if (tag.getName().equals(name)) {
-                result.add(tag);
-            }
-        }
-
-        return result;
     }
 
     private Matcher getMatcher(String current) {

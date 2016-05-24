@@ -52,9 +52,7 @@ public class TypeVariableEntity extends TypeEntity<CtType<?>> {
     }
 
     public void tagBounds() {
-        for (CtTypeReference bound : bounds) {
-            tagBound(bound);
-        }
+        bounds.forEach(this::tagBound);
     }
 
     private void tagBound(CtTypeReference boundReference) {

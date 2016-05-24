@@ -1,10 +1,10 @@
 package org.codeontology.extraction.project;
 
 import org.codeontology.extraction.EntityFactory;
-import org.codeontology.projects.DefaultProject;
-import org.codeontology.projects.gradle.AndroidProject;
-import org.codeontology.projects.gradle.GradleProject;
-import org.codeontology.projects.maven.MavenProject;
+import org.codeontology.build.DefaultProject;
+import org.codeontology.build.gradle.AndroidProject;
+import org.codeontology.build.gradle.GradleProject;
+import org.codeontology.build.maven.MavenProject;
 
 public class ProjectVisitor {
 

@@ -62,10 +62,7 @@ public abstract class TypeEntity<T extends CtType<?>> extends NamedElementEntity
     }
 
     public void tagMethods() {
-        List<MethodEntity> methods = getMethods();
-        for (MethodEntity method : methods) {
-            method.extract();
-        }
+        getMethods().forEach(MethodEntity::extract);
     }
 
     public List<MethodEntity> getMethods() {
@@ -78,15 +75,16 @@ public abstract class TypeEntity<T extends CtType<?>> extends NamedElementEntity
     private void setMethods() {
         methods = new ArrayList<>();
 
-        if (isDeclarationAvailable()) {
-            Set<CtMethod<?>> ctMethods = getElement().getMethods();
-            for (CtMethod ctMethod : ctMethods) {
-                MethodEntity method = getFactory().wrap(ctMethod);
-                method.setParent(this);
-                methods.add(method);
-            }
-        } else {
+        if (!isDeclarationAvailable()) {
             setMethodsByReflection();
+            return;
+        }
+
+        Set<CtMethod<?>> ctMethods = getElement().getMethods();
+        for (CtMethod ctMethod : ctMethods) {
+            MethodEntity method = getFactory().wrap(ctMethod);
+            method.setParent(this);
+            methods.add(method);
         }
     }
 
@@ -114,15 +112,16 @@ public abstract class TypeEntity<T extends CtType<?>> extends NamedElementEntity
 
     private void setFields() {
         fields = new ArrayList<>();
-        if (isDeclarationAvailable()) {
-            List<CtField<?>> ctFields = getElement().getFields();
-            for (CtField<?> current : ctFields) {
-                FieldEntity currentField = getFactory().wrap(current);
-                currentField.setParent(this);
-                fields.add(currentField);
-            }
-        } else {
+        if (!isDeclarationAvailable()) {
             setFieldsByReflection();
+            return;
+        }
+
+        List<CtField<?>> ctFields = getElement().getFields();
+        for (CtField<?> current : ctFields) {
+            FieldEntity currentField = getFactory().wrap(current);
+            currentField.setParent(this);
+            fields.add(currentField);
         }
     }
 
@@ -141,11 +140,7 @@ public abstract class TypeEntity<T extends CtType<?>> extends NamedElementEntity
     }
 
     public void tagFields() {
-        List<FieldEntity> fields = getFields();
-
-        for (FieldEntity field : fields) {
-            field.extract();
-        }
+        getFields().forEach(FieldEntity::extract);
     }
 
     @Override

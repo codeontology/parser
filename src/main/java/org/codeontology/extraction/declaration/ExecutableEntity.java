@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember & CtGenericElement>
         extends NamedElementEntity<E> implements ModifiableEntity<E>, MemberEntity<E>, BodyHolderEntity<E> {
@@ -131,17 +132,16 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
     }
 
     private void setParameters() {
-        parameters = new ArrayList<>();
         if (isDeclarationAvailable()) {
             List<CtParameter<?>> parameterList = getElement().getParameters();
-            for (CtParameter<?> current : parameterList) {
-                parameters.add(getFactory().wrap(current));
-            }
+            parameters = parameterList.stream()
+                    .map(current -> getFactory().wrap(current))
+                    .collect(Collectors.toCollection(ArrayList::new));
         } else {
             List<CtTypeReference<?>> references = ((CtExecutableReference<?>) getReference()).getParameters();
-            for (CtTypeReference<?> reference : references) {
-                parameters.add(getFactory().wrapByTypeReference(reference));
-            }
+            parameters = references.stream()
+                    .map(reference -> getFactory().wrapByTypeReference(reference))
+                    .collect(Collectors.toCollection(ArrayList::new));
         }
     }
 
@@ -197,10 +197,7 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
         for (AnonymousClassEntity<?> anonymousClass : anonymousClasses) {
             getLogger().addTriple(this, Ontology.CONSTRUCTS_PROPERTY, anonymousClass);
             anonymousClass.extract();
-            Set<Entity<?>> requestedResources = anonymousClass.getRequestedResources();
-            for (Entity<?> resource : requestedResources) {
-                tagRequests(resource);
-            }
+            anonymousClass.getRequestedResources().forEach(this::tagRequests);
         }
     }
 
@@ -237,10 +234,9 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
 
     public void addRequestedFields(CtStatement statement) {
         List<CtFieldReference<?>> references = statement.getReferences(new ReferenceTypeFilter<>(CtFieldReferenceImpl.class));
-
-        for (CtFieldReference<?> currentReference : references) {
-            fields.add(getFactory().wrap(currentReference));
-        }
+        references.stream()
+                .map(currentReference -> getFactory().wrap(currentReference))
+                .forEach(fields::add);
     }
 
     public void tagRequestedFields() {

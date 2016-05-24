@@ -1,7 +1,7 @@
 package org.codeontology.extraction;
 
 import org.codeontology.CodeOntology;
-import org.codeontology.projects.ClasspathLoader;
+import org.codeontology.build.ClasspathLoader;
 
 import java.io.File;
 import java.io.IOException;

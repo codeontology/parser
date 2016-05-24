@@ -83,9 +83,7 @@ public class PackageEntity extends NamedElementEntity<CtPackage> {
          types = new ArrayList<>();
          if (isDeclarationAvailable()) {
              Set<CtType<?>> ctTypes = getElement().getTypes();
-             for (CtType current : ctTypes) {
-                 types.add(getFactory().wrap(current));
-             }
+             ctTypes.stream().map(current -> getFactory().wrap(current)).forEach(types::add);
          }
      }
 

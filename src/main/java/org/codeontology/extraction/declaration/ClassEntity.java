@@ -72,11 +72,7 @@ public class ClassEntity<T> extends TypeEntity<CtClass<T>> implements GenericDec
     }
 
     public void tagConstructors() {
-        List<ConstructorEntity> constructors = getConstructors();
-
-        for (ConstructorEntity constructor : constructors) {
-            constructor.extract();
-        }
+        getConstructors().forEach(ConstructorEntity::extract);
     }
 
     public List<ConstructorEntity> getConstructors() {
@@ -90,15 +86,15 @@ public class ClassEntity<T> extends TypeEntity<CtClass<T>> implements GenericDec
     private void setConstructors() {
         constructors = new ArrayList<>();
 
-        if (isDeclarationAvailable()) {
-            Set<CtConstructor<T>> ctConstructors = getElement().getConstructors();
-            for (CtConstructor ctConstructor : ctConstructors) {
-                ConstructorEntity constructor = getFactory().wrap(ctConstructor);
-                constructor.setParent(this);
-                constructors.add(constructor);
-            }
-        } else {
+        if (!isDeclarationAvailable()) {
             setConstructorsByReflection();
+            return;
+        }
+        Set<CtConstructor<T>> ctConstructors = getElement().getConstructors();
+        for (CtConstructor ctConstructor : ctConstructors) {
+            ConstructorEntity constructor = getFactory().wrap(ctConstructor);
+            constructor.setParent(this);
+            constructors.add(constructor);
         }
     }
 

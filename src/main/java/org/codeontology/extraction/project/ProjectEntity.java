@@ -4,7 +4,7 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import org.codeontology.Ontology;
 import org.codeontology.extraction.AbstractEntity;
 import org.codeontology.extraction.Entity;
-import org.codeontology.projects.Project;
+import org.codeontology.build.Project;
 
 import java.io.IOException;
 import java.nio.file.Files;
