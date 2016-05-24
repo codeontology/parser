@@ -22,6 +22,11 @@ public abstract class CodeElementEntity<E extends CtElement> extends AbstractEnt
     @Override
     public String buildRelativeURI() {
         SourcePosition position = getElement().getPosition();
+
+        if (position == null) {
+            return getParent().getRelativeURI() + SEPARATOR + "-1";
+        }
+
         CtType<?> mainType = position.getCompilationUnit().getMainType();
         TypeEntity<?> mainTypeEntity = getFactory().wrap(mainType);
         return mainTypeEntity.getRelativeURI() + SEPARATOR + position.getLine() + SEPARATOR + position.getColumn();

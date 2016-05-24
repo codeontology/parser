@@ -4,23 +4,31 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import org.codeontology.Ontology;
 import org.codeontology.extraction.CodeElementEntity;
 import org.codeontology.extraction.RDFLogger;
+import spoon.reflect.cu.SourcePosition;
 
 public class LineTagger {
-    CodeElementEntity<?> entity;
+    private CodeElementEntity<?> entity;
+    private SourcePosition position;
 
     public LineTagger(CodeElementEntity<?> entity) {
         this.entity = entity;
+        position = entity.getElement().getPosition();
     }
 
     public void tagLine() {
-        int line = entity.getElement().getPosition().getLine();
-        Literal lineLiteral = entity.getModel().createTypedLiteral(line);
-        RDFLogger.getInstance().addTriple(entity, Ontology.LINE_PROPERTY, lineLiteral);
+        if (position == null) {
+            return;
+        }
+        Literal line = entity.getModel().createTypedLiteral(position.getLine());
+        RDFLogger.getInstance().addTriple(entity, Ontology.LINE_PROPERTY, line);
     }
 
     public void tagEndLine() {
-        int endLine = entity.getElement().getPosition().getEndLine();
-        Literal literal = entity.getModel().createTypedLiteral(endLine);
-        RDFLogger.getInstance().addTriple(entity, Ontology.END_LINE_PROPERTY, literal);
+        if (position == null) {
+            return;
+        }
+
+        Literal endLine = entity.getModel().createTypedLiteral(position.getEndLine());
+        RDFLogger.getInstance().addTriple(entity, Ontology.END_LINE_PROPERTY, endLine);
     }
 }
