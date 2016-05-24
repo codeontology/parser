@@ -2,7 +2,6 @@ package org.codeontology.extraction.declaration;
 
 import com.hp.hpl.jena.rdf.model.Property;
 import org.codeontology.CodeOntology;
-import org.codeontology.exceptions.NullTypeException;
 import org.codeontology.extraction.NamedElementEntity;
 import org.codeontology.extraction.ReflectionFactory;
 import org.codeontology.extraction.support.ModifiableEntity;

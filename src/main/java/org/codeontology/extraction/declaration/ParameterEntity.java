@@ -7,7 +7,6 @@ import org.codeontology.Ontology;
 import org.codeontology.docparser.DocCommentParser;
 import org.codeontology.docparser.ParamTag;
 import org.codeontology.docparser.Tag;
-import org.codeontology.exceptions.NullTypeException;
 import org.codeontology.extraction.NamedElementEntity;
 import org.codeontology.extraction.support.JavaTypeTagger;
 import org.codeontology.extraction.support.TypedElementEntity;

@@ -8,7 +8,9 @@ import org.codeontology.extraction.support.ExpressionHolderEntity;
 import org.codeontology.extraction.support.ExpressionTagger;
 import spoon.reflect.code.CtExpression;
 import spoon.reflect.code.CtInvocation;
+import spoon.reflect.code.CtTypeAccess;
 import spoon.reflect.reference.CtExecutableReference;
+import spoon.reflect.reference.CtTypeReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +52,19 @@ public class MethodInvocationExpressionEntity extends ExpressionEntity<CtInvocat
     }
 
     public void tagTarget() {
-        tagExpression();
+        CtExpression<?> target = getElement().getTarget();
+
+        if (!(target instanceof CtTypeAccess<?>)) {
+            tagExpression();
+            return;
+        }
+
+        CtTypeReference<?> reference = ((CtTypeAccess<?>) target).getType();
+        TypeEntity<?> type = getFactory().wrap(reference);
+        if (type != null) {
+            getLogger().addTriple(this, Ontology.TARGET_PROPERTY, type);
+            type.follow();
+        }
     }
 
     public ExecutableEntity<?> getMethod() {
@@ -78,6 +92,7 @@ public class MethodInvocationExpressionEntity extends ExpressionEntity<CtInvocat
         for (int i = 0; i < size; i++) {
             ExpressionEntity<?> expression = getFactory().wrap(expressions.get(i));
             ActualArgumentEntity argument = new ActualArgumentEntity(expression);
+            expression.setParent(argument);
             argument.setParent(this);
             argument.setPosition(i);
             arguments.add(argument);
@@ -94,7 +109,6 @@ public class MethodInvocationExpressionEntity extends ExpressionEntity<CtInvocat
             expression.setParent(this);
             return expression;
         }
-
         return null;
     }
 

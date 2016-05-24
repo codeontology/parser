@@ -1,6 +1,5 @@
 package org.codeontology.extraction;
 
-import org.codeontology.exceptions.NullTypeException;
 import org.codeontology.extraction.declaration.*;
 import org.codeontology.extraction.expression.AssignmentExpressionEntity;
 import org.codeontology.extraction.expression.ExpressionEntity;
