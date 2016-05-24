@@ -128,6 +128,12 @@ public class Ontology {
 
     public static final Resource EXPRESSION_ENTITY = model.getResource(WOC + "Expression");
 
+    public static final Resource ASSIGNMENT_EXPRESSION_ENTITY = model.getResource(WOC + "AssignmentExpression");
+
+    public static final Resource METHOD_INVOCATION_EXPRESSION_ENTITY = model.getResource(WOC + "MethodInvocationExpression");
+
+    public static final Resource ACTUAL_ARGUMENT_ENTITY = model.getResource(WOC + "ActualArgument");
+
 
     public static final Property RDF_TYPE_PROPERTY = model.getProperty(RDF + "type");
 
@@ -242,6 +248,14 @@ public class Ontology {
     public static final Property DECLARATION_PROPERTY = model.getProperty(WOC + "declaration");
 
     public static final Property SWITCH_LABEL_PROPERTY = model.getProperty(WOC + "switchLabel");
+
+    public static final Property LEFT_HAND_SIDE_PROPERTY = model.getProperty(WOC + "leftHandSide");
+
+    public static final Property INVOKES_PROPERTY = model.getProperty(WOC + "invokes");
+
+    public static final Property ARGUMENT_PROPERTY = model.getProperty(WOC + "argument");
+
+    public static final Property TARGET_PROPERTY = model.getProperty(WOC + "target");
 
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");
