@@ -132,24 +132,25 @@ public class TypeVariableEntity extends TypeEntity<CtType<?>> {
     private Entity<?> findParent(CtExecutableReference<?> executableReference) {
         if (executableReference.getDeclaration() != null) {
             return findParent(getFactory().wrap(executableReference));
-        } else if (isWildcard()) {
-            return getFactory().wrap(executableReference);
-        } else {
-            Executable executable = ReflectionFactory.getInstance().createActualExecutable(executableReference);
-            if (executable == null) {
-                return null;
-            }
-            TypeVariable<?>[] typeParameters = executable.getTypeParameters();
-            Class<?> declaringClass = executable.getDeclaringClass();
-
-            for (TypeVariable current : typeParameters) {
-                if (current.getName().equals(getReference().getQualifiedName())) {
-                    return getFactory().wrap(executableReference);
-                }
-            }
-
-            return findParent(declaringClass);
         }
+        if (isWildcard()) {
+            return getFactory().wrap(executableReference);
+        }
+
+        Executable executable = ReflectionFactory.getInstance().createActualExecutable(executableReference);
+        if (executable == null) {
+            return null;
+        }
+        TypeVariable<?>[] typeParameters = executable.getTypeParameters();
+        Class<?> declaringClass = executable.getDeclaringClass();
+
+        for (TypeVariable current : typeParameters) {
+            if (current.getName().equals(getReference().getQualifiedName())) {
+                return getFactory().wrap(executableReference);
+            }
+        }
+
+        return findParent(declaringClass);
     }
 
 

@@ -209,9 +209,9 @@ public class Ontology {
 
     public static final Property STATEMENT_PROPERTY = model.getProperty(WOC + "statement");
 
-    public static final Property THEN_PROPERTY = model.getProperty(WOC + "thenStatement");
+    public static final Property THEN_PROPERTY = model.getProperty(WOC + "then");
 
-    public static final Property ELSE_PROPERTY = model.getProperty(WOC + "elseStatement");
+    public static final Property ELSE_PROPERTY = model.getProperty(WOC + "else");
 
     public static final Property BODY_PROPERTY = model.getProperty(WOC + "body");
 
