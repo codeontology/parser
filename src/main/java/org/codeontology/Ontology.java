@@ -92,6 +92,10 @@ public class Ontology {
 
     public static final Resource SWITCH_ENTITY = model.getResource(WOC + "SwitchStatement");
 
+    public static final Resource CASE_ENTITY = model.getResource(WOC + "CaseLabel");
+
+    public static final Resource DEFAULT_ENTITY = model.getResource(WOC + "DefaultLabel");
+
     public static final Resource WHILE_ENTITY = model.getResource(WOC + "WhileStatement");
 
     public static final Resource DO_WHILE_ENTITY = model.getResource(WOC + "DoStatement");
@@ -250,6 +254,8 @@ public class Ontology {
     public static final Property ARGUMENT_PROPERTY = model.getProperty(WOC + "argument");
 
     public static final Property TARGET_PROPERTY = model.getProperty(WOC + "target");
+
+    public static final Property SWITCH_LABEL_PROPERTY = model.getProperty(WOC + "switchLabel");
 
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");

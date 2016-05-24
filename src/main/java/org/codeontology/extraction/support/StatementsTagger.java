@@ -1,9 +1,12 @@
 package org.codeontology.extraction.support;
 
 import org.codeontology.Ontology;
+import org.codeontology.extraction.EntityFactory;
 import org.codeontology.extraction.RDFLogger;
 import org.codeontology.extraction.statement.StatementEntity;
+import spoon.reflect.code.CtStatement;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,4 +38,19 @@ public class StatementsTagger {
         RDFLogger.getInstance().addTriple(entity, Ontology.STATEMENT_PROPERTY, statement);
         statement.extract();
     }
+
+    public List<StatementEntity<?>> asEntities(List<CtStatement> statements) {
+        List<StatementEntity<?>> result = new ArrayList<>();
+        int size = statements.size();
+
+        for (int i = 0; i < size; i++) {
+            StatementEntity<?> statement = EntityFactory.getInstance().wrap(statements.get(i));
+            statement.setPosition(i);
+            statement.setParent(entity);
+            result.add(statement);
+        }
+
+        return result;
+    }
+
 }

@@ -248,4 +248,12 @@ public class EntityFactory {
         return new ExpressionEntity<>(expression);
     }
 
+    public SwitchLabelEntity wrap(CtCase<?> label) {
+        if (label.getCaseExpression() != null) {
+            return new CaseLabelEntity(label);
+        }
+
+        return new DefaultLabelEntity(label);
+    }
+
 }

@@ -17,4 +17,10 @@ public class LineTagger {
         Literal lineLiteral = entity.getModel().createTypedLiteral(line);
         RDFLogger.getInstance().addTriple(entity, Ontology.LINE_PROPERTY, lineLiteral);
     }
+
+    public void tagEndLine() {
+        int endLine = entity.getElement().getPosition().getEndLine();
+        Literal literal = entity.getModel().createTypedLiteral(endLine);
+        RDFLogger.getInstance().addTriple(entity, Ontology.END_LINE_PROPERTY, literal);
+    }
 }
