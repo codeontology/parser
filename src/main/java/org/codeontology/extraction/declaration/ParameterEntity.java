@@ -97,19 +97,22 @@ public class ParameterEntity extends NamedElementEntity<CtParameter<?>> implemen
 
     @Override
     public void tagComment() {
-        if (parent.isDeclarationAvailable()) {
-            String methodComment = parent.getElement().getDocComment();
-            if (methodComment != null) {
-                DocCommentParser parser = new DocCommentParser(methodComment);
-                List<Tag> tags = parser.getParamTags();
-                for (Tag tag : tags) {
-                    ParamTag paramTag = (ParamTag) tag;
-                    if (paramTag.getParameterName().equals(getElement().getSimpleName())) {
-                        Literal comment = getModel().createLiteral(paramTag.getParameterComment());
-                        getLogger().addTriple(this, Ontology.COMMENT_PROPERTY, comment);
-                        break;
-                    }
-                }
+        if (!parent.isDeclarationAvailable()) {
+            return;
+        }
+        String methodComment = parent.getElement().getDocComment();
+        if (methodComment == null) {
+            return;
+        }
+        DocCommentParser parser = new DocCommentParser(methodComment);
+        List<Tag> tags = parser.getParamTags();
+
+        for (Tag tag : tags) {
+            ParamTag paramTag = (ParamTag) tag;
+            if (paramTag.getParameterName().equals(getElement().getSimpleName())) {
+                Literal comment = getModel().createLiteral(paramTag.getParameterComment());
+                getLogger().addTriple(this, Ontology.COMMENT_PROPERTY, comment);
+                break;
             }
         }
     }

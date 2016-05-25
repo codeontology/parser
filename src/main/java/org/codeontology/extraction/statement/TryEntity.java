@@ -9,6 +9,7 @@ import org.codeontology.extraction.support.BodyTagger;
 import spoon.reflect.code.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class TryEntity extends StatementEntity<CtTry> implements BodyHolderEntity<CtTry> {
@@ -32,10 +33,24 @@ public class TryEntity extends StatementEntity<CtTry> implements BodyHolderEntit
     }
 
     public void tagCatches() {
-        List<CatchEntity> catches = getCatches();
-        for (CatchEntity catchEntity : catches) {
-            getLogger().addTriple(this, Ontology.CATCH_CLAUSE_PROPERTY, catchEntity);
-            catchEntity.extract();
+        Iterator<CatchEntity> iterator = getCatches().iterator();
+
+        if (!iterator.hasNext()) {
+            return;
+        }
+
+        CatchEntity current = iterator.next();
+        getLogger().addTriple(this, Ontology.CATCH_CLAUSE_PROPERTY, current);
+        current.extract();
+
+        CatchEntity previous = current;
+
+        while (iterator.hasNext()) {
+            current = iterator.next();
+            getLogger().addTriple(this, Ontology.CATCH_CLAUSE_PROPERTY, current);
+            getLogger().addTriple(previous, Ontology.NEXT_PROPERTY, current);
+            current.extract();
+            previous = current;
         }
     }
 
