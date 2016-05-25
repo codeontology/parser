@@ -48,7 +48,8 @@ public abstract class CodeElementEntity<E extends CtElement> extends AbstractEnt
         if (!tag.equals("")) {
             builder.append(SEPARATOR).append(tag);
         }
-        builder.append(position.getLine())
+        builder.append(SEPARATOR)
+                .append(position.getLine())
                 .append(SEPARATOR)
                 .append(position.getColumn())
                 .append(SEPARATOR)
