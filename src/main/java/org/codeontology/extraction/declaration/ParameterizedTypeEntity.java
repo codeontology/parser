@@ -27,6 +27,7 @@ public class ParameterizedTypeEntity extends TypeEntity<CtType<?>> {
 
         for (CtTypeReference<?> argument : arguments) {
             TypeEntity<?> argumentEntity = getFactory().wrap(argument);
+
             argumentEntity.setParent(parent);
 
             if (argumentsString.equals("")) {

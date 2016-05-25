@@ -6,7 +6,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.codeontology.Ontology;
 
-public abstract class AbstractEntity<E> implements Entity<E> {
+public abstract class AbstractEntity<E> implements Entity<E>, Comparable<Entity<?>> {
 
     private E element;
     private static Model model = RDFLogger.getInstance().getModel();
@@ -116,6 +116,10 @@ public abstract class AbstractEntity<E> implements Entity<E> {
         }
 
         return null;
+    }
+
+    public int compareTo(Entity<?> other) {
+        return this.getRelativeURI().compareTo(other.getRelativeURI());
     }
 }
 

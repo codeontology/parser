@@ -234,25 +234,26 @@ public class TypeVariableEntity extends TypeEntity<CtType<?>> {
 
         Entity<?> parent = TypeVariableCache.getInstance().getParent(simpleName, context);
 
-        if (parent == null) {
-            if (context instanceof GenericDeclarationEntity) {
-                parent = findParent((GenericDeclarationEntity<?>) context);
-            }
-
-            if (parent == null) {
-                if (reference instanceof CtTypeReference<?>) {
-                    parent = findParent((CtTypeReference) reference);
-                } else if (reference instanceof CtExecutableReference) {
-                    parent = findParent((CtExecutableReference) reference);
-                }
-            }
-
-            if (parent != null) {
-                super.setParent(parent);
-                TypeVariableCache.getInstance().putParent(simpleName, context, parent);
-            }
-        } else {
+        if (parent != null) {
             super.setParent(parent);
+            return;
+        }
+
+        if (context instanceof GenericDeclarationEntity) {
+            parent = findParent((GenericDeclarationEntity<?>) context);
+        }
+
+        if (parent == null) {
+            if (reference instanceof CtTypeReference<?>) {
+                parent = findParent((CtTypeReference) reference);
+            } else if (reference instanceof CtExecutableReference) {
+                parent = findParent((CtExecutableReference) reference);
+            }
+        }
+
+        if (parent != null) {
+            super.setParent(parent);
+            TypeVariableCache.getInstance().putParent(simpleName, context, parent);
         }
     }
 

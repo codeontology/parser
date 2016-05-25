@@ -14,6 +14,11 @@ public abstract class AbstractInvocationExpressionEntity<T extends CtAbstractInv
         extends ExpressionEntity<T> {
     public AbstractInvocationExpressionEntity(T expression) {
         super(expression);
+    }
+
+    @Override
+    public void extract() {
+        super.extract();
         tagExecutable();
         tagArguments();
     }
