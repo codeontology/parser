@@ -23,6 +23,11 @@ public class ExpressionEntity<E extends CtExpression<?>> extends CodeElementEnti
     }
 
     @Override
+    public String buildRelativeURI() {
+        return super.buildRelativeURI("expression");
+    }
+
+    @Override
     public void extract() {
         tagType();
         tagJavaType();

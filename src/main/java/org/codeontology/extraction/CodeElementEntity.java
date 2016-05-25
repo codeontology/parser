@@ -21,11 +21,40 @@ public abstract class CodeElementEntity<E extends CtElement> extends AbstractEnt
 
     @Override
     public String buildRelativeURI() {
+        return buildRelativeURI("");
+    }
+
+    protected String buildRelativeURI(String tag) {
         SourcePosition position = getElement().getPosition();
+        StringBuilder builder = new StringBuilder();
+        if (tag == null) {
+            tag = "";
+        }
+
+        tag = tag.trim();
+
+        if (position == null) {
+            builder.append(getParent().getRelativeURI());
+            if (!tag.equals("")) {
+                builder.append(SEPARATOR).append(tag);
+            }
+            builder.append(SEPARATOR).append("-1");
+            return builder.toString();
+        }
+
         CtType<?> mainType = position.getCompilationUnit().getMainType();
         TypeEntity<?> mainTypeEntity = getFactory().wrap(mainType);
-        return mainTypeEntity.getRelativeURI() + SEPARATOR
-                + position.getLine() + SEPARATOR + position.getColumn() + SEPARATOR + position.getEndColumn();
+        builder.append(mainTypeEntity.getRelativeURI());
+        if (!tag.equals("")) {
+            builder.append(SEPARATOR).append(tag);
+        }
+        builder.append(position.getLine())
+                .append(SEPARATOR)
+                .append(position.getColumn())
+                .append(SEPARATOR)
+                .append(position.getEndColumn());
+
+        return builder.toString();
     }
 
     public void tagComment() {
