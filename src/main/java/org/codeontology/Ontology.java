@@ -134,6 +134,8 @@ public class Ontology {
 
     public static final Resource ACTUAL_ARGUMENT_ENTITY = model.getResource(WOC + "ActualArgument");
 
+    public static final Resource CLASS_INSTANCE_CREATION_EXPRESSION_ENTITY = model.getResource(WOC + "ClassInstanceCreationExpression");
+
 
     public static final Property RDF_TYPE_PROPERTY = model.getProperty(RDF + "type");
 
