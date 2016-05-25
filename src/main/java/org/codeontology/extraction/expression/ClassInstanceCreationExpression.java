@@ -10,13 +10,6 @@ public class ClassInstanceCreationExpression extends AbstractInvocationExpressio
     }
 
     @Override
-    public void extract() {
-        super.extract();
-        tagArguments();
-        tagExecutable();
-    }
-
-    @Override
     protected RDFNode getType() {
         return Ontology.CLASS_INSTANCE_CREATION_EXPRESSION_ENTITY;
     }
