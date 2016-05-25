@@ -15,6 +15,11 @@ public class StatementEntity<E extends CtStatement> extends CodeElementEntity<E>
         super(element);
     }
 
+    @Override
+    public String buildRelativeURI() {
+        return super.buildRelativeURI("statement");
+    }
+
     public void setPosition(int position) {
         this.position = position;
     }
