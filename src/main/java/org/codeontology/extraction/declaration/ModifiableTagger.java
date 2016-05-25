@@ -1,8 +1,10 @@
-package org.codeontology.extraction.support;
+package org.codeontology.extraction.declaration;
 
 import com.hp.hpl.jena.rdf.model.Property;
 import org.codeontology.Ontology;
 import org.codeontology.extraction.RDFLogger;
+import org.codeontology.extraction.support.ModifiableEntity;
+import org.codeontology.extraction.support.Modifier;
 
 import java.util.List;
 

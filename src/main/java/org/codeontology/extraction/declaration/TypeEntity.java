@@ -5,7 +5,6 @@ import org.codeontology.CodeOntology;
 import org.codeontology.extraction.NamedElementEntity;
 import org.codeontology.extraction.ReflectionFactory;
 import org.codeontology.extraction.support.ModifiableEntity;
-import org.codeontology.extraction.support.ModifiableTagger;
 import org.codeontology.extraction.support.Modifier;
 import spoon.reflect.declaration.CtField;
 import spoon.reflect.declaration.CtMethod;

@@ -24,7 +24,8 @@ public abstract class CodeElementEntity<E extends CtElement> extends AbstractEnt
         SourcePosition position = getElement().getPosition();
         CtType<?> mainType = position.getCompilationUnit().getMainType();
         TypeEntity<?> mainTypeEntity = getFactory().wrap(mainType);
-        return mainTypeEntity.getRelativeURI() + SEPARATOR + position.getLine() + SEPARATOR + position.getColumn();
+        return mainTypeEntity.getRelativeURI() + SEPARATOR
+                + position.getLine() + SEPARATOR + position.getColumn() + SEPARATOR + position.getEndColumn();
     }
 
     public void tagComment() {
