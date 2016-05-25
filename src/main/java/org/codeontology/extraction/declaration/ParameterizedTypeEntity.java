@@ -6,6 +6,7 @@ import org.codeontology.extraction.Entity;
 import org.codeontology.extraction.EntityRegister;
 import org.codeontology.extraction.ReflectionFactory;
 import spoon.reflect.declaration.CtType;
+import spoon.reflect.internal.CtImplicitTypeReference;
 import spoon.reflect.reference.CtTypeReference;
 
 import java.util.ArrayList;
@@ -13,10 +14,16 @@ import java.util.List;
 
 public class ParameterizedTypeEntity extends TypeEntity<CtType<?>> {
     private List<CtTypeReference<?>> arguments;
+    private boolean diamond = false;
 
     public ParameterizedTypeEntity(CtTypeReference<?> reference) {
         super(reference);
         arguments = getReference().getActualTypeArguments();
+        if (!arguments.isEmpty()) {
+            if (arguments.get(0) instanceof CtImplicitTypeReference<?>) {
+                diamond = true;
+            }
+        }
     }
 
     @Override
@@ -24,6 +31,10 @@ public class ParameterizedTypeEntity extends TypeEntity<CtType<?>> {
         String uri = getReference().getQualifiedName();
         String argumentsString = "";
         Entity<?> parent = getParent();
+
+        if (diamond) {
+            return uri + SEPARATOR + "diamond";
+        }
 
         for (CtTypeReference<?> argument : arguments) {
             TypeEntity<?> argumentEntity = getFactory().wrap(argument);
@@ -62,6 +73,10 @@ public class ParameterizedTypeEntity extends TypeEntity<CtType<?>> {
     }
 
     public void tagActualTypeArguments() {
+        if (diamond) {
+            return;
+        }
+
         for (int i = 0; i < arguments.size(); i++) {
             TypeArgumentEntity typeArgument = new TypeArgumentEntity(arguments.get(i));
             typeArgument.setPosition(i);
