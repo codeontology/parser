@@ -24,6 +24,7 @@ public class LocalVariableEntity extends NamedElementEntity<CtLocalVariable<?>>
         tagJavaType();
         tagModifiers();
         tagDeclaringElement();
+        tagSourceCode();
     }
 
     @Override
