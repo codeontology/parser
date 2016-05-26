@@ -44,6 +44,7 @@ public class FieldEntity extends NamedElementEntity<CtField<?>> implements Modif
         tagDeclaringElement();
         tagJavaType();
         tagModifiers();
+        tagSourceCode();
         if (isDeclarationAvailable()) {
             tagComment();
             tagAnnotations();
@@ -54,12 +55,11 @@ public class FieldEntity extends NamedElementEntity<CtField<?>> implements Modif
     public List<org.codeontology.extraction.support.Modifier> getModifiers() {
         if (isDeclarationAvailable()) {
             return Modifier.asList(getElement().getModifiers());
-        } else {
-            try {
-                return Modifier.asList(((CtFieldReference<?>) getReference()).getModifiers());
-            } catch (Exception | Error e) {
-                return new ArrayList<>();
-            }
+        }
+        try {
+            return Modifier.asList(((CtFieldReference<?>) getReference()).getModifiers());
+        } catch (Exception | Error e) {
+            return new ArrayList<>();
         }
     }
 
