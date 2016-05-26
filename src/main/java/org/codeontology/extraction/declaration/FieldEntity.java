@@ -1,10 +1,12 @@
 package org.codeontology.extraction.declaration;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import org.codeontology.extraction.Entity;
 import org.codeontology.extraction.NamedElementEntity;
 import org.codeontology.extraction.ReflectionFactory;
+import org.codeontology.extraction.statement.FieldDeclaration;
 import org.codeontology.extraction.support.*;
 import spoon.reflect.declaration.CtField;
 import spoon.reflect.reference.CtFieldReference;
@@ -17,7 +19,8 @@ import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldEntity extends NamedElementEntity<CtField<?>> implements ModifiableEntity<CtField<?>>, MemberEntity<CtField<?>>, TypedElementEntity<CtField<?>> {
+public class FieldEntity extends NamedElementEntity<CtField<?>>
+        implements ModifiableEntity<CtField<?>>, MemberEntity<CtField<?>>, TypedElementEntity<CtField<?>> {
 
     public FieldEntity(CtField<?> field) {
         super(field);
@@ -48,6 +51,9 @@ public class FieldEntity extends NamedElementEntity<CtField<?>> implements Modif
         if (isDeclarationAvailable()) {
             tagComment();
             tagAnnotations();
+            if (CodeOntology.processStatements()) {
+                tagDeclaration();
+            }
         }
     }
 
@@ -86,21 +92,22 @@ public class FieldEntity extends NamedElementEntity<CtField<?>> implements Modif
 
     private TypeEntity<?> getGenericType() {
         TypeEntity<?> result = null;
-        if (!isDeclarationAvailable()) {
-            try {
-                CtFieldReference<?> reference = ((CtFieldReference<?>) getReference());
-                Field field = (Field) reference.getActualField();
-                Type genericType = field.getGenericType();
+        if (isDeclarationAvailable()) {
+            return null;
+        }
+        try {
+            CtFieldReference<?> reference = ((CtFieldReference<?>) getReference());
+            Field field = (Field) reference.getActualField();
+            Type genericType = field.getGenericType();
 
-                if (genericType instanceof GenericArrayType ||
-                        genericType instanceof TypeVariable<?>) {
+            if (genericType instanceof GenericArrayType ||
+                    genericType instanceof TypeVariable<?>) {
 
-                    result = getFactory().wrap(genericType);
-                }
-
-            } catch (Throwable t) {
-                return null;
+                result = getFactory().wrap(genericType);
             }
+
+        } catch (Throwable t) {
+            return null;
         }
 
         return result;
@@ -125,5 +132,11 @@ public class FieldEntity extends NamedElementEntity<CtField<?>> implements Modif
     @Override
     public void tagDeclaringElement() {
         new DeclaringElementTagger(this).tagDeclaredBy();
+    }
+
+    public void tagDeclaration() {
+        FieldDeclaration declaration = new FieldDeclaration(getElement());
+        declaration.setParent(this);
+        declaration.extract();
     }
 }

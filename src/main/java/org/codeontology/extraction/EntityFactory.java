@@ -255,6 +255,19 @@ public class EntityFactory {
         return new ExpressionEntity<>(expression);
     }
 
+    public Entity<?> wrap(CtVariable<?> variable) {
+
+        if (variable instanceof CtField<?>) {
+            return new FieldEntity((CtField) variable);
+        }
+
+        if (variable instanceof CtLocalVariable<?>){
+            return new LocalVariableEntity((CtLocalVariable<?>) variable);
+        }
+
+        return null;
+    }
+
     public SwitchLabelEntity wrap(CtCase<?> label) {
         if (label.getCaseExpression() != null) {
             return new CaseLabelEntity(label);
