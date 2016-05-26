@@ -315,26 +315,16 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
         CtExpression<?> returned = returnStatement.getReturnedExpression();
         if (returned instanceof CtVariableAccess<?>) {
             CtVariableReference<?> reference = ((CtVariableAccess<?>) returned).getVariable();
-            if (reference instanceof CtFieldReference<?>) {
-                CtField<?> field = ((CtFieldReference<?>) reference).getDeclaration();
-                tagReturnsField(field);
-            } else if (reference instanceof CtLocalVariableReference<?>) {
-                CtLocalVariable<?> variable = ((CtLocalVariableReference<?>) reference).getDeclaration();
-                tagReturnsLocalVariable(variable);
+            if (reference == null) {
+                return;
             }
-        }
-    }
 
-    public void tagReturnsLocalVariable(CtLocalVariable<?> variable) {
-        LocalVariableEntity entity = getFactory().wrap(variable);
-        entity.setParent(this);
-        getLogger().addTriple(this, Ontology.RETURNS_VAR_PROPERTY, entity);
-    }
-
-    public void tagReturnsField(CtField<?> field) {
-        if (field != null) {
-            Entity entity =  getFactory().wrap(field);
-            getLogger().addTriple(this, Ontology.RETURNS_FIELD_PROPERTY, entity);
+            CtVariable<?> variable = reference.getDeclaration();
+            if (variable != null) {
+                Entity<?> entity = getFactory().wrap(variable);
+                entity.setParent(this);
+                getLogger().addTriple(this, Ontology.RETURNS_VAR_PROPERTY, entity);
+            }
         }
     }
 
