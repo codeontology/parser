@@ -1,6 +1,5 @@
 package org.codeontology.extraction.declaration;
 
-import com.hp.hpl.jena.rdf.model.Property;
 import org.codeontology.Ontology;
 import org.codeontology.extraction.RDFLogger;
 import org.codeontology.extraction.support.ModifiableEntity;
@@ -20,14 +19,14 @@ public class ModifiableTagger {
         List<Modifier> modifiers = modifiable.getModifiers();
 
         for (Modifier modifier : modifiers) {
-            Property modifierProperty;
+            /*Property modifierProperty;
             if (modifier.isAccessModifier()) {
                 modifierProperty = Ontology.VISIBILITY_PROPERTY;
             } else {
                 modifierProperty = Ontology.MODIFIER_PROPERTY;
-            }
+            }*/
 
-            RDFLogger.getInstance().addTriple(modifiable, modifierProperty, modifier.getIndividual());
+            RDFLogger.getInstance().addTriple(modifiable, Ontology.MODIFIER_PROPERTY, modifier.getIndividual());
         }
     }
 }

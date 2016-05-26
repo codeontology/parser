@@ -315,13 +315,10 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
         CtExpression<?> returned = returnStatement.getReturnedExpression();
         if (returned instanceof CtVariableAccess<?>) {
             CtVariableReference<?> reference = ((CtVariableAccess<?>) returned).getVariable();
-            if (reference instanceof CtFieldReference<?>) {
-                CtField<?> field = ((CtFieldReference<?>) reference).getDeclaration();
-                tagReturnsField(field);
-            } else if (reference instanceof CtLocalVariableReference<?>) {
-                CtLocalVariable<?> variable = ((CtLocalVariableReference<?>) reference).getDeclaration();
-                tagReturnsLocalVariable(variable);
+            if (reference == null) {
+                return;
             }
+            CtVariable<?> variable = reference.getDeclaration();
         }
     }
 
