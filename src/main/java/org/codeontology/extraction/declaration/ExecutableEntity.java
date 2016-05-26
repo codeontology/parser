@@ -235,7 +235,7 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
     public void addRequestedFields(CtStatement statement) {
         List<CtFieldReference<?>> references = statement.getReferences(new ReferenceTypeFilter<>(CtFieldReferenceImpl.class));
         references.stream()
-                .map(currentReference -> getFactory().wrap(currentReference))
+                .map(getFactory()::wrap)
                 .forEach(fields::add);
     }
 
@@ -315,10 +315,13 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
         CtExpression<?> returned = returnStatement.getReturnedExpression();
         if (returned instanceof CtVariableAccess<?>) {
             CtVariableReference<?> reference = ((CtVariableAccess<?>) returned).getVariable();
-            if (reference == null) {
-                return;
+            if (reference instanceof CtFieldReference<?>) {
+                CtField<?> field = ((CtFieldReference<?>) reference).getDeclaration();
+                tagReturnsField(field);
+            } else if (reference instanceof CtLocalVariableReference<?>) {
+                CtLocalVariable<?> variable = ((CtLocalVariableReference<?>) reference).getDeclaration();
+                tagReturnsLocalVariable(variable);
             }
-            CtVariable<?> variable = reference.getDeclaration();
         }
     }
 
