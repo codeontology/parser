@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
     <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
-        <uri id="Automatically generated entry, Timestamp=1464202627067" name="http://rdf.webofcode.org/woc/" uri="statements.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1464202627067" name="http://www.w3.org/2002/07/owl" uri="woc.xml"/>
+        <uri id="Automatically generated entry, Timestamp=1464267256281" name="http://rdf.webofcode.org/woc/" uri="CodeOntology.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1464267256281" name="http://www.w3.org/2002/07/owl" uri="woc.xml"/>
     </group>
 </catalog>
