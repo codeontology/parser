@@ -116,7 +116,7 @@ public class ClassEntity<T> extends TypeEntity<CtClass<T>> implements GenericDec
         Set<CtType<?>> nestedTypes = getElement().getNestedTypes();
         for (CtType<?> type : nestedTypes) {
             Entity entity = getFactory().wrap(type);
-            getLogger().addTriple(entity, Ontology.NESTED_IN_PROPERTY, this);
+            getLogger().addTriple(entity, Ontology.DECLARED_BY_PROPERTY, this);
             entity.extract();
         }
     }

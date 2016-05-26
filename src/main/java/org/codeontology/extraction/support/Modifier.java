@@ -9,30 +9,24 @@ import java.util.List;
 import java.util.Set;
 
 public enum Modifier {
-    PUBLIC (Ontology.PUBLIC_INDIVIDUAL, true),
-    PRIVATE (Ontology.PRIVATE_INDIVIDUAL, true),
-    PROTECTED (Ontology.PROTECTED_INDIVIDUAL, true),
-    DEFAULT (Ontology.DEFAULT_INDIVIDUAL, true),
-    ABSTRACT (Ontology.ABSTRACT_INDIVIDUAL, false),
-    FINAL (Ontology.FINAL_INDIVIDUAL, false),
-    STATIC (Ontology.STATIC_INDIVIDUAL, false),
-    SYNCHRONIZED (Ontology.SYNCHRONIZED_INDIVIDUAL, false),
-    VOLATILE (Ontology.VOLATILE_INDIVIDUAL, false);
+    PUBLIC (Ontology.PUBLIC_INDIVIDUAL),
+    PRIVATE (Ontology.PRIVATE_INDIVIDUAL),
+    PROTECTED (Ontology.PROTECTED_INDIVIDUAL),
+    DEFAULT (Ontology.DEFAULT_INDIVIDUAL),
+    ABSTRACT (Ontology.ABSTRACT_INDIVIDUAL),
+    FINAL (Ontology.FINAL_INDIVIDUAL),
+    STATIC (Ontology.STATIC_INDIVIDUAL),
+    SYNCHRONIZED (Ontology.SYNCHRONIZED_INDIVIDUAL),
+    VOLATILE (Ontology.VOLATILE_INDIVIDUAL);
 
     private Resource individual;
-    private boolean accessModifier;
 
-    Modifier(Resource individual, boolean accessModifier) {
+    Modifier(Resource individual) {
         this.individual = individual;
-        this.accessModifier = accessModifier;
     }
 
     public Resource getIndividual() {
         return individual;
-    }
-
-    public boolean isAccessModifier() {
-        return accessModifier;
     }
 
     public static List<Modifier> asList(Set<ModifierKind> set) {
