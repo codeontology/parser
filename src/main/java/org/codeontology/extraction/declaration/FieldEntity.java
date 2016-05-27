@@ -47,8 +47,8 @@ public class FieldEntity extends NamedElementEntity<CtField<?>>
         tagDeclaringElement();
         tagJavaType();
         tagModifiers();
-        tagSourceCode();
         if (isDeclarationAvailable()) {
+            tagSourceCode();
             tagComment();
             tagAnnotations();
             if (CodeOntology.processStatements()) {
