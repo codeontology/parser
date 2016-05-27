@@ -73,10 +73,10 @@ public class CodeOntology {
             codeOntology.processSources();
             codeOntology.processProjectStructure();
             codeOntology.processJars();
-            codeOntology.postCompletionTasks();
         } catch (Exception | Error e) {
             codeOntology.handleFailure(e);
         }
+        codeOntology.postCompletionTasks();
         exit(status);
     }
 
@@ -197,9 +197,13 @@ public class CodeOntology {
         }
     }
 
-    private void postCompletionTasks() throws IOException {
-        scheduleShutdownTask();
-        restore();
+    private void postCompletionTasks() {
+        try {
+            scheduleShutdownTask();
+            restore();
+        } catch (IOException e) {
+            handleFailure(e);
+        }
     }
 
     private void restore() throws IOException {
