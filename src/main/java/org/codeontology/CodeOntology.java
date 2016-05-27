@@ -39,7 +39,7 @@ public class CodeOntology {
     private DependenciesLoader<? extends Project> loader;
     private PeriodFormatter formatter;
     private int tries;
-    private String[] directories = {"test", "examples", "debug", "androidTest", "samples", "sample", "example", "demo", ".*test.*", ".*demo.*", ".*sample.*", ".*example.*"};
+    private String[] directories = {"test", "examples", "debug", "androidTest", "samples", "sample", "example", "demo", ".*test.*", ".*demo.*", ".*sample.*", ".*example.*", "app"};
 
     private CodeOntology(String[] args) {
         try {
