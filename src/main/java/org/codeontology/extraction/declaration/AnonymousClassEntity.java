@@ -1,5 +1,6 @@
 package org.codeontology.extraction.declaration;
 
+import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import org.codeontology.extraction.Entity;
@@ -44,14 +45,17 @@ public class AnonymousClassEntity<T> extends ClassEntity<T> {
     public void tagSuperType() {
         Set<CtTypeReference<?>> references = getReference().getSuperInterfaces();
         CtTypeReference<?> superTypeReference;
+        Property property;
         if (references.isEmpty()) {
             superTypeReference = getReference().getSuperclass();
+            property = Ontology.EXTENDS_PROPERTY;
         } else {
             superTypeReference = (CtTypeReference<?>) references.toArray()[0];
+            property = Ontology.IMPLEMENTS_PROPERTY;
         }
         TypeEntity<?> superType = getFactory().wrap(superTypeReference);
         superType.setParent(getParent());
-        getLogger().addTriple(this, Ontology.IMPLEMENTS_PROPERTY, superType);
+        getLogger().addTriple(this, property, superType);
         requestedResources.add(superType);
         superType.follow();
     }
