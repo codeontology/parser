@@ -1,7 +1,6 @@
 package org.codeontology;
 
 import com.martiansoftware.jsap.JSAPException;
-import org.apache.commons.io.FileUtils;
 import org.codeontology.build.DependenciesLoader;
 import org.codeontology.build.Project;
 import org.codeontology.build.ProjectFactory;
@@ -264,7 +263,10 @@ public class CodeOntology {
 
             for (Path testPath : tests) {
                 System.out.println("Removing " + testPath.toFile().getAbsolutePath());
-                FileUtils.deleteDirectory(testPath.toFile());
+                System.out.println("Removing sources in " + testPath.toFile().getAbsolutePath());
+                Files.walk(Paths.get(testPath.toFile().getPath()))
+                        .filter(path -> path.endsWith(".java"))
+                        .forEach(path -> path.toFile().delete());
             }
         } catch (IOException e) {
             showWarning(e.getMessage());
