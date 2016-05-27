@@ -46,7 +46,7 @@ public class AndroidLoader extends GradleLoader {
             String body =  "{\n" +
                     "\tbuildDir.mkdirs()\n" +
                     "\tandroid." + variants + ".all { variant -> \n" +
-                    "\t\tnew File(buildDir, \"cp" + CodeOntology.SUFFIX + "\").text = variant.javaCompile.classpath.asPath\t\n" +
+                    "\t\tnew File(buildDir, \"" + getClasspathFileName() + "\").text = variant.javaCompile.classpath.asPath\t\n" +
                     "\t}\n" +
                     "}";
             addTask(name, body);
