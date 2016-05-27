@@ -67,28 +67,30 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
     public void handleLocalProperties() {
         File localProperties = new File(getProject().getPath() + "/local.properties");
         File tmp = new File(getProject().getPath() + "/.tmp.properties");
-        if (localProperties.exists()) {
-            try (Scanner scanner = new Scanner(localProperties)) {
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(tmp))) {
+        if (!localProperties.exists()) {
+            return;
+        }
+        try (Scanner scanner = new Scanner(localProperties)) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(tmp))) {
 
-                    while (scanner.hasNextLine()) {
-                        String line = scanner.nextLine();
-                        if (!line.trim().startsWith("sdk.dir")) {
-                            writer.write(line + "\n");
-                        }
+                while (scanner.hasNextLine()) {
+                    String line = scanner.nextLine();
+                    if (!line.trim().startsWith("sdk.dir")) {
+                        writer.write(line + "\n");
                     }
-
-                    FileUtils.forceDelete(localProperties);
-                    boolean success = tmp.renameTo(localProperties);
-                    if (!success) {
-                        FileUtils.forceDelete(tmp);
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
-            } catch (FileNotFoundException e) {
+
+                boolean success = localProperties.renameTo(new File(localProperties.getPath() + CodeOntology.SUFFIX));
+                success = success && tmp.renameTo(localProperties);
+                if (!success) {
+                    FileUtils.forceDelete(localProperties);
+                    FileUtils.forceDelete(tmp);
+                }
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
