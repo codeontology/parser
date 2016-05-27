@@ -18,6 +18,7 @@ public class AndroidLoader extends GradleLoader {
     @Override
     public void loadDependencies() {
         System.out.println("Loading dependencies for Android project...");
+        backup();
         addClasspathTask();
         build();
         runTask("CodeOntologyCpFile");
