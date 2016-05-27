@@ -30,7 +30,6 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
     @Override
     public void loadDependencies() {
         System.out.println("Loading dependencies with gradle...");
-        backup();
 
         handleLocalProperties();
 
@@ -42,17 +41,6 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
         runTasks();
         loadClasspath();
         runOnSubProjects();
-    }
-
-    protected void backup() {
-        String content = getProject().getBuildFileContent();
-        File buildFile = getProject().getBuildFile();
-        File backup = new File(buildFile.getPath() + CodeOntology.SUFFIX);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(backup))) {
-            writer.write(content);
-        } catch (IOException e) {
-            CodeOntology.showWarning("Could not backup build file");
-        }
     }
 
     private void runOnSubProjects() {
@@ -150,7 +138,7 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
         String cpFileTask = "CodeOntologyCpFile";
         String cpFileTaskBody = "{" + separator +
                 '\t' + "buildDir.mkdirs()" + separator +
-                '\t' + "new File(buildDir, \"cp\").text = configurations.runtime.asPath" + separator +
+                '\t' + "new File(buildDir, \"cp" + CodeOntology.SUFFIX + "\").text = configurations.runtime.asPath" + separator +
                 "}";
 
         addTask(cpFileTask, cpFileTaskBody);

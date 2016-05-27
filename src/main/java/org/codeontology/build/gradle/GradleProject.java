@@ -1,5 +1,6 @@
 package org.codeontology.build.gradle;
 
+import org.codeontology.CodeOntology;
 import org.codeontology.build.BuildFiles;
 import org.codeontology.build.DependenciesLoader;
 import org.codeontology.build.Project;
@@ -31,7 +32,7 @@ public class GradleProject extends Project {
         Set<File> subProjects = new HashSet<>();
         String task = "subprojects {\n" +
                 "\ttask CodeOntologySub << {\n" +
-                "\t\ttask -> new File(rootDir, \"subProjects\").append(\"$task.project.projectDir\\n\");\n" +
+                "\t\ttask -> new File(rootDir, \"subProjects" + CodeOntology.SUFFIX + "\").append(\"$task.project.projectDir\\n\");\n" +
                 "\t}\n" +
                 "}";
         File buildFile = getBuildFile();
@@ -68,7 +69,19 @@ public class GradleProject extends Project {
             loader = new GradleLoader(this);
             buildFile = new File(getPath() + "/" + BuildFiles.GRADLE_FILE);
             loader.handleLocalProperties();
+            backup();
             setUp = true;
+        }
+    }
+
+    protected void backup() {
+        String content = getBuildFileContent();
+        File buildFile = getBuildFile();
+        File backup = new File(buildFile.getPath() + CodeOntology.SUFFIX);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(backup))) {
+            writer.write(content);
+        } catch (IOException e) {
+            CodeOntology.showWarning("Could not backup build file");
         }
     }
 
