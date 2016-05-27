@@ -1,9 +1,9 @@
 package org.codeontology.build.gradle;
 
-import org.codeontology.extraction.project.ProjectVisitor;
 import org.codeontology.build.BuildFiles;
 import org.codeontology.build.DependenciesLoader;
 import org.codeontology.build.Project;
+import org.codeontology.extraction.project.ProjectVisitor;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -57,7 +57,7 @@ public class GradleProject extends Project {
                 }
             }
         } catch (IOException e) {
-            System.out.println("No subprojects found for project " + getProjectDirectory().getName() + ".");
+            System.out.println("No subproject found for project " + getProjectDirectory().getName() + ".");
         }
 
         return initSubProjects(subProjects);
