@@ -44,8 +44,8 @@ public class FieldEntity extends NamedElementEntity<CtField<?>> implements Modif
         tagDeclaringElement();
         tagJavaType();
         tagModifiers();
-        tagSourceCode();
         if (isDeclarationAvailable()) {
+            tagSourceCode();
             tagComment();
             tagAnnotations();
         }
