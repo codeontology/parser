@@ -98,6 +98,10 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
             } else {
                 getLoader().loadClasspath(classpath);
             }
+            boolean success = classpathFile.delete();
+            if (!success) {
+                CodeOntology.showWarning("Could not delete cp file");
+            }
         } catch (FileNotFoundException e) {
             loadAllAvailableJars();
         }

@@ -19,7 +19,7 @@ public class GradleProject extends Project {
 
     private File buildFile;
     private GradleLoader loader;
-    private boolean setUp = false;
+    private boolean setUp;
 
     public GradleProject(File projectDirectory) {
         super(projectDirectory);
@@ -46,10 +46,17 @@ public class GradleProject extends Project {
 
             loader.runTask("CodeOntologySub");
 
-            try (Scanner scanner = new Scanner(new File(getPath() + "/" + subProjectsFileName))) {
+            File subProjectsFile = new File(getPath() + "/" + subProjectsFileName);
+
+            try (Scanner scanner = new Scanner(subProjectsFile)) {
                 while (scanner.hasNextLine()) {
                     subProjects.add(new File(scanner.nextLine()));
                 }
+            }
+
+            boolean success = subProjectsFile.delete();
+            if (!success) {
+                CodeOntology.showWarning("Could not delete subProjects file");
             }
 
             if (!subProjects.isEmpty()) {
