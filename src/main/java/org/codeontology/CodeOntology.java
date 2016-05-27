@@ -39,6 +39,7 @@ public class CodeOntology {
     private PeriodFormatter formatter;
     private int tries;
     private String[] directories = {"test", "examples", "debug", "androidTest", "samples", "sample", "example", "demo", ".*test.*", ".*demo.*", ".*sample.*", ".*example.*", "app"};
+    public static final String SUFFIX = ".codeontology";
 
     private CodeOntology(String[] args) {
         try {
@@ -196,7 +197,42 @@ public class CodeOntology {
         }
     }
 
-    private void postCompletionTasks() {
+    private void postCompletionTasks() throws IOException {
+        scheduleShutdownTask();
+        restore();
+    }
+
+    private void restore() throws IOException {
+        String root = getArguments().getInput();
+        Files.walk(Paths.get(root))
+                .map(Path::toFile)
+                .filter(file -> file.getAbsolutePath().endsWith(SUFFIX))
+                .forEach(this::restore);
+    }
+
+    private void restore(File file) {
+        File original = removeSuffix(file);
+        boolean success = true;
+        if (original.exists()) {
+            success = original.delete();
+        }
+        success = success && file.renameTo(original);
+
+        if (!success) {
+            showWarning("Could not restore file " + file.getPath());
+        }
+    }
+
+    private File removeSuffix(File suffixed) {
+        int suffixLength = SUFFIX.length();
+        String path = suffixed.getPath();
+        StringBuilder builder = new StringBuilder(path);
+        int index = builder.lastIndexOf(SUFFIX);
+        builder.replace(index, index + suffixLength, "");
+        return new File(builder.toString());
+    }
+
+    private void scheduleShutdownTask() {
         if (getInstance().getArguments().shutdownFlag()) {
             Thread shutdownThread = new Thread(() -> {
                 try {
@@ -266,7 +302,7 @@ public class CodeOntology {
                 Files.walk(testPath)
                         .filter(path -> path.toFile().getAbsolutePath().endsWith(".java"))
                         .forEach(path -> path.toFile().renameTo(
-                                new File(path.toFile().getPath() + ".codeontology"))
+                                new File(path.toFile().getPath() + SUFFIX))
                         );
             }
         } catch (IOException e) {
