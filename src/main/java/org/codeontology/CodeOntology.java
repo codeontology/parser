@@ -2,15 +2,15 @@ package org.codeontology;
 
 import com.martiansoftware.jsap.JSAPException;
 import org.apache.commons.io.FileUtils;
+import org.codeontology.build.DependenciesLoader;
+import org.codeontology.build.Project;
+import org.codeontology.build.ProjectFactory;
 import org.codeontology.extraction.JarProcessor;
 import org.codeontology.extraction.RDFLogger;
 import org.codeontology.extraction.ReflectionFactory;
 import org.codeontology.extraction.SourceProcessor;
 import org.codeontology.extraction.project.ProjectEntity;
 import org.codeontology.extraction.project.ProjectVisitor;
-import org.codeontology.build.DependenciesLoader;
-import org.codeontology.build.Project;
-import org.codeontology.build.ProjectFactory;
 import org.joda.time.Period;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
@@ -39,7 +39,7 @@ public class CodeOntology {
     private DependenciesLoader<? extends Project> loader;
     private PeriodFormatter formatter;
     private int tries;
-    private String[] directories = {"test", "examples", "debug", "androidTest", "samples", "sample", "example", "demo", ".*test.*", ".*demo.*", ".*sample.*", ".*example.*"};
+    private String[] directories = {"test", "examples", "debug", "androidTest", "samples", "sample", "example", "demo", ".*test.*", ".*demo.*", ".*sample.*", ".*example.*", "app"};
 
     private CodeOntology(String[] args) {
         try {
