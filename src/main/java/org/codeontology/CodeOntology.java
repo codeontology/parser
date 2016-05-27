@@ -262,7 +262,6 @@ public class CodeOntology {
             }
 
             for (Path testPath : tests) {
-                System.out.println("Removing " + testPath.toFile().getAbsolutePath());
                 System.out.println("Removing sources in " + testPath.toFile().getAbsolutePath());
                 Files.walk(Paths.get(testPath.toFile().getPath()))
                         .filter(path -> path.endsWith(".java"))
