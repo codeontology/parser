@@ -322,8 +322,10 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
             CtVariable<?> variable = reference.getDeclaration();
             if (variable != null) {
                 Entity<?> entity = getFactory().wrap(variable);
-                entity.setParent(this);
-                getLogger().addTriple(this, Ontology.RETURNS_VAR_PROPERTY, entity);
+                if (entity != null) {
+                    entity.setParent(this);
+                    getLogger().addTriple(this, Ontology.RETURNS_VAR_PROPERTY, entity);
+                }
             }
         }
     }

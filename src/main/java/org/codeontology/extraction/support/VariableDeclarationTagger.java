@@ -44,7 +44,10 @@ public class VariableDeclarationTagger {
 
     public static Entity<?> declaredVariableOf(VariableDeclarationEntity<? extends CtVariable<?>> declaration) {
         Entity<?> declaredVariable = EntityFactory.getInstance().wrap(declaration.getElement());
-        declaredVariable.setParent(declaration);
-        return declaredVariable;
+        if (declaredVariable != null) {
+            declaredVariable.setParent(declaration);
+            return declaredVariable;
+        }
+        return null;
     }
 }
