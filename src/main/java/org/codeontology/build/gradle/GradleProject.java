@@ -30,9 +30,10 @@ public class GradleProject extends Project {
     protected Collection<Project> findSubProjects() {
         setUp();
         Set<File> subProjects = new HashSet<>();
+        String subProjectsFileName = "subProjects" + CodeOntology.SUFFIX;
         String task = "subprojects {\n" +
                 "\ttask CodeOntologySub << {\n" +
-                "\t\ttask -> new File(rootDir, \"subProjects" + CodeOntology.SUFFIX + "\").append(\"$task.project.projectDir\\n\");\n" +
+                "\t\ttask -> new File(rootDir, \"" + subProjectsFileName + "\").append(\"$task.project.projectDir\\n\");\n" +
                 "\t}\n" +
                 "}";
         File buildFile = getBuildFile();
@@ -45,7 +46,7 @@ public class GradleProject extends Project {
 
             loader.runTask("CodeOntologySub");
 
-            try (Scanner scanner = new Scanner(new File(getPath() + "/subProjects"))) {
+            try (Scanner scanner = new Scanner(new File(getPath() + "/" + subProjectsFileName))) {
                 while (scanner.hasNextLine()) {
                     subProjects.add(new File(scanner.nextLine()));
                 }

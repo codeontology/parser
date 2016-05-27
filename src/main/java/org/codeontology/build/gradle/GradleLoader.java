@@ -19,12 +19,14 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
     private File gradleLocalRepository;
     private File error;
     private File output;
+    private String classpathFileName;
 
     public GradleLoader(GradleProject project) {
         super(project);
         gradleLocalRepository = new File(System.getProperty("user.home") + "/.gradle");
         error = new File(project.getProjectDirectory().getPath() + "/error");
         output = new File(project.getProjectDirectory().getPath() + "/output");
+        classpathFileName = "cp" + CodeOntology.SUFFIX;
     }
 
     @Override
@@ -83,7 +85,7 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
     }
 
     protected void loadClasspath() {
-        File classpathFile = new File(getProject().getPath() + "/build/cp");
+        File classpathFile = new File(getProject().getPath() + "/build/" + classpathFileName);
         String classpath = "";
 
         try (Scanner scanner = new Scanner(classpathFile)) {
@@ -138,7 +140,7 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
         String cpFileTask = "CodeOntologyCpFile";
         String cpFileTaskBody = "{" + separator +
                 '\t' + "buildDir.mkdirs()" + separator +
-                '\t' + "new File(buildDir, \"cp" + CodeOntology.SUFFIX + "\").text = configurations.runtime.asPath" + separator +
+                '\t' + "new File(buildDir, \"" + classpathFileName + "\").text = configurations.runtime.asPath" + separator +
                 "}";
 
         addTask(cpFileTask, cpFileTaskBody);
@@ -231,5 +233,9 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getClasspathFileName() {
+        return classpathFileName;
     }
 }
