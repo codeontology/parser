@@ -15,9 +15,11 @@ public class JarProcessor {
 
     public JarProcessor(String path) {
         try {
-            this.jarFile = new JarFile(path);
-            ClasspathLoader.getInstance().load(path);
-            systemErr = System.err;
+            if (new File(path).exists()) {
+                this.jarFile = new JarFile(path);
+                ClasspathLoader.getInstance().load(path);
+                systemErr = System.err;
+            }
         } catch (Exception | Error e) {
             CodeOntology.showWarning("Could not access file " + path);
         }
