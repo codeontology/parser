@@ -1,7 +1,6 @@
 package org.codeontology;
 
 import com.martiansoftware.jsap.JSAPException;
-import org.apache.commons.io.FileUtils;
 import org.codeontology.build.DependenciesLoader;
 import org.codeontology.build.Project;
 import org.codeontology.build.ProjectFactory;
@@ -39,7 +38,7 @@ public class CodeOntology {
     private DependenciesLoader<? extends Project> loader;
     private PeriodFormatter formatter;
     private int tries;
-    private String[] directories = {"test", "examples", "debug", "androidTest", "samples", "sample", "example", "demo", ".*test.*", ".*demo.*", ".*sample.*", ".*example.*", "app"};
+    private String[] directories = {"test", "examples", "debug", "androidTest", "samples", "sample", "example", "demo", ".*test.*", ".*demo.*", ".*sample.*", ".*example.*"};
 
     private CodeOntology(String[] args) {
         try {
@@ -263,8 +262,12 @@ public class CodeOntology {
             }
 
             for (Path testPath : tests) {
-                System.out.println("Removing " + testPath.toFile().getAbsolutePath());
-                FileUtils.deleteDirectory(testPath.toFile());
+                System.out.println("Removing sources in " + testPath.toFile().getAbsolutePath());
+                Files.walk(testPath)
+                        .filter(path -> path.toFile().getAbsolutePath().endsWith(".java"))
+                        .forEach(path -> path.toFile().renameTo(
+                                new File(path.toFile().getPath() + ".codeontology"))
+                        );
             }
         } catch (IOException e) {
             showWarning(e.getMessage());
