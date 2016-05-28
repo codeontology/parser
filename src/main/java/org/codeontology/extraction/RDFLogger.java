@@ -1,9 +1,6 @@
 package org.codeontology.extraction;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.*;
 import org.codeontology.Ontology;
 
 import java.io.BufferedWriter;
@@ -12,17 +9,23 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class RDFLogger {
-    private Model model = Ontology.getModel();
-    private String outputFile = "triples.nt";
-    private int counter = 0;
-    private static RDFLogger instance = new RDFLogger();
+    private Model model;
+    private String outputFile;
+    private int counter;
+    private static RDFLogger instance;
+
     public static final int MAX_SIZE = 10000;
 
     private RDFLogger() {
-
+        model = Ontology.getModel();
+        outputFile = "triples.nt";
+        counter = 0;
     }
 
     public static RDFLogger getInstance() {
+        if (instance == null) {
+            instance = new RDFLogger();
+        }
         return instance;
     }
 
@@ -60,7 +63,7 @@ public class RDFLogger {
     }
 
     private void free() {
-        model = Ontology.getModel();
+        model = ModelFactory.createDefaultModel();
         counter = 0;
     }
 }
