@@ -29,6 +29,7 @@ public class CatchEntity extends CodeElementEntity<CtCatch> implements Statement
 
     @Override
     public void extract() {
+        tagType();
         tagSourceCode();
         tagLine();
         tagStatements();

@@ -23,6 +23,7 @@ public class FinallyEntity extends CodeElementEntity<CtBlock<?>> implements Stat
 
     @Override
     public void extract() {
+        tagType();
         tagStatements();
         tagSourceCode();
         tagLine();
