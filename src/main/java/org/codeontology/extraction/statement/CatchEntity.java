@@ -5,16 +5,16 @@ import org.codeontology.Ontology;
 import org.codeontology.extraction.CodeElementEntity;
 import org.codeontology.extraction.declaration.ExecutableEntity;
 import org.codeontology.extraction.declaration.TypeEntity;
-import org.codeontology.extraction.support.BodyHolderEntity;
-import org.codeontology.extraction.support.BodyTagger;
 import org.codeontology.extraction.support.LineTagger;
+import org.codeontology.extraction.support.StatementsHolderEntity;
+import org.codeontology.extraction.support.StatementsTagger;
 import spoon.reflect.code.CtCatch;
 import spoon.reflect.reference.CtTypeReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CatchEntity extends CodeElementEntity<CtCatch> implements BodyHolderEntity<CtCatch> {
+public class CatchEntity extends CodeElementEntity<CtCatch> implements StatementsHolderEntity<CtCatch> {
 
     private int position;
 
@@ -29,9 +29,10 @@ public class CatchEntity extends CodeElementEntity<CtCatch> implements BodyHolde
 
     @Override
     public void extract() {
-        tagBody();
         tagSourceCode();
         tagLine();
+        tagStatements();
+        tagEndLine();
         tagCatchFormalParameters();
     }
 
@@ -64,19 +65,23 @@ public class CatchEntity extends CodeElementEntity<CtCatch> implements BodyHolde
         this.position = position;
     }
 
-    @Override
-    public StatementEntity<?> getBody() {
-        StatementEntity<?> body = getFactory().wrap(getElement().getBody());
-        body.setParent(this);
-        return body;
-    }
-
-    @Override
-    public void tagBody() {
-        new BodyTagger(this).tagBody();
-    }
-
     public void tagLine() {
         new LineTagger(this).tagLine();
     }
+
+    @Override
+    public List<StatementEntity<?>> getStatements() {
+        return new StatementsTagger(this).asEntities(getElement().getBody().getStatements());
+    }
+
+    @Override
+    public void tagStatements() {
+        new StatementsTagger(this).tagStatements();
+    }
+
+    public void tagEndLine() {
+        new LineTagger(this).tagEndLine();
+    }
+
+
 }

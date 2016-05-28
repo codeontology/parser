@@ -41,6 +41,11 @@ public class StatementsTagger {
 
     public List<StatementEntity<?>> asEntities(List<CtStatement> statements) {
         List<StatementEntity<?>> result = new ArrayList<>();
+
+        if (statements == null) {
+            return result;
+        }
+
         int size = statements.size();
 
         for (int i = 0; i < size; i++) {

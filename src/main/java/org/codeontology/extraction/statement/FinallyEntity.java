@@ -6,9 +6,7 @@ import org.codeontology.extraction.support.LineTagger;
 import org.codeontology.extraction.support.StatementsHolderEntity;
 import org.codeontology.extraction.support.StatementsTagger;
 import spoon.reflect.code.CtBlock;
-import spoon.reflect.code.CtStatement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FinallyEntity extends CodeElementEntity<CtBlock<?>> implements StatementsHolderEntity<CtBlock<?>> {
@@ -27,6 +25,7 @@ public class FinallyEntity extends CodeElementEntity<CtBlock<?>> implements Stat
         tagStatements();
         tagSourceCode();
         tagLine();
+        tagEndLine();
     }
 
     public void tagLine() {
@@ -35,22 +34,15 @@ public class FinallyEntity extends CodeElementEntity<CtBlock<?>> implements Stat
 
     @Override
     public List<StatementEntity<?>> getStatements() {
-        List<CtStatement> statements = getElement().getStatements();
-        List<StatementEntity<?>> result = new ArrayList<>();
-        int size = statements.size();
-
-        for (int i = 0; i < size; i++) {
-            StatementEntity<?> statement = getFactory().wrap(statements.get(i));
-            statement.setPosition(i);
-            statement.setParent(this);
-            result.add(statement);
-        }
-
-        return result;
+        return new StatementsTagger(this).asEntities(getElement().getStatements());
     }
 
     @Override
     public void tagStatements() {
         new StatementsTagger(this).tagStatements();
+    }
+
+    public void tagEndLine() {
+        new LineTagger(this).tagEndLine();
     }
 }
