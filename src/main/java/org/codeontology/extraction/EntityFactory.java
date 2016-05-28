@@ -1,13 +1,16 @@
 package org.codeontology.extraction;
 
-import org.codeontology.extraction.declaration.*;
-import org.codeontology.extraction.expression.ExpressionEntity;
-import org.codeontology.extraction.project.*;
-import org.codeontology.extraction.statement.*;
 import org.codeontology.build.DefaultProject;
 import org.codeontology.build.gradle.AndroidProject;
 import org.codeontology.build.gradle.GradleProject;
 import org.codeontology.build.maven.MavenProject;
+import org.codeontology.extraction.declaration.*;
+import org.codeontology.extraction.expression.ExpressionEntity;
+import org.codeontology.extraction.project.DefaultProjectEntity;
+import org.codeontology.extraction.project.GradleProjectEntity;
+import org.codeontology.extraction.project.JarFileEntity;
+import org.codeontology.extraction.project.MavenProjectEntity;
+import org.codeontology.extraction.statement.*;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.*;
 import spoon.reflect.reference.*;
@@ -164,8 +167,8 @@ public class EntityFactory {
         return new MavenProjectEntity(project);
     }
 
-    public AndroidGradleProjectEntity wrap(AndroidProject project) {
-        return new AndroidGradleProjectEntity(project);
+    public GradleProjectEntity wrap(AndroidProject project) {
+        return new GradleProjectEntity(project);
     }
 
     public JarFileEntity wrap(JarFile jarFile) {

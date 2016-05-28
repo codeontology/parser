@@ -1,6 +1,7 @@
 package org.codeontology.extraction.statement;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import org.codeontology.Ontology;
 import org.codeontology.extraction.CodeElementEntity;
 import org.codeontology.extraction.support.LineTagger;
 import org.codeontology.extraction.support.StatementsHolderEntity;
@@ -17,7 +18,7 @@ public class FinallyEntity extends CodeElementEntity<CtBlock<?>> implements Stat
 
     @Override
     protected RDFNode getType() {
-        return null;
+        return Ontology.FINALLY_CLAUSE;
     }
 
     @Override
