@@ -168,8 +168,8 @@ public class EntityFactory {
         return new MavenProjectEntity(project);
     }
 
-    public AndroidGradleProjectEntity wrap(AndroidProject project) {
-        return new AndroidGradleProjectEntity(project);
+    public GradleProjectEntity wrap(AndroidProject project) {
+        return new GradleProjectEntity(project);
     }
 
     public JarFileEntity wrap(JarFile jarFile) {

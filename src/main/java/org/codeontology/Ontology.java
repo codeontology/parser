@@ -15,7 +15,7 @@ public class Ontology {
     public static final String RDFS = "http://www.w3.org/2000/01/rdf-schema#";
     public static final String WOC = "http://rdf.webofcode.org/woc/";
 
-    public static Model model = ontology();
+    private static final Model model = ontology();
 
     private static Model ontology() {
         try {
@@ -73,8 +73,6 @@ public class Ontology {
 
     public static final Resource GRADLE_PROJECT_ENTITY = model.getResource(WOC + "GradleProject");
 
-    public static final Resource ANDROID_PROJECT_ENTITY = model.getResource(WOC + "AndroidProject");
-
     public static final Resource JAR_FILE_ENTITY = model.getResource(WOC + "JarFile");
 
     public static final Resource STATEMENT_ENTITY = model.getResource(WOC + "Statement");
@@ -118,6 +116,10 @@ public class Ontology {
     public static final Resource EXPRESSION_STATEMENT_ENTITY = model.getResource(WOC + "ExpressionStatement");
 
     public static final Resource STATEMENT_EXPRESSION_LIST_ENTITY = model.getResource(WOC + "StatementExpressionList");
+
+    public static final Resource CATCH_CLAUSE = model.getResource(WOC + "CatchClause");
+
+    public static final Resource FINALLY_CLAUSE = model.getResource(WOC + "FinallyClause");
 
     public static final Resource EXPRESSION_ENTITY = model.getResource(WOC + "Expression");
 
