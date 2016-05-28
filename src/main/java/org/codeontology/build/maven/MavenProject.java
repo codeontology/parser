@@ -1,9 +1,9 @@
 package org.codeontology.build.maven;
 
 import org.apache.commons.lang3.StringUtils;
-import org.codeontology.extraction.project.ProjectVisitor;
 import org.codeontology.build.DependenciesLoader;
 import org.codeontology.build.Project;
+import org.codeontology.extraction.project.ProjectVisitor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,7 +17,7 @@ public class MavenProject extends Project {
     private org.apache.maven.project.MavenProject mavenProject;
     private File buildFile;
     private MavenLoader loader;
-    private boolean setUp = false;
+    private boolean setUp;
 
     public MavenProject(File project) {
         super(project);

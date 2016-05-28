@@ -20,6 +20,7 @@ public class GradleProject extends Project {
     private File buildFile;
     private GradleLoader loader;
     private boolean setUp;
+    private static final String SUBPROJECTS_FILE_NAME = "subProjects" + CodeOntology.SUFFIX;
 
     public GradleProject(File projectDirectory) {
         super(projectDirectory);
@@ -30,10 +31,9 @@ public class GradleProject extends Project {
     protected Collection<Project> findSubProjects() {
         setUp();
         Set<File> subProjects = new HashSet<>();
-        String subProjectsFileName = "subProjects" + CodeOntology.SUFFIX;
         String task = "subprojects {\n" +
                 "\ttask CodeOntologySub << {\n" +
-                "\t\ttask -> new File(rootDir, \"" + subProjectsFileName + "\").append(\"$task.project.projectDir\\n\");\n" +
+                "\t\ttask -> new File(rootDir, \"" + SUBPROJECTS_FILE_NAME + "\").append(\"$task.project.projectDir\\n\");\n" +
                 "\t}\n" +
                 "}";
         File buildFile = getBuildFile();
@@ -46,17 +46,12 @@ public class GradleProject extends Project {
 
             loader.runTask("CodeOntologySub");
 
-            File subProjectsFile = new File(getPath() + "/" + subProjectsFileName);
+            File subProjectsFile = new File(getRoot() + "/" + SUBPROJECTS_FILE_NAME);
 
             try (Scanner scanner = new Scanner(subProjectsFile)) {
                 while (scanner.hasNextLine()) {
                     subProjects.add(new File(scanner.nextLine()));
                 }
-            }
-
-            boolean success = subProjectsFile.delete();
-            if (!success) {
-                CodeOntology.showWarning("Could not delete subProjects file");
             }
 
             if (!subProjects.isEmpty()) {
@@ -70,6 +65,25 @@ public class GradleProject extends Project {
         }
 
         return initSubProjects(subProjects);
+    }
+
+    @Override
+    protected Collection<Project> initSubProjects(Collection<File> files) {
+        Collection<Project> result =  super.initSubProjects(files);
+        removeSubProjectsFile();
+        return result;
+    }
+
+    private void removeSubProjectsFile() {
+        File subProjectsFile = new File(getRoot() + "/" + SUBPROJECTS_FILE_NAME);
+        if (!subProjectsFile.exists()) {
+            return;
+        }
+
+        boolean success = subProjectsFile.delete();
+        if (!success) {
+            CodeOntology.showWarning("Could not delete subProjects file");
+        }
     }
 
     private void setUp() {

@@ -6,27 +6,27 @@ import org.codeontology.build.DependenciesLoader;
 import org.codeontology.build.Project;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 
-/**
- * A gradle frontend.
- */
 public class GradleLoader extends DependenciesLoader<GradleProject> {
 
     private File gradleLocalRepository;
     private File error;
     private File output;
-    private String classpathFileName;
+    public static final String CLASSPATH_FILE_NAME = "cp" + CodeOntology.SUFFIX;
+    private boolean localPropertiesHandled;
 
     public GradleLoader(GradleProject project) {
         super(project);
         gradleLocalRepository = new File(System.getProperty("user.home") + "/.gradle");
         error = new File(project.getProjectDirectory().getPath() + "/error");
         output = new File(project.getProjectDirectory().getPath() + "/output");
-        classpathFileName = "cp" + CodeOntology.SUFFIX;
+        localPropertiesHandled = false;
     }
 
     @Override
@@ -43,6 +43,7 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
         runTasks();
         loadClasspath();
         runOnSubProjects();
+        removeClassPathFiles();
     }
 
     private void runOnSubProjects() {
@@ -55,6 +56,11 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
     }
 
     public void handleLocalProperties() {
+        if (localPropertiesHandled) {
+            return;
+        }
+
+        localPropertiesHandled = true;
         File localProperties = new File(getProject().getPath() + "/local.properties");
         File tmp = new File(getProject().getPath() + "/.tmp.properties");
         if (!localProperties.exists()) {
@@ -85,7 +91,7 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
     }
 
     protected void loadClasspath() {
-        File classpathFile = new File(getProject().getPath() + "/build/" + classpathFileName);
+        File classpathFile = new File(getProject().getPath() + "/build/" + CLASSPATH_FILE_NAME);
         String classpath = "";
 
         try (Scanner scanner = new Scanner(classpathFile)) {
@@ -98,10 +104,6 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
             } else {
                 getLoader().loadClasspath(classpath);
             }
-            boolean success = classpathFile.delete();
-            if (!success) {
-                CodeOntology.showWarning("Could not delete cp file");
-            }
         } catch (FileNotFoundException e) {
             loadAllAvailableJars();
         }
@@ -109,6 +111,17 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
         File src = new File(getProject().getPath() + "/src/");
         if (src.exists()) {
             getLoader().loadAllJars(src);
+        }
+    }
+
+    private void removeClassPathFiles() {
+        String pathString = getProject().getPath();
+        try {
+            Files.walk(Paths.get(pathString))
+                    .filter(path -> path.toFile().getName().equals(CLASSPATH_FILE_NAME))
+                    .forEach(path -> path.toFile().delete());
+        } catch (IOException e) {
+            CodeOntology.showWarning("Could not remove classpath files");
         }
     }
 
@@ -144,7 +157,7 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
         String cpFileTask = "CodeOntologyCpFile";
         String cpFileTaskBody = "{" + separator +
                 '\t' + "buildDir.mkdirs()" + separator +
-                '\t' + "new File(buildDir, \"" + classpathFileName + "\").text = configurations.runtime.asPath" + separator +
+                '\t' + "new File(buildDir, \"" + CLASSPATH_FILE_NAME + "\").text = configurations.runtime.asPath" + separator +
                 "}";
 
         addTask(cpFileTask, cpFileTaskBody);
@@ -237,9 +250,5 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public String getClasspathFileName() {
-        return classpathFileName;
     }
 }
