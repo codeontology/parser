@@ -46,7 +46,7 @@ public class GradleLoader extends DependenciesLoader<GradleProject> {
     private void runOnSubProjects() {
         Collection<Project> subProjects = getProject().getSubProjects();
         for (Project subProject : subProjects) {
-            System.out.println("Running on sub-project: " + subProject.getProjectDirectory().getPath());
+            System.out.println("Running on subproject: " + subProject.getProjectDirectory().getPath());
             DependenciesLoader<?> loader = subProject.getLoader();
             loader.loadDependencies();
         }

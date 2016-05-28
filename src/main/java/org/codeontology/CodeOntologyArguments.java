@@ -3,6 +3,7 @@ package org.codeontology;
 import com.martiansoftware.jsap.*;
 
 import java.io.File;
+import java.util.Formatter;
 
 public class CodeOntologyArguments {
 
@@ -29,11 +30,13 @@ public class CodeOntologyArguments {
 
     public static final String JAR_INPUT_LONG = "jar";
 
-    public static final String EXPLORE_DEPENDENCIES_LONG = "explore-dependencies";
+    public static final String DEPENDENCIES_LONG = "dependencies";
+    public static final char DEPENDENCIES_SHORT = 'd';
 
     public static final String DO_NOT_EXTRACT_LONG = "do-not-extract";
 
-    public static final String CLEAN_LONG = "clean";
+    public static final String FORCE_LONG = "force";
+    public static final char FORCE_SHORT = 'f';
 
     public static final String PROJECT_STRUCTURE_LONG = "project";
     public static final char PROJECT_STRUCTURE_SHORT = 'p';
@@ -102,18 +105,19 @@ public class CodeOntologyArguments {
         flag.setLongFlag(STACKTRACE_LONG);
         flag.setShortFlag(STACKTRACE_SHORT);
         flag.setDefault("false");
-        flag.setHelp("Prints stack trace for exceptions.");
+        flag.setHelp("Print stack trace for exceptions.");
         jsap.registerParameter(flag);
 
         flag = new Switch(HELP_LONG);
         flag.setLongFlag(HELP_LONG);
         flag.setShortFlag(HELP_SHORT);
         flag.setDefault("false");
-        flag.setHelp("Prints this help message.");
+        flag.setHelp("Print this help message.");
         jsap.registerParameter(flag);
 
-        flag = new Switch(EXPLORE_DEPENDENCIES_LONG);
-        flag.setLongFlag(EXPLORE_DEPENDENCIES_LONG);
+        flag = new Switch(DEPENDENCIES_LONG);
+        flag.setLongFlag(DEPENDENCIES_LONG);
+        flag.setShortFlag(DEPENDENCIES_SHORT);
         flag.setDefault("false");
         flag.setHelp("Explore jar files in classpath");
         jsap.registerParameter(flag);
@@ -130,10 +134,11 @@ public class CodeOntologyArguments {
         flag.setHelp("Do not extract triples, just download dependencies");
         jsap.registerParameter(flag);
 
-        flag = new Switch(CLEAN_LONG);
-        flag.setLongFlag(CLEAN_LONG);
+        flag = new Switch(FORCE_LONG);
+        flag.setLongFlag(FORCE_LONG);
+        flag.setShortFlag(FORCE_SHORT);
         flag.setDefault("false");
-        flag.setHelp("Remove files that prevent the model from being built.");
+        flag.setHelp("Ignore files that prevent the model from being built.");
         jsap.registerParameter(flag);
 
         flag = new Switch(PROJECT_STRUCTURE_LONG);
@@ -147,7 +152,7 @@ public class CodeOntologyArguments {
         flag.setLongFlag(STATEMENTS_LONG);
         flag.setShortFlag(STATEMENTS_SHORT);
         flag.setDefault("false");
-        flag.setHelp("Process all statements and expressions");
+        flag.setHelp("Process all statements");
         jsap.registerParameter(flag);
 
     }
@@ -219,20 +224,22 @@ public class CodeOntologyArguments {
     }
 
     private String getDefaultOutput() {
-        String extension = ".nt";
-        String base = "triples";
-        final int LIMIT = 100;
+        final int MAX = 100;
 
-        String defaultName = base + extension;
-        File file = new File(defaultName);
-        int i = 1;
-        while (i < LIMIT && file.exists()) {
-            i++;
-            defaultName = base + i + extension;
+        int i = 0;
+        Formatter formatter = new Formatter();
+
+        String defaultName;
+        File file;
+
+        do {
+            formatter.format("triples%02d.nt", i);
+            defaultName = formatter.toString();
             file = new File(defaultName);
-        }
+            i++;
+        } while (i < MAX && file.exists());
 
-        if (i == LIMIT) {
+        if (i > MAX) {
             throw new RuntimeException("Specify an output file");
         }
 
@@ -244,7 +251,7 @@ public class CodeOntologyArguments {
     }
 
     public boolean exploreJars() {
-        return result.getBoolean(EXPLORE_DEPENDENCIES_LONG);
+        return result.getBoolean(DEPENDENCIES_LONG);
     }
 
     public String getClasspath() {
@@ -252,7 +259,7 @@ public class CodeOntologyArguments {
     }
 
     public boolean removeTests() {
-        return result.getBoolean(CLEAN_LONG);
+        return result.getBoolean(FORCE_LONG);
     }
 
     public boolean extractProjectStructure() {
