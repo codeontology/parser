@@ -1,9 +1,5 @@
 package org.codeontology;
 
-/**
- * Provide basic interfaces with default ontologies.
- */
-
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -13,18 +9,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-/**
- * General programming language ontology interface.
- */
 public class Ontology {
 
     public static final String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
     public static final String RDFS = "http://www.w3.org/2000/01/rdf-schema#";
     public static final String WOC = "http://rdf.webofcode.org/woc/";
 
+    public static Model model = ontology();
+
     private static Model ontology() {
         try {
-            File ontology = new File(System.getProperty("user.dir") + "/ontology/woc.xml");
+            File ontology = new File(System.getProperty("user.dir") + "/ontology/CodeOntology.xml");
             FileInputStream reader = new FileInputStream(ontology);
             return ModelFactory.createDefaultModel().read(reader, "");
         } catch (FileNotFoundException e) {
@@ -33,10 +28,8 @@ public class Ontology {
     }
 
     public static Model getModel() {
-        return ModelFactory.createDefaultModel();
+        return model;
     }
-
-    public static Model model = ontology();
 
     public static final Resource PACKAGE_ENTITY = model.getResource(WOC + "Package");
 

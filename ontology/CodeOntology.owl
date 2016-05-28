@@ -1,0 +1,1452 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://rdf.webofcode.org/woc/"
+     xml:base="http://rdf.webofcode.org/woc/"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://rdf.webofcode.org/woc/"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/actualTypeArgument -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/actualTypeArgument">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/ParameterizedType"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/TypeArgument"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/annotation -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/annotation">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Annotation"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/argument -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/argument">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/ExecutableInvocationExpression"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/ActualArgument"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/arrayOf -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/arrayOf">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Array"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/assertExpression -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/assertExpression">
+        <rdfs:subPropertyOf rdf:resource="http://rdf.webofcode.org/woc/expression"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/AssertStatement"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/body -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/body">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Executable"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/LoopStatement"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/TryStatement"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/BlockStatement"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/bound -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/bound">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/catch -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/catch">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/TryStatement"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/CatchClause"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/catchFormalParameter -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/catchFormalParameter">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/CatchClause"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Class"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/condition -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/condition">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/DoStatement"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/ForStatement"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/IfThenElseStatement"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/WhileStatement"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/constructs -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/constructs">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Executable"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Class"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/declaration -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/declaration">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Variable"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/VariableDeclaration"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/declaredBy -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/declaredBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/CaseLabel"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/CatchClause"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Statement"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/dependency -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/dependency">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Project"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/JarFile"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/else -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/else">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/IfThenElseStatement"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/expression -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/expression">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/extends -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/extends">
+        <rdfs:subPropertyOf rdf:resource="http://rdf.webofcode.org/woc/bound"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Class"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Interface"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/TypeVariable"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Wildcard"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Class"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Interface"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/ParameterizedType"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/TypeVariable"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/finally -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/finally">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/TryStatement"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/FinallyClause"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/forInit -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/forInit">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/ForStatement"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/StatementExpressionList"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/forUpdate -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/forUpdate">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/ForStatement"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/StatementExpressionList"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/formalTypeParameter -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/formalTypeParameter">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Class"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Enum"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Interface"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/TypeVariable"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/implements -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/implements">
+        <rdfs:subPropertyOf rdf:resource="http://rdf.webofcode.org/woc/extends"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Class"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Interface"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/initializer -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/initializer">
+        <rdfs:subPropertyOf rdf:resource="http://rdf.webofcode.org/woc/expression"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/VariableDeclaration"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/invokes -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/invokes">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/ExecutableInvocationExpression"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Executable"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/leftHandSide -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/leftHandSide">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/AssignmentExpression"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/modifier -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/modifier">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Class"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Executable"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Interface"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Variable"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Modifier"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/next -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/next">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/CaseLabel"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/CatchClause"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Statement"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/CaseLabel"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/CatchClause"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Statement"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/overrides -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/overrides">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Method"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Method"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/packageOf -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/packageOf">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Package"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Annotation"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Class"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Enum"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Interface"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/parameter -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/parameter">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Executable"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Parameter"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/rawType -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/rawType">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/ParameterizedType"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Class"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Enum"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Interface"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/requests -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/requests">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Executable"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Executable"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Field"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Type"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/resource -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/resource">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/TryStatement"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/LocalVariable"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/returnedExpression -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/returnedExpression">
+        <rdfs:subPropertyOf rdf:resource="http://rdf.webofcode.org/woc/expression"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/ReturnStatement"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/returns -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/returns">
+        <rdfs:subPropertyOf rdf:resource="http://rdf.webofcode.org/woc/type"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Method"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/returnsVar -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/returnsVar">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Method"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Variable"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/statement -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/statement">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/BlockStatement"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Clause"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Label"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/subProject -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/subProject">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Project"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Project"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/super -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/super">
+        <rdfs:subPropertyOf rdf:resource="http://rdf.webofcode.org/woc/bound"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Wildcard"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Class"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Interface"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/ParameterizedType"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/TypeVariable"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/switchLabel -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/switchLabel">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/SwitchStatement"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Label"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/target -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/target">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/MethodInvocationExpression"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/then -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/then">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/IfThenElseStatement"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/thrownExpression -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/thrownExpression">
+        <rdfs:subPropertyOf rdf:resource="http://rdf.webofcode.org/woc/expression"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/ThrowStatement"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/throws -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/throws">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Executable"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Class"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/type -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/type">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Executable"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Expression"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Variable"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/variable -->
+
+    <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/variable">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/ForEachStatement"/>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/LocalVariable"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/buildFile -->
+
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/buildFile">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Project"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/comment -->
+
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/comment">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/dimensions -->
+
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/dimensions">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Array"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/endLine -->
+
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/endLine">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/BlockStatement"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Clause"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Label"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/isVarArgs -->
+
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/isVarArgs">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Method"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/label -->
+
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/label">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/line -->
+
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/line">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Expression"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Statement"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+        <rdfs:comment xml:lang="en">Links a statement to the line it starts in</rdfs:comment>
+        <rdfs:label xml:lang="en">line</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/name -->
+
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/name">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/CodeElement"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/JarFile"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Project"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/position -->
+
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/position">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/returnDescription -->
+
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/returnDescription">
+        <rdfs:subPropertyOf rdf:resource="http://rdf.webofcode.org/woc/comment"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Method"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/sourceCode -->
+
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/sourceCode">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/targetLabel -->
+
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/targetLabel">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/BreakStatement"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/ContinueStatement"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/targetedLabel -->
+
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/targetedLabel">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/BreakStatement"/>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/ContinueStatement"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/ActualArgument -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/ActualArgument">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Annotation -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Annotation">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/AnonymousClass -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/AnonymousClass">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Class"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Array -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Array">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/arrayOf"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/dimensions"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2002/07/owl#rational"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/AssertStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/AssertStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/AssignmentExpression -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/AssignmentExpression">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/BlockStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/BlockStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/BranchingStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/BranchingStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/ControlFlowStatement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/BreakStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/BreakStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/BranchingStatement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/CaseLabel -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/CaseLabel">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Label"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/CatchClause -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/CatchClause">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Clause"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Class -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Class">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/extends"/>
+                <owl:allValuesFrom rdf:resource="http://rdf.webofcode.org/woc/Class"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/implements"/>
+                <owl:allValuesFrom rdf:resource="http://rdf.webofcode.org/woc/Interface"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/extends"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Class"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/ClassDeclarationStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/ClassDeclarationStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/DeclarationStatement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/ClassInstanceCreationExpression -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/ClassInstanceCreationExpression">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/ExecutableInvocationExpression"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Clause -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Clause">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/CodeElement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/CodeElement">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Constructor -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Constructor">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Executable"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/ContinueStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/ContinueStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/BranchingStatement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/ControlFlowStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/ControlFlowStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+        <rdfs:comment xml:lang="en">Control flow statements regulate the order in which statements get executed.
+They break up the flow of execution by employing decision making, looping, and branching.</rdfs:comment>
+        <rdfs:label xml:lang="en">Control Flow Statement</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/DecisionMakingStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/DecisionMakingStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/ControlFlowStatement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/DeclarationStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/DeclarationStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+        <rdfs:comment xml:lang="en">A statement that holds a declaration</rdfs:comment>
+        <rdfs:label xml:lang="en">Declaration statement</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/DefaultLabel -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/DefaultLabel">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Label"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/DoStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/DoStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/LoopStatement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Enum -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Enum">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Executable -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Executable">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/body"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/BlockStatement"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/ExecutableInvocationExpression -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/ExecutableInvocationExpression">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Expression -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Expression">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/ExpressionStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/ExpressionStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+        <rdfs:comment xml:lang="en">A statement some expressions can be made into by terminating the expression with a semicolon.</rdfs:comment>
+        <rdfs:label xml:lang="en">Expression statement</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Field -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Field">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Variable"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/FieldDeclaration -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/FieldDeclaration">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/VariableDeclaration"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/FinallyClause -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/FinallyClause">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Clause"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/ForEachStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/ForEachStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/LoopStatement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/ForStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/ForStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/LoopStatement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/GradleProject -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/GradleProject">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Project"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/IfThenElseStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/IfThenElseStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/DecisionMakingStatement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Interface -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Interface">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/extends"/>
+                <owl:allValuesFrom rdf:resource="http://rdf.webofcode.org/woc/Interface"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/JarFile -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/JarFile"/>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Label -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Label">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/LocalVariable -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/LocalVariable">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Variable"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/LocalVariableDeclarationStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/LocalVariableDeclarationStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/VariableDeclaration"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/LoopStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/LoopStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/ControlFlowStatement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/body"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/BlockStatement"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/MavenProject -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/MavenProject">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Project"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Method -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Method">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Executable"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/MethodInvocationExpression -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/MethodInvocationExpression">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/ExecutableInvocationExpression"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Modifier -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Modifier">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Package -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Package">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Parameter -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Parameter">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Variable"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/ParameterizedType -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/ParameterizedType">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/actualTypeArgument"/>
+                <owl:someValuesFrom rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/PrimitiveType -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/PrimitiveType">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Project -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Project"/>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/ReturnStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/ReturnStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/BranchingStatement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Statement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Statement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+        <rdfs:comment>A statement</rdfs:comment>
+        <rdfs:label>Statement</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/StatementExpressionList -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/StatementExpressionList">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/SwitchStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/SwitchStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/DecisionMakingStatement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/SynchronizedStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/SynchronizedStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/ThrowStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/ThrowStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/TryStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/TryStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/body"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/BlockStatement"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Type -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Type">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/TypeArgument -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/TypeArgument">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/TypeVariable -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/TypeVariable">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/extends"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Class"/>
+                            <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Interface"/>
+                            <rdf:Description rdf:about="http://rdf.webofcode.org/woc/ParameterizedType"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Variable -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Variable">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/VariableDeclaration -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/VariableDeclaration">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/DeclarationStatement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/WhileStatement -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/WhileStatement">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/LoopStatement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Wildcard -->
+
+    <owl:Class rdf:about="http://rdf.webofcode.org/woc/Wildcard">
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/extends"/>
+                <owl:allValuesFrom rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/super"/>
+                <owl:allValuesFrom rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Abstract -->
+
+    <owl:NamedIndividual rdf:about="http://rdf.webofcode.org/woc/Abstract">
+        <rdf:type rdf:resource="http://rdf.webofcode.org/woc/Modifier"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Default -->
+
+    <owl:NamedIndividual rdf:about="http://rdf.webofcode.org/woc/Default">
+        <rdf:type rdf:resource="http://rdf.webofcode.org/woc/Modifier"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Final -->
+
+    <owl:NamedIndividual rdf:about="http://rdf.webofcode.org/woc/Final">
+        <rdf:type rdf:resource="http://rdf.webofcode.org/woc/Modifier"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Private -->
+
+    <owl:NamedIndividual rdf:about="http://rdf.webofcode.org/woc/Private">
+        <rdf:type rdf:resource="http://rdf.webofcode.org/woc/Modifier"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Protected -->
+
+    <owl:NamedIndividual rdf:about="http://rdf.webofcode.org/woc/Protected">
+        <rdf:type rdf:resource="http://rdf.webofcode.org/woc/Modifier"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Public -->
+
+    <owl:NamedIndividual rdf:about="http://rdf.webofcode.org/woc/Public">
+        <rdf:type rdf:resource="http://rdf.webofcode.org/woc/Modifier"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Static -->
+
+    <owl:NamedIndividual rdf:about="http://rdf.webofcode.org/woc/Static">
+        <rdf:type rdf:resource="http://rdf.webofcode.org/woc/Modifier"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Synchronized -->
+
+    <owl:NamedIndividual rdf:about="http://rdf.webofcode.org/woc/Synchronized">
+        <rdf:type rdf:resource="http://rdf.webofcode.org/woc/Modifier"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://rdf.webofcode.org/woc/Volatile -->
+
+    <owl:NamedIndividual rdf:about="http://rdf.webofcode.org/woc/Volatile">
+        <rdf:type rdf:resource="http://rdf.webofcode.org/woc/Modifier"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.5.20160517-0735) https://github.com/owlcs/owlapi -->
+
