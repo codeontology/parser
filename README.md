@@ -53,7 +53,7 @@ $ ./codeontology -i openjdk8 -o jdk.nt
 
 This will run the tool on the openjdk8 directory and save the extracted RDF triples to the file jdk.nt.
 
-#### Sample Maven Repository
+#### Maven Repository
 Let's suppose you want to use the tool to extract RDF triples from a generic repository.
 Here the spoon maven repository is used as an example to show how it works.
 

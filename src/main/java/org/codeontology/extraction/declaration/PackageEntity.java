@@ -48,7 +48,7 @@ public class PackageEntity extends NamedElementEntity<CtPackage> {
 
         tagType();
         tagName();
-        tagPackageOf();
+        tagTypes();
         tagParent();
 
         if (isDeclarationAvailable()) {
@@ -58,13 +58,13 @@ public class PackageEntity extends NamedElementEntity<CtPackage> {
 
     public void tagParent() {
         if (CodeOntology.extractProjectStructure()) {
-            getLogger().addTriple(this, Ontology.DECLARED_BY_PROPERTY, getParent());
+            getLogger().addTriple(this, Ontology.BELONGS_TO_PROPERTY, getParent());
         }
     }
 
-    public void tagPackageOf() {
+    public void tagTypes() {
         for (TypeEntity type : types) {
-            getLogger().addTriple(this, Ontology.PACKAGE_OF_PROPERTY, type);
+            getLogger().addTriple(type, Ontology.DECLARED_BY_PROPERTY, this);
             if (CodeOntology.verboseMode()) {
                 System.out.println("Running on " + type.getReference().getQualifiedName());
             }
