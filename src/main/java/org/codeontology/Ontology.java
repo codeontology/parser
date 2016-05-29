@@ -164,8 +164,6 @@ public class Ontology {
 
     public static final Property SUPER_PROPERTY = model.getProperty(WOC + "super");
 
-    public static final Property PACKAGE_OF_PROPERTY = model.getProperty(WOC + "packageOf");
-
     public static final Property ARRAY_OF_PROPERTY = model.getProperty(WOC + "arrayOf");
 
     public static final Property DIMENSIONS_PROPERTY = model.getProperty(WOC + "dimensions");
@@ -181,6 +179,8 @@ public class Ontology {
     public static final Property OVERRIDES_PROPERTY = model.getProperty(WOC + "overrides");
 
     public static final Property VAR_ARGS_PROPERTY = model.getProperty(WOC + "isVarArgs");
+
+    public static final Property BELONGS_TO_PROPERTY = model.getProperty(WOC + "belongsTo");
 
     public static final Property SUBPROJECT_PROPERTY = model.getProperty(WOC + "subProject");
 
