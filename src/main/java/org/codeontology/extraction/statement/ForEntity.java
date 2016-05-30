@@ -58,6 +58,7 @@ public class ForEntity extends LoopEntity<CtFor> implements ConditionHolderEntit
         List<Entity<?>> forInit = getForInit().getElement();
         for (Entity<?> init : forInit) {
             getLogger().addTriple(this, Ontology.FOR_INIT_PROPERTY, init);
+            init.extract();
         }
     }
 
@@ -72,6 +73,7 @@ public class ForEntity extends LoopEntity<CtFor> implements ConditionHolderEntit
         List<Entity<?>> forUpdate = getForUpdate().getElement();
         for (Entity<?> update : forUpdate) {
             getLogger().addTriple(this, Ontology.FOR_UPDATE_PROPERTY, update);
+            update.extract();
         }
     }
 }
