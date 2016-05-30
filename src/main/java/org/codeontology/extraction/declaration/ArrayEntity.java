@@ -12,7 +12,7 @@ public class ArrayEntity extends TypeEntity<CtType<?>> {
 
     public ArrayEntity(CtTypeReference<?> reference) {
         super(reference);
-        CtTypeReference<?> componentReference = ((CtArrayTypeReference<?>) getReference()).getComponentType();
+        CtTypeReference<?> componentReference = ((CtArrayTypeReference<?>) getReference()).getArrayType();
         componentType = getFactory().wrap(componentReference);
     }
 

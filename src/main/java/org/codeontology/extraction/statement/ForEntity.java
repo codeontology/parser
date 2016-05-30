@@ -2,11 +2,14 @@ package org.codeontology.extraction.statement;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
+import org.codeontology.extraction.Entity;
 import org.codeontology.extraction.expression.ExpressionEntity;
 import org.codeontology.extraction.support.ConditionHolderEntity;
 import org.codeontology.extraction.support.ConditionTagger;
 import spoon.reflect.code.CtExpression;
 import spoon.reflect.code.CtFor;
+
+import java.util.List;
 
 public class ForEntity extends LoopEntity<CtFor> implements ConditionHolderEntity<CtFor> {
 
@@ -52,9 +55,10 @@ public class ForEntity extends LoopEntity<CtFor> implements ConditionHolderEntit
     }
 
     public void tagForInit() {
-        StatementExpressionListEntity forInit = getForInit();
-        getLogger().addTriple(this, Ontology.FOR_INIT_PROPERTY, forInit);
-        forInit.extract();
+        List<Entity<?>> forInit = getForInit().getElement();
+        for (Entity<?> init : forInit) {
+            getLogger().addTriple(this, Ontology.FOR_INIT_PROPERTY, init);
+        }
     }
 
     private StatementExpressionListEntity getForUpdate() {
@@ -65,8 +69,9 @@ public class ForEntity extends LoopEntity<CtFor> implements ConditionHolderEntit
     }
 
     public void tagForUpdate() {
-        StatementExpressionListEntity forUpdate = getForUpdate();
-        getLogger().addTriple(this, Ontology.FOR_UPDATE_PROPERTY, forUpdate);
-        forUpdate.extract();
+        List<Entity<?>> forUpdate = getForUpdate().getElement();
+        for (Entity<?> update : forUpdate) {
+            getLogger().addTriple(this, Ontology.FOR_UPDATE_PROPERTY, update);
+        }
     }
 }
