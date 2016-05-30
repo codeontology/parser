@@ -3,25 +3,20 @@ package org.codeontology.extraction.statement;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import org.codeontology.extraction.AbstractEntity;
-import org.codeontology.extraction.support.StatementsHolderEntity;
-import org.codeontology.extraction.support.StatementsTagger;
+import org.codeontology.extraction.Entity;
 
 import java.util.List;
 
-public class StatementExpressionListEntity extends AbstractEntity<List<StatementEntity<?>>>
-        implements StatementsHolderEntity<List<StatementEntity<?>>> {
+public class StatementExpressionListEntity extends AbstractEntity<List<Entity<?>>> {
 
     private int position;
 
     private static final String TAG = "statement-expression-list";
 
-    public StatementExpressionListEntity(List<StatementEntity<?>> list) {
+    public StatementExpressionListEntity(List<Entity<?>> list) {
         super(list);
-        int size = list.size();
-        for (int i = 0; i < size; i++) {
-            StatementEntity<?> current = list.get(i);
+        for (Entity<?> current : list) {
             current.setParent(this);
-            current.setPosition(i);
         }
     }
 
@@ -39,21 +34,11 @@ public class StatementExpressionListEntity extends AbstractEntity<List<Statement
     public void extract() {
         tagType();
         tagSourceCode();
-        tagStatements();
-    }
-
-    @Override
-    public List<StatementEntity<?>> getStatements() {
-        return getElement();
-    }
-
-    public void tagStatements() {
-        new StatementsTagger(this).tagStatements();
     }
 
     @Override
     public String getSourceCode() {
-        List<StatementEntity<?>> list = getElement();
+        List<Entity<?>> list = getElement();
         int size = list.size();
         StringBuilder builder = new StringBuilder();
 

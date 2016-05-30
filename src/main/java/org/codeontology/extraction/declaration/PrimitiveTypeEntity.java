@@ -17,6 +17,12 @@ public class PrimitiveTypeEntity extends TypeEntity<CtType<?>> {
     }
 
     @Override
+    public String buildRelativeURI() {
+        String uri =  super.buildRelativeURI();
+        return uri.substring(0, 1).toUpperCase() + uri.substring(1);
+    }
+
+    @Override
     public void extract() {
 
     }
