@@ -21,6 +21,7 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
@@ -228,9 +229,17 @@ public class EntityFactory {
     }
 
     public StatementExpressionListEntity wrap(List<CtStatement> statements) {
-        List<StatementEntity<?>> list = statements.stream()
-                .map(this::wrap)
+        Function<? super CtStatement, Entity<?>> statementExpressionWrapper = statement -> {
+            if (statement instanceof CtExpression) {
+                return wrap((CtExpression<?>) statement);
+            }
+            return wrap(statement);
+        };
+
+        List<Entity<?>> list = statements.stream()
+                .map(statementExpressionWrapper)
                 .collect(Collectors.toCollection(ArrayList::new));
+
         return new StatementExpressionListEntity(list);
     }
 

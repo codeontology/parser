@@ -172,7 +172,7 @@ public class Ontology {
 
     public static final Property ACTUAL_TYPE_ARGUMENT_PROPERTY = model.getProperty(WOC + "actualTypeArgument");
 
-    public static final Property RAW_TYPE_PROPERTY = model.getProperty(WOC + "rawType");
+    public static final Property GENERIC_TYPE_PROPERTY = model.getProperty(WOC + "genericType");
 
     public static final Property ANNOTATION_PROPERTY = model.getProperty(WOC + "annotation");
 

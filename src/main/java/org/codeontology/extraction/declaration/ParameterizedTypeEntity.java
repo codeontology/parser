@@ -69,7 +69,7 @@ public class ParameterizedTypeEntity extends TypeEntity<CtType<?>> {
         CtTypeReference<?> cloneReference = ReflectionFactory.getInstance().clone(getReference());
         cloneReference.setActualTypeArguments(new ArrayList<>());
         TypeEntity rawType = getFactory().wrap(cloneReference);
-        getLogger().addTriple(this, Ontology.RAW_TYPE_PROPERTY, rawType);
+        getLogger().addTriple(this, Ontology.GENERIC_TYPE_PROPERTY, rawType);
     }
 
     public void tagActualTypeArguments() {
