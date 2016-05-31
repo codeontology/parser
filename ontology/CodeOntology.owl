@@ -374,21 +374,37 @@ _:genid30 a rdf:List ;
 _:genid5 owl:unionOf _:genid38 .
 
 _:genid38 a rdf:List ;
-	rdf:first :CaseLabel ;
+	rdf:first :DoStatement ;
 	rdf:rest _:genid37 .
 
 _:genid37 a rdf:List ;
-	rdf:first :CatchClause ;
+	rdf:first :ForStatement ;
 	rdf:rest _:genid36 .
 
 _:genid36 a rdf:List ;
-	rdf:first :Statement ;
+	rdf:first :IfThenElseStatement ;
+	rdf:rest _:genid35 .
+
+_:genid35 a rdf:List ;
+	rdf:first :WhileStatement ;
 	rdf:rest rdf:nil .
 
-:next rdfs:range _:genid6 .
+:next rdfs:range _:genid39 .
 
-_:genid6 a owl:Class ;
-	owl:unionOf _:genid38 .
+_:genid39 a owl:Class ;
+	owl:unionOf _:genid42 .
+
+_:genid42 a rdf:List ;
+	rdf:first :CaseLabel ;
+	rdf:rest _:genid41 .
+
+_:genid41 a rdf:List ;
+	rdf:first :CatchClause ;
+	rdf:rest _:genid40 .
+
+_:genid40 a rdf:List ;
+	rdf:first :Statement ;
+	rdf:rest rdf:nil .
 
 :next rdfs:comment "Links a statement to the next statement to be executed"@en ;
 	rdfs:label "next"@en .
@@ -413,20 +429,20 @@ _:genid6 a owl:Class ;
 
 :requests a owl:ObjectProperty , owl:TransitiveProperty ;
 	rdfs:domain :Executable ;
-	rdfs:range _:genid39 .
+	rdfs:range _:genid43 .
 
-_:genid39 a owl:Class ;
-	owl:unionOf _:genid42 .
+_:genid43 a owl:Class ;
+	owl:unionOf _:genid46 .
 
-_:genid42 a rdf:List ;
+_:genid46 a rdf:List ;
 	rdf:first :Executable ;
-	rdf:rest _:genid41 .
+	rdf:rest _:genid45 .
 
-_:genid41 a rdf:List ;
+_:genid45 a rdf:List ;
 	rdf:first :Field ;
-	rdf:rest _:genid40 .
+	rdf:rest _:genid44 .
 
-_:genid40 a rdf:List ;
+_:genid44 a rdf:List ;
 	rdf:first :Type ;
 	rdf:rest rdf:nil .
 
@@ -469,20 +485,20 @@ _:genid40 a rdf:List ;
 # http://rdf.webofcode.org/woc/statement
 
 :statement a owl:ObjectProperty ;
-	rdfs:domain _:genid43 .
+	rdfs:domain _:genid47 .
 
-_:genid43 a owl:Class ;
-	owl:unionOf _:genid46 .
+_:genid47 a owl:Class ;
+	owl:unionOf _:genid50 .
 
-_:genid46 a rdf:List ;
+_:genid50 a rdf:List ;
 	rdf:first :BlockStatement ;
-	rdf:rest _:genid45 .
+	rdf:rest _:genid49 .
 
-_:genid45 a rdf:List ;
+_:genid49 a rdf:List ;
 	rdf:first :Clause ;
-	rdf:rest _:genid44 .
+	rdf:rest _:genid48 .
 
-_:genid44 a rdf:List ;
+_:genid48 a rdf:List ;
 	rdf:first :Label ;
 	rdf:rest rdf:nil .
 
@@ -503,24 +519,24 @@ _:genid44 a rdf:List ;
 :super a owl:ObjectProperty ;
 	rdfs:subPropertyOf owl:topObjectProperty ;
 	rdfs:domain :Wildcard ;
-	rdfs:range _:genid47 .
+	rdfs:range _:genid51 .
 
-_:genid47 a owl:Class ;
-	owl:unionOf _:genid51 .
+_:genid51 a owl:Class ;
+	owl:unionOf _:genid55 .
 
-_:genid51 a rdf:List ;
+_:genid55 a rdf:List ;
 	rdf:first :Class ;
-	rdf:rest _:genid50 .
+	rdf:rest _:genid54 .
 
-_:genid50 a rdf:List ;
+_:genid54 a rdf:List ;
 	rdf:first :Interface ;
-	rdf:rest _:genid49 .
+	rdf:rest _:genid53 .
 
-_:genid49 a rdf:List ;
+_:genid53 a rdf:List ;
 	rdf:first :ParameterizedType ;
-	rdf:rest _:genid48 .
+	rdf:rest _:genid52 .
 
-_:genid48 a rdf:List ;
+_:genid52 a rdf:List ;
 	rdf:first :TypeVariable ;
 	rdf:rest rdf:nil .
 
@@ -571,20 +587,20 @@ _:genid48 a rdf:List ;
 # http://rdf.webofcode.org/woc/type
 
 :type a owl:ObjectProperty , owl:FunctionalProperty ;
-	rdfs:domain _:genid52 .
+	rdfs:domain _:genid56 .
 
-_:genid52 a owl:Class ;
-	owl:unionOf _:genid55 .
+_:genid56 a owl:Class ;
+	owl:unionOf _:genid59 .
 
-_:genid55 a rdf:List ;
+_:genid59 a rdf:List ;
 	rdf:first :Expression ;
-	rdf:rest _:genid54 .
+	rdf:rest _:genid58 .
 
-_:genid54 a rdf:List ;
+_:genid58 a rdf:List ;
 	rdf:first :Method ;
-	rdf:rest _:genid53 .
+	rdf:rest _:genid57 .
 
-_:genid53 a rdf:List ;
+_:genid57 a rdf:List ;
 	rdf:first :Variable ;
 	rdf:rest rdf:nil .
 
@@ -634,20 +650,20 @@ _:genid53 a rdf:List ;
 # http://rdf.webofcode.org/woc/endLine
 
 :endLine a owl:DatatypeProperty ;
-	rdfs:domain _:genid56 .
+	rdfs:domain _:genid60 .
 
-_:genid56 a owl:Class ;
-	owl:unionOf _:genid59 .
+_:genid60 a owl:Class ;
+	owl:unionOf _:genid63 .
 
-_:genid59 a rdf:List ;
+_:genid63 a rdf:List ;
 	rdf:first :BlockStatement ;
-	rdf:rest _:genid58 .
+	rdf:rest _:genid62 .
 
-_:genid58 a rdf:List ;
+_:genid62 a rdf:List ;
 	rdf:first :Clause ;
-	rdf:rest _:genid57 .
+	rdf:rest _:genid61 .
 
-_:genid57 a rdf:List ;
+_:genid61 a rdf:List ;
 	rdf:first :Label ;
 	rdf:rest rdf:nil .
 
@@ -675,16 +691,16 @@ _:genid57 a rdf:List ;
 # http://rdf.webofcode.org/woc/line
 
 :line a owl:DatatypeProperty ;
-	rdfs:domain _:genid60 .
+	rdfs:domain _:genid64 .
 
-_:genid60 a owl:Class ;
-	owl:unionOf _:genid62 .
+_:genid64 a owl:Class ;
+	owl:unionOf _:genid66 .
 
-_:genid62 a rdf:List ;
+_:genid66 a rdf:List ;
 	rdf:first :Expression ;
-	rdf:rest _:genid61 .
+	rdf:rest _:genid65 .
 
-_:genid61 a rdf:List ;
+_:genid65 a rdf:List ;
 	rdf:first :Statement ;
 	rdf:rest rdf:nil .
 
@@ -695,20 +711,20 @@ _:genid61 a rdf:List ;
 # http://rdf.webofcode.org/woc/name
 
 :name a owl:DatatypeProperty ;
-	rdfs:domain _:genid63 .
+	rdfs:domain _:genid67 .
 
-_:genid63 a owl:Class ;
-	owl:unionOf _:genid66 .
+_:genid67 a owl:Class ;
+	owl:unionOf _:genid70 .
 
-_:genid66 a rdf:List ;
+_:genid70 a rdf:List ;
 	rdf:first :CodeElement ;
-	rdf:rest _:genid65 .
+	rdf:rest _:genid69 .
 
-_:genid65 a rdf:List ;
+_:genid69 a rdf:List ;
 	rdf:first :JarFile ;
-	rdf:rest _:genid64 .
+	rdf:rest _:genid68 .
 
-_:genid64 a rdf:List ;
+_:genid68 a rdf:List ;
 	rdf:first :Project ;
 	rdf:rest rdf:nil .
 
@@ -744,16 +760,16 @@ _:genid64 a rdf:List ;
 # http://rdf.webofcode.org/woc/targetedLabel
 
 :targetedLabel a owl:DatatypeProperty ;
-	rdfs:domain _:genid67 .
+	rdfs:domain _:genid71 .
 
-_:genid67 a owl:Class ;
-	owl:unionOf _:genid69 .
+_:genid71 a owl:Class ;
+	owl:unionOf _:genid73 .
 
-_:genid69 a rdf:List ;
+_:genid73 a rdf:List ;
 	rdf:first :BreakStatement ;
-	rdf:rest _:genid68 .
+	rdf:rest _:genid72 .
 
-_:genid68 a rdf:List ;
+_:genid72 a rdf:List ;
 	rdf:first :ContinueStatement ;
 	rdf:rest rdf:nil .
 
@@ -772,8 +788,21 @@ _:genid68 a rdf:List ;
 # http://rdf.webofcode.org/woc/ActualArgument
 
 :ActualArgument a owl:Class ;
-	rdfs:subClassOf :Expression ;
-	rdfs:comment "The actual argument of a method" ;
+	rdfs:subClassOf :Expression , _:genid74 .
+
+_:genid74 a owl:Restriction ;
+	owl:onProperty :expression ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:ActualArgument rdfs:subClassOf _:genid75 .
+
+_:genid75 a owl:Restriction ;
+	owl:onProperty :position ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:int .
+
+:ActualArgument rdfs:comment "The actual argument of a method" ;
 	rdfs:label "Actual Argument" .
 # 
 # http://rdf.webofcode.org/woc/Annotation
@@ -793,16 +822,16 @@ _:genid68 a rdf:List ;
 # http://rdf.webofcode.org/woc/Array
 
 :Array a owl:Class ;
-	rdfs:subClassOf :Type , _:genid70 .
+	rdfs:subClassOf :Type , _:genid76 .
 
-_:genid70 a owl:Restriction ;
+_:genid76 a owl:Restriction ;
 	owl:onProperty :arrayOf ;
 	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 	owl:onClass :Type .
 
-:Array rdfs:subClassOf _:genid71 .
+:Array rdfs:subClassOf _:genid77 .
 
-_:genid71 a owl:Restriction ;
+_:genid77 a owl:Restriction ;
 	owl:onProperty :dimensions ;
 	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 	owl:onDataRange owl:rational .
@@ -813,15 +842,34 @@ _:genid71 a owl:Restriction ;
 # http://rdf.webofcode.org/woc/AssertStatement
 
 :AssertStatement a owl:Class ;
-	rdfs:subClassOf :Statement ;
-	rdfs:comment "A assert statement"@en ;
+	rdfs:subClassOf :Statement , _:genid78 .
+
+_:genid78 a owl:Restriction ;
+	owl:onProperty :assertExpression ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:AssertStatement rdfs:comment "A assert statement"@en ;
 	rdfs:label "Assert Statement"@en .
 # 
 # http://rdf.webofcode.org/woc/AssignmentExpression
 
 :AssignmentExpression a owl:Class ;
-	rdfs:subClassOf :Expression ;
-	rdfs:comment """An assignment expression. It involves one of the following operators:
+	rdfs:subClassOf :Expression , _:genid79 .
+
+_:genid79 a owl:Restriction ;
+	owl:onProperty :expression ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:AssignmentExpression rdfs:subClassOf _:genid80 .
+
+_:genid80 a owl:Restriction ;
+	owl:onProperty :leftHandSide ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:AssignmentExpression rdfs:comment """An assignment expression. It involves one of the following operators:
 =, *=, /=, %=, +=, -=, <<=, >>=, >>>=, &=, ^=, |="""@en ;
 	rdfs:label "Assignment Expression" .
 # 
@@ -849,16 +897,22 @@ _:genid71 a owl:Restriction ;
 # http://rdf.webofcode.org/woc/CaseLabel
 
 :CaseLabel a owl:Class ;
-	rdfs:subClassOf :Label ;
-	rdfs:comment "A case-labeled list of statements"@en ;
+	rdfs:subClassOf :Label , _:genid81 .
+
+_:genid81 a owl:Restriction ;
+	owl:onProperty :expression ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:CaseLabel rdfs:comment "A case-labeled list of statements"@en ;
 	rdfs:label "Case Label"@en .
 # 
 # http://rdf.webofcode.org/woc/CatchClause
 
 :CatchClause a owl:Class ;
-	rdfs:subClassOf :Clause , _:genid72 .
+	rdfs:subClassOf :Clause , _:genid82 .
 
-_:genid72 a owl:Restriction ;
+_:genid82 a owl:Restriction ;
 	owl:onProperty :catchFormalParameter ;
 	owl:someValuesFrom :Class .
 
@@ -868,21 +922,21 @@ _:genid72 a owl:Restriction ;
 # http://rdf.webofcode.org/woc/Class
 
 :Class a owl:Class ;
-	rdfs:subClassOf :Type , _:genid73 .
+	rdfs:subClassOf :Type , _:genid83 .
 
-_:genid73 a owl:Restriction ;
+_:genid83 a owl:Restriction ;
 	owl:onProperty :extends ;
 	owl:allValuesFrom :Class .
 
-:Class rdfs:subClassOf _:genid74 .
+:Class rdfs:subClassOf _:genid84 .
 
-_:genid74 a owl:Restriction ;
+_:genid84 a owl:Restriction ;
 	owl:onProperty :implements ;
 	owl:allValuesFrom :Interface .
 
-:Class rdfs:subClassOf _:genid75 .
+:Class rdfs:subClassOf _:genid85 .
 
-_:genid75 a owl:Restriction ;
+_:genid85 a owl:Restriction ;
 	owl:onProperty :extends ;
 	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 	owl:onClass :Class .
@@ -907,22 +961,22 @@ _:genid75 a owl:Restriction ;
 # http://rdf.webofcode.org/woc/Clause
 
 :Clause a owl:Class ;
-	rdfs:subClassOf :CodeElement , _:genid76 .
+	rdfs:subClassOf :CodeElement , _:genid86 .
 
-_:genid76 a owl:Restriction ;
+_:genid86 a owl:Restriction ;
 	owl:onProperty :statement ;
 	owl:allValuesFrom :Statement .
 
-:Clause rdfs:subClassOf _:genid77 .
+:Clause rdfs:subClassOf _:genid87 .
 
-_:genid77 a owl:Restriction ;
+_:genid87 a owl:Restriction ;
 	owl:onProperty :endLine ;
 	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 	owl:onDataRange xsd:int .
 
-:Clause rdfs:subClassOf _:genid78 .
+:Clause rdfs:subClassOf _:genid88 .
 
-_:genid78 a owl:Restriction ;
+_:genid88 a owl:Restriction ;
 	owl:onProperty :line ;
 	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 	owl:onDataRange xsd:int .
@@ -933,16 +987,16 @@ _:genid78 a owl:Restriction ;
 # http://rdf.webofcode.org/woc/CodeElement
 
 :CodeElement a owl:Class ;
-	rdfs:subClassOf owl:Thing , _:genid79 .
+	rdfs:subClassOf owl:Thing , _:genid89 .
 
-_:genid79 a owl:Restriction ;
+_:genid89 a owl:Restriction ;
 	owl:onProperty :name ;
 	owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 	owl:onDataRange xsd:string .
 
-:CodeElement rdfs:subClassOf _:genid80 .
+:CodeElement rdfs:subClassOf _:genid90 .
 
-_:genid80 a owl:Restriction ;
+_:genid90 a owl:Restriction ;
 	owl:onProperty :sourceCode ;
 	owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 	owl:onDataRange xsd:string .
@@ -1010,44 +1064,44 @@ They break up the flow of execution by employing decision making, looping, or br
 # http://rdf.webofcode.org/woc/Executable
 
 :Executable a owl:Class ;
-	rdfs:subClassOf :CodeElement , _:genid81 .
+	rdfs:subClassOf :CodeElement , _:genid91 .
 
-_:genid81 a owl:Restriction ;
+_:genid91 a owl:Restriction ;
 	owl:onProperty :modifier ;
 	owl:someValuesFrom :Modifier .
 
-:Executable rdfs:subClassOf _:genid82 .
+:Executable rdfs:subClassOf _:genid92 .
 
-_:genid82 a owl:Restriction ;
+_:genid92 a owl:Restriction ;
 	owl:onProperty :declaredBy ;
 	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-	owl:onClass _:genid83 .
+	owl:onClass _:genid93 .
 
-_:genid83 a owl:Class ;
-	owl:unionOf _:genid86 .
+_:genid93 a owl:Class ;
+	owl:unionOf _:genid96 .
 
-_:genid86 a rdf:List ;
+_:genid96 a rdf:List ;
 	rdf:first :Class ;
-	rdf:rest _:genid85 .
+	rdf:rest _:genid95 .
 
-_:genid85 a rdf:List ;
+_:genid95 a rdf:List ;
 	rdf:first :Enum ;
-	rdf:rest _:genid84 .
+	rdf:rest _:genid94 .
 
-_:genid84 a rdf:List ;
+_:genid94 a rdf:List ;
 	rdf:first :Interface ;
 	rdf:rest rdf:nil .
 
-:Executable rdfs:subClassOf _:genid87 .
+:Executable rdfs:subClassOf _:genid97 .
 
-_:genid87 a owl:Restriction ;
+_:genid97 a owl:Restriction ;
 	owl:onProperty :body ;
 	owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 	owl:onClass :BlockStatement .
 
-:Executable rdfs:subClassOf _:genid88 .
+:Executable rdfs:subClassOf _:genid98 .
 
-_:genid88 a owl:Restriction ;
+_:genid98 a owl:Restriction ;
 	owl:onProperty :isVarArgs ;
 	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 	owl:onDataRange xsd:boolean .
@@ -1058,15 +1112,34 @@ _:genid88 a owl:Restriction ;
 # http://rdf.webofcode.org/woc/ExecutableInvocationExpression
 
 :ExecutableInvocationExpression a owl:Class ;
-	rdfs:subClassOf :Expression ;
-	rdfs:comment "This expression defines the invocation of either a method or a constructor."@en ;
+	rdfs:subClassOf :Expression , _:genid99 .
+
+_:genid99 a owl:Restriction ;
+	owl:onProperty :invokes ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Executable .
+
+:ExecutableInvocationExpression rdfs:comment "This expression defines the invocation of either a method or a constructor."@en ;
 	rdfs:label "Executable invocation expression"@en .
 # 
 # http://rdf.webofcode.org/woc/Expression
 
 :Expression a owl:Class ;
-	rdfs:subClassOf :CodeElement ;
-	rdfs:comment "A generic expression" ;
+	rdfs:subClassOf :CodeElement , _:genid100 .
+
+_:genid100 a owl:Restriction ;
+	owl:onProperty :type ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Type .
+
+:Expression rdfs:subClassOf _:genid101 .
+
+_:genid101 a owl:Restriction ;
+	owl:onProperty :line ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:int .
+
+:Expression rdfs:comment "A generic expression" ;
 	rdfs:label "Expression" .
 # 
 # http://rdf.webofcode.org/woc/ExpressionStatement
@@ -1121,16 +1194,29 @@ _:genid88 a owl:Restriction ;
 # http://rdf.webofcode.org/woc/IfThenElseStatement
 
 :IfThenElseStatement a owl:Class ;
-	rdfs:subClassOf :DecisionMakingStatement ;
-	rdfs:comment "A If-then-else statement"@en ;
+	rdfs:subClassOf :DecisionMakingStatement , _:genid102 .
+
+_:genid102 a owl:Restriction ;
+	owl:onProperty :condition ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:IfThenElseStatement rdfs:subClassOf _:genid103 .
+
+_:genid103 a owl:Restriction ;
+	owl:onProperty :then ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Statement .
+
+:IfThenElseStatement rdfs:comment "A If-then-else statement"@en ;
 	rdfs:label "If-then-else statement"@en .
 # 
 # http://rdf.webofcode.org/woc/Interface
 
 :Interface a owl:Class ;
-	rdfs:subClassOf :Type , _:genid89 .
+	rdfs:subClassOf :Type , _:genid104 .
 
-_:genid89 a owl:Restriction ;
+_:genid104 a owl:Restriction ;
 	owl:onProperty :extends ;
 	owl:allValuesFrom :Interface .
 
@@ -1146,8 +1232,13 @@ _:genid89 a owl:Restriction ;
 # http://rdf.webofcode.org/woc/Label
 
 :Label a owl:Class ;
-	rdfs:subClassOf :CodeElement ;
-	rdfs:comment "This class defines a switch label"@en ;
+	rdfs:subClassOf :CodeElement , _:genid105 .
+
+_:genid105 a owl:Restriction ;
+	owl:onProperty :next ;
+	owl:allValuesFrom :Label .
+
+:Label rdfs:comment "This class defines a switch label"@en ;
 	rdfs:label "Label"@en .
 # 
 # http://rdf.webofcode.org/woc/LocalVariable
@@ -1167,9 +1258,9 @@ _:genid89 a owl:Restriction ;
 # http://rdf.webofcode.org/woc/LoopStatement
 
 :LoopStatement a owl:Class ;
-	rdfs:subClassOf :ControlFlowStatement , _:genid90 .
+	rdfs:subClassOf :ControlFlowStatement , _:genid106 .
 
-_:genid90 a owl:Restriction ;
+_:genid106 a owl:Restriction ;
 	owl:onProperty :body ;
 	owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 	owl:onClass :BlockStatement .
@@ -1222,31 +1313,31 @@ _:genid90 a owl:Restriction ;
 # http://rdf.webofcode.org/woc/ParameterizedType
 
 :ParameterizedType a owl:Class ;
-	rdfs:subClassOf :Type , _:genid91 .
+	rdfs:subClassOf :Type , _:genid107 .
 
-_:genid91 a owl:Restriction ;
+_:genid107 a owl:Restriction ;
 	owl:onProperty :actualTypeArgument ;
 	owl:someValuesFrom :Type .
 
-:ParameterizedType rdfs:subClassOf _:genid92 .
+:ParameterizedType rdfs:subClassOf _:genid108 .
 
-_:genid92 a owl:Restriction ;
+_:genid108 a owl:Restriction ;
 	owl:onProperty :genericType ;
 	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-	owl:onClass _:genid93 .
+	owl:onClass _:genid109 .
 
-_:genid93 a owl:Class ;
-	owl:unionOf _:genid96 .
+_:genid109 a owl:Class ;
+	owl:unionOf _:genid112 .
 
-_:genid96 a rdf:List ;
+_:genid112 a rdf:List ;
 	rdf:first :Class ;
-	rdf:rest _:genid95 .
+	rdf:rest _:genid111 .
 
-_:genid95 a rdf:List ;
+_:genid111 a rdf:List ;
 	rdf:first :Enum ;
-	rdf:rest _:genid94 .
+	rdf:rest _:genid110 .
 
-_:genid94 a rdf:List ;
+_:genid110 a rdf:List ;
 	rdf:first :Interface ;
 	rdf:rest rdf:nil .
 
@@ -1276,8 +1367,21 @@ _:genid94 a rdf:List ;
 # http://rdf.webofcode.org/woc/Statement
 
 :Statement a owl:Class ;
-	rdfs:subClassOf :CodeElement ;
-	rdfs:comment "A generic statement" ;
+	rdfs:subClassOf :CodeElement , _:genid113 .
+
+_:genid113 a owl:Restriction ;
+	owl:onProperty :line ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:int .
+
+:Statement rdfs:subClassOf _:genid114 .
+
+_:genid114 a owl:Restriction ;
+	owl:onProperty :position ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:int .
+
+:Statement rdfs:comment "A generic statement" ;
 	rdfs:label "Statement" .
 # 
 # http://rdf.webofcode.org/woc/SwitchStatement
@@ -1306,9 +1410,9 @@ synchronized <Expression> <Block>"""@en ;
 # http://rdf.webofcode.org/woc/TryStatement
 
 :TryStatement a owl:Class ;
-	rdfs:subClassOf :Statement , _:genid97 .
+	rdfs:subClassOf :Statement , _:genid115 .
 
-_:genid97 a owl:Restriction ;
+_:genid115 a owl:Restriction ;
 	owl:onProperty :body ;
 	owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 	owl:onClass :BlockStatement .
@@ -1333,24 +1437,24 @@ _:genid97 a owl:Restriction ;
 # http://rdf.webofcode.org/woc/TypeVariable
 
 :TypeVariable a owl:Class ;
-	rdfs:subClassOf :Type , _:genid98 .
+	rdfs:subClassOf :Type , _:genid116 .
 
-_:genid98 a owl:Restriction ;
+_:genid116 a owl:Restriction ;
 	owl:onProperty :extends ;
-	owl:allValuesFrom _:genid99 .
+	owl:allValuesFrom _:genid117 .
 
-_:genid99 a owl:Class ;
-	owl:unionOf _:genid102 .
+_:genid117 a owl:Class ;
+	owl:unionOf _:genid120 .
 
-_:genid102 a rdf:List ;
+_:genid120 a rdf:List ;
 	rdf:first :Class ;
-	rdf:rest _:genid101 .
+	rdf:rest _:genid119 .
 
-_:genid101 a rdf:List ;
+_:genid119 a rdf:List ;
 	rdf:first :Interface ;
-	rdf:rest _:genid100 .
+	rdf:rest _:genid118 .
 
-_:genid100 a rdf:List ;
+_:genid118 a rdf:List ;
 	rdf:first :ParameterizedType ;
 	rdf:rest rdf:nil .
 
@@ -1381,15 +1485,15 @@ _:genid100 a rdf:List ;
 # http://rdf.webofcode.org/woc/Wildcard
 
 :Wildcard a owl:Class ;
-	rdfs:subClassOf :Type , _:genid103 .
+	rdfs:subClassOf :Type , _:genid121 .
 
-_:genid103 a owl:Restriction ;
+_:genid121 a owl:Restriction ;
 	owl:onProperty :extends ;
 	owl:allValuesFrom :Type .
 
-:Wildcard rdfs:subClassOf _:genid104 .
+:Wildcard rdfs:subClassOf _:genid122 .
 
-_:genid104 a owl:Restriction ;
+_:genid122 a owl:Restriction ;
 	owl:onProperty :super ;
 	owl:allValuesFrom :Type .
 
