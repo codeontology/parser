@@ -2,14 +2,18 @@ package org.codeontology.extraction.statement;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
+import org.codeontology.extraction.expression.ExpressionEntity;
+import org.codeontology.extraction.support.ExpressionHolderEntity;
+import org.codeontology.extraction.support.ExpressionTagger;
 import spoon.reflect.code.CtCase;
+import spoon.reflect.code.CtExpression;
 import spoon.reflect.code.CtSwitch;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class SwitchEntity extends StatementEntity<CtSwitch<?>> {
+public class SwitchEntity extends StatementEntity<CtSwitch<?>> implements ExpressionHolderEntity<CtSwitch<?>> {
 
     public SwitchEntity(CtSwitch element) {
         super(element);
@@ -23,6 +27,7 @@ public class SwitchEntity extends StatementEntity<CtSwitch<?>> {
     @Override
     public void extract() {
         super.extract();
+        tagExpression();
         tagSwitchLabels();
     }
 
@@ -56,4 +61,20 @@ public class SwitchEntity extends StatementEntity<CtSwitch<?>> {
     }
 
 
+    @Override
+    public ExpressionEntity<?> getExpression() {
+        CtExpression<?> selector = getElement().getSelector();
+        if (selector == null) {
+            return null;
+        }
+
+        ExpressionEntity<?> expression = getFactory().wrap(selector);
+        expression.setParent(this);
+        return expression;
+    }
+
+    @Override
+    public void tagExpression() {
+        new ExpressionTagger(this).tagExpression();
+    }
 }
