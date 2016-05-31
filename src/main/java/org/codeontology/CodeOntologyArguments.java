@@ -227,12 +227,12 @@ public class CodeOntologyArguments {
         final int MAX = 100;
 
         int i = 0;
-        Formatter formatter = new Formatter();
 
         String defaultName;
         File file;
 
         do {
+            Formatter formatter = new Formatter();
             formatter.format("triples%02d.nt", i);
             defaultName = formatter.toString();
             file = new File(defaultName);
