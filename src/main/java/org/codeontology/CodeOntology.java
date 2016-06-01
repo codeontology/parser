@@ -159,7 +159,7 @@ public class CodeOntology {
             loader.loadClasspath(classpath);
         }
         long end = System.currentTimeMillis();
-        System.out.println("Dependencies downloaded in " + formatter.print(new Period(start, end)) + ".");
+        System.out.println("Dependencies loaded in " + formatter.print(new Period(start, end)) + ".");
     }
 
     private void extractAllTriples() {
@@ -302,7 +302,7 @@ public class CodeOntology {
             }
 
             for (Path testPath : tests) {
-                System.out.println("Removing sources in " + testPath.toFile().getAbsolutePath());
+                System.out.println("Ignore sources in " + testPath.toFile().getAbsolutePath());
                 Files.walk(testPath)
                         .filter(path -> path.toFile().getAbsolutePath().endsWith(".java"))
                         .forEach(path -> path.toFile().renameTo(

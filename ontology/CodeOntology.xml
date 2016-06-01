@@ -385,21 +385,14 @@
         <rdfs:domain>
             <owl:Class>
                 <owl:unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/CaseLabel"/>
-                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/CatchClause"/>
-                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Statement"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/DoStatement"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/ForStatement"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/IfThenElseStatement"/>
+                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/WhileStatement"/>
                 </owl:unionOf>
             </owl:Class>
         </rdfs:domain>
-        <rdfs:range>
-            <owl:Class>
-                <owl:unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/CaseLabel"/>
-                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/CatchClause"/>
-                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Statement"/>
-                </owl:unionOf>
-            </owl:Class>
-        </rdfs:range>
+        <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
         <rdfs:comment xml:lang="en">Links a statement to the next statement to be executed</rdfs:comment>
         <rdfs:label xml:lang="en">next</rdfs:label>
     </owl:ObjectProperty>
@@ -499,15 +492,7 @@
     <!-- http://rdf.webofcode.org/woc/statement -->
 
     <owl:ObjectProperty rdf:about="http://rdf.webofcode.org/woc/statement">
-        <rdfs:domain>
-            <owl:Class>
-                <owl:unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/BlockStatement"/>
-                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Clause"/>
-                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Label"/>
-                </owl:unionOf>
-            </owl:Class>
-        </rdfs:domain>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/BlockStatement"/>
         <rdfs:range rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
         <rdfs:comment xml:lang="en">Links a block of code to the statements it contains</rdfs:comment>
         <rdfs:label xml:lang="en">statement</rdfs:label>
@@ -649,6 +634,8 @@
     <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/buildFile">
         <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Project"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Links a project to the content of its build file.</rdfs:comment>
+        <rdfs:label>build file</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -658,6 +645,8 @@
     <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/comment">
         <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Links a code element to the associated comment</rdfs:comment>
+        <rdfs:label>comment</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -667,6 +656,8 @@
     <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/dimensions">
         <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Array"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+        <rdfs:comment xml:lang="en">Links an array to the number of its dimensions. As an example, an array of type &quot;int[][][]&quot; has a dimensions count of 3</rdfs:comment>
+        <rdfs:label xml:lang="en">dimensions</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -674,16 +665,10 @@
     <!-- http://rdf.webofcode.org/woc/endLine -->
 
     <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/endLine">
-        <rdfs:domain>
-            <owl:Class>
-                <owl:unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/BlockStatement"/>
-                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Clause"/>
-                    <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Label"/>
-                </owl:unionOf>
-            </owl:Class>
-        </rdfs:domain>
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/BlockStatement"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+        <rdfs:comment xml:lang="en">Links a statement to the number of the last line it covers</rdfs:comment>
+        <rdfs:label xml:lang="en">end line</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -693,6 +678,8 @@
     <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/isVarArgs">
         <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Method"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment xml:lang="en">True if an executable accepts a variable number of parameters, false otherwise</rdfs:comment>
+        <rdfs:label xml:lang="en">is var args</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -703,6 +690,8 @@
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
         <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">Links a labeled statement to its label</rdfs:comment>
+        <rdfs:label xml:lang="en">label</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -738,6 +727,8 @@
             </owl:Class>
         </rdfs:domain>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">Links a element to its name</rdfs:comment>
+        <rdfs:label xml:lang="en">name</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -747,6 +738,8 @@
     <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/position">
         <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+        <rdfs:comment xml:lang="en">Links a element to its position</rdfs:comment>
+        <rdfs:label xml:lang="en">position</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -757,6 +750,8 @@
         <rdfs:subPropertyOf rdf:resource="http://rdf.webofcode.org/woc/comment"/>
         <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Method"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">Links a method to the description of the element it returns. In javadoc comments, this is specified with the &quot;@return&quot; tag</rdfs:comment>
+        <rdfs:label>return description</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -766,13 +761,15 @@
     <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/sourceCode">
         <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">Links a element to its source code</rdfs:comment>
+        <rdfs:label xml:lang="en">source code</rdfs:label>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://rdf.webofcode.org/woc/targetLabel -->
+    <!-- http://rdf.webofcode.org/woc/targetedLabel -->
 
-    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/targetLabel">
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/targetedLabel">
         <rdfs:domain>
             <owl:Class>
                 <owl:unionOf rdf:parseType="Collection">
@@ -782,16 +779,8 @@
             </owl:Class>
         </rdfs:domain>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://rdf.webofcode.org/woc/targetedLabel -->
-
-    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/targetedLabel">
-        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/BreakStatement"/>
-        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/ContinueStatement"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">Links a break statement or a continue statement to the label it targets, if any</rdfs:comment>
+        <rdfs:label>targeted label</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -811,6 +800,20 @@
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/ActualArgument">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/expression"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/position"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment>The actual argument of a method</rdfs:comment>
         <rdfs:label>Actual Argument</rdfs:label>
     </owl:Class>
@@ -852,7 +855,7 @@
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/dimensions"/>
                 <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
-                <owl:onDataRange rdf:resource="http://www.w3.org/2002/07/owl#rational"/>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A array</rdfs:comment>
@@ -865,6 +868,13 @@
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/AssertStatement">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/assertExpression"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A assert statement</rdfs:comment>
         <rdfs:label xml:lang="en">Assert Statement</rdfs:label>
     </owl:Class>
@@ -875,6 +885,20 @@
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/AssignmentExpression">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/expression"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/leftHandSide"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">An assignment expression. It involves one of the following operators:
 =, *=, /=, %=, +=, -=, &lt;&lt;=, &gt;&gt;=, &gt;&gt;&gt;=, &amp;=, ^=, |=</rdfs:comment>
         <rdfs:label>Assignment Expression</rdfs:label>
@@ -916,6 +940,13 @@
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/CaseLabel">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Label"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/expression"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A case-labeled list of statements</rdfs:comment>
         <rdfs:label xml:lang="en">Case Label</rdfs:label>
     </owl:Class>
@@ -926,6 +957,12 @@
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/CatchClause">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Clause"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/catchFormalParameter"/>
+                <owl:someValuesFrom rdf:resource="http://rdf.webofcode.org/woc/Class"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">This class defines a catch clause</rdfs:comment>
         <rdfs:label xml:lang="en">Catch clause</rdfs:label>
     </owl:Class>
@@ -936,6 +973,12 @@
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/Class">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/declaration"/>
+                <owl:allValuesFrom rdf:resource="http://rdf.webofcode.org/woc/ClassDeclarationStatement"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/extends"/>
@@ -984,7 +1027,27 @@
     <!-- http://rdf.webofcode.org/woc/Clause -->
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/Clause">
-        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/BlockStatement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/statement"/>
+                <owl:allValuesFrom rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/endLine"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/line"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">This class defines a clause</rdfs:comment>
         <rdfs:label xml:lang="en">Clause</rdfs:label>
     </owl:Class>
@@ -995,6 +1058,20 @@
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/CodeElement">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/name"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/sourceCode"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">This class defines a generic element in source code</rdfs:comment>
         <rdfs:label xml:lang="en">Code Element</rdfs:label>
     </owl:Class>
@@ -1066,6 +1143,13 @@ They break up the flow of execution by employing decision making, looping, or br
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/DoStatement">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/LoopStatement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/condition"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A do-while statement</rdfs:comment>
         <rdfs:label xml:lang="en">Do Statement</rdfs:label>
     </owl:Class>
@@ -1088,9 +1172,37 @@ They break up the flow of execution by employing decision making, looping, or br
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
         <rdfs:subClassOf>
             <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/modifier"/>
+                <owl:someValuesFrom rdf:resource="http://rdf.webofcode.org/woc/Modifier"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/declaredBy"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Class"/>
+                            <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Enum"/>
+                            <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Interface"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:onClass>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
                 <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/body"/>
                 <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/BlockStatement"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/isVarArgs"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">This class defines an executable block of code, namely a Method or a Constructor</rdfs:comment>
@@ -1103,6 +1215,13 @@ They break up the flow of execution by employing decision making, looping, or br
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/ExecutableInvocationExpression">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/invokes"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Executable"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">This expression defines the invocation of either a method or a constructor.</rdfs:comment>
         <rdfs:label xml:lang="en">Executable invocation expression</rdfs:label>
     </owl:Class>
@@ -1113,6 +1232,20 @@ They break up the flow of execution by employing decision making, looping, or br
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/Expression">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/type"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/line"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment>A generic expression</rdfs:comment>
         <rdfs:label>Expression</rdfs:label>
     </owl:Class>
@@ -1123,6 +1256,13 @@ They break up the flow of execution by employing decision making, looping, or br
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/ExpressionStatement">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/expression"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A statement some expressions can be made into by terminating the expression with a semicolon.</rdfs:comment>
         <rdfs:label xml:lang="en">Expression statement</rdfs:label>
     </owl:Class>
@@ -1133,6 +1273,26 @@ They break up the flow of execution by employing decision making, looping, or br
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/Field">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Variable"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/declaration"/>
+                <owl:allValuesFrom rdf:resource="http://rdf.webofcode.org/woc/FieldDeclaration"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/declaredBy"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Class"/>
+                            <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Enum"/>
+                            <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Interface"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A class field</rdfs:comment>
         <rdfs:label xml:lang="en">Field</rdfs:label>
     </owl:Class>
@@ -1163,6 +1323,20 @@ They break up the flow of execution by employing decision making, looping, or br
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/ForEachStatement">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/LoopStatement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/expression"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/variable"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Variable"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A for-each statement, also known as enhanced for statement</rdfs:comment>
         <rdfs:label xml:lang="en">ForEach Statement</rdfs:label>
     </owl:Class>
@@ -1173,6 +1347,13 @@ They break up the flow of execution by employing decision making, looping, or br
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/ForStatement">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/LoopStatement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/condition"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A for statement</rdfs:comment>
         <rdfs:label xml:lang="en">For Statement</rdfs:label>
     </owl:Class>
@@ -1193,6 +1374,20 @@ They break up the flow of execution by employing decision making, looping, or br
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/IfThenElseStatement">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/DecisionMakingStatement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/condition"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/then"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A If-then-else statement</rdfs:comment>
         <rdfs:label xml:lang="en">If-then-else statement</rdfs:label>
     </owl:Class>
@@ -1218,6 +1413,13 @@ They break up the flow of execution by employing decision making, looping, or br
     <!-- http://rdf.webofcode.org/woc/JarFile -->
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/JarFile">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/name"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A jar file</rdfs:comment>
         <rdfs:label xml:lang="en">Jar File</rdfs:label>
     </owl:Class>
@@ -1227,7 +1429,13 @@ They break up the flow of execution by employing decision making, looping, or br
     <!-- http://rdf.webofcode.org/woc/Label -->
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/Label">
-        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+        <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/BlockStatement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/next"/>
+                <owl:allValuesFrom rdf:resource="http://rdf.webofcode.org/woc/Label"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">This class defines a switch label</rdfs:comment>
         <rdfs:label xml:lang="en">Label</rdfs:label>
     </owl:Class>
@@ -1238,6 +1446,12 @@ They break up the flow of execution by employing decision making, looping, or br
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/LocalVariable">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Variable"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/declaredBy"/>
+                <owl:allValuesFrom rdf:resource="http://rdf.webofcode.org/woc/Executable"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A local variable</rdfs:comment>
         <rdfs:label xml:lang="en">Local Variable</rdfs:label>
     </owl:Class>
@@ -1306,7 +1520,7 @@ They break up the flow of execution by employing decision making, looping, or br
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/Modifier">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
         <rdfs:comment xml:lang="en">A modifier</rdfs:comment>
-        <rdfs:label xml:lang="en">Modifer</rdfs:label>
+        <rdfs:label xml:lang="en">Modifier</rdfs:label>
     </owl:Class>
     
 
@@ -1325,6 +1539,13 @@ They break up the flow of execution by employing decision making, looping, or br
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/Parameter">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Variable"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/position"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A formal parameter</rdfs:comment>
         <rdfs:label xml:lang="en">Parameter</rdfs:label>
     </owl:Class>
@@ -1395,6 +1616,20 @@ They break up the flow of execution by employing decision making, looping, or br
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/Statement">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/line"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/position"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment>A generic statement</rdfs:comment>
         <rdfs:label>Statement</rdfs:label>
     </owl:Class>
@@ -1405,6 +1640,13 @@ They break up the flow of execution by employing decision making, looping, or br
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/SwitchStatement">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/DecisionMakingStatement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/expression"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A switch statement</rdfs:comment>
         <rdfs:label xml:lang="en">Switch Statement</rdfs:label>
     </owl:Class>
@@ -1427,6 +1669,13 @@ synchronized &lt;Expression&gt; &lt;Block&gt;</rdfs:comment>
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/ThrowStatement">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/Statement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/thrownExpression"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A throw statement, that is a statement that causes an exception to be thrown</rdfs:comment>
         <rdfs:label xml:lang="en">Throw Statement</rdfs:label>
     </owl:Class>
@@ -1498,6 +1747,13 @@ synchronized &lt;Expression&gt; &lt;Block&gt;</rdfs:comment>
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/Variable">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/CodeElement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/type"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A variable</rdfs:comment>
         <rdfs:label xml:lang="en">Variable</rdfs:label>
     </owl:Class>
@@ -1518,6 +1774,13 @@ synchronized &lt;Expression&gt; &lt;Block&gt;</rdfs:comment>
 
     <owl:Class rdf:about="http://rdf.webofcode.org/woc/WhileStatement">
         <rdfs:subClassOf rdf:resource="http://rdf.webofcode.org/woc/LoopStatement"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/condition"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://rdf.webofcode.org/woc/Expression"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A while statement</rdfs:comment>
         <rdfs:label xml:lang="en">While Statement</rdfs:label>
     </owl:Class>
@@ -1531,7 +1794,15 @@ synchronized &lt;Expression&gt; &lt;Block&gt;</rdfs:comment>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://rdf.webofcode.org/woc/extends"/>
-                <owl:allValuesFrom rdf:resource="http://rdf.webofcode.org/woc/Type"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Class"/>
+                            <rdf:Description rdf:about="http://rdf.webofcode.org/woc/Interface"/>
+                            <rdf:Description rdf:about="http://rdf.webofcode.org/woc/ParameterizedType"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
