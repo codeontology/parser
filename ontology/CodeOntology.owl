@@ -4,1326 +4,1881 @@
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://rdf.webofcode.org/woc/> .
-
-<http://rdf.webofcode.org/woc/> rdf:type owl:Ontology .
-
-#################################################################
-#    Object Properties
-#################################################################
-
-###  http://rdf.webofcode.org/woc/actualTypeArgument
-:actualTypeArgument rdf:type owl:ObjectProperty ;
-                    rdfs:domain :ParameterizedType ;
-                    rdfs:range :TypeArgument ;
-                    rdfs:comment "Links a parameterized type to each of its actual type arguments" ;
-                    rdfs:label "actual type argument" .
-
-
-###  http://rdf.webofcode.org/woc/annotation
-:annotation rdf:type owl:ObjectProperty ;
-            rdfs:domain :CodeElement ;
-            rdfs:range :Annotation ;
-            rdfs:comment "Links a code element to its annotations" ;
-            rdfs:label "annotation" .
-
-
-###  http://rdf.webofcode.org/woc/argument
-:argument rdf:type owl:ObjectProperty ;
-          rdfs:domain :ExecutableInvocationExpression ;
-          rdfs:range :ActualArgument ;
-          rdfs:comment "Links a executable invocation to each of its actual arguments"@en ;
-          rdfs:label "argument" .
-
-
-###  http://rdf.webofcode.org/woc/arrayOf
-:arrayOf rdf:type owl:ObjectProperty ;
-         rdfs:domain :Array ;
-         rdfs:range :Type ;
-         rdfs:comment "Links an arrray to the type of its elements at the finest grain. For instance, an array of type \"int[][][]\" is linked to the type \"int\"."@en .
-
-
-###  http://rdf.webofcode.org/woc/assertExpression
-:assertExpression rdf:type owl:ObjectProperty ;
-                  rdfs:subPropertyOf :expression ;
-                  rdfs:domain :AssertStatement ;
-                  rdfs:range :Expression ;
-                  rdfs:comment "Links an assert statement to the boolean expression asserted to be true"@en ;
-                  rdfs:label "assert expression"@en .
-
-
-###  http://rdf.webofcode.org/woc/body
-:body rdf:type owl:ObjectProperty ,
-               owl:FunctionalProperty ;
-      rdfs:domain [ rdf:type owl:Class ;
-                    owl:unionOf ( :Executable
-                                  :LoopStatement
-                                  :TryStatement
-                                )
-                  ] ;
-      rdfs:range :BlockStatement ;
-      rdfs:comment "Links an executable or a statement to its body"@en ;
-      rdfs:label "body"@en .
-
-
-###  http://rdf.webofcode.org/woc/catch
-:catch rdf:type owl:ObjectProperty ;
-       rdfs:domain :TryStatement ;
-       rdfs:range :CatchClause ;
-       rdfs:comment "Links a try statement to the relative catch clauses"@en ;
-       rdfs:label "catch"@en .
-
-
-###  http://rdf.webofcode.org/woc/catchFormalParameter
-:catchFormalParameter rdf:type owl:ObjectProperty ;
-                      rdfs:domain :CatchClause ;
-                      rdfs:range :Class ;
-                      rdfs:comment "Links a catch clause to its formal parameters, namely the throwable it caughts"@en ;
-                      rdfs:label "catch formal parameter"@en .
-
-
-###  http://rdf.webofcode.org/woc/condition
-:condition rdf:type owl:ObjectProperty ;
-           rdfs:subPropertyOf :expression ;
-           rdfs:domain [ rdf:type owl:Class ;
-                         owl:unionOf ( :DoStatement
-                                       :ForStatement
-                                       :IfThenElseStatement
-                                       :WhileStatement
-                                     )
-                       ] ;
-           rdfs:range :Expression ;
-           rdfs:comment "Specifies a condition for a statement to be executed"@en ;
-           rdfs:label "condition"@en .
-
-
-###  http://rdf.webofcode.org/woc/constructs
-:constructs rdf:type owl:ObjectProperty ;
-            rdfs:domain :Executable ;
-            rdfs:range :Class ;
-            rdfs:comment "Links an executable to the classes it constructs"@en ;
-            rdfs:label "constructs"@en .
-
-
-###  http://rdf.webofcode.org/woc/declaration
-:declaration rdf:type owl:ObjectProperty ;
-             rdfs:domain :Variable ;
-             rdfs:range :VariableDeclaration ;
-             rdfs:comment "Links a variable to the statement it was declared by"@en ;
-             rdfs:label "declaration"@en .
-
-
-###  http://rdf.webofcode.org/woc/declaredBy
-:declaredBy rdf:type owl:ObjectProperty ;
-            rdfs:subPropertyOf owl:topObjectProperty ;
-            rdf:type owl:FunctionalProperty ,
-                     owl:TransitiveProperty ;
-            rdfs:domain :CodeElement ;
-            rdfs:range :CodeElement ;
-            rdfs:comment "Links a code element to the element it is declared by"@en ;
-            rdfs:label "declared by"@en .
-
-
-###  http://rdf.webofcode.org/woc/dependency
-:dependency rdf:type owl:ObjectProperty ;
-            rdfs:domain :Project ;
-            rdfs:range :JarFile ;
-            rdfs:comment "Links a project to its dependencies"@en ;
-            rdfs:label "dependency"@en .
-
-
-###  http://rdf.webofcode.org/woc/else
-:else rdf:type owl:ObjectProperty ;
-      rdfs:domain :IfThenElseStatement ;
-      rdfs:range :Statement ;
-      rdfs:comment "Links a if-then-else statement to the statement in the else branch"@en ;
-      rdfs:label "else"@en .
-
-
-###  http://rdf.webofcode.org/woc/expression
-:expression rdf:type owl:ObjectProperty ;
-            rdfs:domain :Statement ;
-            rdfs:range :Expression ;
-            rdfs:comment "Links a statement to the expressions it contains"@en ;
-            rdfs:label "expression"@en .
-
-
-###  http://rdf.webofcode.org/woc/extends
-:extends rdf:type owl:ObjectProperty ;
-         rdfs:subPropertyOf owl:topObjectProperty ;
-         rdf:type owl:TransitiveProperty ;
-         rdfs:domain [ rdf:type owl:Class ;
-                       owl:unionOf ( :Class
-                                     :Interface
-                                     :TypeVariable
-                                     :Wildcard
-                                   )
-                     ] ;
-         rdfs:range [ rdf:type owl:Class ;
-                      owl:unionOf ( :Class
-                                    :Interface
-                                    :ParameterizedType
-                                    :TypeVariable
-                                  )
-                    ] ;
-         rdfs:comment "Links a class, an interface, a type variable or a wildacard to the types it extends"@en ;
-         rdfs:label "extends"@en .
-
-
-###  http://rdf.webofcode.org/woc/finally
-:finally rdf:type owl:ObjectProperty ;
-         rdfs:domain :TryStatement ;
-         rdfs:range :FinallyClause ;
-         rdfs:comment "Links a try statemet to its finally clause"@en ;
-         rdfs:label "finally"@en .
-
-
-###  http://rdf.webofcode.org/woc/forInit
-:forInit rdf:type owl:ObjectProperty ;
-         rdfs:domain :ForStatement ;
-         rdfs:range :Expression ;
-         rdfs:comment "Links a basic for statement to each statement expression executed as initialization code, before the first iteration step is performed"@en ;
-         rdfs:label "for init"@en .
-
-
-###  http://rdf.webofcode.org/woc/forUpdate
-:forUpdate rdf:type owl:ObjectProperty ;
-           rdfs:domain :ForStatement ;
-           rdfs:range :Expression ;
-           rdfs:comment "Links a basic for statement to each expression evaluated as update code at the end of every iteration"@en ;
-           rdfs:label "for update"@en .
-
-
-###  http://rdf.webofcode.org/woc/formalTypeParameter
-:formalTypeParameter rdf:type owl:ObjectProperty ;
-                     rdfs:domain [ rdf:type owl:Class ;
-                                   owl:unionOf ( :Class
-                                                 :Enum
-                                                 :Executable
-                                                 :Interface
-                                               )
-                                 ] ;
-                     rdfs:range :TypeVariable ;
-                     rdfs:comment "Links a class, an interface, an enumeration, a constructor or a method to the formal type parameters it declares"@en ;
-                     rdfs:label "formal type parameter"@en .
-
-
-###  http://rdf.webofcode.org/woc/genericType
-:genericType rdf:type owl:ObjectProperty ,
-                      owl:FunctionalProperty ;
-             rdfs:domain :ParameterizedType ;
-             rdfs:range [ rdf:type owl:Class ;
-                          owl:unionOf ( :Class
-                                        :Enum
-                                        :Interface
-                                      )
-                        ] ;
-             rdfs:comment "Links a parameterized type to the generic type it is a parameterization of"@en ;
-             rdfs:label "generic type" .
-
-
-###  http://rdf.webofcode.org/woc/implements
-:implements rdf:type owl:ObjectProperty ;
-            rdfs:subPropertyOf :extends ;
-            rdfs:domain :Class ;
-            rdfs:range :Interface ;
-            rdfs:comment "Links a class to each implemented interface"@en ;
-            rdfs:label "implements"@en .
-
-
-###  http://rdf.webofcode.org/woc/initializer
-:initializer rdf:type owl:ObjectProperty ;
-             rdfs:subPropertyOf :expression ;
-             rdfs:domain :VariableDeclaration ;
-             rdfs:range :Expression ;
-             rdfs:comment "Links a variable declaration to the expression assigned to the declared variable"@en ;
-             rdfs:label "initializer"@en .
-
-
-###  http://rdf.webofcode.org/woc/invokes
-:invokes rdf:type owl:ObjectProperty ,
-                  owl:FunctionalProperty ;
-         rdfs:domain :ExecutableInvocationExpression ;
-         rdfs:range :Executable ;
-         rdfs:comment "Links a invocation expression to the invoked executable"@en ;
-         rdfs:label "invokes"@en .
-
-
-###  http://rdf.webofcode.org/woc/leftHandSide
-:leftHandSide rdf:type owl:ObjectProperty ;
-              rdfs:domain :AssignmentExpression ;
-              rdfs:range :Expression ;
-              rdfs:comment "Links a assignement expression to the left hand side expression"@en ;
-              rdfs:label "left hand side"@en .
-
-
-###  http://rdf.webofcode.org/woc/modifier
-:modifier rdf:type owl:ObjectProperty ;
-          rdfs:domain [ rdf:type owl:Class ;
-                        owl:unionOf ( :Class
-                                      :Enum
-                                      :Executable
-                                      :Interface
-                                      :Variable
-                                    )
-                      ] ;
-          rdfs:range :Modifier ;
-          rdfs:comment "Links a modifiable elemet to its modifiers"@en ;
-          rdfs:label "modifier"@en .
-
-
-###  http://rdf.webofcode.org/woc/next
-:next rdf:type owl:ObjectProperty ;
-      rdfs:domain [ rdf:type owl:Class ;
-                    owl:unionOf ( :DoStatement
-                                  :ForStatement
-                                  :IfThenElseStatement
-                                  :WhileStatement
-                                )
-                  ] ;
-      rdfs:range :Statement ;
-      rdfs:comment "Links a statement to the next statement to be executed"@en ;
-      rdfs:label "next"@en .
-
-
-###  http://rdf.webofcode.org/woc/overrides
-:overrides rdf:type owl:ObjectProperty ,
-                    owl:FunctionalProperty ,
-                    owl:TransitiveProperty ;
-           rdfs:domain :Method ;
-           rdfs:range :Method ;
-           rdfs:comment "Links a method to the method it overrides"@en ;
-           rdfs:label "overrides"@en .
-
-
-###  http://rdf.webofcode.org/woc/parameter
-:parameter rdf:type owl:ObjectProperty ;
-           rdfs:domain :Executable ;
-           rdfs:range :Parameter ;
-           rdfs:comment "Links a constructor or a method to the formal parameters it declares"@en ;
-           rdfs:label "parameter"@en .
-
-
-###  http://rdf.webofcode.org/woc/requests
-:requests rdf:type owl:ObjectProperty ,
-                   owl:TransitiveProperty ;
-          rdfs:domain :Executable ;
-          rdfs:range [ rdf:type owl:Class ;
-                       owl:unionOf ( :Executable
-                                     :Field
-                                     :Type
-                                   )
-                     ] ;
-          rdfs:comment "Links a method or a constructor to the types, methods, constructors and fields it requests."@en ;
-          rdfs:label "requests"@en .
-
-
-###  http://rdf.webofcode.org/woc/resource
-:resource rdf:type owl:ObjectProperty ;
-          rdfs:domain :TryStatement ;
-          rdfs:range :LocalVariable ;
-          rdfs:comment "Links a try statement to each local variable declared to act as resource for the try statement"@en ;
-          rdfs:label "resource"@en .
-
-
-###  http://rdf.webofcode.org/woc/returnedExpression
-:returnedExpression rdf:type owl:ObjectProperty ;
-                    rdfs:subPropertyOf :expression ;
-                    rdfs:domain :ReturnStatement ;
-                    rdfs:range :Expression ;
-                    rdfs:comment "Links a return statement to the returned expression"@en ;
-                    rdfs:label "returned expression"@en .
-
-
-###  http://rdf.webofcode.org/woc/returns
-:returns rdf:type owl:ObjectProperty ;
-         rdfs:subPropertyOf :type ;
-         rdf:type owl:FunctionalProperty ;
-         rdfs:domain :Method ;
-         rdfs:range :Type ;
-         rdfs:comment "Links a method to its return type"@en .
-
-
-###  http://rdf.webofcode.org/woc/returnsVar
-:returnsVar rdf:type owl:ObjectProperty ,
-                     owl:FunctionalProperty ;
-            rdfs:domain :Method ;
-            rdfs:range :Variable ;
-            rdfs:comment "Links a method to the variable it returns, if any"@en .
-
-
-###  http://rdf.webofcode.org/woc/statement
-:statement rdf:type owl:ObjectProperty ;
-           rdfs:domain :BlockStatement ;
-           rdfs:range :Statement ;
-           rdfs:comment "Links a block of code to the statements it contains"@en ;
-           rdfs:label "statement"@en .
-
-
-###  http://rdf.webofcode.org/woc/subProject
-:subProject rdf:type owl:ObjectProperty ,
-                     owl:TransitiveProperty ;
-            rdfs:domain :Project ;
-            rdfs:range :Project ;
-            rdfs:comment "Links a project to its subprojects"@en ;
-            rdfs:label "subproject"@en .
-
-
-###  http://rdf.webofcode.org/woc/super
-:super rdf:type owl:ObjectProperty ;
-       rdfs:subPropertyOf owl:topObjectProperty ;
-       rdfs:domain :Wildcard ;
-       rdfs:range [ rdf:type owl:Class ;
-                    owl:unionOf ( :Class
-                                  :Interface
-                                  :ParameterizedType
-                                  :TypeVariable
-                                )
-                  ] ;
-       rdfs:comment "Links a lower bounded wildcard to its bouds"@en ;
-       rdfs:label "super"@en .
-
-
-###  http://rdf.webofcode.org/woc/switchLabel
-:switchLabel rdf:type owl:ObjectProperty ;
-             rdfs:domain :SwitchStatement ;
-             rdfs:range :Label ;
-             rdfs:comment "Links a switch statement to its switch label"@en ;
-             rdfs:label "switch label"@en .
-
-
-###  http://rdf.webofcode.org/woc/target
-:target rdf:type owl:ObjectProperty ;
-        rdfs:domain :MethodInvocationExpression ;
-        rdfs:range :Expression ;
-        rdfs:comment "Links a method invocation expression to its target"@en ;
-        rdfs:label "target"@en .
-
-
-###  http://rdf.webofcode.org/woc/then
-:then rdf:type owl:ObjectProperty ;
-      rdfs:domain :IfThenElseStatement ;
-      rdfs:range :Statement ;
-      rdfs:comment "Links a if-then-else statement to the statement declared in the \"then\" branch"@en ;
-      rdfs:label "then"@en .
-
-
-###  http://rdf.webofcode.org/woc/thrownExpression
-:thrownExpression rdf:type owl:ObjectProperty ;
-                  rdfs:subPropertyOf :expression ;
-                  rdfs:domain :ThrowStatement ;
-                  rdfs:range :Expression ;
-                  rdfs:comment "Links a thrown statement to the expression it throws"@en ;
-                  rdfs:label "thrown expression"@en .
-
-
-###  http://rdf.webofcode.org/woc/throws
-:throws rdf:type owl:ObjectProperty ;
-        rdfs:domain :Executable ;
-        rdfs:range :Class ;
-        rdfs:comment "Links a method or a constructor to the exceptions it declares to throw"@en ;
-        rdfs:label "throws"@en .
-
-
-###  http://rdf.webofcode.org/woc/type
-:type rdf:type owl:ObjectProperty ,
-               owl:FunctionalProperty ;
-      rdfs:domain [ rdf:type owl:Class ;
-                    owl:unionOf ( :Expression
-                                  :Method
-                                  :Variable
-                                )
-                  ] ;
-      rdfs:range :Type ;
-      rdfs:comment "Links an expression, a variable or a method to its type"@en .
-
-
-###  http://rdf.webofcode.org/woc/variable
-:variable rdf:type owl:ObjectProperty ;
-          rdfs:domain :ForEachStatement ;
-          rdfs:range :LocalVariable ;
-          rdfs:comment "Links a for-each statement to the local variable it declares"@en .
-
-
-#################################################################
-#    Data properties
-#################################################################
-
-###  http://rdf.webofcode.org/woc/buildFile
-:buildFile rdf:type owl:DatatypeProperty ;
-           rdfs:domain :Project ;
-           rdfs:range xsd:string ;
-           rdfs:comment "Links a project to the content of its build file." ;
-           rdfs:label "build file" .
-
-
-###  http://rdf.webofcode.org/woc/comment
-:comment rdf:type owl:DatatypeProperty ;
-         rdfs:domain :CodeElement ;
-         rdfs:range xsd:string ;
-         rdfs:comment "Links a code element to the associated comment" ;
-         rdfs:label "comment" .
-
-
-###  http://rdf.webofcode.org/woc/dimensions
-:dimensions rdf:type owl:DatatypeProperty ;
-            rdfs:domain :Array ;
-            rdfs:range xsd:int ;
-            rdfs:comment "Links an array to the number of its dimensions. As an example, an array of type \"int[][][]\" has a dimensions count of 3"@en ;
-            rdfs:label "dimensions"@en .
-
-
-###  http://rdf.webofcode.org/woc/endLine
-:endLine rdf:type owl:DatatypeProperty ;
-         rdfs:domain :BlockStatement ;
-         rdfs:range xsd:int ;
-         rdfs:comment "Links a statement to the number of the last line it covers"@en ;
-         rdfs:label "end line"@en .
-
-
-###  http://rdf.webofcode.org/woc/isVarArgs
-:isVarArgs rdf:type owl:DatatypeProperty ;
-           rdfs:domain :Method ;
-           rdfs:range xsd:boolean ;
-           rdfs:comment "True if an executable accepts a variable number of parameters, false otherwise"@en ;
-           rdfs:label "is var args"@en .
-
-
-###  http://rdf.webofcode.org/woc/label
-:label rdf:type owl:DatatypeProperty ;
-       rdfs:subPropertyOf owl:topDataProperty ;
-       rdfs:domain :Statement ;
-       rdfs:range xsd:string ;
-       rdfs:comment "Links a labeled statement to its label"@en ;
-       rdfs:label "label"@en .
-
-
-###  http://rdf.webofcode.org/woc/line
-:line rdf:type owl:DatatypeProperty ;
-      rdfs:domain [ rdf:type owl:Class ;
-                    owl:unionOf ( :Expression
-                                  :Statement
-                                )
-                  ] ;
-      rdfs:range xsd:int ;
-      rdfs:comment "Links a statement to the line it starts in"@en ;
-      rdfs:label "line"@en .
-
-
-###  http://rdf.webofcode.org/woc/name
-:name rdf:type owl:DatatypeProperty ;
-      rdfs:domain [ rdf:type owl:Class ;
-                    owl:unionOf ( :CodeElement
-                                  :JarFile
-                                  :Project
-                                )
-                  ] ;
-      rdfs:range xsd:string ;
-      rdfs:comment "Links a element to its name"@en ;
-      rdfs:label "name"@en .
-
-
-###  http://rdf.webofcode.org/woc/position
-:position rdf:type owl:DatatypeProperty ;
-          rdfs:domain :CodeElement ;
-          rdfs:range xsd:int ;
-          rdfs:comment "Links a element to its position"@en ;
-          rdfs:label "position"@en .
-
-
-###  http://rdf.webofcode.org/woc/returnDescription
-:returnDescription rdf:type owl:DatatypeProperty ;
-                   rdfs:subPropertyOf :comment ;
-                   rdfs:domain :Method ;
-                   rdfs:range xsd:string ;
-                   rdfs:comment "Links a method to the description of the element it returns. In javadoc comments, this is specified with the \"@return\" tag"@en ;
-                   rdfs:label "return description" .
-
-
-###  http://rdf.webofcode.org/woc/sourceCode
-:sourceCode rdf:type owl:DatatypeProperty ;
-            rdfs:domain :CodeElement ;
-            rdfs:range xsd:string ;
-            rdfs:comment "Links a element to its source code"@en ;
-            rdfs:label "source code"@en .
-
-
-###  http://rdf.webofcode.org/woc/targetedLabel
-:targetedLabel rdf:type owl:DatatypeProperty ;
-               rdfs:domain [ rdf:type owl:Class ;
-                             owl:unionOf ( :BreakStatement
-                                           :ContinueStatement
-                                         )
-                           ] ;
-               rdfs:range xsd:string ;
-               rdfs:comment "Links a break statement or a continue statement to the label it targets, if any"@en ;
-               rdfs:label "targeted label" .
-
-
-#################################################################
-#    Classes
-#################################################################
-
-###  http://rdf.webofcode.org/woc/ActualArgument
-:ActualArgument rdf:type owl:Class ;
-                rdfs:subClassOf :Expression ,
-                                [ rdf:type owl:Restriction ;
-                                  owl:onProperty :expression ;
-                                  owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                  owl:onClass :Expression
-                                ] ,
-                                [ rdf:type owl:Restriction ;
-                                  owl:onProperty :position ;
-                                  owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                  owl:onDataRange xsd:int
-                                ] ;
-                rdfs:comment "The actual argument of a method" ;
-                rdfs:label "Actual Argument" .
-
-
-###  http://rdf.webofcode.org/woc/Annotation
-:Annotation rdf:type owl:Class ;
-            rdfs:subClassOf :Type ;
-            rdfs:comment "A annotation"@en ;
-            rdfs:label "Annotation"@en .
-
-
-###  http://rdf.webofcode.org/woc/AnonymousClass
-:AnonymousClass rdf:type owl:Class ;
-                rdfs:subClassOf :Class ;
-                rdfs:comment "An anonymous class"@en ;
-                rdfs:label "Anonymous Class"@en .
-
-
-###  http://rdf.webofcode.org/woc/Array
-:Array rdf:type owl:Class ;
-       rdfs:subClassOf :Type ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :arrayOf ;
-                         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                         owl:onClass :Type
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :dimensions ;
-                         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                         owl:onDataRange xsd:int
-                       ] ;
-       rdfs:comment "A array"@en ;
-       rdfs:label "Array"@en .
-
-
-###  http://rdf.webofcode.org/woc/AssertStatement
-:AssertStatement rdf:type owl:Class ;
-                 rdfs:subClassOf :Statement ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty :assertExpression ;
-                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                   owl:onClass :Expression
-                                 ] ;
-                 rdfs:comment "A assert statement"@en ;
-                 rdfs:label "Assert Statement"@en .
-
-
-###  http://rdf.webofcode.org/woc/AssignmentExpression
-:AssignmentExpression rdf:type owl:Class ;
-                      rdfs:subClassOf :Expression ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty :expression ;
-                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                        owl:onClass :Expression
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty :leftHandSide ;
-                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                        owl:onClass :Expression
-                                      ] ;
-                      rdfs:comment """An assignment expression. It involves one of the following operators:
+
+<http://rdf.webofcode.org/woc/> a owl:Ontology .
+# 
+# 
+# #################################################################
+# #
+# #    Object Properties
+# #
+# #################################################################
+# 
+# 
+# http://rdf.webofcode.org/woc/actualTypeArgument
+
+:actualTypeArgument a owl:ObjectProperty ;
+	rdfs:domain :ParameterizedType ;
+	rdfs:range :TypeArgument ;
+	rdfs:comment "Links a parameterized type to each of its actual type arguments" ;
+	rdfs:label "actual type argument" .
+# 
+# http://rdf.webofcode.org/woc/annotation
+
+:annotation a owl:ObjectProperty ;
+	rdfs:domain :CodeElement ;
+	rdfs:range :Annotation ;
+	rdfs:comment "Links a code element to its annotations" ;
+	rdfs:label "annotation" .
+# 
+# http://rdf.webofcode.org/woc/argument
+
+:argument a owl:ObjectProperty ;
+	rdfs:domain :ExecutableInvocationExpression ;
+	rdfs:range :ActualArgument ;
+	rdfs:comment "Links a executable invocation to each of its actual arguments"@en ;
+	rdfs:label "argument" .
+# 
+# http://rdf.webofcode.org/woc/arrayOf
+
+:arrayOf a owl:ObjectProperty ;
+	rdfs:domain :Array ;
+	rdfs:range :Type ;
+	rdfs:comment "Links an arrray to the type of its elements at the finest grain. For instance, an array of type \"int[][][]\" is linked to the type \"int\"."@en .
+# 
+# http://rdf.webofcode.org/woc/assertExpression
+
+:assertExpression a owl:ObjectProperty ;
+	rdfs:subPropertyOf :expression ;
+	rdfs:domain :AssertStatement ;
+	rdfs:range :Expression ;
+	rdfs:comment "Links an assert statement to the boolean expression asserted to be true"@en ;
+	rdfs:label "assert expression"@en .
+# 
+# http://rdf.webofcode.org/woc/body
+
+:body a owl:ObjectProperty , owl:FunctionalProperty ;
+	rdfs:domain _:genid1 .
+
+_:genid1 a owl:Class ;
+	owl:unionOf _:genid4 .
+
+_:genid4 a rdf:List ;
+	rdf:first :Executable ;
+	rdf:rest _:genid3 .
+
+_:genid3 a rdf:List ;
+	rdf:first :LoopStatement ;
+	rdf:rest _:genid2 .
+
+_:genid2 a rdf:List ;
+	rdf:first :TryStatement ;
+	rdf:rest rdf:nil .
+
+:body rdfs:range :BlockStatement ;
+	rdfs:comment "Links an executable or a statement to its body"@en ;
+	rdfs:label "body"@en .
+# 
+# http://rdf.webofcode.org/woc/catch
+
+:catch a owl:ObjectProperty ;
+	rdfs:domain :TryStatement ;
+	rdfs:range :CatchClause ;
+	rdfs:comment "Links a try statement to the relative catch clauses"@en ;
+	rdfs:label "catch"@en .
+# 
+# http://rdf.webofcode.org/woc/catchFormalParameter
+
+:catchFormalParameter a owl:ObjectProperty ;
+	rdfs:domain :CatchClause ;
+	rdfs:range :Class ;
+	rdfs:comment "Links a catch clause to its formal parameters, namely the throwable objects it caughts"@en ;
+	rdfs:label "catch formal parameter"@en .
+# 
+# http://rdf.webofcode.org/woc/condition
+
+:condition a owl:ObjectProperty ;
+	rdfs:subPropertyOf :expression ;
+	rdfs:domain _:genid5 .
+
+_:genid5 a owl:Class ;
+	owl:unionOf _:genid9 .
+
+_:genid9 a rdf:List ;
+	rdf:first :DoStatement ;
+	rdf:rest _:genid8 .
+
+_:genid8 a rdf:List ;
+	rdf:first :ForStatement ;
+	rdf:rest _:genid7 .
+
+_:genid7 a rdf:List ;
+	rdf:first :IfThenElseStatement ;
+	rdf:rest _:genid6 .
+
+_:genid6 a rdf:List ;
+	rdf:first :WhileStatement ;
+	rdf:rest rdf:nil .
+
+:condition rdfs:range :Expression ;
+	rdfs:comment "Specifies a condition for a statement to be executed"@en ;
+	rdfs:label "condition"@en .
+# 
+# http://rdf.webofcode.org/woc/constructs
+
+:constructs a owl:ObjectProperty ;
+	rdfs:domain :Executable ;
+	rdfs:range :Class ;
+	rdfs:comment "Links an executable to the classes it constructs"@en ;
+	rdfs:label "constructs"@en .
+# 
+# http://rdf.webofcode.org/woc/declaration
+
+:declaration a owl:ObjectProperty ;
+	rdfs:domain :Variable ;
+	rdfs:range :VariableDeclaration ;
+	rdfs:comment "Links a variable to the statement it was declared by"@en ;
+	rdfs:label "declaration"@en .
+# 
+# http://rdf.webofcode.org/woc/declaredBy
+
+:declaredBy a owl:ObjectProperty ;
+	rdfs:subPropertyOf owl:topObjectProperty ;
+	a owl:FunctionalProperty , owl:TransitiveProperty ;
+	rdfs:domain :CodeElement ;
+	rdfs:range :CodeElement ;
+	rdfs:comment "Links a code element to the element it is declared by"@en ;
+	rdfs:label "declared by"@en .
+# 
+# http://rdf.webofcode.org/woc/dependency
+
+:dependency a owl:ObjectProperty ;
+	rdfs:domain :Project ;
+	rdfs:range :JarFile ;
+	rdfs:comment "Links a project to its dependencies"@en ;
+	rdfs:label "dependency"@en .
+# 
+# http://rdf.webofcode.org/woc/else
+
+:else a owl:ObjectProperty ;
+	rdfs:domain :IfThenElseStatement ;
+	rdfs:range :Statement ;
+	rdfs:comment "Links a if-then-else statement to the statement in the else branch"@en ;
+	rdfs:label "else"@en .
+# 
+# http://rdf.webofcode.org/woc/expression
+
+:expression a owl:ObjectProperty ;
+	rdfs:domain :Statement ;
+	rdfs:range :Expression ;
+	rdfs:comment "Links a statement to the expressions it contains"@en ;
+	rdfs:label "expression"@en .
+# 
+# http://rdf.webofcode.org/woc/extends
+
+:extends a owl:ObjectProperty ;
+	rdfs:subPropertyOf owl:topObjectProperty ;
+	a owl:TransitiveProperty ;
+	rdfs:domain _:genid10 .
+
+_:genid10 a owl:Class ;
+	owl:unionOf _:genid14 .
+
+_:genid14 a rdf:List ;
+	rdf:first :Class ;
+	rdf:rest _:genid13 .
+
+_:genid13 a rdf:List ;
+	rdf:first :Interface ;
+	rdf:rest _:genid12 .
+
+_:genid12 a rdf:List ;
+	rdf:first :TypeVariable ;
+	rdf:rest _:genid11 .
+
+_:genid11 a rdf:List ;
+	rdf:first :Wildcard ;
+	rdf:rest rdf:nil .
+
+:extends rdfs:range _:genid15 .
+
+_:genid15 a owl:Class ;
+	owl:unionOf _:genid19 .
+
+_:genid19 a rdf:List ;
+	rdf:first :Class ;
+	rdf:rest _:genid18 .
+
+_:genid18 a rdf:List ;
+	rdf:first :Interface ;
+	rdf:rest _:genid17 .
+
+_:genid17 a rdf:List ;
+	rdf:first :ParameterizedType ;
+	rdf:rest _:genid16 .
+
+_:genid16 a rdf:List ;
+	rdf:first :TypeVariable ;
+	rdf:rest rdf:nil .
+
+:extends rdfs:comment "Links a class, an interface, a type variable or a wildacard to the types it extends"@en ;
+	rdfs:label "extends"@en .
+# 
+# http://rdf.webofcode.org/woc/finally
+
+:finally a owl:ObjectProperty ;
+	rdfs:domain :TryStatement ;
+	rdfs:range :FinallyClause ;
+	rdfs:comment "Links a try statemet to its finally clause"@en ;
+	rdfs:label "finally"@en .
+# 
+# http://rdf.webofcode.org/woc/forInit
+
+:forInit a owl:ObjectProperty ;
+	rdfs:subPropertyOf :expression ;
+	rdfs:domain :ForStatement ;
+	rdfs:range :Expression ;
+	rdfs:comment "Links a basic for statement to each statement expression executed as initialization code, before the first iteration step is performed"@en ;
+	rdfs:label "for init"@en .
+# 
+# http://rdf.webofcode.org/woc/forUpdate
+
+:forUpdate a owl:ObjectProperty ;
+	rdfs:subPropertyOf :expression ;
+	rdfs:domain :ForStatement ;
+	rdfs:range :Expression ;
+	rdfs:comment "Links a basic for statement to each expression evaluated as update code at the end of every iteration"@en ;
+	rdfs:label "for update"@en .
+# 
+# http://rdf.webofcode.org/woc/formalTypeParameter
+
+:formalTypeParameter a owl:ObjectProperty ;
+	rdfs:domain _:genid20 .
+
+_:genid20 a owl:Class ;
+	owl:unionOf _:genid24 .
+
+_:genid24 a rdf:List ;
+	rdf:first :Class ;
+	rdf:rest _:genid23 .
+
+_:genid23 a rdf:List ;
+	rdf:first :Enum ;
+	rdf:rest _:genid22 .
+
+_:genid22 a rdf:List ;
+	rdf:first :Executable ;
+	rdf:rest _:genid21 .
+
+_:genid21 a rdf:List ;
+	rdf:first :Interface ;
+	rdf:rest rdf:nil .
+
+:formalTypeParameter rdfs:range :TypeVariable ;
+	rdfs:comment "Links a class, an interface, an enumeration, a constructor or a method to the formal type parameters it declares"@en ;
+	rdfs:label "formal type parameter"@en .
+# 
+# http://rdf.webofcode.org/woc/genericType
+
+:genericType a owl:ObjectProperty , owl:FunctionalProperty ;
+	rdfs:domain :ParameterizedType ;
+	rdfs:range _:genid25 .
+
+_:genid25 a owl:Class ;
+	owl:unionOf _:genid28 .
+
+_:genid28 a rdf:List ;
+	rdf:first :Class ;
+	rdf:rest _:genid27 .
+
+_:genid27 a rdf:List ;
+	rdf:first :Enum ;
+	rdf:rest _:genid26 .
+
+_:genid26 a rdf:List ;
+	rdf:first :Interface ;
+	rdf:rest rdf:nil .
+
+:genericType rdfs:comment "Links a parameterized type to the generic type it is a parameterization of"@en ;
+	rdfs:label "generic type" .
+# 
+# http://rdf.webofcode.org/woc/implements
+
+:implements a owl:ObjectProperty ;
+	rdfs:subPropertyOf :extends ;
+	rdfs:domain :Class ;
+	rdfs:range :Interface ;
+	rdfs:comment "Links a class to each implemented interface"@en ;
+	rdfs:label "implements"@en .
+# 
+# http://rdf.webofcode.org/woc/initializer
+
+:initializer a owl:ObjectProperty ;
+	rdfs:subPropertyOf :expression ;
+	rdfs:domain :VariableDeclaration ;
+	rdfs:range :Expression ;
+	rdfs:comment "Links a variable declaration to the expression assigned to the declared variable"@en ;
+	rdfs:label "initializer"@en .
+# 
+# http://rdf.webofcode.org/woc/invokes
+
+:invokes a owl:ObjectProperty , owl:FunctionalProperty ;
+	rdfs:domain :ExecutableInvocationExpression ;
+	rdfs:range :Executable ;
+	rdfs:comment "Links a invocation expression to the invoked executable"@en ;
+	rdfs:label "invokes"@en .
+# 
+# http://rdf.webofcode.org/woc/leftHandSide
+
+:leftHandSide a owl:ObjectProperty ;
+	rdfs:domain :AssignmentExpression ;
+	rdfs:range :Expression ;
+	rdfs:comment "Links a assignement expression to the left hand side expression"@en ;
+	rdfs:label "left hand side"@en .
+# 
+# http://rdf.webofcode.org/woc/modifier
+
+:modifier a owl:ObjectProperty ;
+	rdfs:domain _:genid29 .
+
+_:genid29 a owl:Class ;
+	owl:unionOf _:genid34 .
+
+_:genid34 a rdf:List ;
+	rdf:first :Class ;
+	rdf:rest _:genid33 .
+
+_:genid33 a rdf:List ;
+	rdf:first :Enum ;
+	rdf:rest _:genid32 .
+
+_:genid32 a rdf:List ;
+	rdf:first :Executable ;
+	rdf:rest _:genid31 .
+
+_:genid31 a rdf:List ;
+	rdf:first :Interface ;
+	rdf:rest _:genid30 .
+
+_:genid30 a rdf:List ;
+	rdf:first :Variable ;
+	rdf:rest rdf:nil .
+
+:modifier rdfs:range :Modifier ;
+	rdfs:comment "Links a modifiable element to its modifiers"@en ;
+	rdfs:label "modifier"@en .
+# 
+# http://rdf.webofcode.org/woc/next
+
+:next a owl:ObjectProperty ;
+	rdfs:domain _:genid35 .
+
+_:genid35 a owl:Class ;
+	owl:unionOf _:genid39 .
+
+_:genid39 a rdf:List ;
+	rdf:first :DoStatement ;
+	rdf:rest _:genid38 .
+
+_:genid38 a rdf:List ;
+	rdf:first :ForStatement ;
+	rdf:rest _:genid37 .
+
+_:genid37 a rdf:List ;
+	rdf:first :IfThenElseStatement ;
+	rdf:rest _:genid36 .
+
+_:genid36 a rdf:List ;
+	rdf:first :WhileStatement ;
+	rdf:rest rdf:nil .
+
+:next rdfs:range :Statement ;
+	rdfs:comment "Links a statement to the next statement to be executed"@en ;
+	rdfs:label "next"@en .
+# 
+# http://rdf.webofcode.org/woc/overrides
+
+:overrides a owl:ObjectProperty , owl:FunctionalProperty , owl:TransitiveProperty ;
+	rdfs:domain :Method ;
+	rdfs:range :Method ;
+	rdfs:comment "Links a method to the method it overrides"@en ;
+	rdfs:label "overrides"@en .
+# 
+# http://rdf.webofcode.org/woc/parameter
+
+:parameter a owl:ObjectProperty ;
+	rdfs:domain :Executable ;
+	rdfs:range :Parameter ;
+	rdfs:comment "Links a constructor or a method to the formal parameters it declares"@en ;
+	rdfs:label "parameter"@en .
+# 
+# http://rdf.webofcode.org/woc/requests
+
+:requests a owl:ObjectProperty , owl:TransitiveProperty ;
+	rdfs:domain :Executable ;
+	rdfs:range _:genid40 .
+
+_:genid40 a owl:Class ;
+	owl:unionOf _:genid43 .
+
+_:genid43 a rdf:List ;
+	rdf:first :Executable ;
+	rdf:rest _:genid42 .
+
+_:genid42 a rdf:List ;
+	rdf:first :Field ;
+	rdf:rest _:genid41 .
+
+_:genid41 a rdf:List ;
+	rdf:first :Type ;
+	rdf:rest rdf:nil .
+
+:requests rdfs:comment "Links a method or a constructor to the types, methods, constructors and fields it requests."@en ;
+	rdfs:label "requests"@en .
+# 
+# http://rdf.webofcode.org/woc/resource
+
+:resource a owl:ObjectProperty ;
+	rdfs:domain :TryStatement ;
+	rdfs:range :LocalVariable ;
+	rdfs:comment "Links a try statement to each local variable declared to act as resource for the try statement"@en ;
+	rdfs:label "resource"@en .
+# 
+# http://rdf.webofcode.org/woc/returnedExpression
+
+:returnedExpression a owl:ObjectProperty ;
+	rdfs:subPropertyOf :expression ;
+	rdfs:domain :ReturnStatement ;
+	rdfs:range :Expression ;
+	rdfs:comment "Links a return statement to the returned expression"@en ;
+	rdfs:label "returned expression"@en .
+# 
+# http://rdf.webofcode.org/woc/returns
+
+:returns a owl:ObjectProperty ;
+	rdfs:subPropertyOf :type ;
+	a owl:FunctionalProperty ;
+	rdfs:domain :Method ;
+	rdfs:range :Type ;
+	rdfs:comment "Links a method to its return type"@en .
+# 
+# http://rdf.webofcode.org/woc/returnsVar
+
+:returnsVar a owl:ObjectProperty , owl:FunctionalProperty ;
+	rdfs:domain :Method ;
+	rdfs:range :Variable ;
+	rdfs:comment "Links a method to the variable it returns, if any"@en .
+# 
+# http://rdf.webofcode.org/woc/statement
+
+:statement a owl:ObjectProperty ;
+	rdfs:domain :BlockStatement ;
+	rdfs:range :Statement ;
+	rdfs:comment "Links a block of code to the statements it contains"@en ;
+	rdfs:label "statement"@en .
+# 
+# http://rdf.webofcode.org/woc/subProject
+
+:subProject a owl:ObjectProperty , owl:TransitiveProperty ;
+	rdfs:domain :Project ;
+	rdfs:range :Project ;
+	rdfs:comment "Links a project to its subprojects"@en ;
+	rdfs:label "subproject"@en .
+# 
+# http://rdf.webofcode.org/woc/super
+
+:super a owl:ObjectProperty ;
+	rdfs:subPropertyOf owl:topObjectProperty ;
+	rdfs:domain :Wildcard ;
+	rdfs:range _:genid44 .
+
+_:genid44 a owl:Class ;
+	owl:unionOf _:genid48 .
+
+_:genid48 a rdf:List ;
+	rdf:first :Class ;
+	rdf:rest _:genid47 .
+
+_:genid47 a rdf:List ;
+	rdf:first :Interface ;
+	rdf:rest _:genid46 .
+
+_:genid46 a rdf:List ;
+	rdf:first :ParameterizedType ;
+	rdf:rest _:genid45 .
+
+_:genid45 a rdf:List ;
+	rdf:first :TypeVariable ;
+	rdf:rest rdf:nil .
+
+:super rdfs:comment "Links a lower bounded wildcard to its bouds"@en ;
+	rdfs:label "super"@en .
+# 
+# http://rdf.webofcode.org/woc/switchLabel
+
+:switchLabel a owl:ObjectProperty ;
+	rdfs:domain :SwitchStatement ;
+	rdfs:range :Label ;
+	rdfs:comment "Links a switch statement to its switch label"@en ;
+	rdfs:label "switch label"@en .
+# 
+# http://rdf.webofcode.org/woc/target
+
+:target a owl:ObjectProperty ;
+	rdfs:domain :MethodInvocationExpression ;
+	rdfs:range :Expression ;
+	rdfs:comment "Links a method invocation expression to its target"@en ;
+	rdfs:label "target"@en .
+# 
+# http://rdf.webofcode.org/woc/then
+
+:then a owl:ObjectProperty ;
+	rdfs:domain :IfThenElseStatement ;
+	rdfs:range :Statement ;
+	rdfs:comment "Links a if-then-else statement to the statement declared in the \"then\" branch"@en ;
+	rdfs:label "then"@en .
+# 
+# http://rdf.webofcode.org/woc/thrownExpression
+
+:thrownExpression a owl:ObjectProperty ;
+	rdfs:subPropertyOf :expression ;
+	rdfs:domain :ThrowStatement ;
+	rdfs:range :Expression ;
+	rdfs:comment "Links a thrown statement to the expression it throws"@en ;
+	rdfs:label "thrown expression"@en .
+# 
+# http://rdf.webofcode.org/woc/throws
+
+:throws a owl:ObjectProperty ;
+	rdfs:domain :Executable ;
+	rdfs:range :Class ;
+	rdfs:comment "Links a method or a constructor to the exceptions it declares to throw"@en ;
+	rdfs:label "throws"@en .
+# 
+# http://rdf.webofcode.org/woc/type
+
+:type a owl:ObjectProperty , owl:FunctionalProperty ;
+	rdfs:domain _:genid49 .
+
+_:genid49 a owl:Class ;
+	owl:unionOf _:genid52 .
+
+_:genid52 a rdf:List ;
+	rdf:first :Expression ;
+	rdf:rest _:genid51 .
+
+_:genid51 a rdf:List ;
+	rdf:first :Method ;
+	rdf:rest _:genid50 .
+
+_:genid50 a rdf:List ;
+	rdf:first :Variable ;
+	rdf:rest rdf:nil .
+
+:type rdfs:range :Type ;
+	rdfs:comment "Links an expression, a variable or a method to its type"@en .
+# 
+# http://rdf.webofcode.org/woc/variable
+
+:variable a owl:ObjectProperty ;
+	rdfs:domain :ForEachStatement ;
+	rdfs:range :LocalVariable ;
+	rdfs:comment "Links a for-each statement to the local variable it declares"@en .
+# 
+# 
+# 
+# #################################################################
+# #
+# #    Data properties
+# #
+# #################################################################
+# 
+# 
+# http://rdf.webofcode.org/woc/buildFile
+
+:buildFile a owl:DatatypeProperty ;
+	rdfs:domain :Project ;
+	rdfs:range xsd:string ;
+	rdfs:comment "Links a project to the content of its build file." ;
+	rdfs:label "build file" .
+# 
+# http://rdf.webofcode.org/woc/comment
+
+:comment a owl:DatatypeProperty ;
+	rdfs:domain :CodeElement ;
+	rdfs:range xsd:string ;
+	rdfs:comment "Links a code element to the associated comment" ;
+	rdfs:label "comment" .
+# 
+# http://rdf.webofcode.org/woc/dimensions
+
+:dimensions a owl:DatatypeProperty ;
+	rdfs:domain :Array ;
+	rdfs:range xsd:int ;
+	rdfs:comment "Links an array to the number of its dimensions. As an example, an array of type \"int[][][]\" has a dimensions count of 3"@en ;
+	rdfs:label "dimensions"@en .
+# 
+# http://rdf.webofcode.org/woc/endLine
+
+:endLine a owl:DatatypeProperty ;
+	rdfs:domain :BlockStatement ;
+	rdfs:range xsd:int ;
+	rdfs:comment "Links a statement to the number of the last line it covers"@en ;
+	rdfs:label "end line"@en .
+# 
+# http://rdf.webofcode.org/woc/isVarArgs
+
+:isVarArgs a owl:DatatypeProperty ;
+	rdfs:domain :Method ;
+	rdfs:range xsd:boolean ;
+	rdfs:comment "True if an executable accepts a variable number of parameters, false otherwise"@en ;
+	rdfs:label "is var args"@en .
+# 
+# http://rdf.webofcode.org/woc/label
+
+:label a owl:DatatypeProperty ;
+	rdfs:subPropertyOf owl:topDataProperty ;
+	rdfs:domain :Statement ;
+	rdfs:range xsd:string ;
+	rdfs:comment "Links a labeled statement to its label"@en ;
+	rdfs:label "label"@en .
+# 
+# http://rdf.webofcode.org/woc/line
+
+:line a owl:DatatypeProperty ;
+	rdfs:domain _:genid53 .
+
+_:genid53 a owl:Class ;
+	owl:unionOf _:genid55 .
+
+_:genid55 a rdf:List ;
+	rdf:first :Expression ;
+	rdf:rest _:genid54 .
+
+_:genid54 a rdf:List ;
+	rdf:first :Statement ;
+	rdf:rest rdf:nil .
+
+:line rdfs:range xsd:int ;
+	rdfs:comment "Links a statement to the line it starts in"@en ;
+	rdfs:label "line"@en .
+# 
+# http://rdf.webofcode.org/woc/name
+
+:name a owl:DatatypeProperty ;
+	rdfs:domain _:genid56 .
+
+_:genid56 a owl:Class ;
+	owl:unionOf _:genid59 .
+
+_:genid59 a rdf:List ;
+	rdf:first :CodeElement ;
+	rdf:rest _:genid58 .
+
+_:genid58 a rdf:List ;
+	rdf:first :JarFile ;
+	rdf:rest _:genid57 .
+
+_:genid57 a rdf:List ;
+	rdf:first :Project ;
+	rdf:rest rdf:nil .
+
+:name rdfs:range xsd:string ;
+	rdfs:comment "Links a element to its name"@en ;
+	rdfs:label "name"@en .
+# 
+# http://rdf.webofcode.org/woc/position
+
+:position a owl:DatatypeProperty ;
+	rdfs:domain :CodeElement ;
+	rdfs:range xsd:int ;
+	rdfs:comment "Links a element to its position"@en ;
+	rdfs:label "position"@en .
+# 
+# http://rdf.webofcode.org/woc/returnDescription
+
+:returnDescription a owl:DatatypeProperty ;
+	rdfs:subPropertyOf :comment ;
+	rdfs:domain :Method ;
+	rdfs:range xsd:string ;
+	rdfs:comment "Links a method to the description of the element it returns. In javadoc comments, this is specified with the \"@return\" tag"@en ;
+	rdfs:label "return description" .
+# 
+# http://rdf.webofcode.org/woc/sourceCode
+
+:sourceCode a owl:DatatypeProperty ;
+	rdfs:domain :CodeElement ;
+	rdfs:range xsd:string ;
+	rdfs:comment "Links a element to its source code"@en ;
+	rdfs:label "source code"@en .
+# 
+# http://rdf.webofcode.org/woc/targetedLabel
+
+:targetedLabel a owl:DatatypeProperty ;
+	rdfs:domain _:genid60 .
+
+_:genid60 a owl:Class ;
+	owl:unionOf _:genid62 .
+
+_:genid62 a rdf:List ;
+	rdf:first :BreakStatement ;
+	rdf:rest _:genid61 .
+
+_:genid61 a rdf:List ;
+	rdf:first :ContinueStatement ;
+	rdf:rest rdf:nil .
+
+:targetedLabel rdfs:range xsd:string ;
+	rdfs:comment "Links a break statement or a continue statement to the label it targets, if any"@en ;
+	rdfs:label "targeted label" .
+# 
+# 
+# 
+# #################################################################
+# #
+# #    Classes
+# #
+# #################################################################
+# 
+# 
+# http://rdf.webofcode.org/woc/ActualArgument
+
+:ActualArgument a owl:Class ;
+	rdfs:subClassOf :Expression , _:genid63 .
+
+_:genid63 a owl:Restriction ;
+	owl:onProperty :expression ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:ActualArgument rdfs:subClassOf _:genid64 .
+
+_:genid64 a owl:Restriction ;
+	owl:onProperty :position ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:int .
+
+:ActualArgument rdfs:comment "The actual argument of a method" ;
+	rdfs:label "Actual Argument" .
+# 
+# http://rdf.webofcode.org/woc/Annotation
+
+:Annotation a owl:Class ;
+	rdfs:subClassOf :Type ;
+	rdfs:comment "A annotation"@en ;
+	rdfs:label "Annotation"@en .
+# 
+# http://rdf.webofcode.org/woc/AnonymousClass
+
+:AnonymousClass a owl:Class ;
+	rdfs:subClassOf :Class ;
+	rdfs:comment "An anonymous class"@en ;
+	rdfs:label "Anonymous Class"@en .
+# 
+# http://rdf.webofcode.org/woc/Array
+
+:Array a owl:Class ;
+	rdfs:subClassOf :Type , _:genid65 .
+
+_:genid65 a owl:Restriction ;
+	owl:onProperty :arrayOf ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Type .
+
+:Array rdfs:subClassOf _:genid66 .
+
+_:genid66 a owl:Restriction ;
+	owl:onProperty :dimensions ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:int .
+
+:Array rdfs:comment "A array"@en ;
+	rdfs:label "Array"@en .
+# 
+# http://rdf.webofcode.org/woc/AssertStatement
+
+:AssertStatement a owl:Class ;
+	rdfs:subClassOf :Statement , _:genid67 .
+
+_:genid67 a owl:Restriction ;
+	owl:onProperty :assertExpression ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:AssertStatement rdfs:comment "A assert statement"@en ;
+	rdfs:label "Assert Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/AssignmentExpression
+
+:AssignmentExpression a owl:Class ;
+	rdfs:subClassOf :Expression , _:genid68 .
+
+_:genid68 a owl:Restriction ;
+	owl:onProperty :expression ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:AssignmentExpression rdfs:subClassOf _:genid69 .
+
+_:genid69 a owl:Restriction ;
+	owl:onProperty :leftHandSide ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:AssignmentExpression rdfs:comment """An assignment expression. It involves one of the following operators:
 =, *=, /=, %=, +=, -=, <<=, >>=, >>>=, &=, ^=, |="""@en ;
-                      rdfs:label "Assignment Expression" .
+	rdfs:label "Assignment Expression" .
+# 
+# http://rdf.webofcode.org/woc/BlockStatement
 
+:BlockStatement a owl:Class ;
+	rdfs:subClassOf :Statement ;
+	rdfs:comment "A block"@en ;
+	rdfs:label "Block Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/BranchingStatement
 
-###  http://rdf.webofcode.org/woc/BlockStatement
-:BlockStatement rdf:type owl:Class ;
-                rdfs:subClassOf :Statement ;
-                rdfs:comment "A block"@en ;
-                rdfs:label "Block Statement"@en .
+:BranchingStatement a owl:Class ;
+	rdfs:subClassOf :ControlFlowStatement ;
+	rdfs:comment "A branching statement is either a break statement, a continue statement or a return statement"@en ;
+	rdfs:label "Branching Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/BreakStatement
 
+:BreakStatement a owl:Class ;
+	rdfs:subClassOf :BranchingStatement ;
+	rdfs:comment "This class defines a break statement. The break statement has two forms: labeled and unlabeled. In case a break statement is labeled, the label is defined through the targetedLabel property"@en ;
+	rdfs:label "Break Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/CaseLabel
 
-###  http://rdf.webofcode.org/woc/BranchingStatement
-:BranchingStatement rdf:type owl:Class ;
-                    rdfs:subClassOf :ControlFlowStatement ;
-                    rdfs:comment "A branching statement is either a break statement, a continue statement or a return statement"@en ;
-                    rdfs:label "Branching Statement"@en .
+:CaseLabel a owl:Class ;
+	rdfs:subClassOf :Label , _:genid70 .
 
+_:genid70 a owl:Restriction ;
+	owl:onProperty :expression ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
 
-###  http://rdf.webofcode.org/woc/BreakStatement
-:BreakStatement rdf:type owl:Class ;
-                rdfs:subClassOf :BranchingStatement ;
-                rdfs:comment "This class defines a break statement. The break statement has two forms: labeled and unlabeled. In case a break statement is labeled, the label is defined through the targetedLabel property"@en ;
-                rdfs:label "Break Statement"@en .
+:CaseLabel rdfs:comment "A case-labeled list of statements"@en ;
+	rdfs:label "Case Label"@en .
+# 
+# http://rdf.webofcode.org/woc/CatchClause
 
+:CatchClause a owl:Class ;
+	rdfs:subClassOf :Clause , _:genid71 .
 
-###  http://rdf.webofcode.org/woc/CaseLabel
-:CaseLabel rdf:type owl:Class ;
-           rdfs:subClassOf :Label ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty :expression ;
-                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                             owl:onClass :Expression
-                           ] ;
-           rdfs:comment "A case-labeled list of statements"@en ;
-           rdfs:label "Case Label"@en .
+_:genid71 a owl:Restriction ;
+	owl:onProperty :catchFormalParameter ;
+	owl:someValuesFrom :Class .
 
+:CatchClause owl:disjointWith :FinallyClause ;
+	rdfs:comment "This class defines a catch clause"@en ;
+	rdfs:label "Catch clause"@en .
+# 
+# http://rdf.webofcode.org/woc/Class
 
-###  http://rdf.webofcode.org/woc/CatchClause
-:CatchClause rdf:type owl:Class ;
-             rdfs:subClassOf :Clause ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :catchFormalParameter ;
-                               owl:someValuesFrom :Class
-                             ] ;
-             rdfs:comment "This class defines a catch clause"@en ;
-             rdfs:label "Catch clause"@en .
+:Class a owl:Class ;
+	rdfs:subClassOf :Type , _:genid72 .
 
+_:genid72 a owl:Restriction ;
+	owl:onProperty :declaration ;
+	owl:allValuesFrom :ClassDeclarationStatement .
 
-###  http://rdf.webofcode.org/woc/Class
-:Class rdf:type owl:Class ;
-       rdfs:subClassOf :Type ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :declaration ;
-                         owl:allValuesFrom :ClassDeclarationStatement
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :extends ;
-                         owl:allValuesFrom :Class
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :implements ;
-                         owl:allValuesFrom :Interface
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :extends ;
-                         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                         owl:onClass :Class
-                       ] ;
-       rdfs:comment "A class"@en ;
-       rdfs:label "Class"@en .
+:Class rdfs:subClassOf _:genid73 .
 
+_:genid73 a owl:Restriction ;
+	owl:onProperty :extends ;
+	owl:allValuesFrom :Class .
 
-###  http://rdf.webofcode.org/woc/ClassDeclarationStatement
-:ClassDeclarationStatement rdf:type owl:Class ;
-                           rdfs:subClassOf :DeclarationStatement ;
-                           rdfs:comment "A statement that corresponds to the declaration of a local class"@en ;
-                           rdfs:label "Class Declaration Statement"@en .
+:Class rdfs:subClassOf _:genid74 .
 
+_:genid74 a owl:Restriction ;
+	owl:onProperty :implements ;
+	owl:allValuesFrom :Interface .
 
-###  http://rdf.webofcode.org/woc/ClassInstanceCreationExpression
-:ClassInstanceCreationExpression rdf:type owl:Class ;
-                                 rdfs:subClassOf :ExecutableInvocationExpression ;
-                                 rdfs:comment "An expression that creates a class instance, in other words a constructor call"@en ;
-                                 rdfs:label "Class Instance Creation Expression"@en .
+:Class rdfs:subClassOf _:genid75 .
 
+_:genid75 a owl:Restriction ;
+	owl:onProperty :extends ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Class .
 
-###  http://rdf.webofcode.org/woc/Clause
-:Clause rdf:type owl:Class ;
-        rdfs:subClassOf :BlockStatement ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :statement ;
-                          owl:allValuesFrom :Statement
-                        ] ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :endLine ;
-                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                          owl:onDataRange xsd:int
-                        ] ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :line ;
-                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                          owl:onDataRange xsd:int
-                        ] ;
-        rdfs:comment "This class defines a clause"@en ;
-        rdfs:label "Clause"@en .
+:Class rdfs:comment "A class"@en ;
+	rdfs:label "Class"@en .
+# 
+# http://rdf.webofcode.org/woc/ClassDeclarationStatement
 
+:ClassDeclarationStatement a owl:Class ;
+	rdfs:subClassOf :DeclarationStatement ;
+	owl:disjointWith :VariableDeclaration ;
+	rdfs:comment "A statement that corresponds to the declaration of a local class"@en ;
+	rdfs:label "Class Declaration Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/ClassInstanceCreationExpression
 
-###  http://rdf.webofcode.org/woc/CodeElement
-:CodeElement rdf:type owl:Class ;
-             rdfs:subClassOf owl:Thing ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :name ;
-                               owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                               owl:onDataRange xsd:string
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :sourceCode ;
-                               owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                               owl:onDataRange xsd:string
-                             ] ;
-             rdfs:comment "This class defines a generic element in source code"@en ;
-             rdfs:label "Code Element"@en .
+:ClassInstanceCreationExpression a owl:Class ;
+	rdfs:subClassOf :ExecutableInvocationExpression ;
+	owl:disjointWith :MethodInvocationExpression ;
+	rdfs:comment "An expression that creates a class instance, in other words a constructor call"@en ;
+	rdfs:label "Class Instance Creation Expression"@en .
+# 
+# http://rdf.webofcode.org/woc/Clause
 
+:Clause a owl:Class ;
+	rdfs:subClassOf :BlockStatement , _:genid76 .
 
-###  http://rdf.webofcode.org/woc/Constructor
-:Constructor rdf:type owl:Class ;
-             rdfs:subClassOf :Executable ;
-             rdfs:comment "This class defines a constructor of a Class"@en ;
-             rdfs:label "Constructor"@en .
+_:genid76 a owl:Restriction ;
+	owl:onProperty :statement ;
+	owl:allValuesFrom :Statement .
 
+:Clause rdfs:subClassOf _:genid77 .
 
-###  http://rdf.webofcode.org/woc/ContinueStatement
-:ContinueStatement rdf:type owl:Class ;
-                   rdfs:subClassOf :BranchingStatement ;
-                   rdfs:comment "A continue statement."@en ;
-                   rdfs:label "Continue Statement"@en .
+_:genid77 a owl:Restriction ;
+	owl:onProperty :endLine ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:int .
 
+:Clause rdfs:subClassOf _:genid78 .
 
-###  http://rdf.webofcode.org/woc/ControlFlowStatement
-:ControlFlowStatement rdf:type owl:Class ;
-                      rdfs:subClassOf :Statement ;
-                      rdfs:comment """Control flow statements regulate the order in which statements get executed.
+_:genid78 a owl:Restriction ;
+	owl:onProperty :line ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:int .
+
+:Clause owl:disjointWith :Label ;
+	rdfs:comment "This class defines a clause"@en ;
+	rdfs:label "Clause"@en .
+# 
+# http://rdf.webofcode.org/woc/CodeElement
+
+:CodeElement a owl:Class ;
+	rdfs:subClassOf owl:Thing , _:genid79 .
+
+_:genid79 a owl:Restriction ;
+	owl:onProperty :name ;
+	owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:string .
+
+:CodeElement rdfs:subClassOf _:genid80 .
+
+_:genid80 a owl:Restriction ;
+	owl:onProperty :sourceCode ;
+	owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:string .
+
+:CodeElement rdfs:comment "This class defines a generic element in source code"@en ;
+	rdfs:label "Code Element"@en .
+# 
+# http://rdf.webofcode.org/woc/Constructor
+
+:Constructor a owl:Class ;
+	rdfs:subClassOf :Executable ;
+	owl:disjointWith :Method ;
+	rdfs:comment "This class defines a constructor of a Class"@en ;
+	rdfs:label "Constructor"@en .
+# 
+# http://rdf.webofcode.org/woc/ContinueStatement
+
+:ContinueStatement a owl:Class ;
+	rdfs:subClassOf :BranchingStatement ;
+	rdfs:comment "A continue statement."@en ;
+	rdfs:label "Continue Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/ControlFlowStatement
+
+:ControlFlowStatement a owl:Class ;
+	rdfs:subClassOf :Statement ;
+	rdfs:comment """Control flow statements regulate the order in which statements get executed.
 They break up the flow of execution by employing decision making, looping, or branching."""@en ;
-                      rdfs:label "Control Flow Statement"@en .
-
-
-###  http://rdf.webofcode.org/woc/DecisionMakingStatement
-:DecisionMakingStatement rdf:type owl:Class ;
-                         rdfs:subClassOf :ControlFlowStatement ;
-                         rdfs:comment "A Decision Making Statement is a statement that break up the flow of execution by employing decision making. It must either be a if-then-else statement or a switch statement"@en ;
-                         rdfs:label "Decision Making Statement"@en .
-
-
-###  http://rdf.webofcode.org/woc/DeclarationStatement
-:DeclarationStatement rdf:type owl:Class ;
-                      rdfs:subClassOf :Statement ;
-                      rdfs:comment "A statement that holds a declaration"@en ;
-                      rdfs:label "Declaration statement"@en .
-
-
-###  http://rdf.webofcode.org/woc/DefaultLabel
-:DefaultLabel rdf:type owl:Class ;
-              rdfs:subClassOf :Label ;
-              rdfs:comment "A default-labeled list of statements"@en ;
-              rdfs:label "Default Label"@en .
-
-
-###  http://rdf.webofcode.org/woc/DoStatement
-:DoStatement rdf:type owl:Class ;
-             rdfs:subClassOf :LoopStatement ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :condition ;
-                               owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                               owl:onClass :Expression
-                             ] ;
-             rdfs:comment "A do-while statement"@en ;
-             rdfs:label "Do Statement"@en .
-
-
-###  http://rdf.webofcode.org/woc/Enum
-:Enum rdf:type owl:Class ;
-      rdfs:subClassOf :Type ;
-      rdfs:comment "A enumeration"@en ;
-      rdfs:label "Enum"@en .
-
-
-###  http://rdf.webofcode.org/woc/Executable
-:Executable rdf:type owl:Class ;
-            rdfs:subClassOf :CodeElement ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :modifier ;
-                              owl:someValuesFrom :Modifier
-                            ] ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :declaredBy ;
-                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                              owl:onClass [ rdf:type owl:Class ;
-                                            owl:unionOf ( :Class
-                                                          :Enum
-                                                          :Interface
-                                                        )
-                                          ]
-                            ] ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :body ;
-                              owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                              owl:onClass :BlockStatement
-                            ] ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :isVarArgs ;
-                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                              owl:onDataRange xsd:boolean
-                            ] ;
-            rdfs:comment "This class defines an executable block of code, namely a Method or a Constructor"@en ;
-            rdfs:label "Executable"@en .
-
-
-###  http://rdf.webofcode.org/woc/ExecutableInvocationExpression
-:ExecutableInvocationExpression rdf:type owl:Class ;
-                                rdfs:subClassOf :Expression ,
-                                                [ rdf:type owl:Restriction ;
-                                                  owl:onProperty :invokes ;
-                                                  owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                                  owl:onClass :Executable
-                                                ] ;
-                                rdfs:comment "This expression defines the invocation of either a method or a constructor."@en ;
-                                rdfs:label "Executable invocation expression"@en .
-
-
-###  http://rdf.webofcode.org/woc/Expression
-:Expression rdf:type owl:Class ;
-            rdfs:subClassOf :CodeElement ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :type ;
-                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                              owl:onClass :Type
-                            ] ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :line ;
-                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                              owl:onDataRange xsd:int
-                            ] ;
-            rdfs:comment "A generic expression" ;
-            rdfs:label "Expression" .
-
-
-###  http://rdf.webofcode.org/woc/ExpressionStatement
-:ExpressionStatement rdf:type owl:Class ;
-                     rdfs:subClassOf :Statement ,
-                                     [ rdf:type owl:Restriction ;
-                                       owl:onProperty :expression ;
-                                       owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                       owl:onClass :Expression
-                                     ] ;
-                     rdfs:comment "A statement some expressions can be made into by terminating the expression with a semicolon."@en ;
-                     rdfs:label "Expression statement"@en .
-
-
-###  http://rdf.webofcode.org/woc/Field
-:Field rdf:type owl:Class ;
-       rdfs:subClassOf :Variable ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :declaration ;
-                         owl:allValuesFrom :FieldDeclaration
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :declaredBy ;
-                         owl:allValuesFrom [ rdf:type owl:Class ;
-                                             owl:unionOf ( :Class
-                                                           :Enum
-                                                           :Interface
-                                                         )
-                                           ]
-                       ] ;
-       rdfs:comment "A class field"@en ;
-       rdfs:label "Field"@en .
-
-
-###  http://rdf.webofcode.org/woc/FieldDeclaration
-:FieldDeclaration rdf:type owl:Class ;
-                  rdfs:subClassOf :VariableDeclaration ;
-                  rdfs:comment "The declaration of a field"@en ;
-                  rdfs:label "Field Declaration"@en .
-
-
-###  http://rdf.webofcode.org/woc/FinallyClause
-:FinallyClause rdf:type owl:Class ;
-               rdfs:subClassOf :Clause ;
-               rdfs:comment "This class defines a finally clause"@en ;
-               rdfs:label "Finally clause"@en .
-
-
-###  http://rdf.webofcode.org/woc/ForEachStatement
-:ForEachStatement rdf:type owl:Class ;
-                  rdfs:subClassOf :LoopStatement ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty :expression ;
-                                    owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                    owl:onClass :Expression
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty :variable ;
-                                    owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                    owl:onClass :Variable
-                                  ] ;
-                  rdfs:comment "A for-each statement, also known as enhanced for statement"@en ;
-                  rdfs:label "ForEach Statement"@en .
-
-
-###  http://rdf.webofcode.org/woc/ForStatement
-:ForStatement rdf:type owl:Class ;
-              rdfs:subClassOf :LoopStatement ,
-                              [ rdf:type owl:Restriction ;
-                                owl:onProperty :condition ;
-                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                owl:onClass :Expression
-                              ] ;
-              rdfs:comment "A for statement"@en ;
-              rdfs:label "For Statement"@en .
-
-
-###  http://rdf.webofcode.org/woc/GradleProject
-:GradleProject rdf:type owl:Class ;
-               rdfs:subClassOf :Project ;
-               rdfs:comment "A gradle project"@en ;
-               rdfs:label "Gradle Project"@en .
-
-
-###  http://rdf.webofcode.org/woc/IfThenElseStatement
-:IfThenElseStatement rdf:type owl:Class ;
-                     rdfs:subClassOf :DecisionMakingStatement ,
-                                     [ rdf:type owl:Restriction ;
-                                       owl:onProperty :condition ;
-                                       owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                       owl:onClass :Expression
-                                     ] ,
-                                     [ rdf:type owl:Restriction ;
-                                       owl:onProperty :then ;
-                                       owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                       owl:onClass :Statement
-                                     ] ;
-                     rdfs:comment "A If-then-else statement"@en ;
-                     rdfs:label "If-then-else statement"@en .
-
-
-###  http://rdf.webofcode.org/woc/Interface
-:Interface rdf:type owl:Class ;
-           rdfs:subClassOf :Type ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty :extends ;
-                             owl:allValuesFrom :Interface
-                           ] ;
-           rdfs:comment "An interface"@en ;
-           rdfs:label "Interface"@en .
-
-
-###  http://rdf.webofcode.org/woc/JarFile
-:JarFile rdf:type owl:Class ;
-         rdfs:subClassOf [ rdf:type owl:Restriction ;
-                           owl:onProperty :name ;
-                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                           owl:onDataRange xsd:string
-                         ] ;
-         rdfs:comment "A jar file"@en ;
-         rdfs:label "Jar File"@en .
-
-
-###  http://rdf.webofcode.org/woc/Label
-:Label rdf:type owl:Class ;
-       rdfs:subClassOf :BlockStatement ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :next ;
-                         owl:allValuesFrom :Label
-                       ] ;
-       rdfs:comment "This class defines a switch label"@en ;
-       rdfs:label "Label"@en .
-
-
-###  http://rdf.webofcode.org/woc/LocalVariable
-:LocalVariable rdf:type owl:Class ;
-               rdfs:subClassOf :Variable ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :declaredBy ;
-                                 owl:allValuesFrom :Executable
-                               ] ;
-               rdfs:comment "A local variable"@en ;
-               rdfs:label "Local Variable"@en .
-
-
-###  http://rdf.webofcode.org/woc/LocalVariableDeclarationStatement
-:LocalVariableDeclarationStatement rdf:type owl:Class ;
-                                   rdfs:subClassOf :VariableDeclaration ;
-                                   rdfs:comment "A local variable declaration"@en ;
-                                   rdfs:label "Local Variable Declaration Statement"@en .
-
-
-###  http://rdf.webofcode.org/woc/LoopStatement
-:LoopStatement rdf:type owl:Class ;
-               rdfs:subClassOf :ControlFlowStatement ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :body ;
-                                 owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                 owl:onClass :BlockStatement
-                               ] ;
-               rdfs:comment "A loop statement."@en ;
-               rdfs:label "Loop Statement"@en .
-
-
-###  http://rdf.webofcode.org/woc/MavenProject
-:MavenProject rdf:type owl:Class ;
-              rdfs:subClassOf :Project ;
-              rdfs:comment "A maven project"@en ;
-              rdfs:label "Maven Project"@en .
-
-
-###  http://rdf.webofcode.org/woc/Method
-:Method rdf:type owl:Class ;
-        rdfs:subClassOf :Executable ;
-        rdfs:comment "This class defines a Method"@en ;
-        rdfs:label "Method"@en .
-
-
-###  http://rdf.webofcode.org/woc/MethodInvocationExpression
-:MethodInvocationExpression rdf:type owl:Class ;
-                            rdfs:subClassOf :ExecutableInvocationExpression ;
-                            rdfs:comment "This expression defines a method call"@en ;
-                            rdfs:label "Method Invocation Expression"@en .
-
-
-###  http://rdf.webofcode.org/woc/Modifier
-:Modifier rdf:type owl:Class ;
-          rdfs:subClassOf :CodeElement ;
-          rdfs:comment "A modifier"@en ;
-          rdfs:label "Modifier"@en .
-
-
-###  http://rdf.webofcode.org/woc/Package
-:Package rdf:type owl:Class ;
-         rdfs:subClassOf :CodeElement ;
-         rdfs:comment "A Package"@en ;
-         rdfs:label "Package"@en .
-
-
-###  http://rdf.webofcode.org/woc/Parameter
-:Parameter rdf:type owl:Class ;
-           rdfs:subClassOf :Variable ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty :position ;
-                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                             owl:onDataRange xsd:int
-                           ] ;
-           rdfs:comment "A formal parameter"@en ;
-           rdfs:label "Parameter"@en .
-
-
-###  http://rdf.webofcode.org/woc/ParameterizedType
-:ParameterizedType rdf:type owl:Class ;
-                   rdfs:subClassOf :Type ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty :actualTypeArgument ;
-                                     owl:someValuesFrom :Type
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty :genericType ;
-                                     owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                     owl:onClass [ rdf:type owl:Class ;
-                                                   owl:unionOf ( :Class
-                                                                 :Enum
-                                                                 :Interface
-                                                               )
-                                                 ]
-                                   ] ;
-                   rdfs:comment "A parameterized type is a particular parameterization of a generic type denoted by a specified list of type arguments"@en ;
-                   rdfs:label "Parameterized Type" .
-
-
-###  http://rdf.webofcode.org/woc/PrimitiveType
-:PrimitiveType rdf:type owl:Class ;
-               rdfs:subClassOf :Type ;
-               rdfs:comment "A primitive type" ;
-               rdfs:label "Primitive Type" .
-
-
-###  http://rdf.webofcode.org/woc/Project
-:Project rdf:type owl:Class ;
-         rdfs:comment "A project"@en ;
-         rdfs:label "Project"@en .
-
-
-###  http://rdf.webofcode.org/woc/ReturnStatement
-:ReturnStatement rdf:type owl:Class ;
-                 rdfs:subClassOf :BranchingStatement ;
-                 rdfs:comment "A return statement"@en ;
-                 rdfs:label "Return Statement"@en .
-
-
-###  http://rdf.webofcode.org/woc/Statement
-:Statement rdf:type owl:Class ;
-           rdfs:subClassOf :CodeElement ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty :line ;
-                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                             owl:onDataRange xsd:int
-                           ] ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty :position ;
-                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                             owl:onDataRange xsd:int
-                           ] ;
-           rdfs:comment "A generic statement" ;
-           rdfs:label "Statement" .
-
-
-###  http://rdf.webofcode.org/woc/SwitchStatement
-:SwitchStatement rdf:type owl:Class ;
-                 rdfs:subClassOf :DecisionMakingStatement ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty :expression ;
-                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                   owl:onClass :Expression
-                                 ] ;
-                 rdfs:comment "A switch statement"@en ;
-                 rdfs:label "Switch Statement"@en .
-
-
-###  http://rdf.webofcode.org/woc/SynchronizedStatement
-:SynchronizedStatement rdf:type owl:Class ;
-                       rdfs:subClassOf :Statement ;
-                       rdfs:comment """A synchronized statement, that is a statement that acquires a mutual-exclusion lock on behalf of the executiing-thread, executes a block, then release the lock.
+	rdfs:label "Control Flow Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/DecisionMakingStatement
+
+:DecisionMakingStatement a owl:Class ;
+	rdfs:subClassOf :ControlFlowStatement ;
+	rdfs:comment "A Decision Making Statement is a statement that break up the flow of execution by employing decision making. It must either be a if-then-else statement or a switch statement"@en ;
+	rdfs:label "Decision Making Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/DeclarationStatement
+
+:DeclarationStatement a owl:Class ;
+	rdfs:subClassOf :Statement ;
+	rdfs:comment "A statement that holds a declaration"@en ;
+	rdfs:label "Declaration statement"@en .
+# 
+# http://rdf.webofcode.org/woc/DefaultLabel
+
+:DefaultLabel a owl:Class ;
+	rdfs:subClassOf :Label ;
+	rdfs:comment "A default-labeled list of statements"@en ;
+	rdfs:label "Default Label"@en .
+# 
+# http://rdf.webofcode.org/woc/DoStatement
+
+:DoStatement a owl:Class ;
+	rdfs:subClassOf :LoopStatement , _:genid81 .
+
+_:genid81 a owl:Restriction ;
+	owl:onProperty :condition ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:DoStatement rdfs:comment "A do-while statement"@en ;
+	rdfs:label "Do Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/Enum
+
+:Enum a owl:Class ;
+	rdfs:subClassOf :Type ;
+	rdfs:comment "A enumeration"@en ;
+	rdfs:label "Enum"@en .
+# 
+# http://rdf.webofcode.org/woc/Executable
+
+:Executable a owl:Class ;
+	rdfs:subClassOf :CodeElement , _:genid82 .
+
+_:genid82 a owl:Restriction ;
+	owl:onProperty :modifier ;
+	owl:someValuesFrom :Modifier .
+
+:Executable rdfs:subClassOf _:genid83 .
+
+_:genid83 a owl:Restriction ;
+	owl:onProperty :declaredBy ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass _:genid84 .
+
+_:genid84 a owl:Class ;
+	owl:unionOf _:genid87 .
+
+_:genid87 a rdf:List ;
+	rdf:first :Class ;
+	rdf:rest _:genid86 .
+
+_:genid86 a rdf:List ;
+	rdf:first :Enum ;
+	rdf:rest _:genid85 .
+
+_:genid85 a rdf:List ;
+	rdf:first :Interface ;
+	rdf:rest rdf:nil .
+
+:Executable rdfs:subClassOf _:genid88 .
+
+_:genid88 a owl:Restriction ;
+	owl:onProperty :body ;
+	owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :BlockStatement .
+
+:Executable rdfs:subClassOf _:genid89 .
+
+_:genid89 a owl:Restriction ;
+	owl:onProperty :isVarArgs ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:boolean .
+
+:Executable rdfs:comment "This class defines an executable block of code, namely a Method or a Constructor"@en ;
+	rdfs:label "Executable"@en .
+# 
+# http://rdf.webofcode.org/woc/ExecutableInvocationExpression
+
+:ExecutableInvocationExpression a owl:Class ;
+	rdfs:subClassOf :Expression , _:genid90 .
+
+_:genid90 a owl:Restriction ;
+	owl:onProperty :invokes ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Executable .
+
+:ExecutableInvocationExpression rdfs:comment "This expression defines the invocation of either a method or a constructor."@en ;
+	rdfs:label "Executable invocation expression"@en .
+# 
+# http://rdf.webofcode.org/woc/Expression
+
+:Expression a owl:Class ;
+	rdfs:subClassOf :CodeElement , _:genid91 .
+
+_:genid91 a owl:Restriction ;
+	owl:onProperty :type ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Type .
+
+:Expression rdfs:subClassOf _:genid92 .
+
+_:genid92 a owl:Restriction ;
+	owl:onProperty :line ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:int .
+
+:Expression rdfs:comment "A generic expression" ;
+	rdfs:label "Expression" .
+# 
+# http://rdf.webofcode.org/woc/ExpressionStatement
+
+:ExpressionStatement a owl:Class ;
+	rdfs:subClassOf :Statement , _:genid93 .
+
+_:genid93 a owl:Restriction ;
+	owl:onProperty :expression ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:ExpressionStatement rdfs:comment "A statement some expressions can be made into by terminating the expression with a semicolon."@en ;
+	rdfs:label "Expression statement"@en .
+# 
+# http://rdf.webofcode.org/woc/Field
+
+:Field a owl:Class ;
+	rdfs:subClassOf :Variable , _:genid94 .
+
+_:genid94 a owl:Restriction ;
+	owl:onProperty :declaration ;
+	owl:allValuesFrom :FieldDeclaration .
+
+:Field rdfs:subClassOf _:genid95 .
+
+_:genid95 a owl:Restriction ;
+	owl:onProperty :declaredBy ;
+	owl:allValuesFrom _:genid96 .
+
+_:genid96 a owl:Class ;
+	owl:unionOf _:genid99 .
+
+_:genid99 a rdf:List ;
+	rdf:first :Class ;
+	rdf:rest _:genid98 .
+
+_:genid98 a rdf:List ;
+	rdf:first :Enum ;
+	rdf:rest _:genid97 .
+
+_:genid97 a rdf:List ;
+	rdf:first :Interface ;
+	rdf:rest rdf:nil .
+
+:Field rdfs:comment "A class field"@en ;
+	rdfs:label "Field"@en .
+# 
+# http://rdf.webofcode.org/woc/FieldDeclaration
+
+:FieldDeclaration a owl:Class ;
+	rdfs:subClassOf :VariableDeclaration ;
+	owl:disjointWith :LocalVariableDeclarationStatement ;
+	rdfs:comment "The declaration of a field"@en ;
+	rdfs:label "Field Declaration"@en .
+# 
+# http://rdf.webofcode.org/woc/FinallyClause
+
+:FinallyClause a owl:Class ;
+	rdfs:subClassOf :Clause ;
+	rdfs:comment "This class defines a finally clause"@en ;
+	rdfs:label "Finally clause"@en .
+# 
+# http://rdf.webofcode.org/woc/ForEachStatement
+
+:ForEachStatement a owl:Class ;
+	rdfs:subClassOf :LoopStatement , _:genid100 .
+
+_:genid100 a owl:Restriction ;
+	owl:onProperty :expression ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:ForEachStatement rdfs:subClassOf _:genid101 .
+
+_:genid101 a owl:Restriction ;
+	owl:onProperty :variable ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Variable .
+
+:ForEachStatement rdfs:comment "A for-each statement, also known as enhanced for statement"@en ;
+	rdfs:label "ForEach Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/ForStatement
+
+:ForStatement a owl:Class ;
+	rdfs:subClassOf :LoopStatement , _:genid102 .
+
+_:genid102 a owl:Restriction ;
+	owl:onProperty :condition ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:ForStatement rdfs:comment "A for statement"@en ;
+	rdfs:label "For Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/GradleProject
+
+:GradleProject a owl:Class ;
+	rdfs:subClassOf :Project ;
+	rdfs:comment "A gradle project"@en ;
+	rdfs:label "Gradle Project"@en .
+# 
+# http://rdf.webofcode.org/woc/IfThenElseStatement
+
+:IfThenElseStatement a owl:Class ;
+	rdfs:subClassOf :DecisionMakingStatement , _:genid103 .
+
+_:genid103 a owl:Restriction ;
+	owl:onProperty :condition ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:IfThenElseStatement rdfs:subClassOf _:genid104 .
+
+_:genid104 a owl:Restriction ;
+	owl:onProperty :then ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Statement .
+
+:IfThenElseStatement owl:disjointWith :SwitchStatement ;
+	rdfs:comment "A If-then-else statement"@en ;
+	rdfs:label "If-then-else statement"@en .
+# 
+# http://rdf.webofcode.org/woc/Interface
+
+:Interface a owl:Class ;
+	rdfs:subClassOf :Type , _:genid105 .
+
+_:genid105 a owl:Restriction ;
+	owl:onProperty :extends ;
+	owl:allValuesFrom :Interface .
+
+:Interface rdfs:comment "An interface"@en ;
+	rdfs:label "Interface"@en .
+# 
+# http://rdf.webofcode.org/woc/JarFile
+
+:JarFile a owl:Class ;
+	rdfs:subClassOf _:genid106 .
+
+_:genid106 a owl:Restriction ;
+	owl:onProperty :name ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:string .
+
+:JarFile rdfs:comment "A jar file"@en ;
+	rdfs:label "Jar File"@en .
+# 
+# http://rdf.webofcode.org/woc/Label
+
+:Label a owl:Class ;
+	rdfs:subClassOf :BlockStatement , _:genid107 .
+
+_:genid107 a owl:Restriction ;
+	owl:onProperty :next ;
+	owl:allValuesFrom :Label .
+
+:Label rdfs:comment "This class defines a switch label"@en ;
+	rdfs:label "Label"@en .
+# 
+# http://rdf.webofcode.org/woc/LocalVariable
+
+:LocalVariable a owl:Class ;
+	rdfs:subClassOf :Variable , _:genid108 .
+
+_:genid108 a owl:Restriction ;
+	owl:onProperty :declaredBy ;
+	owl:allValuesFrom :Executable .
+
+:LocalVariable rdfs:comment "A local variable"@en ;
+	rdfs:label "Local Variable"@en .
+# 
+# http://rdf.webofcode.org/woc/LocalVariableDeclarationStatement
+
+:LocalVariableDeclarationStatement a owl:Class ;
+	rdfs:subClassOf :VariableDeclaration ;
+	rdfs:comment "A local variable declaration"@en ;
+	rdfs:label "Local Variable Declaration Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/LoopStatement
+
+:LoopStatement a owl:Class ;
+	rdfs:subClassOf :ControlFlowStatement , _:genid109 .
+
+_:genid109 a owl:Restriction ;
+	owl:onProperty :body ;
+	owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :BlockStatement .
+
+:LoopStatement rdfs:comment "A loop statement."@en ;
+	rdfs:label "Loop Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/MavenProject
+
+:MavenProject a owl:Class ;
+	rdfs:subClassOf :Project ;
+	rdfs:comment "A maven project"@en ;
+	rdfs:label "Maven Project"@en .
+# 
+# http://rdf.webofcode.org/woc/Method
+
+:Method a owl:Class ;
+	rdfs:subClassOf :Executable ;
+	rdfs:comment "This class defines a Method"@en ;
+	rdfs:label "Method"@en .
+# 
+# http://rdf.webofcode.org/woc/MethodInvocationExpression
+
+:MethodInvocationExpression a owl:Class ;
+	rdfs:subClassOf :ExecutableInvocationExpression ;
+	rdfs:comment "This expression defines a method call"@en ;
+	rdfs:label "Method Invocation Expression"@en .
+# 
+# http://rdf.webofcode.org/woc/Modifier
+
+:Modifier a owl:Class ;
+	rdfs:subClassOf :CodeElement ;
+	rdfs:comment "A modifier"@en ;
+	rdfs:label "Modifier"@en .
+# 
+# http://rdf.webofcode.org/woc/Package
+
+:Package a owl:Class ;
+	rdfs:subClassOf :CodeElement ;
+	rdfs:comment "A Package"@en ;
+	rdfs:label "Package"@en .
+# 
+# http://rdf.webofcode.org/woc/Parameter
+
+:Parameter a owl:Class ;
+	rdfs:subClassOf :Variable , _:genid110 .
+
+_:genid110 a owl:Restriction ;
+	owl:onProperty :position ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:int .
+
+:Parameter rdfs:comment "A formal parameter"@en ;
+	rdfs:label "Parameter"@en .
+# 
+# http://rdf.webofcode.org/woc/ParameterizedType
+
+:ParameterizedType a owl:Class ;
+	rdfs:subClassOf :Type , _:genid111 .
+
+_:genid111 a owl:Restriction ;
+	owl:onProperty :actualTypeArgument ;
+	owl:someValuesFrom :Type .
+
+:ParameterizedType rdfs:subClassOf _:genid112 .
+
+_:genid112 a owl:Restriction ;
+	owl:onProperty :genericType ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass _:genid113 .
+
+_:genid113 a owl:Class ;
+	owl:unionOf _:genid116 .
+
+_:genid116 a rdf:List ;
+	rdf:first :Class ;
+	rdf:rest _:genid115 .
+
+_:genid115 a rdf:List ;
+	rdf:first :Enum ;
+	rdf:rest _:genid114 .
+
+_:genid114 a rdf:List ;
+	rdf:first :Interface ;
+	rdf:rest rdf:nil .
+
+:ParameterizedType rdfs:comment "A parameterized type is a particular parameterization of a generic type denoted by a specified list of type arguments"@en ;
+	rdfs:label "Parameterized Type" .
+# 
+# http://rdf.webofcode.org/woc/PrimitiveType
+
+:PrimitiveType a owl:Class ;
+	rdfs:subClassOf :Type ;
+	rdfs:comment "A primitive type" ;
+	rdfs:label "Primitive Type" .
+# 
+# http://rdf.webofcode.org/woc/Project
+
+:Project a owl:Class ;
+	rdfs:comment "A project"@en ;
+	rdfs:label "Project"@en .
+# 
+# http://rdf.webofcode.org/woc/ReturnStatement
+
+:ReturnStatement a owl:Class ;
+	rdfs:subClassOf :BranchingStatement ;
+	rdfs:comment "A return statement"@en ;
+	rdfs:label "Return Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/Statement
+
+:Statement a owl:Class ;
+	rdfs:subClassOf :CodeElement , _:genid117 .
+
+_:genid117 a owl:Restriction ;
+	owl:onProperty :line ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:int .
+
+:Statement rdfs:subClassOf _:genid118 .
+
+_:genid118 a owl:Restriction ;
+	owl:onProperty :position ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:int .
+
+:Statement rdfs:comment "A generic statement" ;
+	rdfs:label "Statement" .
+# 
+# http://rdf.webofcode.org/woc/SwitchStatement
+
+:SwitchStatement a owl:Class ;
+	rdfs:subClassOf :DecisionMakingStatement , _:genid119 .
+
+_:genid119 a owl:Restriction ;
+	owl:onProperty :expression ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
+
+:SwitchStatement rdfs:comment "A switch statement"@en ;
+	rdfs:label "Switch Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/SynchronizedStatement
+
+:SynchronizedStatement a owl:Class ;
+	rdfs:subClassOf :Statement ;
+	rdfs:comment """A synchronized statement, that is a statement that acquires a mutual-exclusion lock on behalf of the executiing-thread, executes a block, then release the lock.
 In java it is of the form:
 synchronized <Expression> <Block>"""@en ;
-                       rdfs:label "Synchronized Statement"@en .
+	rdfs:label "Synchronized Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/ThrowStatement
 
+:ThrowStatement a owl:Class ;
+	rdfs:subClassOf :Statement , _:genid120 .
 
-###  http://rdf.webofcode.org/woc/ThrowStatement
-:ThrowStatement rdf:type owl:Class ;
-                rdfs:subClassOf :Statement ,
-                                [ rdf:type owl:Restriction ;
-                                  owl:onProperty :thrownExpression ;
-                                  owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                  owl:onClass :Expression
-                                ] ;
-                rdfs:comment "A throw statement, that is a statement that causes an exception to be thrown"@en ;
-                rdfs:label "Throw Statement"@en .
+_:genid120 a owl:Restriction ;
+	owl:onProperty :thrownExpression ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
 
+:ThrowStatement rdfs:comment "A throw statement, that is a statement that causes an exception to be thrown"@en ;
+	rdfs:label "Throw Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/TryStatement
 
-###  http://rdf.webofcode.org/woc/TryStatement
-:TryStatement rdf:type owl:Class ;
-              rdfs:subClassOf :Statement ,
-                              [ rdf:type owl:Restriction ;
-                                owl:onProperty :body ;
-                                owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                owl:onClass :BlockStatement
-                              ] ;
-              rdfs:comment "A try statement"@en ;
-              rdfs:label "Try Statement"@en .
+:TryStatement a owl:Class ;
+	rdfs:subClassOf :Statement , _:genid121 .
 
+_:genid121 a owl:Restriction ;
+	owl:onProperty :body ;
+	owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :BlockStatement .
 
-###  http://rdf.webofcode.org/woc/Type
-:Type rdf:type owl:Class ;
-      rdfs:subClassOf :CodeElement ;
-      rdfs:comment "A type"@en ;
-      rdfs:label "Type"@en .
+:TryStatement rdfs:comment "A try statement"@en ;
+	rdfs:label "Try Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/Type
 
+:Type a owl:Class ;
+	rdfs:subClassOf :CodeElement ;
+	rdfs:comment "A type"@en ;
+	rdfs:label "Type"@en .
+# 
+# http://rdf.webofcode.org/woc/TypeArgument
 
-###  http://rdf.webofcode.org/woc/TypeArgument
-:TypeArgument rdf:type owl:Class ;
-              rdfs:subClassOf :CodeElement ;
-              rdfs:comment "This class defines the actual type argument of a parameterized type"@en ;
-              rdfs:label "Type Argument"@en .
+:TypeArgument a owl:Class ;
+	rdfs:subClassOf :CodeElement ;
+	rdfs:comment "This class defines the actual type argument of a parameterized type"@en ;
+	rdfs:label "Type Argument"@en .
+# 
+# http://rdf.webofcode.org/woc/TypeVariable
 
+:TypeVariable a owl:Class ;
+	rdfs:subClassOf :Type , _:genid122 .
 
-###  http://rdf.webofcode.org/woc/TypeVariable
-:TypeVariable rdf:type owl:Class ;
-              rdfs:subClassOf :Type ,
-                              [ rdf:type owl:Restriction ;
-                                owl:onProperty :extends ;
-                                owl:allValuesFrom [ rdf:type owl:Class ;
-                                                    owl:unionOf ( :Class
-                                                                  :Interface
-                                                                  :ParameterizedType
-                                                                )
-                                                  ]
-                              ] ;
-              rdfs:comment "A type variable is an unqualified identifier used as a type. It is introduced by the declaration of a generic class, interface, method, or constructor"@en ;
-              rdfs:label "Type Variable" .
+_:genid122 a owl:Restriction ;
+	owl:onProperty :extends ;
+	owl:allValuesFrom _:genid123 .
 
+_:genid123 a owl:Class ;
+	owl:unionOf _:genid126 .
 
-###  http://rdf.webofcode.org/woc/Variable
-:Variable rdf:type owl:Class ;
-          rdfs:subClassOf :CodeElement ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :type ;
-                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                            owl:onClass :Type
-                          ] ;
-          rdfs:comment "A variable"@en ;
-          rdfs:label "Variable"@en .
+_:genid126 a rdf:List ;
+	rdf:first :Class ;
+	rdf:rest _:genid125 .
 
+_:genid125 a rdf:List ;
+	rdf:first :Interface ;
+	rdf:rest _:genid124 .
 
-###  http://rdf.webofcode.org/woc/VariableDeclaration
-:VariableDeclaration rdf:type owl:Class ;
-                     rdfs:subClassOf :DeclarationStatement ;
-                     rdfs:comment "A statement that represents the declaration of a variable"@en ;
-                     rdfs:label "Variable Declaration"@en .
+_:genid124 a rdf:List ;
+	rdf:first :ParameterizedType ;
+	rdf:rest rdf:nil .
 
+:TypeVariable rdfs:comment "A type variable is an unqualified identifier used as a type. It is introduced by the declaration of a generic class, interface, method, or constructor"@en ;
+	rdfs:label "Type Variable" .
+# 
+# http://rdf.webofcode.org/woc/Variable
 
-###  http://rdf.webofcode.org/woc/WhileStatement
-:WhileStatement rdf:type owl:Class ;
-                rdfs:subClassOf :LoopStatement ,
-                                [ rdf:type owl:Restriction ;
-                                  owl:onProperty :condition ;
-                                  owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                  owl:onClass :Expression
-                                ] ;
-                rdfs:comment "A while statement"@en ;
-                rdfs:label "While Statement"@en .
+:Variable a owl:Class ;
+	rdfs:subClassOf :CodeElement , _:genid127 .
 
+_:genid127 a owl:Restriction ;
+	owl:onProperty :type ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Type .
 
-###  http://rdf.webofcode.org/woc/Wildcard
-:Wildcard rdf:type owl:Class ;
-          rdfs:subClassOf :Type ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :extends ;
-                            owl:allValuesFrom [ rdf:type owl:Class ;
-                                                owl:unionOf ( :Class
-                                                              :Interface
-                                                              :ParameterizedType
-                                                            )
-                                              ]
-                          ] ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :super ;
-                            owl:allValuesFrom :Type
-                          ] ;
-          rdfs:comment "A wildcard"@en ;
-          rdfs:label "Wildcard"@en .
+:Variable rdfs:comment "A variable"@en ;
+	rdfs:label "Variable"@en .
+# 
+# http://rdf.webofcode.org/woc/VariableDeclaration
 
+:VariableDeclaration a owl:Class ;
+	rdfs:subClassOf :DeclarationStatement ;
+	rdfs:comment "A statement that represents the declaration of a variable"@en ;
+	rdfs:label "Variable Declaration"@en .
+# 
+# http://rdf.webofcode.org/woc/WhileStatement
 
-#################################################################
-#    Individuals
-#################################################################
+:WhileStatement a owl:Class ;
+	rdfs:subClassOf :LoopStatement , _:genid128 .
 
-###  http://rdf.webofcode.org/woc/Abstract
-:Abstract rdf:type owl:NamedIndividual ,
-                   :Modifier .
+_:genid128 a owl:Restriction ;
+	owl:onProperty :condition ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass :Expression .
 
+:WhileStatement rdfs:comment "A while statement"@en ;
+	rdfs:label "While Statement"@en .
+# 
+# http://rdf.webofcode.org/woc/Wildcard
 
-###  http://rdf.webofcode.org/woc/Default
-:Default rdf:type owl:NamedIndividual ,
-                  :Modifier .
+:Wildcard a owl:Class ;
+	rdfs:subClassOf :Type , _:genid129 .
 
+_:genid129 a owl:Restriction ;
+	owl:onProperty :extends ;
+	owl:allValuesFrom _:genid130 .
 
-###  http://rdf.webofcode.org/woc/Final
-:Final rdf:type owl:NamedIndividual ,
-                :Modifier .
+_:genid130 a owl:Class ;
+	owl:unionOf _:genid133 .
 
+_:genid133 a rdf:List ;
+	rdf:first :Class ;
+	rdf:rest _:genid132 .
 
-###  http://rdf.webofcode.org/woc/Private
-:Private rdf:type owl:NamedIndividual ,
-                  :Modifier .
+_:genid132 a rdf:List ;
+	rdf:first :Interface ;
+	rdf:rest _:genid131 .
 
+_:genid131 a rdf:List ;
+	rdf:first :ParameterizedType ;
+	rdf:rest rdf:nil .
 
-###  http://rdf.webofcode.org/woc/Protected
-:Protected rdf:type owl:NamedIndividual ,
-                    :Modifier .
+:Wildcard rdfs:subClassOf _:genid134 .
 
+_:genid134 a owl:Restriction ;
+	owl:onProperty :super ;
+	owl:allValuesFrom :Type .
 
-###  http://rdf.webofcode.org/woc/Public
-:Public rdf:type owl:NamedIndividual ,
-                 :Modifier .
+:Wildcard rdfs:comment "A wildcard"@en ;
+	rdfs:label "Wildcard"@en .
+# 
+# 
+# 
+# #################################################################
+# #
+# #    Individuals
+# #
+# #################################################################
+# 
+# 
+# http://rdf.webofcode.org/woc/Abstract
 
+:Abstract a owl:NamedIndividual , :Modifier .
+# 
+# http://rdf.webofcode.org/woc/Boolean
 
-###  http://rdf.webofcode.org/woc/Static
-:Static rdf:type owl:NamedIndividual ,
-                 :Modifier .
+:Boolean a owl:NamedIndividual , :PrimitiveType .
+# 
+# http://rdf.webofcode.org/woc/Byte
 
+:Byte a owl:NamedIndividual , :PrimitiveType .
+# 
+# http://rdf.webofcode.org/woc/Char
 
-###  http://rdf.webofcode.org/woc/Synchronized
-:Synchronized rdf:type owl:NamedIndividual ,
-                       :Modifier .
+:Char a owl:NamedIndividual , :PrimitiveType .
+# 
+# http://rdf.webofcode.org/woc/Default
 
+:Default a owl:NamedIndividual , :Modifier .
+# 
+# http://rdf.webofcode.org/woc/Double
 
-###  http://rdf.webofcode.org/woc/Volatile
-:Volatile rdf:type owl:NamedIndividual ,
-                   :Modifier .
+:Double a owl:NamedIndividual , :PrimitiveType .
+# 
+# http://rdf.webofcode.org/woc/Final
 
+:Final a owl:NamedIndividual , :Modifier .
+# 
+# http://rdf.webofcode.org/woc/Float
 
-###  Generated by the OWL API (version 4.2.5.20160517-0735) https://github.com/owlcs/owlapi
+:Float a owl:NamedIndividual , :PrimitiveType .
+# 
+# http://rdf.webofcode.org/woc/Int
+
+:Int a owl:NamedIndividual , :PrimitiveType .
+# 
+# http://rdf.webofcode.org/woc/Long
+
+:Long a owl:NamedIndividual , :PrimitiveType .
+# 
+# http://rdf.webofcode.org/woc/Private
+
+:Private a owl:NamedIndividual , :Modifier .
+# 
+# http://rdf.webofcode.org/woc/Protected
+
+:Protected a owl:NamedIndividual , :Modifier .
+# 
+# http://rdf.webofcode.org/woc/Public
+
+:Public a owl:NamedIndividual , :Modifier .
+# 
+# http://rdf.webofcode.org/woc/Short
+
+:Short a owl:NamedIndividual , :PrimitiveType .
+# 
+# http://rdf.webofcode.org/woc/Static
+
+:Static a owl:NamedIndividual , :Modifier .
+# 
+# http://rdf.webofcode.org/woc/Synchronized
+
+:Synchronized a owl:NamedIndividual , :Modifier .
+# 
+# http://rdf.webofcode.org/woc/Volatile
+
+:Volatile a owl:NamedIndividual , :Modifier .
+# 
+# 
+# 
+# #################################################################
+# #
+# #    General axioms
+# #
+# #################################################################
+# 
+# 
+
+_:genid135 a owl:AllDisjointClasses ;
+	owl:members _:genid138 .
+
+_:genid138 a rdf:List ;
+	rdf:first :ActualArgument ;
+	rdf:rest _:genid137 .
+
+_:genid137 a rdf:List ;
+	rdf:first :AssignmentExpression ;
+	rdf:rest _:genid136 .
+
+_:genid136 a rdf:List ;
+	rdf:first :ExecutableInvocationExpression ;
+	rdf:rest rdf:nil .
+# 
+
+_:genid139 a owl:AllDisjointClasses ;
+	owl:members _:genid148 .
+
+_:genid148 a rdf:List ;
+	rdf:first :Annotation ;
+	rdf:rest _:genid147 .
+
+_:genid147 a rdf:List ;
+	rdf:first :Array ;
+	rdf:rest _:genid146 .
+
+_:genid146 a rdf:List ;
+	rdf:first :Class ;
+	rdf:rest _:genid145 .
+
+_:genid145 a rdf:List ;
+	rdf:first :Enum ;
+	rdf:rest _:genid144 .
+
+_:genid144 a rdf:List ;
+	rdf:first :Interface ;
+	rdf:rest _:genid143 .
+
+_:genid143 a rdf:List ;
+	rdf:first :ParameterizedType ;
+	rdf:rest _:genid142 .
+
+_:genid142 a rdf:List ;
+	rdf:first :PrimitiveType ;
+	rdf:rest _:genid141 .
+
+_:genid141 a rdf:List ;
+	rdf:first :TypeVariable ;
+	rdf:rest _:genid140 .
+
+_:genid140 a rdf:List ;
+	rdf:first :Wildcard ;
+	rdf:rest rdf:nil .
+# 
+
+_:genid149 a owl:AllDisjointClasses ;
+	owl:members _:genid157 .
+
+_:genid157 a rdf:List ;
+	rdf:first :AssertStatement ;
+	rdf:rest _:genid156 .
+
+_:genid156 a rdf:List ;
+	rdf:first :BlockStatement ;
+	rdf:rest _:genid155 .
+
+_:genid155 a rdf:List ;
+	rdf:first :ControlFlowStatement ;
+	rdf:rest _:genid154 .
+
+_:genid154 a rdf:List ;
+	rdf:first :DeclarationStatement ;
+	rdf:rest _:genid153 .
+
+_:genid153 a rdf:List ;
+	rdf:first :ExpressionStatement ;
+	rdf:rest _:genid152 .
+
+_:genid152 a rdf:List ;
+	rdf:first :SynchronizedStatement ;
+	rdf:rest _:genid151 .
+
+_:genid151 a rdf:List ;
+	rdf:first :ThrowStatement ;
+	rdf:rest _:genid150 .
+
+_:genid150 a rdf:List ;
+	rdf:first :TryStatement ;
+	rdf:rest rdf:nil .
+# 
+
+_:genid158 a owl:AllDisjointClasses ;
+	owl:members _:genid161 .
+
+_:genid161 a rdf:List ;
+	rdf:first :BranchingStatement ;
+	rdf:rest _:genid160 .
+
+_:genid160 a rdf:List ;
+	rdf:first :DecisionMakingStatement ;
+	rdf:rest _:genid159 .
+
+_:genid159 a rdf:List ;
+	rdf:first :LoopStatement ;
+	rdf:rest rdf:nil .
+# 
+
+_:genid162 a owl:AllDisjointClasses ;
+	owl:members _:genid165 .
+
+_:genid165 a rdf:List ;
+	rdf:first :BreakStatement ;
+	rdf:rest _:genid164 .
+
+_:genid164 a rdf:List ;
+	rdf:first :ContinueStatement ;
+	rdf:rest _:genid163 .
+
+_:genid163 a rdf:List ;
+	rdf:first :ReturnStatement ;
+	rdf:rest rdf:nil .
+# 
+
+_:genid166 a owl:AllDisjointClasses ;
+	owl:members _:genid169 .
+
+_:genid169 a rdf:List ;
+	rdf:first :CodeElement ;
+	rdf:rest _:genid168 .
+
+_:genid168 a rdf:List ;
+	rdf:first :JarFile ;
+	rdf:rest _:genid167 .
+
+_:genid167 a rdf:List ;
+	rdf:first :Project ;
+	rdf:rest rdf:nil .
+# 
+
+_:genid170 a owl:AllDisjointClasses ;
+	owl:members _:genid174 .
+
+_:genid174 a rdf:List ;
+	rdf:first :DoStatement ;
+	rdf:rest _:genid173 .
+
+_:genid173 a rdf:List ;
+	rdf:first :ForEachStatement ;
+	rdf:rest _:genid172 .
+
+_:genid172 a rdf:List ;
+	rdf:first :ForStatement ;
+	rdf:rest _:genid171 .
+
+_:genid171 a rdf:List ;
+	rdf:first :WhileStatement ;
+	rdf:rest rdf:nil .
+# 
+
+_:genid175 a owl:AllDisjointClasses ;
+	owl:members _:genid183 .
+
+_:genid183 a rdf:List ;
+	rdf:first :Executable ;
+	rdf:rest _:genid182 .
+
+_:genid182 a rdf:List ;
+	rdf:first :Expression ;
+	rdf:rest _:genid181 .
+
+_:genid181 a rdf:List ;
+	rdf:first :Modifier ;
+	rdf:rest _:genid180 .
+
+_:genid180 a rdf:List ;
+	rdf:first :Package ;
+	rdf:rest _:genid179 .
+
+_:genid179 a rdf:List ;
+	rdf:first :Statement ;
+	rdf:rest _:genid178 .
+
+_:genid178 a rdf:List ;
+	rdf:first :Type ;
+	rdf:rest _:genid177 .
+
+_:genid177 a rdf:List ;
+	rdf:first :TypeArgument ;
+	rdf:rest _:genid176 .
+
+_:genid176 a rdf:List ;
+	rdf:first :Variable ;
+	rdf:rest rdf:nil .
+# 
+
+_:genid184 a owl:AllDisjointClasses ;
+	owl:members _:genid187 .
+
+_:genid187 a rdf:List ;
+	rdf:first :Field ;
+	rdf:rest _:genid186 .
+
+_:genid186 a rdf:List ;
+	rdf:first :LocalVariable ;
+	rdf:rest _:genid185 .
+
+_:genid185 a rdf:List ;
+	rdf:first :Parameter ;
+	rdf:rest rdf:nil .
+# 
+# Generated by the OWL API (version 4.2.5.20160517-0735) https://github.com/owlcs/owlapi
