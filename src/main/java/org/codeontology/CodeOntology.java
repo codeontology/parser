@@ -302,7 +302,7 @@ public class CodeOntology {
             }
 
             for (Path testPath : tests) {
-                System.out.println("Ignore sources in " + testPath.toFile().getAbsolutePath());
+                System.out.println("Ignoring sources in " + testPath.toFile().getAbsolutePath());
                 Files.walk(testPath)
                         .filter(path -> path.toFile().getAbsolutePath().endsWith(".java"))
                         .forEach(path -> path.toFile().renameTo(
