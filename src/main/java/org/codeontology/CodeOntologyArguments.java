@@ -128,7 +128,7 @@ public class CodeOntologyArguments {
         flag = new Switch(SHUTDOWN_LONG);
         flag.setLongFlag(SHUTDOWN_LONG);
         flag.setDefault("false");
-        flag.setHelp("Shutdown after complete");
+        flag.setHelp("Shutdown after completing extraction");
         jsap.registerParameter(flag);
 
         flag = new Switch(DO_NOT_EXTRACT_LONG);
