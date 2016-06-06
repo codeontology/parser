@@ -24,7 +24,7 @@ public class CatchEntity extends CodeElementEntity<CtCatch> implements Statement
 
     @Override
     protected RDFNode getType() {
-        return Ontology.CATCH_CLAUSE;
+        return Ontology.CATCH_ENTITY;
     }
 
     @Override

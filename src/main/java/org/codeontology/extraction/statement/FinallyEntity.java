@@ -18,7 +18,7 @@ public class FinallyEntity extends CodeElementEntity<CtBlock<?>> implements Stat
 
     @Override
     protected RDFNode getType() {
-        return Ontology.FINALLY_CLAUSE;
+        return Ontology.FINALLY_ENTITY;
     }
 
     @Override

@@ -117,9 +117,9 @@ public class Ontology {
 
     public static final Resource STATEMENT_EXPRESSION_LIST_ENTITY = model.getResource(WOC + "StatementExpressionList");
 
-    public static final Resource CATCH_CLAUSE = model.getResource(WOC + "CatchClause");
+    public static final Resource CATCH_ENTITY = model.getResource(WOC + "CatchBlock");
 
-    public static final Resource FINALLY_CLAUSE = model.getResource(WOC + "FinallyClause");
+    public static final Resource FINALLY_ENTITY = model.getResource(WOC + "FinallyBlock");
 
     public static final Resource EXPRESSION_ENTITY = model.getResource(WOC + "Expression");
 
