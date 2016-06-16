@@ -168,7 +168,12 @@ public class CodeOntologyArguments {
     }
 
     public JSAPResult parseArgs(String[] args) throws JSAPException {
+
         defineArgs();
+
+        if (args == null) {
+            args = new String[0];
+        }
 
         JSAPResult arguments = jsap.parse(args);
 

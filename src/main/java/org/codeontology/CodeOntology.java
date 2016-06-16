@@ -264,6 +264,10 @@ public class CodeOntology {
     }
 
     public static CodeOntology getInstance() {
+        if (codeOntology == null) {
+            return new CodeOntology(null);
+        }
+
         return codeOntology;
     }
 
