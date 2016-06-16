@@ -264,10 +264,6 @@ public class CodeOntology {
     }
 
     public static CodeOntology getInstance() {
-        if (codeOntology == null) {
-            return new CodeOntology(null);
-        }
-
         return codeOntology;
     }
 
@@ -276,6 +272,9 @@ public class CodeOntology {
     }
 
     public static boolean downloadDependencies() {
+        if (codeOntology == null) {
+            return true;
+        }
         return getInstance().downloadDependencies;
     }
 
