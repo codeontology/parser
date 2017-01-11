@@ -43,7 +43,7 @@ $ sudo apt-get install oracle-java8-set-default
 
 Now, we need the JDK source code. It is available on github:
 ```bash
-$ git clone https://github.com/jdk-mirror/openjdk8
+$ git clone https://github.com/codeontology/openjdk8.git
 ```
 
 You are ready to extract the triples. Just type:
@@ -80,6 +80,6 @@ In the following example, a jar file is downloaded to show how it works.
 
 ```bash
 $ wget -O weka.zip http://downloads.sourceforge.net/project/weka/weka-3-8/3.8.0/weka-3-8-0.zip?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fweka%2F&ts=1463402758&use_mirror=kent
-$ unzip -j weka.zip "weka.zip/weka-3-8-0/weka.jar" -d .
+$ unzip -j weka.zip "weka-3-8-0/weka.jar" -d .
 $ ./codeontology --jar weka.jar -v
 ```
