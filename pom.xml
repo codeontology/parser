@@ -52,7 +52,7 @@
         <repository>
             <id>repo.eclipse.org-release</id>
             <name>Maven Repository for JDT Compiler release</name>
-            <url>https://repo.eclipse.org/content/repositories/eclipse-staging/</url>
+            <url>http://spoon.gforge.inria.fr/repositories/releases/</url>
         </repository>
     </repositories>
 
