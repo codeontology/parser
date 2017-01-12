@@ -4,6 +4,8 @@
 CodeOntology is an extraction tool that parses Java source code to generate RDF triples. It actually supports both maven and gradle projects. For more details see [codeontology.org](http://codeontology.org/).
 
 ### Set up
+First, check dependencies in the Dockerfile.
+
 To set up codeontology, you have to clone the repository and build the tool:
 ```bash
 $ git clone https://bitbucket.org/semanticweb/codeontology-parser
@@ -41,6 +43,7 @@ $ sudo apt-get install oracle-java8-installer
 $ sudo apt-get install oracle-java8-set-default
 ```
 
+
 Now, we need the JDK source code. It is available on github:
 ```bash
 $ git clone https://github.com/codeontology/openjdk8.git
@@ -48,10 +51,11 @@ $ git clone https://github.com/codeontology/openjdk8.git
 
 You are ready to extract the triples. Just type:
 ```bash
-$ ./codeontology -i openjdk8 -o jdk.nt
+$ ./codeontology -i openjdk8/ -o jdk8.nt
 ```
 
-This will run the tool on the openjdk8 directory and save the extracted RDF triples to the file jdk.nt.
+It will run the tool on the openjdk8 directory and save the extracted RDF triples to the file `jdk8.nt`.
+Be aware that this may take 2 hour and a half! 
 
 #### Maven Repository
 Let's suppose you want to use the tool to extract RDF triples from a generic repository.
@@ -68,6 +72,8 @@ The repository contains tests that cause some troubles when building the abstrac
 ```bash
 $ ./codeontology -i spoon -o spoon.nt -vf --dependencies
 ```
+
+Another interesting repository that can be used as example is Apache [Commons Math](https://github.com/apache/commons-math) (it will take less than 2 minutes to build the triples).
 
 #### Jar files
 CodeOntology can also process jar files:
