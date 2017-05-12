@@ -77,7 +77,7 @@ public class Ontology {
 
     public static final Resource STATEMENT_ENTITY = model.getResource(WOC + "Statement");
 
-    public static final Resource BLOCK_ENTITY = model.getResource(WOC + "Block");
+    public static final Resource BLOCK_ENTITY = model.getResource(WOC + "BlockStatement");
 
     public static final Resource IF_THEN_ELSE_ENTITY = model.getResource(WOC + "IfThenElseStatement");
 
