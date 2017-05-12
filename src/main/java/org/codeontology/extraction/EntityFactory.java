@@ -10,7 +10,10 @@ import org.codeontology.extraction.expression.AssignmentExpressionEntity;
 import org.codeontology.extraction.expression.ClassInstanceCreationExpression;
 import org.codeontology.extraction.expression.ExpressionEntity;
 import org.codeontology.extraction.expression.MethodInvocationExpressionEntity;
-import org.codeontology.extraction.project.*;
+import org.codeontology.extraction.project.DefaultProjectEntity;
+import org.codeontology.extraction.project.GradleProjectEntity;
+import org.codeontology.extraction.project.JarFileEntity;
+import org.codeontology.extraction.project.MavenProjectEntity;
 import org.codeontology.extraction.statement.*;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.*;
@@ -100,7 +103,11 @@ public class EntityFactory {
                 entity = new TypeVariableEntity(reference);
                 break;
             case PARAMETERIZED_TYPE:
-                entity = new ParameterizedTypeEntity(reference);
+                if (CodeOntology.processGenerics()) {
+                    entity = new ParameterizedTypeEntity(reference);
+                } else {
+                    entity = new ParameterizedTypeEntity(reference).getGenericType();
+                }
                 break;
         }
         return entity;

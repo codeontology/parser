@@ -25,6 +25,7 @@ public class InterfaceEntity extends TypeEntity<CtInterface<?>> implements Gener
     public void extract() {
         tagType();
         tagName();
+        tagLabel();
         tagSuperInterfaces();
         tagModifiers();
         if (isDeclarationAvailable() || CodeOntology.isJarExplorationEnabled()) {

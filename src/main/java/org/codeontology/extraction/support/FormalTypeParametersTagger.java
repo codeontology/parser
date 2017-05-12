@@ -1,5 +1,6 @@
 package org.codeontology.extraction.support;
 
+import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import org.codeontology.extraction.Entity;
 import org.codeontology.extraction.EntityFactory;
@@ -18,6 +19,9 @@ public class FormalTypeParametersTagger {
     }
 
     public void tagFormalTypeParameters() {
+        if (!CodeOntology.processGenerics()) {
+            return;
+        }
         List<TypeVariableEntity> parameters = genericDeclaration.getFormalTypeParameters();
         int size = parameters.size();
         for (int i = 0; i < size; i++) {
@@ -32,7 +36,7 @@ public class FormalTypeParametersTagger {
     public static List<TypeVariableEntity> formalTypeParametersOf(GenericDeclarationEntity<?> genericDeclaration) {
         List<TypeVariableEntity> typeVariables = new ArrayList<>();
 
-        if (genericDeclaration.getElement() != null) {
+        if (genericDeclaration.getElement() != null && CodeOntology.processGenerics()) {
             List<CtTypeReference<?>> parameters = genericDeclaration.getElement().getFormalTypeParameters();
 
             for (CtTypeReference parameter : parameters) {

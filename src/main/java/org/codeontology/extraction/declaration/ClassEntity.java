@@ -1,5 +1,6 @@
 package org.codeontology.extraction.declaration;
 
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
@@ -38,7 +39,9 @@ public class ClassEntity<T> extends TypeEntity<CtClass<T>> implements GenericDec
     @Override
     public void extract() {
         tagType();
-        tagName();
+        tagSimpleName();
+        tagCanonicalName();
+        tagLabel();
         tagSuperClass();
         tagSuperInterfaces();
         tagModifiers();
@@ -54,6 +57,17 @@ public class ClassEntity<T> extends TypeEntity<CtClass<T>> implements GenericDec
             tagNestedTypes();
             tagFormalTypeParameters();
         }
+    }
+
+    private void tagCanonicalName() {
+        String qualifiedName = getReference().getQualifiedName();
+        Literal canonicalName = getModel().createTypedLiteral(qualifiedName);
+        getLogger().addTriple(this, Ontology.CANONICAL_NAME_PROPERTY, canonicalName);
+    }
+
+    private void tagSimpleName() {
+        Literal name = getModel().createTypedLiteral(getName());
+        getLogger().addTriple(this, Ontology.SIMPLE_NAME_PROPERTY, name);
     }
 
     public void tagSuperClass() {
@@ -72,6 +86,10 @@ public class ClassEntity<T> extends TypeEntity<CtClass<T>> implements GenericDec
     }
 
     public void tagConstructors() {
+        List<ConstructorEntity> constructors = getConstructors();
+        constructors.forEach(constructor ->
+                getLogger().addTriple(this, Ontology.HAS_CONSTRUCTOR_PROPERTY, constructor)
+        );
         getConstructors().forEach(ConstructorEntity::extract);
     }
 

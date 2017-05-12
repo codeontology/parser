@@ -43,6 +43,7 @@ public class FieldEntity extends NamedElementEntity<CtField<?>>
     @Override
     public void extract() {
         tagName();
+        tagLabel();
         tagType();
         tagDeclaringElement();
         tagJavaType();

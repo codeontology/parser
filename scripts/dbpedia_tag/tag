@@ -1,6 +1,6 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
-/opt/apache-jena-fuseki-2.3.1/bin/s-query --service=http://localhost:3030/$1/query --query="query.rq" > comments_URIs
+/opt/fuseki/bin/s-query --service=http://localhost:3030/$1/query --query="query.rq" > comments_URIs
 egrep "(^( {8}\"s\").+$)|(^( {8}\"com\").+$)" comments_URIs > comments
 rm comments_URIs
 sed -i -r s/"(^ {8}\"s.{31})|(\"c.{37})"// comments

@@ -58,6 +58,22 @@ public abstract class NamedElementEntity<E extends CtNamedElement> extends CodeE
         getLogger().addTriple(this, Ontology.NAME_PROPERTY, name);
     }
 
+    public void tagLabel() {
+        String labelString = splitCamelCase(getName());
+        Literal label = getModel().createTypedLiteral(labelString);
+        getLogger().addTriple(this, Ontology.RDFS_LABEL_PROPERTY, label);
+    }
+
+    public String splitCamelCase(String s) {
+        return s.replaceAll(
+            String.format("%s|%s|%s",
+                "(?<=[A-Z])(?=[A-Z][a-z])",
+                "(?<=[^A-Z])(?=[A-Z])",
+                "(?<=[A-Za-z])(?=[^A-Za-z])"
+            ), " "
+        );
+    }
+
     @Override
     public void follow() {
         if (!isDeclarationAvailable() && !CodeOntology.isJarExplorationEnabled()

@@ -20,6 +20,7 @@ public class AnnotationEntity extends TypeEntity<CtAnnotationType<?>> {
     public void extract() {
         tagType();
         tagName();
+        tagLabel();
         if (isDeclarationAvailable()) {
             tagComment();
             tagSourceCode();

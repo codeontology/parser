@@ -20,6 +20,7 @@ public class ArrayEntity extends TypeEntity<CtType<?>> {
     public void extract() {
         tagType();
         tagName();
+        tagLabel();
         tagArrayOf();
         tagDimensions();
     }

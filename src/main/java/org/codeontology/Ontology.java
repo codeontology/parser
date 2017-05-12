@@ -136,119 +136,133 @@ public class Ontology {
 
     public static final Property RDFS_LABEL_PROPERTY = model.getProperty(RDFS + "label");
 
-    public static final Property JAVA_TYPE_PROPERTY = model.getProperty(WOC + "type");
+    public static final Property JAVA_TYPE_PROPERTY = model.getProperty(WOC + "hasType");
 
     public static final Property COMMENT_PROPERTY = model.getProperty(RDFS + "comment");
 
-    public static final Property NAME_PROPERTY = model.getProperty(WOC + "name");
+    public static final Property NAME_PROPERTY = model.getProperty(WOC + "hasName");
 
-    public static final Property DECLARED_BY_PROPERTY = model.getProperty(WOC + "declaredBy");
+    public static final Property SIMPLE_NAME_PROPERTY = model.getProperty(WOC + "hasSimpleName");
 
-    public static final Property RETURNS_PROPERTY = model.getProperty(WOC + "returns");
+    public static final Property CANONICAL_NAME_PROPERTY = model.getProperty(WOC + "hasCanonicalName");
 
-    public static final Property RETURNS_VAR_PROPERTY = model.getProperty(WOC + "returnsVar");
+    public static final Property DECLARED_BY_PROPERTY = model.getProperty(WOC + "isDeclaredBy");
 
-    public static final Property RETURN_DESCRIPTION_PROPERTY = model.getProperty(WOC + "returnDescription");
+    public static final Property HAS_PACKAGE_PROPERTY = model.getProperty(WOC + "hasPackage");
+
+    public static final Property IS_PACKAGE_OF_PROPERTY = model.getProperty(WOC + "isPackageOf");
+
+    public static final Property HAS_CONSTRUCTOR_PROPERTY = model.getProperty(WOC + "hasConstructor");
+
+    public static final Property HAS_METHOD_PROPERTY = model.getProperty(WOC + "hasMethod");
+
+    public static final Property HAS_FIELD_PROPERTY = model.getProperty(WOC + "hasField");
+
+    public static final Property RETURN_TYPE_PROPERTY = model.getProperty(WOC + "hasReturnType");
+
+    public static final Property RETURNS_VAR_PROPERTY = model.getProperty(WOC + "returns");
+
+    // public static final Property RETURN_DESCRIPTION_PROPERTY = model.getProperty(WOC + "returnDescription");
 
     public static final Property CONSTRUCTS_PROPERTY = model.getProperty(WOC + "constructs");
 
-    public static final Property PARAMETER_PROPERTY = model.getProperty(WOC + "parameter");
+    public static final Property PARAMETER_PROPERTY = model.getProperty(WOC + "hasParameter");
 
-    public static final Property POSITION_PROPERTY = model.getProperty(WOC + "position");
+    public static final Property POSITION_PROPERTY = model.getProperty(WOC + "hasPosition");
 
-    public static final Property SOURCE_CODE_PROPERTY = model.getProperty(WOC + "sourceCode");
+    public static final Property SOURCE_CODE_PROPERTY = model.getProperty(WOC + "hasSourceCode");
 
     public static final Property THROWS_PROPERTY = model.getProperty(WOC + "throws");
 
-    public static final Property MODIFIER_PROPERTY = model.getProperty(WOC + "modifier");
+    public static final Property MODIFIER_PROPERTY = model.getProperty(WOC + "hasModifier");
 
-    public static final Property REQUESTS_PROPERTY = model.getProperty(WOC + "requests");
+    public static final Property REFERENCES_PROPERTY = model.getProperty(WOC + "references");
 
     public static final Property EXTENDS_PROPERTY = model.getProperty(WOC + "extends");
 
     public static final Property IMPLEMENTS_PROPERTY = model.getProperty(WOC + "implements");
 
-    public static final Property SUPER_PROPERTY = model.getProperty(WOC + "super");
+    public static final Property SUPER_PROPERTY = model.getProperty(WOC + "hasSuperBound");
 
-    public static final Property ARRAY_OF_PROPERTY = model.getProperty(WOC + "arrayOf");
+    public static final Property ARRAY_OF_PROPERTY = model.getProperty(WOC + "isArrayOf");
 
-    public static final Property DIMENSIONS_PROPERTY = model.getProperty(WOC + "dimensions");
+    public static final Property DIMENSIONS_PROPERTY = model.getProperty(WOC + "hasDimensions");
 
-    public static final Property FORMAL_TYPE_PARAMETER_PROPERTY = model.getProperty(WOC + "formalTypeParameter");
+    public static final Property FORMAL_TYPE_PARAMETER_PROPERTY = model.getProperty(WOC + "hasFormalTypeParameter");
 
-    public static final Property ACTUAL_TYPE_ARGUMENT_PROPERTY = model.getProperty(WOC + "actualTypeArgument");
+    public static final Property ACTUAL_TYPE_ARGUMENT_PROPERTY = model.getProperty(WOC + "hasActualTypeArgument");
 
-    public static final Property GENERIC_TYPE_PROPERTY = model.getProperty(WOC + "genericType");
+    public static final Property GENERIC_TYPE_PROPERTY = model.getProperty(WOC + "hasGenericType");
 
-    public static final Property ANNOTATION_PROPERTY = model.getProperty(WOC + "annotation");
+    public static final Property ANNOTATION_PROPERTY = model.getProperty(WOC + "hasAnnotation");
 
     public static final Property OVERRIDES_PROPERTY = model.getProperty(WOC + "overrides");
 
     public static final Property VAR_ARGS_PROPERTY = model.getProperty(WOC + "isVarArgs");
 
-    public static final Property BELONGS_TO_PROPERTY = model.getProperty(WOC + "belongsTo");
+    public static final Property PROJECT_PROPERTY = model.getProperty(WOC + "hasProject");
 
-    public static final Property SUBPROJECT_PROPERTY = model.getProperty(WOC + "subProject");
+    public static final Property SUBPROJECT_PROPERTY = model.getProperty(WOC + "hasSubProject");
 
-    public static final Property BUILD_FILE_PROPERTY = model.getProperty(WOC + "buildFile");
+    public static final Property BUILD_FILE_PROPERTY = model.getProperty(WOC + "hasBuildFile");
 
-    public static final Property DEPENDENCY_PROPERTY = model.getProperty(WOC + "dependency");
+    public static final Property DEPENDENCY_PROPERTY = model.getProperty(WOC + "hasDependency");
 
-    public static final Property LINE_PROPERTY = model.getProperty(WOC + "line");
+    public static final Property LINE_PROPERTY = model.getProperty(WOC + "hasLine");
 
-    public static final Property NEXT_PROPERTY = model.getProperty(WOC + "next");
+    public static final Property NEXT_PROPERTY = model.getProperty(WOC + "hasNextStatement");
 
-    public static final Property CONDITION_PROPERTY = model.getProperty(WOC + "condition");
+    public static final Property CONDITION_PROPERTY = model.getProperty(WOC + "hasCondition");
 
-    public static final Property STATEMENT_PROPERTY = model.getProperty(WOC + "statement");
+    public static final Property STATEMENT_PROPERTY = model.getProperty(WOC + "hasSubStatement");
 
-    public static final Property THEN_PROPERTY = model.getProperty(WOC + "then");
+    public static final Property THEN_PROPERTY = model.getProperty(WOC + "hasThenBranch");
 
-    public static final Property ELSE_PROPERTY = model.getProperty(WOC + "else");
+    public static final Property ELSE_PROPERTY = model.getProperty(WOC + "hasElseBranch");
 
-    public static final Property BODY_PROPERTY = model.getProperty(WOC + "body");
+    public static final Property BODY_PROPERTY = model.getProperty(WOC + "hasBody");
 
-    public static final Property END_LINE_PROPERTY = model.getProperty(WOC + "endLine");
+    public static final Property END_LINE_PROPERTY = model.getProperty(WOC + "hasEndLine");
 
-    public static final Property FOR_INIT_PROPERTY = model.getProperty(WOC + "forInit");
+    public static final Property FOR_INIT_PROPERTY = model.getProperty(WOC + "hasForInit");
 
-    public static final Property FOR_UPDATE_PROPERTY = model.getProperty(WOC + "forUpdate");
+    public static final Property FOR_UPDATE_PROPERTY = model.getProperty(WOC + "hasForUpdate");
 
-    public static final Property EXPRESSION_PROPERTY = model.getProperty(WOC + "expression");
+    public static final Property EXPRESSION_PROPERTY = model.getProperty(WOC + "hasSubExpression");
 
-    public static final Property RETURNED_EXPRESSION_PROPERTY = model.getProperty(WOC + "returnedExpression");
+    public static final Property RETURNED_EXPRESSION_PROPERTY = model.getProperty(WOC + "hasReturnedExpression");
 
-    public static final Property THROWN_EXPRESSION_PROPERTY = model.getProperty(WOC + "thrownExpression");
+    public static final Property THROWN_EXPRESSION_PROPERTY = model.getProperty(WOC + "hasThrownExpression");
 
-    public static final Property ASSERT_EXPRESSION_PROPERTY = model.getProperty(WOC + "assertExpression");
+    public static final Property ASSERT_EXPRESSION_PROPERTY = model.getProperty(WOC + "hasAssertExpression");
 
-    public static final Property VARIABLE_PROPERTY = model.getProperty(WOC + "variable");
+    public static final Property VARIABLE_PROPERTY = model.getProperty(WOC + "hasVariable");
 
-    public static final Property CATCH_CLAUSE_PROPERTY = model.getProperty(WOC + "catch");
+    public static final Property CATCH_CLAUSE_PROPERTY = model.getProperty(WOC + "hasCatchClause");
 
-    public static final Property CATCH_FORMAL_PARAMETER_PROPERTY = model.getProperty(WOC + "catchFormalParameter");
+    public static final Property CATCH_FORMAL_PARAMETER_PROPERTY = model.getProperty(WOC + "hasCatchFormalParameter");
 
-    public static final Property FINALLY_CLAUSE_PROPERTY = model.getProperty(WOC + "finally");
+    public static final Property FINALLY_CLAUSE_PROPERTY = model.getProperty(WOC + "hasFinallyClause");
 
-    public static final Property RESOURCE_PROPERTY = model.getProperty(WOC + "resource");
+    public static final Property RESOURCE_PROPERTY = model.getProperty(WOC + "hasResource");
 
-    public static final Property TARGETED_LABEL_PROPERTY = model.getProperty(WOC + "targetedLabel");
+    public static final Property TARGETED_LABEL_PROPERTY = model.getProperty(WOC + "hasTargetedLabel");
 
-    public static final Property WOC_LABEL_PROPERTY = model.getProperty(WOC + "label");
+    public static final Property WOC_LABEL_PROPERTY = model.getProperty(WOC + "hasLabel");
 
-    public static final Property INITIALIZER_PROPERTY = model.getProperty(WOC + "initializer");
+    public static final Property INITIALIZER_PROPERTY = model.getProperty(WOC + "hasInitializer");
 
-    public static final Property DECLARATION_PROPERTY = model.getProperty(WOC + "declaration");
+    public static final Property DECLARATION_PROPERTY = model.getProperty(WOC + "hasDeclaration");
 
-    public static final Property SWITCH_LABEL_PROPERTY = model.getProperty(WOC + "switchLabel");
+    public static final Property SWITCH_LABEL_PROPERTY = model.getProperty(WOC + "hasSwitchLabel");
 
-    public static final Property LEFT_HAND_SIDE_PROPERTY = model.getProperty(WOC + "leftHandSide");
+    public static final Property LEFT_HAND_SIDE_PROPERTY = model.getProperty(WOC + "hasLeftHandSide");
 
     public static final Property INVOKES_PROPERTY = model.getProperty(WOC + "invokes");
 
-    public static final Property ARGUMENT_PROPERTY = model.getProperty(WOC + "argument");
+    public static final Property ARGUMENT_PROPERTY = model.getProperty(WOC + "hasArgument");
 
-    public static final Property TARGET_PROPERTY = model.getProperty(WOC + "target");
+    public static final Property TARGET_PROPERTY = model.getProperty(WOC + "hasTarget");
 
 
     public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");

@@ -62,8 +62,9 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
 
     @Override
     public void extract() {
-        tagType();
         tagName();
+        tagLabel();
+        tagType();
         tagDeclaringElement();
         tagParameters();
         tagModifiers();
@@ -308,7 +309,7 @@ public abstract class ExecutableEntity<E extends CtExecutable<?> & CtTypeMember 
     }
 
     public void tagRequests(Entity<?> requested) {
-        getLogger().addTriple(this, Ontology.REQUESTS_PROPERTY, requested);
+        getLogger().addTriple(this, Ontology.REFERENCES_PROPERTY, requested);
     }
 
     public void tagReturnsVariable(CtReturn<?> returnStatement) {

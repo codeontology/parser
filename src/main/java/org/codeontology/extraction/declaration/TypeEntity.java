@@ -2,6 +2,7 @@ package org.codeontology.extraction.declaration;
 
 import com.hp.hpl.jena.rdf.model.Property;
 import org.codeontology.CodeOntology;
+import org.codeontology.Ontology;
 import org.codeontology.extraction.NamedElementEntity;
 import org.codeontology.extraction.ReflectionFactory;
 import org.codeontology.extraction.support.ModifiableEntity;
@@ -19,7 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public abstract class TypeEntity<T extends CtType<?>> extends NamedElementEntity<T> implements ModifiableEntity<T> {
+public abstract class TypeEntity<T extends CtType<?>>
+        extends NamedElementEntity<T> implements ModifiableEntity<T> {
 
     private List<MethodEntity> methods;
     private List<FieldEntity> fields;
@@ -61,7 +63,11 @@ public abstract class TypeEntity<T extends CtType<?>> extends NamedElementEntity
     }
 
     public void tagMethods() {
-        getMethods().forEach(MethodEntity::extract);
+        List<MethodEntity> methods = getMethods();
+        methods.forEach(method ->
+                getLogger().addTriple(this, Ontology.HAS_METHOD_PROPERTY, method)
+        );
+        methods.forEach(MethodEntity::extract);
     }
 
     public List<MethodEntity> getMethods() {
@@ -139,7 +145,9 @@ public abstract class TypeEntity<T extends CtType<?>> extends NamedElementEntity
     }
 
     public void tagFields() {
-        getFields().forEach(FieldEntity::extract);
+        List<FieldEntity> fields = getFields();
+        fields.forEach(field -> getLogger().addTriple(this, Ontology.HAS_FIELD_PROPERTY, field));
+        fields.forEach(FieldEntity::extract);
     }
 
     @Override

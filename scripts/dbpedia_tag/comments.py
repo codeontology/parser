@@ -18,7 +18,7 @@ def tag_comments(comments_list, start, tries):
 	res = []
 	length = len(comments_list);
 		
-	max_tries = 8
+	max_tries = 10
 
 	i = 0
 
@@ -46,10 +46,15 @@ def tag_comments(comments_list, start, tries):
 							+ "<" + about_URI + "> ."'\n')
 			i = i + 1
 
-		except Exception:	
+		except Exception:
+			print("Error")	
 			if tries < max_tries:
-				i = i - 1
+				print("Trying again...")
 				tries = tries + 1
+			else:
+				print("Skipping...")
+				tries = 0
+				i = i + 1
 
 
 

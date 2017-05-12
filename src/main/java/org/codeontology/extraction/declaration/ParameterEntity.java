@@ -44,6 +44,7 @@ public class ParameterEntity extends NamedElementEntity<CtParameter<?>> implemen
         if (isDeclarationAvailable()) {
             tagAnnotations();
             tagName();
+            tagLabel();
             tagComment();
         }
     }

@@ -47,6 +47,9 @@ public class CodeOntologyArguments {
     public static final String EXPRESSIONS_LONG = "expressions";
     public static final char EXPRESSIONS_SHORT = 'e';
 
+    // public static final String GENERICS_LONG = "generics";
+    // public static final char GENERICS_SHORT = 'g';
+
     private JSAP jsap;
     private JSAPResult result;
 
@@ -164,6 +167,13 @@ public class CodeOntologyArguments {
         flag.setDefault("false");
         flag.setHelp("Process all expressions");
         jsap.registerParameter(flag);
+
+        /*flag = new Switch(GENERICS_LONG);
+        flag.setLongFlag(GENERICS_LONG);
+        flag.setShortFlag(GENERICS_SHORT);
+        flag.setDefault("false");
+        flag.setHelp("Process parameterized types");
+        jsap.registerParameter(flag);*/
 
     }
 
@@ -288,4 +298,8 @@ public class CodeOntologyArguments {
     public boolean processExpressions() {
         return result.getBoolean(EXPRESSIONS_LONG);
     }
+
+    /* public boolean processGenerics() {
+        return result.getBoolean(GENERICS_LONG);
+    }*/
 }

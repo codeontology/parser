@@ -387,4 +387,9 @@ public class CodeOntology {
     public static boolean processExpressions() {
         return codeOntology.getArguments().processExpressions();
     }
+
+    public static boolean processGenerics() {
+        // return codeOntology.getArguments().processGenerics();
+        return true;
+    }
 }

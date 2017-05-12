@@ -21,6 +21,7 @@ public class LocalVariableEntity extends NamedElementEntity<CtLocalVariable<?>>
     public void extract() {
         tagType();
         tagName();
+        tagLabel();
         tagJavaType();
         tagModifiers();
         tagDeclaringElement();

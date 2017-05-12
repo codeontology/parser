@@ -57,7 +57,7 @@ public class ParameterizedTypeEntity extends TypeEntity<CtType<?>> {
     @Override
     public void extract() {
         tagType();
-        tagRawType();
+        tagGenericType();
         tagActualTypeArguments();
     }
 
@@ -66,12 +66,16 @@ public class ParameterizedTypeEntity extends TypeEntity<CtType<?>> {
         return Ontology.PARAMETERIZED_TYPE_ENTITY;
     }
 
-    public void tagRawType() {
+    public void tagGenericType() {
+        TypeEntity genericType = getGenericType();
+        genericType.follow();
+        getLogger().addTriple(this, Ontology.GENERIC_TYPE_PROPERTY, genericType);
+    }
+
+    public TypeEntity<?> getGenericType() {
         CtTypeReference<?> cloneReference = ReflectionFactory.getInstance().clone(getReference());
         cloneReference.setActualTypeArguments(new ArrayList<>());
-        TypeEntity rawType = getFactory().wrap(cloneReference);
-        rawType.follow();
-        getLogger().addTriple(this, Ontology.GENERIC_TYPE_PROPERTY, rawType);
+        return getFactory().wrap(cloneReference);
     }
 
     public void tagActualTypeArguments() {

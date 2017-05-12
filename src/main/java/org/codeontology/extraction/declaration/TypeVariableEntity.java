@@ -3,6 +3,7 @@ package org.codeontology.extraction.declaration;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import org.codeontology.extraction.Entity;
 import org.codeontology.extraction.NamedElementEntity;
@@ -42,6 +43,9 @@ public class TypeVariableEntity extends TypeEntity<CtType<?>> {
 
     @Override
     public void extract() {
+        if (!CodeOntology.processGenerics()) {
+            return;
+        }
         tagType();
         tagBounds();
         tagPosition();
@@ -68,11 +72,15 @@ public class TypeVariableEntity extends TypeEntity<CtType<?>> {
 
     @Override
     public String buildRelativeURI() {
+        if (!CodeOntology.processGenerics()) {
+            return getReference().getSimpleName();
+        }
+
         if (isWildcard() || getParent() == null) {
             return wildcardURI();
-        } else {
-            return getReference().getQualifiedName() + ":" + getParent().getRelativeURI();
         }
+
+        return getReference().getQualifiedName() + ":" + getParent().getRelativeURI();
     }
 
     private String wildcardURI() {
@@ -224,7 +232,7 @@ public class TypeVariableEntity extends TypeEntity<CtType<?>> {
     @Override
     public void setParent(Entity<?> context) {
 
-        if (isWildcard()) {
+        if (!CodeOntology.processGenerics() || isWildcard()) {
             super.setParent(context);
             return;
         }
