@@ -83,9 +83,9 @@ public class Ontology {
 
     public static final Resource SWITCH_ENTITY = model.getResource(WOC + "SwitchStatement");
 
-    public static final Resource CASE_ENTITY = model.getResource(WOC + "CaseLabel");
+    public static final Resource CASE_ENTITY = model.getResource(WOC + "CaseLabeledBlock");
 
-    public static final Resource DEFAULT_ENTITY = model.getResource(WOC + "DefaultLabel");
+    public static final Resource DEFAULT_ENTITY = model.getResource(WOC + "DefaultLabeledBlock");
 
     public static final Resource WHILE_ENTITY = model.getResource(WOC + "WhileStatement");
 

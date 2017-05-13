@@ -1,7 +1,7 @@
 # CodeOntology
 
 ### RDF-ization of source code
-CodeOntology is an extraction tool that parses Java source code to generate RDF triples. It actually supports both maven and gradle projects. For more details see [codeontology.org](http://codeontology.org/).
+CodeOntology is an extraction tool that parses Java source code to generate RDF triples. It supports both maven and gradle projects. For more details see [codeontology.org](http://codeontology.org/).
 
 ### Set up
 First, check dependencies in the Dockerfile.
@@ -25,36 +25,47 @@ $ ./codeontology --help
 
 ### Use cases
 #### JDK
-Let's use the tool to extract RDF triples from the JDK source code.
+Let's use the tool to extract RDF triples from the OpenJDK 8 source code.
 
-First, be sure to have the latest version of java:
-```bash
-$ java -version
-java version "1.8.0_77"
-Java(TM) SE Runtime Environment (build 1.8.0_77-b03)
-Java HotSpot(TM) 64-Bit Server VM (build 25.77-b03, mixed mode)
-```
-
-If you don't have it, you can install it by running the following commands:
-```bash
-$ sudo add-apt-repository ppa:webupd8team/java
-$ sudo apt-get update
-$ sudo apt-get install oracle-java8-installer
-$ sudo apt-get install oracle-java8-set-default
-```
-
-
-Now, we need the JDK source code. It is available on github:
+First, you need the OpenJDK 8 source code. It is available on github:
 ```bash
 $ git clone https://github.com/codeontology/openjdk8.git
 ```
 
-You are ready to extract the triples. Just type:
+Now, you have to install OpenJDK 8:
 ```bash
-$ ./codeontology -i openjdk8/ -o jdk8.nt
+$ sudo dpkg -iR openjdk8/amd64
 ```
 
-It will run the tool on the openjdk8 directory and save the extracted RDF triples to the file `jdk8.nt`.
+The above command should install OpenJDK 8. If you get dependecy errors, just type:
+```bash
+$ sudo apt-get -f install
+```
+
+Set the newly installed version of Java as the default version:
+```bash
+$ sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
+```
+
+If you get the following error, just ignore it:
+```bash
+update-java-alternatives: plugin alternative does not exist: /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/IcedTeaPlugin.so
+```
+
+To verify that everything has worked, check that your java version is correct:
+```bash
+$ java -version
+openjdk version "1.8.0_121"
+OpenJDK Runtime Environment (build 1.8.0_121-8u121-b13-4-b13)
+OpenJDK 64-Bit Server VM (build 25.121-b13, mixed mode)
+```
+
+Finally, you are ready to serialize the OpenJDK source code into RDF triples. Just type:
+```bash
+$ ./codeontology -i openjdk8/ -o openjdk8.nt
+```
+
+This command  will run the tool on the openjdk8 directory and save the extracted RDF triples to the file `openjdk8.nt`.
 Be aware that this may take 2 hour and a half! 
 
 #### Maven Repository
