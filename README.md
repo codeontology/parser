@@ -8,7 +8,7 @@ First, check dependencies in the Dockerfile.
 
 To set up codeontology, you have to clone the repository and build the tool:
 ```bash
-$ git clone https://bitbucket.org/semanticweb/codeontology-parser
+$ git clone https://github.com/codeontology/parser
 $ cd codeontology
 $ mvn package -DskipTests
 ```

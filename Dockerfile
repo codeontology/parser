@@ -22,12 +22,10 @@ FROM ubuntu:16 # check if it works with FROM openjdk:8
 # install Oracle JDK 8
 RUN apt-get update && \
 	apt-get install -y software-properties-common && \
-	add-apt-repository -y ppa:webupd8team/java && \
-	apt-get update
-# installer ask user to answer
-# NOTE: by running this you accept "Oracle Binary Code license terms"
-RUN yes | (apt-get install -y oracle-java8-installer) 
-RUN apt-get install -y oracle-java8-set-default && \
+
+RUN git clone https://github.com/codeontology/openjdk8.git
+RUN dpkg -iR openjdk8/amd64
+RUN apt-get -f install && \
 	apt-get install -y maven gradle
 
 RUN mkdir -p /usr/src/app
