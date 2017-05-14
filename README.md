@@ -66,7 +66,9 @@ $ ./codeontology -i openjdk8/ -o openjdk8.nt
 ```
 
 This command  will run the tool on the openjdk8 directory and save the extracted RDF triples to the file `openjdk8.nt`.
-Be aware that this may take 2 hour and a half! 
+Be aware that this may take 2 hour and a half!
+
+To annotate source code comments, see [CommentLinker](https://github.com/codeontology/commentlinker).
 
 #### Maven Repository
 Let's suppose you want to use the tool to extract RDF triples from a generic repository.
