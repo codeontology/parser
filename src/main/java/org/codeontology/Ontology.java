@@ -38,7 +38,7 @@ public class Ontology {
 
     private static Model ontology() {
         try {
-            File ontology = new File(System.getProperty("user.dir") + "/ontology/CodeOntology.xml");
+            File ontology = new File(System.getProperty("user.dir") + "/ontology/CodeOntology.owl");
             FileInputStream reader = new FileInputStream(ontology);
             return ModelFactory.createDefaultModel().read(reader, "");
         } catch (FileNotFoundException e) {
