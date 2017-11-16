@@ -2,6 +2,7 @@
 <catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
     <uri id="Imports Wizard Entry" name="http://rdf-vocabulary.ddialliance.org/xkos" uri="http://www.ddialliance.org/Specification/XKOS/1.0/OWL/xkos.ttl"/>
     <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
-        <uri id="Automatically generated entry, Timestamp=1495127595922" name="http://rdf.webofcode.org/woc/" uri="CodeOntology.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1510848620374" name="duplicate:http://rdf.webofcode.org/woc/" uri="CodeOntology.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1510848620374" name="duplicate:http://rdf.webofcode.org/woc/" uri="CodeOntolgyExcerpt.owl"/>
     </group>
 </catalog>

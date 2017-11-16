@@ -43,6 +43,7 @@ public class PrimitiveTypeEntity extends TypeEntity<CtType<?>> {
 
     @Override
     public void extract() {
-
+        tagType();
+        tagName();
     }
 }

@@ -146,7 +146,7 @@ public class MethodEntity extends ExecutableEntity<CtMethod<?>> implements Gener
         String description = getReturnDescription();
         if (getReturnDescription() != null) {
             Literal literal = getModel().createTypedLiteral(description);
-            getLogger().addTriple(this, Ontology.COMMENT_PROPERTY, literal);
+            getLogger().addTriple(this, Ontology.RETURN_DESCRIPTION_PROPERTY, literal);
         }
     }
 }

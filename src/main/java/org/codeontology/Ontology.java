@@ -60,9 +60,9 @@ public class Ontology {
 
     public static final Resource ANNOTATION_ENTITY = model.getResource(WOC + "Annotation");
 
-    public static final Resource PRIMITIVE_ENTITY = model.getResource(WOC + "Primitive");
+    public static final Resource PRIMITIVE_ENTITY = model.getResource(WOC + "PrimitiveType");
 
-    public static final Resource ARRAY_ENTITY = model.getResource(WOC + "Array");
+    public static final Resource ARRAY_ENTITY = model.getResource(WOC + "ArrayType");
 
     public static final Resource TYPE_VARIABLE_ENTITY =  model.getResource(WOC + "TypeVariable");
 
@@ -181,7 +181,7 @@ public class Ontology {
 
     public static final Property RETURNS_VAR_PROPERTY = model.getProperty(WOC + "returns");
 
-    // public static final Property RETURN_DESCRIPTION_PROPERTY = model.getProperty(WOC + "returnDescription");
+    public static final Property RETURN_DESCRIPTION_PROPERTY = model.getProperty(WOC + "hasReturnDescription");
 
     public static final Property CONSTRUCTS_PROPERTY = model.getProperty(WOC + "constructs");
 

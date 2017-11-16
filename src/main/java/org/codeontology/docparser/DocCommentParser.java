@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class DocCommentParser {
-    String comment;
+    private String comment;
     private List<Tag> tags;
     private boolean parsed;
     public static final String REGEXP = "^\\s*(@\\w+)\\s+(.*)$";

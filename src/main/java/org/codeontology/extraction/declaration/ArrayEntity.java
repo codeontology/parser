@@ -69,4 +69,13 @@ public class ArrayEntity extends TypeEntity<CtType<?>> {
         super.setParent(parent);
         componentType.setParent(parent);
     }
+
+    @Override
+    public String getName() {
+        String componenTypeName = componentType.buildRelativeURI();
+        if (componentType instanceof PrimitiveTypeEntity) {
+            componenTypeName = componenTypeName.toLowerCase();
+        }
+        return componenTypeName + "[]";
+    }
 }

@@ -1492,6 +1492,17 @@
     
 
 
+    <!-- http://rdf.webofcode.org/woc/hasReturnDescription -->
+
+    <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/hasReturnDescription">
+        <rdfs:domain rdf:resource="http://rdf.webofcode.org/woc/Method"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>the hasReturnDescriptionProperty relates a method to a description of its return value</rdfs:comment>
+        <rdfs:label xml:lang="en">has return description</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://rdf.webofcode.org/woc/hasSimpleName -->
 
     <owl:DatatypeProperty rdf:about="http://rdf.webofcode.org/woc/hasSimpleName">
@@ -1631,7 +1642,7 @@
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">An array type</rdfs:comment>
-        <rdfs:label xml:lang="en">Array</rdfs:label>
+        <rdfs:label xml:lang="en">Array Type</rdfs:label>
     </owl:Class>
     
 
@@ -2594,7 +2605,7 @@ synchronized &lt;Expression&gt; &lt;Block&gt;</rdfs:comment>
     <owl:NamedIndividual rdf:about="http://rdf.webofcode.org/woc/Char">
         <rdf:type rdf:resource="http://rdf.webofcode.org/woc/PrimitiveType"/>
         <rdfs:comment xml:lang="en">The char type</rdfs:comment>
-        <rdfs:label xml:lang="en">Char</rdfs:label>
+        <rdfs:label xml:lang="en">Character</rdfs:label>
     </owl:NamedIndividual>
     
 
@@ -2644,7 +2655,7 @@ synchronized &lt;Expression&gt; &lt;Block&gt;</rdfs:comment>
     <owl:NamedIndividual rdf:about="http://rdf.webofcode.org/woc/Int">
         <rdf:type rdf:resource="http://rdf.webofcode.org/woc/PrimitiveType"/>
         <rdfs:comment xml:lang="en">The int type</rdfs:comment>
-        <rdfs:label xml:lang="en">Int</rdfs:label>
+        <rdfs:label xml:lang="en">Integer</rdfs:label>
     </owl:NamedIndividual>
     
 
