@@ -78,6 +78,7 @@ First, you have to clone the repository:
 
 ```bash
 $ git clone https://github.com/INRIA/spoon
+$ git checkout spoon-core-5.1.0
 ```
 
 The repository contains tests that cause some troubles when building the abstract syntax tree. The -f switch is added to solve this issue and get rid of the tests. Moreover, the --dependencies switch is here used to parse all of the dependencies of the repository. The -v switch tells CodeOntology to verbosely print out all files processed.
