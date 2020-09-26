@@ -45,10 +45,10 @@
             <id>spring-milestones</id>
             <url>https://repo.spring.io/libs-milestone/</url>
         </repository>
-        <repository>
+        <!--<repository>
             <id>mvnrepository</id>
             <url>http://mvnrepository.com/</url>
-        </repository>
+        </repository>-->
         <repository>
             <id>repo.eclipse.org-release</id>
             <name>Maven Repository for JDT Compiler release</name>
