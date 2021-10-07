@@ -41,14 +41,14 @@
     </build>
 
     <repositories>
-        <repository>
+        <!--<repository>
             <id>spring-milestones</id>
             <url>https://repo.spring.io/libs-milestone/</url>
-        </repository>
-        <!--<repository>
+        </repository>-->
+        <repository>
             <id>mvnrepository</id>
             <url>http://mvnrepository.com/</url>
-        </repository>-->
+        </repository>
         <repository>
             <id>repo.eclipse.org-release</id>
             <name>Maven Repository for JDT Compiler release</name>
@@ -112,17 +112,26 @@
             <groupId>fr.inria.gforge.spoon</groupId>
             <artifactId>spoon-core</artifactId>
             <version>5.1.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.jdt</groupId>
+                    <artifactId>org.eclipse.jdt.core</artifactId>
+                    <!-- org.eclipse.jdt:org.eclipse.jdt.core:pom:3.12.0.v20150913-1717 -->
+                                    
+                </exclusion>
+                
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.2</version>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.gradle</groupId>
             <artifactId>gradle-tooling-api</artifactId>
             <version>2.6</version>
-        </dependency>
+        </dependency> -->
     </dependencies>
 
 </project>
